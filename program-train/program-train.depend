@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1449366864 source:q:\github\program-train\program-train\src\main.cpp
+	<iostream>
+	"object_c.h"
+
+1449367350 q:\github\program-train\program-train\src\object_c.h
+
+1449366806 source:q:\github\program-train\program-train\src\object_c.c
+	"object_c.h"
+	<stdio.h>
+
