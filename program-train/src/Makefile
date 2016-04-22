@@ -13,7 +13,7 @@ CXX:=g++
 
 
 CFLAGS = -Wall -g
-#LDFLAFS = -ldl -lpthread
+LDFLAFS = -ldl -lpthread
 
 
 $(TARGET) : $(objs) $(LDFLAFS)
