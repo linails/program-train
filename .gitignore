@@ -6,3 +6,4 @@ tags
 *.depend
 *.cbp
 exe
+build/
