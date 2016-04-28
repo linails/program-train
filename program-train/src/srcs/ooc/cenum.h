@@ -1,7 +1,4 @@
 /*
- * Description: 
- * Copyright (C),2015-201x, minphone.linails
- * This program is protected by copyright laws
  * Progarm Name: cenum.h
  * Created Time: 2015-12-06 10:03:24
  * Last modified: 2015-12-06 10:04:28

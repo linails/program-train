@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-04-28 17:25:07
+ * Last modified: 2016-04-28 22:51:23
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -23,6 +23,8 @@
 #include "lambda.h"
 #include "template_test.h"
 
+#include "insertion_sort.h"
+
 using namespace std;
 
 int main(void)
@@ -41,12 +43,16 @@ int main(void)
     lambda_test();
     template_test();
     }
+    {
+        insertion_sort_test();
+    }
 
     {
+#if 0
     sqlite3 *db = NULL;
     sqlite3_open("first.db",&db);
-    cout << "hello world ..." <<endl;
     sqlite3_close(db);
+#endif
     }
     return 0;
 }
