@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-03-16 22:42:28
+ * Last modified: 2016-05-01 19:14:04
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -69,6 +69,22 @@ public:
 
 /*class test func*/
 extern void class_test(void);
+
+class CA{
+public:
+    CA();
+    ~CA();
+
+    typedef union{
+        int a;
+        struct{
+            char b;
+            char c;
+        };
+    }ttu_u;
+    ttu_u   ttu;
+    void test(void);
+};
 
 #endif //_CLASS_TEST_H_
 

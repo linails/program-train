@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-04-19 16:36:05
+ * Last modified: 2016-05-01 18:22:14
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -214,6 +214,18 @@ void struct_test(void)
 
         cout << "s.length() : " << s.length() << endl;
         cout << "s : " << s << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        typedef union{
+            int a;
+            struct{
+                char b;
+                char c;
+            };
+        }ttu_u;
+
+        ttu_u   ttu;
     }
     cout << "----------------------------" << endl;
 }

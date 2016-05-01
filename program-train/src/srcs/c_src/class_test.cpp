@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-03-16 22:43:40
+ * Last modified: 2016-05-01 19:20:08
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -42,6 +42,9 @@ void class_test(void)
     printf("addr Base::on : 0x%x\n",&Base::on);
     printf("addr Base::off : 0x%x\n",&Base::off);
 
+	cout<<"---------------------------"<<endl;
+    CA  ca;
+    ca.test();
 	cout<<"---------------------------"<<endl;
 }
 
@@ -152,4 +155,29 @@ void Derived::on()
     cout << "derived on ..." << endl;
 }
 
+
+CA::CA()
+{
+}
+
+CA::~CA()
+{
+}
+
+void CA::test(void)
+{
+    cout << "..............CA::TEST .............." << endl;
+    this->ttu.a = 10;
+    printf("this->ttu.a = %d\n",this->ttu.a);
+
+    this->ttu.b = 10;
+    this->ttu.c = 10;
+
+    printf("this->ttu.a = %.4x\n",this->ttu.a);
+    printf("this->ttu.b = %d\n",this->ttu.b);
+    printf("this->ttu.b = %.2x\n",this->ttu.b);
+    printf("this->ttu.c = %d\n",this->ttu.c);
+    printf("this->ttu.c = %.2x\n",this->ttu.c);
+    cout << "..............CA::TEST END..........." << endl;
+}
 
