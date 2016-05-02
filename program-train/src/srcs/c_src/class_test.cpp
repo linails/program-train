@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-05-01 19:20:08
+ * Last modified: 2016-05-02 13:58:56
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -45,6 +45,9 @@ void class_test(void)
 	cout<<"---------------------------"<<endl;
     CA  ca;
     ca.test();
+
+    CB  cb;
+    cb.test();
 	cout<<"---------------------------"<<endl;
 }
 
@@ -180,4 +183,24 @@ void CA::test(void)
     printf("this->ttu.c = %.2x\n",this->ttu.c);
     cout << "..............CA::TEST END..........." << endl;
 }
+
+CB::CB()
+{
+}
+
+CB::~CB()
+{
+}
+
+void CB::test(void)
+{
+    cout << "..............CB::TEST .............." << endl;
+    TTU_U   ttu;
+    ttu.b = 10;
+    ttu.c = 10;
+    printf("ttu.b = %d\n",ttu.b);
+    printf("ttu.c = %d\n",ttu.c);
+    cout << "..............CB::TEST END..........." << endl;
+}
+
 

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-03-28 17:09:16
+ * Last modified: 2016-05-02 14:16:15
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -158,6 +158,38 @@ void string_test(void)
     string content = content01 + buf;
     cout << "content :" << content << endl;
 
+	cout<<"---------------------------"<<endl;
+    {
+        string sa("nice");
+        string sb(sa);
+
+        cout << "sa : " << sa << endl;
+        cout << "sb : " << sb << endl;
+        printf("sa addr : 0x%x - 0x%x\n",&sa,sa.c_str());
+        printf("sb addr : 0x%x - 0x%x\n",&sb,sb.c_str());
+
+        sa[0] = 'N';
+        sb[0] = 'M';
+
+        cout << "sa : " << sa << endl;
+        cout << "sb : " << sb << endl;
+        printf("sa addr : 0x%x - 0x%x\n",&sa,sa.c_str());
+        printf("sb addr : 0x%x - 0x%x\n",&sb,sb.c_str());
+
+        string sc = sa;
+        cout << "sa : " << sa << endl;
+        cout << "sc : " << sb << endl;
+        printf("sa addr : 0x%x - 0x%x\n",&sa,sa.c_str());
+        printf("sc addr : 0x%x - 0x%x\n",&sb,sc.c_str());
+
+        sa[0] = 'N';
+        sc[0] = 'M';
+
+        cout << "sa : " << sa << endl;
+        cout << "sc : " << sc << endl;
+        printf("sa addr : 0x%x - 0x%x\n",&sa,sa.c_str());
+        printf("sc addr : 0x%x - 0x%x\n",&sb,sc.c_str());
+    }
 	cout<<"---------------------------"<<endl;
 }
 
