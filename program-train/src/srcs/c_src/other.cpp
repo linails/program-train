@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-05-01 18:22:14
+ * Last modified: 2016-05-03 21:18:31
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -226,6 +226,31 @@ void struct_test(void)
         }ttu_u;
 
         ttu_u   ttu;
+    }
+    cout << "----------------------------" << endl;
+    {
+#if 0
+        /*not init for test*/
+        char *p;
+
+        cout << "before core dump" << endl;
+
+        /*这个主要是用来做程序崩溃差错测试
+         * eg .
+         * 1.dmesg | grep program-train
+         *   会显示如下信息：
+         *   [982.192117] program-train[3361]:segfault at 7e04a0b58b3 ip 0000465b8c
+         *   sp 00007ffd945a2260 error 7 in program-train[400000+7c000]
+         *
+         * 2.addr2line -e ./program-train 465b8c -f
+         *   显示如下信息：
+         *   struct_test
+         *   /home/minphone/github/program-train/program_train/src/srcs/c_src/other.cpp:250 (discriminator 1)
+         *   */
+        *p = 10;
+
+        cout << "core dump" << endl;
+#endif
     }
     cout << "----------------------------" << endl;
 }
