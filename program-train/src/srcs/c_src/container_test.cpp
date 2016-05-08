@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-05-02 14:16:15
+ * Last modified: 2016-05-06 10:53:20
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -16,6 +16,8 @@
 #include <typeinfo>
 #include <bitset>
 #include <list>
+#include <queue>
+#include <deque>
 
 
 /*c++中的标准库的包含了c标准库的头文件，
@@ -70,6 +72,10 @@ void container_test(void)
 	bitset_test();
 
     list_test();
+
+    /*queue test func*/
+    void queue_test(void);
+    queue_test();
 
     deque_test();
     adaptor_stack_test();
@@ -859,9 +865,30 @@ void list_test(void)
     }
 }
 
+/*queue test func*/
+void queue_test(void)
+{
+    cout << "------------- queue test -------------" << endl;
+}
+
 /*deque test func*/
 void deque_test(void)
 {
+    cout << "------------- deque test -------------" << endl;
+    {
+        deque<char> cd;
+        cd.push_back(0x01);
+        cd.push_back(0x02);
+        cd.push_back(0x03);
+
+        do{
+            if(cd.empty() == false){
+                char &c = cd.front();
+                printf("pop : 0x%.2x\n",c);
+                cd.pop_front();
+            }
+        }while(cd.empty() == false);
+    }
 }
 
 //-----------------adaptor---------------------------------
