@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-05-06 10:53:20
+ * Last modified: 2016-05-09 17:20:36
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -888,6 +888,33 @@ void deque_test(void)
                 cd.pop_front();
             }
         }while(cd.empty() == false);
+    }
+    cout << "--------------------------------------" << endl;
+    {
+        struct demo{
+            char a;
+            int b;
+            int c;
+        };
+        deque<struct demo> sdd;
+
+        struct demo d1 = {0x01,1,2};
+        struct demo d2 = {0x02,3,4};
+        struct demo d3 = {0x03,4,5};
+        sdd.push_back(d1);
+        sdd.push_back(d2);
+        sdd.push_back(d3);
+
+        do{
+            if(sdd.empty() == false){
+                struct demo &tmp = sdd.front();
+
+                printf("tmp.a : 0x%.2x\n",tmp.a);
+                printf("tmp.b : %d\n",tmp.b);
+                printf("tmp.c : %d\n",tmp.c);
+                sdd.pop_front();
+            }
+        }while(sdd.empty() == false);
     }
 }
 
