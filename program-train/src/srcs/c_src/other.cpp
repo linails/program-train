@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-05-03 21:18:31
+ * Last modified: 2016-05-10 09:22:39
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -253,6 +253,28 @@ void struct_test(void)
 #endif
     }
     cout << "----------------------------" << endl;
+    {
+        void test01(void);
+        void test02(void);
+
+        void (*test_index[])(void) = {
+            test01,
+            test02
+        };
+
+        test_index[0]();
+        test_index[1]();
+    }
+    cout << "----------------------------" << endl;
 }
 
+void test01(void)
+{
+    cout << "test01 ..." << endl;
+}
+
+void test02(void)
+{
+    cout << "test02 ..." << endl;
+}
 
