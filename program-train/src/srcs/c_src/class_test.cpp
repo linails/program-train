@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-05-02 13:58:56
+ * Last modified: 2016-05-13 14:35:13
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -43,8 +43,9 @@ void class_test(void)
     printf("addr Base::off : 0x%x\n",&Base::off);
 
 	cout<<"---------------------------"<<endl;
-    CA  ca;
+    CA  ca,ca1;
     ca.test();
+    ca1.test();
 
     CB  cb;
     cb.test();
@@ -136,6 +137,7 @@ Base::~Base(void)
 void Base::on(void)
 {
     cout << "base on ..." << endl;
+    printf("base::on this addr : 0x%x\n",this);
 }
 
 void Base::off(void)
@@ -156,6 +158,7 @@ Derived::~Derived()
 void Derived::on()
 {
     cout << "derived on ..." << endl;
+    printf("derived::on this addr : 0x%x\n",this);
 }
 
 
@@ -172,6 +175,7 @@ void CA::test(void)
     cout << "..............CA::TEST .............." << endl;
     this->ttu.a = 10;
     printf("this->ttu.a = %d\n",this->ttu.a);
+    printf("addr this : 0x%x\n",this);
 
     this->ttu.b = 10;
     this->ttu.c = 10;
@@ -181,7 +185,27 @@ void CA::test(void)
     printf("this->ttu.b = %.2x\n",this->ttu.b);
     printf("this->ttu.c = %d\n",this->ttu.c);
     printf("this->ttu.c = %.2x\n",this->ttu.c);
+
+
+    void (CA::* pf[])(void) ={
+         &CA::on,
+         &CA::off
+    };
+    (this->*pf[0])();
+    (this->*pf[1])();
+
+
     cout << "..............CA::TEST END..........." << endl;
+}
+
+void CA::on(void)
+{
+    cout << "........CA::on........" << endl;
+}
+
+void CA::off(void)
+{
+    cout << "........CA::off........" << endl;
 }
 
 CB::CB()

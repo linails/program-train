@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-05-09 17:20:36
+ * Last modified: 2016-05-12 09:51:53
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -195,6 +195,23 @@ void string_test(void)
         cout << "sc : " << sc << endl;
         printf("sa addr : 0x%x - 0x%x\n",&sa,sa.c_str());
         printf("sc addr : 0x%x - 0x%x\n",&sb,sc.c_str());
+    }
+	cout<<"---------------------------"<<endl;
+    {
+        char temp[] = "hello string!";
+        char temp1[4] = {'0','1','2','4'};
+        char temp2[4] = {0,1,2,4};
+        string s=temp1;
+
+        cout << "s = " << s << endl;
+        cout << "s length : " << s.length() << endl;
+        printf("%x%x%x%x\n",s[0],s[1],s[2],s[3]);
+
+        string s2=temp2;
+
+        cout << "s2 = " << s2 << endl;
+        cout << "s2 length : " << s2.length() << endl;
+        printf("%x%x%x%x\n",s2[0],s2[1],s2[2],s2[3]);
     }
 	cout<<"---------------------------"<<endl;
 }

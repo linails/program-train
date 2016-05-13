@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-05-02 13:57:27
+ * Last modified: 2016-05-13 14:20:07
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -84,6 +84,8 @@ public:
     }ttu_u;
     ttu_u   ttu;
     void test(void);
+    void on(void);
+    void off(void);
 };
 
 class CB{
