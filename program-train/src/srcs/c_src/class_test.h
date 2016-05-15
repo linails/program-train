@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-05-13 17:41:55
+ * Last modified: 2016-05-15 13:02:29
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -75,6 +75,7 @@ class CA{
 public:
     CA();
     ~CA();
+    CA(int a);
 
     typedef union{
         int a;
@@ -87,6 +88,9 @@ public:
     void test(void);
     void on(void);
     void off(void);
+    static void printa(void);
+private:
+    static int m_a;
 };
 
 class CB{

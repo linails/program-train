@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-05-13 17:45:59
+ * Last modified: 2016-05-15 13:14:13
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
+#include "other.h"
 
 using namespace std;
 
@@ -54,6 +55,23 @@ void class_test(void)
     CB  cb;
     cb.test();
 	cout<<"---------------------------"<<endl;
+    {
+        void (* pf)(void);
+
+        CA  ca(11);
+        pf = &ca.printa;
+
+        do_pcb(pf);
+    }
+	cout<<"---------------------------"<<endl;
+    {
+        void (* pf)(void);
+
+        CA  ca(11);
+        pf = &CA::printa;
+
+        do_pcb(pf);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -170,12 +188,19 @@ void Derived::abc(void)
     cout << "abc ..." << endl;
 }
 
+int CA::m_a;
+
 CA::CA()
 {
 }
 
 CA::~CA()
 {
+}
+
+CA::CA(int a)
+{
+    m_a = a;
 }
 
 void CA::test(void)
@@ -214,6 +239,15 @@ void CA::on(void)
 void CA::off(void)
 {
     cout << "........CA::off........" << endl;
+}
+
+void CA::printa(void)
+{
+    cout << "........CA::printa........" << endl;
+
+    cout << "static m_a : " << m_a << endl;
+
+    cout << ".........................." << endl;
 }
 
 CB::CB()
