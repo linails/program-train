@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-04-28 22:51:23
+ * Last modified: 2016-05-14 19:59:13
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -22,6 +22,7 @@
 #include "boost_test.h"
 #include "lambda.h"
 #include "template_test.h"
+#include "ctest.h"
 
 #include "insertion_sort.h"
 
@@ -30,18 +31,19 @@ using namespace std;
 int main(void)
 {
     {
-    refrence_test();
-    class_test();
-    container_test();
-    cast_test();
-    find_char2("hello",'e');
-    const_test();
-    drived_test();
-    other_test();
-    overload_test();
-    boost_test();
-    lambda_test();
-    template_test();
+        refrence_test();
+        class_test();
+        container_test();
+        cast_test();
+        find_char2("hello",'e');
+        const_test();
+        drived_test();
+        other_test();
+        overload_test();
+        boost_test();
+        lambda_test();
+        template_test();
+        ctest();
     }
     {
         insertion_sort_test();

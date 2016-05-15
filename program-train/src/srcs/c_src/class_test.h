@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-05-13 14:20:07
+ * Last modified: 2016-05-13 17:41:55
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -65,6 +65,7 @@ public:
     Derived();
     virtual ~Derived();
     virtual void on(void);
+    void abc(void);
 };
 
 /*class test func*/

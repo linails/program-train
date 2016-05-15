@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-05-13 14:35:13
+ * Last modified: 2016-05-13 17:45:59
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -33,6 +33,10 @@ void class_test(void)
     Derived od;
     ptr = &od;
     ptr->on();
+
+    od.abc();
+    ((Derived *)ptr)->abc();
+
 	cout<<"---------------------------"<<endl;
 
     cout << "size of Base :" << sizeof(Base) << endl;
@@ -161,6 +165,10 @@ void Derived::on()
     printf("derived::on this addr : 0x%x\n",this);
 }
 
+void Derived::abc(void)
+{
+    cout << "abc ..." << endl;
+}
 
 CA::CA()
 {
