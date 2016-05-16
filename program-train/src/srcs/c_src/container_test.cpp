@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-05-12 09:51:53
+ * Last modified: 2016-05-16 10:58:24
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -212,6 +212,39 @@ void string_test(void)
         cout << "s2 = " << s2 << endl;
         cout << "s2 length : " << s2.length() << endl;
         printf("%x%x%x%x\n",s2[0],s2[1],s2[2],s2[3]);
+    }
+	cout<<"---------------------------"<<endl;
+    {
+        string s("怅	`1`怅`2`(1)<br>悵<br>chàng<br>(2)<br>(形声。从心,长声。本义:因失意而不痛快) 同本义 ");
+
+        string is(s.substr(0,s.find(")<br>")));
+        cout << "is : " << is << endl;
+        is = s.substr(0,s.find(")<br>"));
+        cout << "is : " << is << endl;
+        is = s.substr(s.find(")<br>"),s.find("<br>("));
+        cout << "is : " << is << endl;
+        is = s.substr(s.find(")<br>"),s.find("<br>("));
+        cout << "is : " << is << endl;
+
+        for(auto iter = is.begin();
+                 iter!= is.end(); iter++){
+            printf("%c ",*iter);
+        }
+        cout << endl;
+    }
+	cout<<"---------------------------"<<endl;
+    {
+        string s("(1)<br>chàng<br>(2)<br>");
+        cout << "s.length() : " << s.length() << endl;
+
+        string::size_type pos1 = s.find(")<br>");
+        string::size_type pos2 = s.find("<br>(");
+        printf("pos1 = %d - pos2 = %d\n",pos1,pos2);
+
+        string is;
+        is = s.substr(pos1,pos2);
+        cout << "is : " << is << endl;
+        cout << "is.length() : " << is.length() << endl;
     }
 	cout<<"---------------------------"<<endl;
 }

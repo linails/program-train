@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-05-15 13:14:13
+ * Last modified: 2016-05-16 09:31:27
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -68,7 +68,7 @@ void class_test(void)
         void (* pf)(void);
 
         CA  ca(11);
-        pf = &CA::printa;
+        pf = CA::printa;
 
         do_pcb(pf);
     }
