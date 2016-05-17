@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-05-14 19:59:13
+ * Last modified: 2016-05-17 17:37:49
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -23,6 +23,7 @@
 #include "lambda.h"
 #include "template_test.h"
 #include "ctest.h"
+#include "regex_test.h"
 
 #include "insertion_sort.h"
 
@@ -44,6 +45,7 @@ int main(void)
         lambda_test();
         template_test();
         ctest();
+        regex_test();
     }
     {
         insertion_sort_test();
