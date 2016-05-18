@@ -1,7 +1,7 @@
 /*
  * Progarm Name: regex_test.cpp
  * Created Time: 2016-05-16 10:55:53
- * Last modified: 2016-05-18 23:11:49
+ * Last modified: 2016-05-18 23:27:55
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -24,8 +24,8 @@ void regex_test(void)
     //void regex_t1(void);
     //regex_t1();
 
-    void regex_t2(void);
-    regex_t2();
+    void regex_t3(void);
+    regex_t3();
     cout << "-------------------------------------" << endl;
 }
 
@@ -122,7 +122,7 @@ void regex_t2(void)
      *   REG_NEWLINE   :识别换行符,这样'$'就可以从行尾开始匹配，'^'就可以从行头匹配
      *  }
      * */
-    z = regcomp(&reg,pattern,cflags);
+    z = regcomp(&reg,pattern,0);
     if(z != 0){
         regerror(z,&reg,ebuf,sizeof(ebuf));
         printf("%s : pattern '%s'\n",ebuf,pattern);
@@ -133,7 +133,7 @@ void regex_t2(void)
 
     lbuf = (char *)data[0];
 
-    z = regexec(&reg,lbuf,nmatch,pm,REG_NOTEOL);
+    z = regexec(&reg,lbuf,nmatch,pm,0);
     if(z == REG_NOMATCH){
         cout << "reg nomatch : " << z << endl;
         regerror(z,&reg,ebuf,sizeof(ebuf));
@@ -154,6 +154,40 @@ void print_substr(char *str,int begin,int end)
         printf("%c",str[begin++]);
     }
 }
+
+/*eg. from IBM knowledge center*/
+void regex_t3(void)
+{
+    regex_t     preg;
+    char        *string = "a very simple simple simple string";
+    char        *pattern = "\\(sim[a-z]le\\) \\1";
+    int         rc;
+    size_t      nmatch = 2;
+    regmatch_t  pmatch[2];
+
+    if(0 != (rc = regcomp(&preg, pattern, 0))){
+        printf("regcomp() failed, returning nonzero (%d)\n", rc);
+        return;
+    }
+
+    if(0 != (rc = regexec(&preg, string, nmatch, pmatch, 0))){
+        printf("Failed to match '%s' with '%s',returnning %d.\n",
+                string, pattern, rc);
+    }else{
+        printf("With the whole expression, "
+               "a matched substring \"%.*s\" is found at position %d to %d.\n",
+               pmatch[0].rm_eo - pmatch[0].rm_so, &string[pmatch[0].rm_so],
+               pmatch[0].rm_so, pmatch[0].rm_eo - 1);
+        printf("With the sub-expression, "
+               "a matched substring \"%.*s\" is found at position %d to %d.\n",
+               pmatch[1].rm_eo - pmatch[1].rm_so, &string[pmatch[1].rm_so],
+               pmatch[1].rm_so, pmatch[1].rm_eo - 1);
+    }
+
+    regfree(&preg);
+    return;
+}
+
 
 
 
