@@ -1,7 +1,7 @@
 /*
  * Progarm Name: regex_test.cpp
  * Created Time: 2016-05-16 10:55:53
- * Last modified: 2016-05-17 22:05:40
+ * Last modified: 2016-05-18 23:11:49
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -21,15 +21,18 @@ void regex_test(void)
 {
     cout << "-------------regex test--------------" << endl;
 
-    void regex_t1(void);
-    regex_t1();
+    //void regex_t1(void);
+    //regex_t1();
+
+    void regex_t2(void);
+    regex_t2();
     cout << "-------------------------------------" << endl;
 }
 
 void regex_t1(void)
 {
-    char *pattern = "regex[a-z]*";
-    int  x;
+    char *pattern = (char *)"regex[a-z]*";
+    unsigned int  x;
     int  z;
     int  lno = 0;
     int  cflags = 0;
@@ -38,15 +41,15 @@ void regex_t1(void)
     regex_t reg;
     regmatch_t pm[10];
 
-    char *data[] = {
+    const char *data[] = {
         "rege",
-        "nljregexb",
+        "nlj regexb djo",
         "nlkjregexcd,dnijgregexdddnojg",
         "hlojlnregexccccd",
         "joiuregexabc",
         "gccsderegexdddd,doijgregexxx",
         "doingregrx",
-        "recex",
+        "doij recex joi",
         "regexojhogijregjoiregxjoijregexddoij",
         "redex",
         "noijregexln",
@@ -64,7 +67,7 @@ void regex_t1(void)
 
 #if 1
     for(int i=0; i<12; i++){
-        lbuf = data[i];
+        lbuf = (char *)data[i];
         ++lno;
 
         z = regexec(&reg,lbuf,nmatch,pm,0);
@@ -86,6 +89,71 @@ void regex_t1(void)
 #endif
 }
 
+void regex_t2(void)
+{
+    /* 1. (<br>)?\(\d\)
+     * 2. */
+    char *pattern = (char *)"(<br>)?\\(\\d\\)";
+    printf("pattern : %s\n",pattern);
+
+    //char *pattern = (char *)"<br>";
+    unsigned int  x;
+    int  z;
+    int  cflags = REG_EXTENDED;
+    char ebuf[128];
+    char *lbuf;
+    regex_t reg;
+    regmatch_t pm[10];
+
+    const char *data[] = {
+         "亶1	`1`亶1`2`dǎn<br>(1)<br>(形声。本义:谷多)<br>(2)<br>同本义 [full of grains]<br>亶,多谷也。――《说文》<br>择三有事,亶侯多藏。――《诗·小雅·十月之交》<br>(3)<br>厚道;忠实 [kind and sincere]<br>亶,信也;又,诚也。――《尔雅》<br>不实于亶。――《诗·大雅·板》<br>(4)<br>又如:亶厚(忠厚,淳厚);亶诚(真诚)<br>(5)<br>平坦;广大 [smooth]。如:亶亶(平坦。通“坦坦”)<br>(6)<br>姓"
+
+    };
+
+    const size_t nmatch = 10;
+
+    /*
+     * pattern : 指向正则表达式
+     * cflags  : 有4个值
+     *  {
+     *   REG_EXTENDED  :以功能更加强大的扩展正则表达式进行匹配
+     *   REG_ICASE     :匹配字母时忽略大小写
+     *   REG_NOSUB     :不用存储匹配后的结果
+     *   REG_NEWLINE   :识别换行符,这样'$'就可以从行尾开始匹配，'^'就可以从行头匹配
+     *  }
+     * */
+    z = regcomp(&reg,pattern,cflags);
+    if(z != 0){
+        regerror(z,&reg,ebuf,sizeof(ebuf));
+        printf("%s : pattern '%s'\n",ebuf,pattern);
+        return;
+    }else{
+        cout << "regcomp success " << endl;
+    }
+
+    lbuf = (char *)data[0];
+
+    z = regexec(&reg,lbuf,nmatch,pm,REG_NOTEOL);
+    if(z == REG_NOMATCH){
+        cout << "reg nomatch : " << z << endl;
+        regerror(z,&reg,ebuf,sizeof(ebuf));
+        printf("%s : pattern '%s'\n",ebuf,pattern);
+    }else{
+        for(x = 0; x< nmatch&&pm[x].rm_so != -1; ++x){
+            //printf(" $%d='%s'\n",x,s.substr(pm[x].rm_so,pm[x].rm_eo).c_str());
+
+            void print_substr(char *str,int begin,int end);
+            print_substr(lbuf,pm[x].rm_so,pm[x].rm_eo);
+        }
+    }
+}
+
+void print_substr(char *str,int begin,int end)
+{
+    while(begin <= end){
+        printf("%c",str[begin++]);
+    }
+}
 
 
 
