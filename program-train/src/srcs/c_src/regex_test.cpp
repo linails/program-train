@@ -1,7 +1,7 @@
 /*
  * Progarm Name: regex_test.cpp
  * Created Time: 2016-05-16 10:55:53
- * Last modified: 2016-05-18 23:27:55
+ * Last modified: 2016-05-19 14:14:23
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -23,9 +23,22 @@ void regex_test(void)
 
     //void regex_t1(void);
     //regex_t1();
+    //
 
     void regex_t3(void);
     regex_t3();
+
+#if 0
+    void regex_t4(void);
+    regex_t4();
+#endif
+
+#if 0
+    /*eg. c++ boost xpressive*/
+    void regex_t5(void);
+    regex_t5();
+#endif
+
     cout << "-------------------------------------" << endl;
 }
 
@@ -159,35 +172,99 @@ void print_substr(char *str,int begin,int end)
 void regex_t3(void)
 {
     regex_t     preg;
-    char        *string = "a very simple simple simple string";
-    char        *pattern = "\\(sim[a-z]le\\) \\1";
+#if 0
+    //char        *string = "a very simple simple simple string";
+    //char        *pattern = "\\(sim[a-z]le\\) \\1";
+    char        *string = "averysimple<si>simple<sd>4stringdǎn<br>(1)<br>(形声。本义:谷多)<br>(2)<br>同本义";
+    //char        *pattern = "<s[id]>";
+    char        *pattern = "<br>\\(";
+#else
+#if 1
+    char        *pattern = (char *)"([1-9])<br>";
+    char        *string = "亶1	`1`亶1`2`dǎn<br>(1)<br>(形声。本义:谷多)<br>(2)<br>同本义 [full of grains]<br>亶,多谷也。――《说文》<br>择三有事,亶侯多藏。――《诗·小雅·十月之交》<br>(3)<br>厚道;忠实 [kind and sincere]<br>亶,信也;又,诚也。――《尔雅》<br>不实于亶。――《诗·大雅·板》<br>(4)<br>又如:亶厚(忠厚,淳厚);亶诚(真诚)<br>(5)<br>平坦;广大 [smooth]。如:亶亶(平坦。通“坦坦”)<br>(6)<br>姓";
+#endif
+#endif
     int         rc;
     size_t      nmatch = 2;
-    regmatch_t  pmatch[2];
+    regmatch_t  pmatch[2] = {0,};
 
     if(0 != (rc = regcomp(&preg, pattern, 0))){
         printf("regcomp() failed, returning nonzero (%d)\n", rc);
         return;
     }
 
-    if(0 != (rc = regexec(&preg, string, nmatch, pmatch, 0))){
-        printf("Failed to match '%s' with '%s',returnning %d.\n",
-                string, pattern, rc);
-    }else{
-        printf("With the whole expression, "
-               "a matched substring \"%.*s\" is found at position %d to %d.\n",
-               pmatch[0].rm_eo - pmatch[0].rm_so, &string[pmatch[0].rm_so],
-               pmatch[0].rm_so, pmatch[0].rm_eo - 1);
-        printf("With the sub-expression, "
-               "a matched substring \"%.*s\" is found at position %d to %d.\n",
-               pmatch[1].rm_eo - pmatch[1].rm_so, &string[pmatch[1].rm_so],
-               pmatch[1].rm_so, pmatch[1].rm_eo - 1);
+    int pos = 0;
+    while(1){
+        if(0 != (rc = regexec(&preg, &string[pos], nmatch, pmatch, 0))){
+            printf("Failed to match '%s' with '%s',returnning %d.\n",
+                    string, pattern, rc);
+            break;
+        }else{
+            static int times = 0;
+            printf("match %d : ",times++);
+            print_substr(&string[pos], pmatch[0].rm_so, pmatch[0].rm_eo - 1);
+            cout << endl;
+
+#if 0
+            printf("With the whole expression, "
+                   "a matched substring \"%.*s\" is found at position %d to %d.\n",
+                   pmatch[0].rm_eo - pmatch[0].rm_so, &string[pmatch[0].rm_so],
+                   pmatch[0].rm_so, pmatch[0].rm_eo - 1);
+            printf("With the sub-expression, "
+                   "a matched substring \"%.*s\" is found at position %d to %d.\n",
+                   pmatch[1].rm_eo - pmatch[1].rm_so, &string[pmatch[1].rm_so],
+                   pmatch[1].rm_so, pmatch[1].rm_eo - 1);
+#endif
+
+            pos += pmatch[0].rm_eo - 1;
+        }
     }
 
     regfree(&preg);
     return;
 }
 
+#include <regex>
 
+void regex_t4(void)
+{
+    //const std::regex pattern("(<br>)?\\(\\d\\)");
+    //const std::regex pattern("<br>\\(");
+    const std::regex pattern("\\d?\\d");
+
+    std::match_results<std::string::const_iterator> result;
+
+    string s = " 8979 878 666 567 565778";
+
+    //string  s = "亶1	`1`亶1`2`dǎn<br>(1)<br>(形声。本义:谷多)<br>(2)<br>同本义 [full of grains]<br>亶,多谷也。――《说文》<br>择三有事,亶侯多藏。――《诗·小雅·十月之交》<br>(3)<br>厚道;忠实 [kind and sincere]<br>亶,信也;又,诚也。――《尔雅》<br>不实于亶。――《诗·大雅·板》<br>(4)<br>又如:亶厚(忠厚,淳厚);亶诚(真诚)<br>(5)<br>平坦;广大 [smooth]。如:亶亶(平坦。通“坦坦”)<br>(6)<br>姓";
+
+    bool valid = std::regex_match(s,result,pattern);
+    if(valid == true){
+        if(result.empty() != true)
+            cout << "reg00 : " << result[0] << endl;
+    }
+}
+
+
+//---------------------------------------------------------
+
+#if 0
+#include <xpressive/xpressive.hpp>
+
+/*eg. c++ boost xpressive*/
+void regex_t5(void)
+{
+    using namespace boost::xpressive;
+
+    cregex reg = cregex::compile("a.c");
+
+    assert(regex_match("abc", reg));
+    assert(regex_match("a+c", reg));
+
+    assert(regex_match("ac", reg));
+    assert(regex_match("abd", reg));
+}
+
+#endif
 
 
