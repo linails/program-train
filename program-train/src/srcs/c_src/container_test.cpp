@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-05-16 10:58:24
+ * Last modified: 2016-05-30 17:18:44
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -245,6 +245,18 @@ void string_test(void)
         is = s.substr(pos1,pos2);
         cout << "is : " << is << endl;
         cout << "is.length() : " << is.length() << endl;
+    }
+	cout<<"---------------------------"<<endl;
+    {
+        char buf[128] = {0,};
+        string s("hello buffer");
+        char *p = buf;
+
+        for(auto iter = s.begin();
+                 iter!= s.end(); iter++){
+            *p++ = *iter;
+        }
+        cout << "buf : " << buf << endl;
     }
 	cout<<"---------------------------"<<endl;
 }
