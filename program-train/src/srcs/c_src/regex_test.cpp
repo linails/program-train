@@ -1,7 +1,7 @@
 /*
  * Progarm Name: regex_test.cpp
  * Created Time: 2016-05-16 10:55:53
- * Last modified: 2016-05-19 14:14:23
+ * Last modified: 2016-06-10 11:07:25
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -224,9 +224,20 @@ void regex_t3(void)
     return;
 }
 
+//---------------------------------------------------------
+
+/*c++11 regex*/
 #include <regex>
 
-void regex_t4(void)
+regex_cpp11::regex_cpp11()
+{
+}
+
+regex_cpp11::~regex_cpp11()
+{
+}
+
+void regex_cpp11::regex_t4(void)
 {
     //const std::regex pattern("(<br>)?\\(\\d\\)");
     //const std::regex pattern("<br>\\(");

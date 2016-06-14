@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-05-15 13:01:50
+ * Last modified: 2016-06-14 22:07:16
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -264,6 +264,22 @@ void struct_test(void)
 
         test_index[0]();
         test_index[1]();
+    }
+    cout << "----------------------------" << endl;
+    {
+        cout << "try catch..." << endl;
+        try{
+            int a = 10;
+            if(a == 10){
+                throw a;
+            }
+        }
+        catch(int){
+            cout << "catch int..." << endl;
+        }
+        catch(...){
+            cout << "catch something..." << endl;
+        }
     }
     cout << "----------------------------" << endl;
 }
