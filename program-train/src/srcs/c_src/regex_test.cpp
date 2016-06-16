@@ -1,7 +1,7 @@
 /*
  * Progarm Name: regex_test.cpp
  * Created Time: 2016-05-16 10:55:53
- * Last modified: 2016-06-10 11:07:25
+ * Last modified: 2016-06-16 11:25:31
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -13,6 +13,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include "regex_cpp11.h"
 
 using namespace std;
 
@@ -39,6 +40,12 @@ void regex_test(void)
     regex_t5();
 #endif
 
+    cout << "-------------------------------------" << endl;
+    {
+        cout << "regex c++ 11" << endl;
+        regex_cpp11 regex;
+        regex.regex_t4();
+    }
     cout << "-------------------------------------" << endl;
 }
 
@@ -223,39 +230,6 @@ void regex_t3(void)
     regfree(&preg);
     return;
 }
-
-//---------------------------------------------------------
-
-/*c++11 regex*/
-#include <regex>
-
-regex_cpp11::regex_cpp11()
-{
-}
-
-regex_cpp11::~regex_cpp11()
-{
-}
-
-void regex_cpp11::regex_t4(void)
-{
-    //const std::regex pattern("(<br>)?\\(\\d\\)");
-    //const std::regex pattern("<br>\\(");
-    const std::regex pattern("\\d?\\d");
-
-    std::match_results<std::string::const_iterator> result;
-
-    string s = " 8979 878 666 567 565778";
-
-    //string  s = "亶1	`1`亶1`2`dǎn<br>(1)<br>(形声。本义:谷多)<br>(2)<br>同本义 [full of grains]<br>亶,多谷也。――《说文》<br>择三有事,亶侯多藏。――《诗·小雅·十月之交》<br>(3)<br>厚道;忠实 [kind and sincere]<br>亶,信也;又,诚也。――《尔雅》<br>不实于亶。――《诗·大雅·板》<br>(4)<br>又如:亶厚(忠厚,淳厚);亶诚(真诚)<br>(5)<br>平坦;广大 [smooth]。如:亶亶(平坦。通“坦坦”)<br>(6)<br>姓";
-
-    bool valid = std::regex_match(s,result,pattern);
-    if(valid == true){
-        if(result.empty() != true)
-            cout << "reg00 : " << result[0] << endl;
-    }
-}
-
 
 //---------------------------------------------------------
 
