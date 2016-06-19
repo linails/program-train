@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-04-28 23:04:08
+# Last modified: 2016-06-19 14:28:46
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -14,13 +14,19 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/tools
 )
 
-aux_source_directory(. SRC_LIST)
-aux_source_directory(./libs/ SRC_LIST)
-aux_source_directory(./srcs/ SRC_LIST)
-aux_source_directory(./srcs/tools/ SRC_LIST)
-aux_source_directory(./srcs/c_src/ SRC_LIST)
-aux_source_directory(./srcs/ooc/ SRC_LIST)
-aux_source_directory(./srcs/sort/ SRC_LIST)
+#aux_source_directory(. SRC_LIST)
+#aux_source_directory(./libs/ SRC_LIST)
+#aux_source_directory(./srcs/ SRC_LIST)
+#aux_source_directory(./srcs/tools/ SRC_LIST)
+#aux_source_directory(./srcs/c_src/ SRC_LIST)
+#aux_source_directory(./srcs/ooc/ SRC_LIST)
+#aux_source_directory(./srcs/sort/ SRC_LIST)
+
+set(SRC_LIST
+   main.cpp 
+   srcs/c_src/regex_test.cpp
+   srcs/c_src/regex_cpp11.cpp
+)
 
 add_executable(program-train ${SRC_LIST})
 
