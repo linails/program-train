@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-06-19 14:29:27
+ * Last modified: 2016-06-27 13:14:05
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -24,6 +24,7 @@
 #include "template_test.h"
 #include "ctest.h"
 #include "regex_test.h"
+#include "smart_pointer.h"
 
 #include "insertion_sort.h"
 
@@ -47,7 +48,8 @@ int main(void)
         template_test();
         ctest();
 #endif
-        regex_test();
+        //regex_test();
+        smart_pointer();
     }
     {
 #if 0

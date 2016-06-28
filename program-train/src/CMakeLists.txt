@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-06-19 14:28:46
+# Last modified: 2016-06-27 13:13:51
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -24,8 +24,9 @@ include_directories(
 
 set(SRC_LIST
    main.cpp 
-   srcs/c_src/regex_test.cpp
-   srcs/c_src/regex_cpp11.cpp
+#   srcs/c_src/regex_test.cpp
+#   srcs/c_src/regex_cpp11.cpp
+   srcs/c_src/smart_pointer.cpp
 )
 
 add_executable(program-train ${SRC_LIST})
