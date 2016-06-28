@@ -1,7 +1,7 @@
 /*
  * Progarm Name: smart_pointer.cpp
  * Created Time: 2016-06-27 13:09:30
- * Last modified: 2016-06-28 14:33:40
+ * Last modified: 2016-06-28 23:43:58
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -99,6 +99,77 @@ void smart_pointer(void)
     }
     cout << "-----------------------------------------" << endl;
     {
+        struct A;
+        struct B;
+
+        struct A{
+            shared_ptr<B> bptr;
+            ~A()
+            {
+                cout << "A is deleted !" << endl;
+            }
+        };
+
+        struct B{
+            shared_ptr<A> aptr;
+            ~B()
+            {
+                cout << "B is deleted !" << endl;
+            }
+        };
+
+        weak_ptr<A> wpa ;
+        weak_ptr<B> wpb ;
+        {
+            shared_ptr<A> ap(new A);
+            shared_ptr<B> bp(new B);
+
+            //ap->bptr = bp;
+            //bp->aptr = ap;
+
+            wpa = ap;
+            wpb = bp;
+        }
+
+        cout << "wpa.use_count() : " << wpa.use_count() << endl;
+        cout << "wpb.use_count() : " << wpb.use_count() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        struct A;
+        struct B;
+
+        struct A{
+            shared_ptr<B> bptr;
+            ~A()
+            {
+                cout << "A is deleted !" << endl;
+            }
+        };
+
+        struct B{
+            shared_ptr<A> aptr;
+            ~B()
+            {
+                cout << "B is deleted !" << endl;
+            }
+        };
+
+        weak_ptr<A> wpa ;
+        weak_ptr<B> wpb ;
+        {
+            shared_ptr<A> ap(new A);
+            shared_ptr<B> bp(new B);
+
+            ap->bptr = bp;
+            bp->aptr = ap;
+
+            wpa = ap;
+            wpb = bp;
+        }
+        cout << "wpa.use_count() : " << wpa.use_count() << endl;
+        cout << "wpb.use_count() : " << wpb.use_count() << endl;
+        cout << "memory is leak" << endl;
     }
 }
 
