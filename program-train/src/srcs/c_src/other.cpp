@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-06-14 22:07:16
+ * Last modified: 2016-06-29 15:51:54
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -117,7 +117,14 @@ void other_test(void)
         func0(ub);
     }
     cout << "----------------------------" << endl;
-    struct_test();
+    {
+        struct_test();
+    }
+    cout << "----------------------------" << endl;
+    {
+        void auto_decltype_test(void);
+        auto_decltype_test();
+    }
 }
 
 void display(char *ptr)
@@ -127,7 +134,7 @@ void display(char *ptr)
 
 void func0(const UCvec_t &ua)
 {
-    printf("func0 -> ua.size = %d\n",ua.size());
+    printf("func0 -> ua.size = %d\n",(int )ua.size());
     printf("func1 -> ua[0] = 0x%.2x\n",ua[0]);
     auto iter = ua.begin();
     printf("func1 -> *iter = 0x%.2x\n",*iter);
@@ -170,7 +177,7 @@ void struct_test(void)
 
     cout << "ts : 0x ";
     for(int i=0; i<sizeof(ts); i++){
-        printf("%.2x ",((unsigned char*)&ts)[i]);
+        printf("%.2x ",(unsigned)((unsigned char*)&ts)[i]);
     }
     cout << endl;
     cout << "----------------------------" << endl;
@@ -298,4 +305,35 @@ void do_pcb(void (*pf)(void))
 {
     pf();
 }
+
+//--------------------------------------------------------------------
+
+void auto_decltype_test(void)
+{
+    cout << "auto decltype test " << endl;
+    {
+        auto i = 10;
+        cout << "i = " << i << endl;
+
+        auto x = 5;
+        auto pi = new auto(1);
+        const auto *v = &x, u = 6; /* 常量定义初始化 */
+
+        cout << "x = " << x << endl;
+        cout << "*pi = " << *pi << endl;
+        cout << "*v = " << *v << endl;
+        cout << "u = " << u << endl;
+
+        /* 总结：
+         * 使用auto声明的变量，必须马上初始化*/
+    }
+    cout << "---------------------------" << endl;
+    {
+        int i = 10;
+        decltype(i) y = 12;
+        cout << "y = " << y << endl;
+    }
+}
+
+
 

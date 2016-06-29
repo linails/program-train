@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-06-27 13:14:05
+ * Last modified: 2016-06-29 15:29:35
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -41,7 +41,6 @@ int main(void)
         find_char2("hello",'e');
         const_test();
         drived_test();
-        other_test();
         overload_test();
         boost_test();
         lambda_test();
@@ -49,7 +48,8 @@ int main(void)
         ctest();
 #endif
         //regex_test();
-        smart_pointer();
+        //smart_pointer();
+        other_test();
     }
     {
 #if 0
