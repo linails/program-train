@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-06-29 15:51:54
+ * Last modified: 2016-06-29 17:57:47
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <cstring>
 #include <vector>
+#include <map>
 #include <string>
 #include "class_test.h"
 
@@ -124,6 +125,82 @@ void other_test(void)
     {
         void auto_decltype_test(void);
         auto_decltype_test();
+    }
+    cout << "----------------------------" << endl;
+    {
+        cout << "range-based for" << endl;
+        vector<int> arr = {1 , 2 , 3 , 4 , 5};
+
+        for(auto iter = arr.begin();
+                 iter!= arr.end(); iter++){
+            cout << "*iter = " << *iter << endl;
+        }
+
+        /* 基于范围的for循环 
+         * n 推导为 arr中元素的类型*/
+        {
+            /* 这两种是只读方式 */
+            for(auto n : arr){
+                cout << "n = " << n << endl;
+            }
+            for(int n : arr){
+                cout << "n = " << n << endl;
+            }
+        }
+        cout << endl;
+        {
+            /* 1.auto &
+             * 2.const auto &*/
+            for(auto &n : arr) n++;
+            for(auto n : arr){
+                cout << "n = " << n << endl;
+            }
+        }
+    }
+    cout << "----------------------------" << endl;
+    {
+        map<string,int> mm = {
+            {"1", 1},
+            {"2", 2},
+            {"3", 3},
+            {"4", 4},
+            {"5", 5},
+            {"6", 6},
+        };
+
+        for(auto iter = mm.begin(); 
+                 iter!= mm.end(); iter++){
+            cout << iter->first << " " << iter->second << endl;
+        }
+
+        cout << "for range" << endl;
+        /* 基于范围的for中的auto推导出的类型不是迭代器，
+         * 而是具体的容器元素类型 
+         *
+         * 冒号后面的表达式只执行一次*/
+        for(auto u : mm){
+            cout << u.first << " " << u.second << endl;
+        }
+    }
+    cout << "----------------------------" << endl;
+    {
+        /* 总结：
+         * 具体来说，基于范围的 for 循环将以厦门的方式查找容器的 begin 和 end 
+         * 1.若容器是一个普通 array 对象(eg. int arr[10]), 那么begin是array的
+         *   首地址，end为首地址加容器长度
+         * 2.若容器是一个类对象，那么range-based for 将试图通过查找类的begin()
+         *   和 end()方法来定位 begin / end 迭代器
+         * 3.否则，range-based for 将试图使用全局的 begin / end 函数来定位 begin
+         *   / end 迭代器
+         * 
+         * 因此，对于自定义类型来说，分别实现begin() / end() 方法即可*/
+        void range_based_for(void);
+        range_based_for();
+    }
+    cout << "----------------------------" << endl;
+    {
+        void function_bind(void);
+        function_bind();
     }
 }
 
@@ -335,5 +412,25 @@ void auto_decltype_test(void)
     }
 }
 
+void range_based_for(void)
+{
+    cout << "range_based_for" << endl;
+    {
+        for(int n = 2; n<8; n += 2){ //[2,8)
+            cout << " ";
+        }
+        cout << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+    }
+}
+
+void function_bind(void)
+{
+    cout << "function bind " << endl;
+    {
+    }
+}
 
 
