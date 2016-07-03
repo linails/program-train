@@ -1,7 +1,8 @@
+/*  */
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-06-29 17:57:47
+ * Last modified: 2016-06-30 09:29:40
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
