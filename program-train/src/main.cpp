@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-07-02 07:33:20
+ * Last modified: 2016-07-04 14:57:12
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -49,7 +49,7 @@ int main(void)
         //regex_test();
         //smart_pointer();
         other_test();
-        lambda_test();
+        //lambda_test();
     }
     {
 #if 0

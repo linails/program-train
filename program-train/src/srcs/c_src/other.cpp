@@ -2,7 +2,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-06-30 09:29:40
+ * Last modified: 2016-07-04 22:09:09
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -427,11 +427,102 @@ void range_based_for(void)
     }
 }
 
-void function_bind(void)
-{
-    cout << "function bind " << endl;
+//--------------------------------------------------------------------
+
+#include <functional>
+
+struct AA{
+    int a;
+    void m_func(void)
     {
+        cout << "m_func !" << endl;
+    }
+    static void m_func2(void)
+    {
+        cout << "func : " << __FUNCTION__ << endl;
+    }
+};
+
+void fr_test01(void)
+{
+    cout << "func : " << __FUNCTION__ << endl;
+}
+
+void call_when_even(int x, const function<void(int)> &f)
+{
+    /* x % 2 == 0 */
+    if(!(x & 1)){
+        f(x);
     }
 }
 
+void output(int x)
+{
+    cout << "func : " << __FUNCTION__ ;
+    cout << " " << x << " " << endl;
+}
 
+void output_add_2(int x)
+{
+    cout << "func : " << __FUNCTION__ ;
+    cout << " " << x+2 << endl;
+}
+
+void output_3(int x, int y)
+{
+    cout << x << " " << y << endl;
+}
+
+void function_bind(void)
+{
+    /* 
+     * 函数包装器
+     * */
+    cout << "function bind " << endl;
+    {
+        void (AA::* func_ptr)(void) = &AA::m_func;
+        int AA::*ptr = &AA::a;
+
+        AA aa;
+        (aa.*func_ptr)();
+        aa.*ptr = 123;
+
+        cout << "aa.a = " << aa.a << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        function<void(void)> fr = AA::m_func2;
+        fr();
+
+        fr = fr_test01;
+        fr();
+    }
+    cout << "---------------------------" << endl;
+    {
+        /* placeholders::_1 是一个占位符，代表这个位置将在函数调用时
+         * 被传入的第一个参数所替代*/
+        auto fr = bind(output, placeholders::_1);
+        for(int i=0; i<10; i++){
+            call_when_even(i, fr);
+        }
+        cout << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        auto fr = bind(output_add_2, placeholders::_1);
+        for(int i=0; i<10; i++){
+            call_when_even(i, fr);
+        }
+        cout << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        /* std::bind可以直接绑定函数的所有参数，也可以仅绑定部分参数 
+         * */
+        bind(output_3, 1, 2)(); /*后面直接加括号，表示直接调用*/
+        bind(output_3, placeholders::_1, 2)(1);
+        bind(output_3, 2, placeholders::_1)(1);
+        bind(output_3, 2, placeholders::_2)(1,2);
+        bind(output_3, placeholders::_1, placeholders::_2)(3,4);
+    }
+}
