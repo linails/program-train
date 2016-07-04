@@ -1,7 +1,7 @@
 /*
  * Progarm Name: lambda.cpp
  * Created Time: 2016-03-28 20:57:04
- * Last modified: 2016-07-02 21:23:04
+ * Last modified: 2016-07-04 12:53:23
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -63,6 +63,13 @@ void lambda_test(void)
         auto f2 = [](int a){return a + 2;};
         cout << "f2 = " << f2(3) << endl;
 
+        /* 表示无参数的lambda表达式 */
+        auto f3 = []{return 2; };
+        cout << "f3 = " << f3() << endl;
+
+        auto f4 = [](){return 3;};
+        cout << "f4 = " << f4() << endl;
+
         /* 捕获列表总结：
          * 1.[] 不捕获任何变量
          * 2.[&] 捕获外部作用域中所有变量，并作为引用在函数体中使用(按引用捕获)
@@ -71,6 +78,22 @@ void lambda_test(void)
          * 5.[bar] 按值捕获bar变量，同时不捕获其他变量
          * 6.[this] 捕获当前类中的this指针，让lambda表达式拥有和当前类成员函数通用的访问权限
          * */
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        int a = 10;
+        int b = 12;
+
+        auto c = [=]{return a + b;};
+        cout << "c = " << c() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        int a = 1;
+        auto f = [=]{return a;};
+        a++;
+        cout << "f = " << f() << endl;
+        cout << "a = " << a << endl;
     }
 }
 
