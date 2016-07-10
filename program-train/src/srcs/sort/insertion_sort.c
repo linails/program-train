@@ -1,9 +1,8 @@
 /*
  * Progarm Name: insertion_sort.c
  * Created Time: 2016-04-27 23:00:51
- * Last modified: 2016-04-29 23:10:50
+ * Last modified: 2016-07-10 21:18:49
  * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
  */
 
 #include "insertion_sort.h"

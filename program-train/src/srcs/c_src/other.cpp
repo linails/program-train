@@ -1,10 +1,8 @@
-/*  */
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-07-04 22:09:09
+ * Last modified: 2016-07-10 21:58:42
  * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
  */
 
 #include "other.h"
@@ -202,6 +200,11 @@ void other_test(void)
     {
         void function_bind(void);
         function_bind();
+    }
+    cout << "----------------------------" << endl;
+    {
+        void chapter2(void);
+        chapter2();
     }
 }
 
@@ -526,3 +529,48 @@ void function_bind(void)
         bind(output_3, placeholders::_1, placeholders::_2)(3,4);
     }
 }
+
+int g_constructCount = 0;
+int g_copyConstructCount = 0;
+int g_destructCount = 0;
+
+struct OA{
+    OA()
+    {
+        cout << "construct : " << ++g_constructCount << endl;
+    }
+    OA(const OA& a)
+    {
+        cout << "copy construct : " << ++g_copyConstructCount << endl;
+    }
+    ~OA()
+    {
+        cout << "destruct : " << ++g_destructCount << endl;
+    }
+};
+
+OA GetOA(void)
+{
+    return OA();
+}
+
+void chapter2(void)
+{
+    cout << "func : " << __FUNCTION__ << endl;
+    cout << "----------------------------" << endl;
+    {
+        int w1, w2;
+        auto && v1 = w1;
+    }
+    cout << "----------------------------" << endl;
+    {
+        cout << "get oa ..." << endl;
+        OA a = GetOA();
+    }
+    {
+        cout << "g_constructCount : " << g_constructCount << endl;
+        cout << "g_copyConstructCount : " << g_copyConstructCount << endl;
+        cout << "g_destructCount : " << g_destructCount << endl;
+    }
+}
+
