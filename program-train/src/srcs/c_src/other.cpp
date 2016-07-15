@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-07-10 21:58:42
+ * Last modified: 2016-07-11 11:04:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -554,6 +554,22 @@ OA GetOA(void)
     return OA();
 }
 
+class obj{
+public :
+    obj(){cout << "create obj " << endl; };
+    obj(const obj& other) {cout << ">> copy create obj " << endl; };
+    ~obj() { cout << "decreate obj " << endl; };
+};
+
+vector<obj> foo(void)
+{
+    vector<obj> c;
+    c.push_back(obj());
+    cout << "---- exit foo ----" << endl;
+    return c;
+}
+
+
 void chapter2(void)
 {
     cout << "func : " << __FUNCTION__ << endl;
@@ -563,14 +579,22 @@ void chapter2(void)
         auto && v1 = w1;
     }
     cout << "----------------------------" << endl;
+    /* 以下内容都被编译器优化过了，测试不出来效果 
+     * 如果需要测试效果，需要直接使用命令编译 eg. g++ -std=c++11 main.c*/
     {
         cout << "get oa ..." << endl;
-        OA a = GetOA();
+        OA a ;
+        a = GetOA();
     }
     {
         cout << "g_constructCount : " << g_constructCount << endl;
         cout << "g_copyConstructCount : " << g_copyConstructCount << endl;
         cout << "g_destructCount : " << g_destructCount << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        vector<obj> k;
+        k = foo();
     }
 }
 

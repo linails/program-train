@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-07-10 21:32:28
+# Last modified: 2016-07-14 19:22:57
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -27,7 +27,10 @@ set(SRC_LIST
 #   srcs/c_src/regex_test.cpp
 #   srcs/c_src/regex_cpp11.cpp
 #   srcs/c_src/smart_pointer.cpp
-    srcs/c_src/other.cpp
+#   srcs/c_src/other.cpp
+   srcs/c_src/generic_test.cpp
+   srcs/c_src/thread_test.cpp
+#    srcs/c_src/container_test.cpp
 #    srcs/c_src/lambda.cpp
 #    srcs/sort/insertion_sort.c
 )

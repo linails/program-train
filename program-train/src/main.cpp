@@ -1,9 +1,8 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-07-04 14:57:12
+ * Last modified: 2016-07-14 19:22:08
  * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
  */
 
 #include <iostream>
@@ -25,6 +24,8 @@
 #include "ctest.h"
 #include "regex_test.h"
 #include "smart_pointer.h"
+#include "generic_test.h"
+#include "thread_test.h"
 
 #include "insertion_sort.h"
 
@@ -36,7 +37,6 @@ int main(void)
 #if 0
         refrence_test();
         class_test();
-        container_test();
         cast_test();
         find_char2("hello",'e');
         const_test();
@@ -48,7 +48,10 @@ int main(void)
 #endif
         //regex_test();
         //smart_pointer();
-        other_test();
+        //other_test();
+        generic_test();
+        thread_test();
+        //container_test();
         //lambda_test();
     }
     {

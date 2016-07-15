@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-05-30 17:18:44
+ * Last modified: 2016-07-11 10:34:14
  * @author: minphone.linails linails@foxmail.com 
  * @version 1.0
  */
@@ -82,6 +82,8 @@ void container_test(void)
     adaptor_queue_test();
     adaptor_priority_queue_test();
 	cout<<"---------------------------"<<endl;
+    void unordered_container(void);
+    unordered_container();
 }
 
 //----------------------------------------------------------
@@ -996,6 +998,94 @@ void adaptor_queue_test(void)
 /*adaptor_priority_queue_test func*/
 void adaptor_priority_queue_test(void)
 {
+}
+
+//----------------- unordered-container ---------------------------------
+
+#include <unordered_map>
+
+struct key{
+    string first;
+    string second;
+};
+
+struct keyhash{
+    size_t operator()(const key& k) const
+    {
+        size_t ret = (hash<string>()(k.first) ^ (hash<string>()(k.second) << 1));
+        cout << "size_t : " << ret << endl;
+        return ret;
+    }
+};
+
+struct keyequal{
+    bool operator()(const key& lhs, const key& rhs) const
+    {
+        bool ret =  lhs.first == rhs.first && lhs.second == rhs.second;
+        cout << "operator() : " << ret << endl;
+        return ret;
+    }
+};
+
+void unordered_container(void)
+{
+    /* 1.map和set内部是红黑树，在插入元素时会自动排序
+     * 2.unordered_container内部是散列表(Hash Table),通过哈希(Hash),
+     *   而不是排序来快速操作元素，使得效率更高*/
+    cout << "func : " << __FUNCTION__ << endl;
+    {
+        unordered_map<string, string> m1;
+        cout << "m1.size : " << m1.size() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        /* 对于基本类型，不需要提供hash函数和比较函数 
+         * 和map/set一样*/
+        unordered_map<int, string> m2 = {
+            {1, "foo"},
+            {2, "bar"},
+            {3, "baz"}
+        };
+        cout << "m2.size : " << m2.size() << endl;
+        
+        for(auto iter = m2.begin(); 
+                 iter!= m2.end(); iter++){
+            cout << "iter->first : " << iter->first;
+            cout << " - second : "  << iter->second << endl;
+        }
+        for(auto n : m2){
+            cout << "n.first : " << n.first;
+            cout << " - second : "  << n.second << endl;
+        }
+
+        unordered_map<int, string> m4 = move(m2);
+        cout << "m4.size() : " << m4.size() << endl;
+        cout << "m2.size() : " << m2.size() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        vector<pair<bitset<8>, int> >v = {
+            {0x12, 1},
+            {0x01,-1}
+        };
+        unordered_map<bitset<8>, double> m5(v.begin(), v.end());
+
+        for(auto n : m5){
+            printf("n.first : 0x%.2x , second : %f\n",n.first, n.second);
+        }
+    }
+    cout << "---------------------------" << endl;
+    {
+        unordered_map<key, string, keyhash, keyequal> m6 = {
+            {{"John", "Doe"}, "example"},
+            {{"Mary", "Sue"}, "another"}
+        };
+
+        cout << "m6.size() : " << m6.size() << endl;
+        for(auto n : m6){
+            cout << "n.first.first : " << n.first.first << " n.first.second : " << n.first.second << endl;
+        }
+    }
 }
 
 
