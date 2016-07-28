@@ -1,9 +1,8 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-07-11 10:34:14
+ * Last modified: 2016-07-27 10:34:56
  * @author: minphone.linails linails@foxmail.com 
- * @version 1.0
  */
 
 #include "container_test.h"
@@ -888,6 +887,17 @@ void bitset_test(void){
                  << iter->first.second.to_string() << " "
                  << iter->second << endl;
         }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        bitset<10> b1;
+        cout << "b1 = " << b1.to_string() << endl;
+        b1 = 0x01 << 0;
+        cout << "0x01 << 0 ; b1 = " << b1.to_string() << endl;
+        b1 = 0x01 << 1;
+        cout << "0x01 << 1 ; b1 = " << b1.to_string() << endl;
+        b1 = 0x01 << 4;
+        cout << "0x01 << 4 ; b1 = " << b1.to_string() << endl;
     }
 }
 

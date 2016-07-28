@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-07-11 11:04:22
+ * Last modified: 2016-07-23 13:46:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,8 @@
 #include <map>
 #include <string>
 #include "class_test.h"
+#include <type_traits>
+#include <algorithm>
 
 using namespace std;
 
@@ -27,6 +29,10 @@ A a;
 typedef vector<unsigned char> UCvec_t;
 
 static void struct_test(void);
+
+class AAA{};
+class BBB : AAA{};
+class CCC{};
 
 /*other test*/
 void other_test(void)
@@ -205,6 +211,29 @@ void other_test(void)
     {
         void chapter2(void);
         chapter2();
+    }
+    cout << "----------------------------" << endl;
+    {
+        cout << "type_traits ..." << endl;
+
+        /* std::is_same<T, U>对两种类型做了是否相同的判断，
+         * 类型严格相同才会认为类型一直*/
+        cout << "is_same<int, int>::value : " << is_same<int, int>::value << endl;
+        cout << "is_same<int, unsigned int>::value : " << is_same<int, unsigned int>::value << endl;
+        cout << "is_same<int, signed int>::value : " << is_same<int, signed int>::value << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        /* is_base_of用来在编译器判断两种是否为继承关系 
+         * is_base_of<B, D> 是将第一个模板参数作为基类类型*/
+        cout << "is_base_of<AAA, BBB>::value : " << is_base_of<AAA, BBB>::value << endl;
+        cout << "is_base_of<BBB, AAA>::value : " << is_base_of<BBB, AAA>::value << endl;
+        cout << "is_base_of<CCC, BBB>::value : " << is_base_of<CCC, BBB>::value << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        void algorithm(void);
+        algorithm();
     }
 }
 
@@ -595,6 +624,27 @@ void chapter2(void)
     {
         vector<obj> k;
         k = foo();
+    }
+}
+
+void algorithm(void)
+{
+    cout << "algorithm ..." << endl;
+    {
+        vector<int> v = {1, 3, 5, 7, 9};
+        auto isEven = [](int i){return i % 2 != 0;};
+
+        bool isallOdd = all_of(v.begin(), v.end(), isEven);
+
+        if(true == isallOdd){
+            cout << "all is odd" << endl;
+        }
+
+        bool isNoneEven = none_of(v.begin(), v.end(), isEven);
+        if(true == isNoneEven)
+            cout << "none is even" << endl;
+        else
+            cout << "none is odd" << endl;
     }
 }
 
