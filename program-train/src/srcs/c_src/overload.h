@@ -1,9 +1,7 @@
 /*
  * Progarm Name: overload.h
  * Created Time: 2016-02-02 17:01:25
- * Last modified: 2016-03-20 19:11:33
- * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
+ * Last modified: 2016-07-28 17:46:08
  */
 
 #ifndef _OVERLOAD_H_

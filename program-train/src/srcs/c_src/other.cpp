@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-07-23 13:46:00
+ * Last modified: 2016-07-29 14:15:46
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -190,7 +190,7 @@ void other_test(void)
     cout << "----------------------------" << endl;
     {
         /* 总结：
-         * 具体来说，基于范围的 for 循环将以厦门的方式查找容器的 begin 和 end 
+         * 具体来说，基于范围的 for 循环将以下面的方式查找容器的 begin 和 end 
          * 1.若容器是一个普通 array 对象(eg. int arr[10]), 那么begin是array的
          *   首地址，end为首地址加容器长度
          * 2.若容器是一个类对象，那么range-based for 将试图通过查找类的begin()

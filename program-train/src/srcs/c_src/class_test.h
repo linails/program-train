@@ -1,9 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-05-15 13:02:29
- * @author: minphone.linails linails@foxmail.com 
- * @version 1.0
+ * Last modified: 2016-07-28 17:46:24
  */
 
 #ifndef _CLASS_TEST_H_

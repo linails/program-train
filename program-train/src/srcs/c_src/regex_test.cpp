@@ -1,9 +1,8 @@
 /*
  * Progarm Name: regex_test.cpp
  * Created Time: 2016-05-16 10:55:53
- * Last modified: 2016-06-16 11:25:31
+ * Last modified: 2016-07-28 17:47:32
  * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
  */
 
 #include "regex_test.h"

@@ -1,9 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-05-16 09:31:27
- * @author: minphone.linails linails@foxmail.com 
- * @version 1.0
+ * Last modified: 2016-07-28 17:46:27
  */
 
 #include "class_test.h"

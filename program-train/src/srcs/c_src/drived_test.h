@@ -1,9 +1,7 @@
 /*
  * Progarm Name: drived_test.h
  * Created Time: 2015-12-05 22:57:35
- * Last modified: 2016-02-03 16:17:34
- * @author: minphone.linails linails@foxmail.com 
- * @version 1.0
+ * Last modified: 2016-07-28 17:46:33
  */
 
 #ifndef _DRIVED_TEST_H_

@@ -1,9 +1,7 @@
 /*
  * Progarm Name: lambda.cpp
  * Created Time: 2016-03-28 20:57:04
- * Last modified: 2016-07-04 12:53:23
- * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
+ * Last modified: 2016-07-28 17:46:44
  */
 
 #include "lambda.h"

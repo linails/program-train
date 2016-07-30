@@ -1,11 +1,13 @@
 /*
  * Progarm Name: thread_test.cpp
  * Created Time: 2016-07-14 19:20:23
- * Last modified: 2016-07-27 22:16:45
+ * Last modified: 2016-07-30 21:23:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "thread_test.h"
+#include "sync_queue.h"
+#include "condition_variable.h"
 
 #include <iostream>
 #include <cstdio>
@@ -25,6 +27,7 @@ using namespace std;
 
 vector<thread> g_list;
 vector<shared_ptr<thread> > g_list2;
+
 
 void thread_test(void)
 {
@@ -119,6 +122,73 @@ void thread_test(void)
     }
     cout << "----------------------------" << endl;
     {
+
+        /* recursive_mutex
+         * 递归锁，允许同一线程多次获得该互斥锁，
+         * 可以用来解决同一线程需要多次获取互斥量时死锁的问题*/
+
+        #define RECURSIVE_ONOFF 1
+
+        struct Comples{
+            #if(RECURSIVE_ONOFF)
+            recursive_mutex mux;
+            #else
+            mutex   mux;
+            #endif
+            int i;
+
+            Comples(void): i(0){}
+            void mul(int x){
+                cout << "func : " << __FUNCTION__ << endl;
+                #if(RECURSIVE_ONOFF)
+                lock_guard<recursive_mutex> lock(mux);
+                #else
+                lock_guard<mutex> lock(mux);
+                #endif
+                i *= x;
+            }
+
+            void div(int x){
+                cout << "func : " << __FUNCTION__ << endl;
+                #if(RECURSIVE_ONOFF)
+                lock_guard<recursive_mutex> lock(mux);
+                #else
+                lock_guard<mutex> lock(mux);
+                #endif
+                i /= x;
+            }
+
+            void both(int x, int y){
+                cout << "func : " << __FUNCTION__ << endl;
+                #if(RECURSIVE_ONOFF)
+                lock_guard<recursive_mutex> lock(mux);
+                #else
+                lock_guard<mutex> lock(mux);
+                #endif
+                mul(x);
+                div(y);
+            }
+        };
+
+        Comples comples;
+        comples.both(32, 23);
+        /* 递归锁 用于函数调用同一个深度的资源互斥使用
+         * 1）需要用到递归锁的多线程互斥处理往往本身就是可以简化的
+         * 2）递归锁比起非递归锁，效率会低一些*/
+    }
+    cout << "----------------------------" << endl;
+    {
+        /* 条件变量是c++11提供的另外一个用于等待的同步机制，
+         * 它能阻塞一个或多个线程，
+         * 直到收到另外一个线程发出的通知或者超时，
+         * 才会唤醒当前阻塞的线程
+         *
+         * 条件变量需要和互斥量配合使用
+         *
+         * 1.condition_variable,配合unique_lock<mutex> 进行wait操作
+         * 2.condition_variable_any,和任意带有lock,unlock语义的mutex配合使用，
+         *   比较灵活，但效率比condition_variable差一些*/
+        cv_main();
     }
 
 
@@ -188,5 +258,7 @@ void func3(void)
     this_thread::sleep_for(chrono::seconds(1));
     cout << "leaving thread " << this_thread::get_id() << endl;
 }
+
+
 
 

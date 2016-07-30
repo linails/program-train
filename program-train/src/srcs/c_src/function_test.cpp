@@ -1,9 +1,8 @@
 /*
  * Progarm Name: function_test.cpp
  * Created Time: 2016-01-26 09:36:52
- * Last modified: 2016-01-26 15:06:46
+ * Last modified: 2016-07-28 17:47:16
  * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
  */
 
 #include "function_test.h"
