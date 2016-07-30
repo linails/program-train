@@ -1,7 +1,7 @@
 /*
  * Progarm Name: thread_test.cpp
  * Created Time: 2016-07-14 19:20:23
- * Last modified: 2016-07-30 21:23:06
+ * Last modified: 2016-07-30 22:42:09
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <chrono>
 #include <mutex>
+#include <typeinfo>
 
 /* 
  * C++11 thread 
@@ -189,6 +190,15 @@ void thread_test(void)
          * 2.condition_variable_any,和任意带有lock,unlock语义的mutex配合使用，
          *   比较灵活，但效率比condition_variable差一些*/
         cv_main();
+    }
+    cout << "----------------------------" << endl;
+    {
+        chrono::duration<double, ratio<9, 7>> d1(3);
+        chrono::duration<double, ratio<6, 5>> d2(1);
+
+        auto d3 = d1 - d2;
+        cout << typeid(d3).name() << endl;
+        cout << d3.count() << endl;
     }
 
 

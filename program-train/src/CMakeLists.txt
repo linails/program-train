@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-07-30 09:42:35
+# Last modified: 2016-07-30 22:51:52
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -12,6 +12,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/ooc
     ${PROJECT_SOURCE_DIR}/src/srcs/sort
     ${PROJECT_SOURCE_DIR}/src/srcs/tools
+    ${PROJECT_SOURCE_DIR}/src/srcs/linux
 )
 
 #aux_source_directory(. SRC_LIST)
