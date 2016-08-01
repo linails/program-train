@@ -1,7 +1,7 @@
 /*
  * Progarm Name: condition_variable.cpp
  * Created Time: 2016-07-30 09:40:53
- * Last modified: 2016-07-30 22:07:29
+ * Last modified: 2016-08-01 20:19:10
  */
 
 #include "condition_variable.h"
@@ -11,6 +11,7 @@
 #include <condition_variable>
 #include <chrono>
 #include <unistd.h>
+#include <memory>
 
 using namespace std;
 

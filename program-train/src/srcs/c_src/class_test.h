@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-07-28 17:46:24
+ * Last modified: 2016-08-01 13:44:51
  */
 
 #ifndef _CLASS_TEST_H_
@@ -69,6 +69,8 @@ public:
 /*class test func*/
 extern void class_test(void);
 
+class CB;
+
 class CA{
 public:
     CA();
@@ -86,15 +88,19 @@ public:
     void test(void);
     void on(void);
     void off(void);
+    void print_fa(void);
     static void printa(void);
 private:
+    friend class CB;
     static int m_a;
+    static int m_fb;
 };
 
 class CB{
 public:
     CB();
     ~CB();
+    void func(int fb);
 
     typedef CA::ttu_u TTU_U;
     void test(void);

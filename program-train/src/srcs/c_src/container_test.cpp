@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-07-27 10:34:56
+ * Last modified: 2016-08-01 17:45:26
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,6 +17,7 @@
 #include <list>
 #include <queue>
 #include <deque>
+#include <tuple>
 
 
 /*c++中的标准库的包含了c标准库的头文件，
@@ -1095,6 +1096,35 @@ void unordered_container(void)
         for(auto n : m6){
             cout << "n.first.first : " << n.first.first << " n.first.second : " << n.first.second << endl;
         }
+    }
+    cout << "---------------------------" << endl;
+    {
+        unordered_map<int, string> m2 = {
+            {1, "foo"},
+            {2, "bar"},
+            {3, "baz"}
+        };
+
+        cout << "m2.size() : " << m2.size() << endl;
+        m2.clear();
+        cout << "m2.size() : " << m2.size() << endl;
+
+        cout << "insert : " << m2.insert(unordered_map<int, string>::value_type(1, "one")).second << endl;
+        cout << "insert : " << m2.insert(unordered_map<int, string>::value_type(1, "ones")).second << endl;
+        m2.insert(unordered_map<int, string>::value_type(2, "sec"));
+        m2.insert(unordered_map<int, string>::value_type(3, "thi"));
+
+        for(auto &u : m2){
+            cout << u.first << " - " << u.second << endl;
+        }
+    }
+    cout << "---------------------------" << endl;
+    {
+        unordered_map<int, tuple<int, string> > um;
+
+        um.insert(unordered_map<int, tuple<int, string> >::value_type(1, make_tuple(1, "first")));
+
+        cout << "um.size() : " << um.size() << endl;
     }
 }
 

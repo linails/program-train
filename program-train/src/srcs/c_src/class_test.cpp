@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-07-28 17:46:27
+ * Last modified: 2016-08-01 13:38:28
  */
 
 #include "class_test.h"
@@ -52,6 +52,9 @@ void class_test(void)
 
     CB  cb;
     cb.test();
+    cb.func(12);
+
+    ca.print_fa();
 	cout<<"---------------------------"<<endl;
     {
         void (* pf)(void);
@@ -187,6 +190,7 @@ void Derived::abc(void)
 }
 
 int CA::m_a;
+int CA::m_fb;
 
 CA::CA()
 {
@@ -248,6 +252,12 @@ void CA::printa(void)
     cout << ".........................." << endl;
 }
 
+void CA::print_fa(void)
+{
+    cout << "func : " << __FUNCTION__ << endl;
+    cout << "m_fb = " << m_fb << endl;
+}
+
 CB::CB()
 {
 }
@@ -267,4 +277,10 @@ void CB::test(void)
     cout << "..............CB::TEST END..........." << endl;
 }
 
+void CB::func(int fb)
+{
+    cout << "..............friend func .............." << endl;
+    CA::m_fb = fb;
+    cout << "CA::m_fb = " << CA::m_fb << endl;
+}
 

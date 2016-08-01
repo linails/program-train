@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-07-27 19:58:56
+ * Last modified: 2016-08-01 15:38:19
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -36,7 +36,6 @@ int main(void)
     {
 #if 0
         refrence_test();
-        class_test();
         cast_test();
         find_char2("hello",'e');
         const_test();
@@ -50,8 +49,9 @@ int main(void)
         //smart_pointer();
         //other_test();
         //generic_test();
-        thread_test();
-        //container_test();
+        class_test();
+        //thread_test();
+        container_test();
         //lambda_test();
     }
     {
