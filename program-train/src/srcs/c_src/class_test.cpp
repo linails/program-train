@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-08-01 13:38:28
+ * Last modified: 2016-08-01 22:59:17
  */
 
 #include "class_test.h"
@@ -55,6 +55,14 @@ void class_test(void)
     cb.func(12);
 
     ca.print_fa();
+    ca.change_cb(123);
+
+    cb.print_ma();
+
+    CC cc;
+    cc.change_cc(222);
+
+    cb.print_mc();
 	cout<<"---------------------------"<<endl;
     {
         void (* pf)(void);
@@ -258,6 +266,14 @@ void CA::print_fa(void)
     cout << "m_fb = " << m_fb << endl;
 }
 
+int CB::m_ba = 0;
+int CB::m_bc = 0;
+
+void CA::change_cb(int a)
+{
+    CB::m_ba = a;
+}
+
 CB::CB()
 {
 }
@@ -283,4 +299,28 @@ void CB::func(int fb)
     CA::m_fb = fb;
     cout << "CA::m_fb = " << CA::m_fb << endl;
 }
+
+void CB::print_ma(void)
+{
+    cout << "CB::m_ba = " << m_ba << endl;
+}
+
+void CB::print_mc(void)
+{
+    cout << "CB::m_bc = " << m_bc << endl;
+}
+
+CC::CC()
+{
+}
+
+CC::~CC()
+{
+}
+
+void CC::change_cc(int a)
+{
+}
+
+
 

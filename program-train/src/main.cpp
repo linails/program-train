@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-08-01 15:38:19
+ * Last modified: 2016-08-03 13:38:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,6 +26,7 @@
 #include "smart_pointer.h"
 #include "generic_test.h"
 #include "thread_test.h"
+#include "chrono_test.h"
 
 #include "insertion_sort.h"
 
@@ -47,11 +48,12 @@ int main(void)
 #endif
         //regex_test();
         //smart_pointer();
-        //other_test();
+        other_test();
         //generic_test();
-        class_test();
+        //class_test();
+        //chrono_test();
         //thread_test();
-        container_test();
+        //container_test();
         //lambda_test();
     }
     {

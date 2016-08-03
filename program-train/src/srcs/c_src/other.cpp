@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-07-29 14:15:46
+ * Last modified: 2016-08-03 16:37:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,6 +16,7 @@
 #include "class_test.h"
 #include <type_traits>
 #include <algorithm>
+#include <tuple>
 
 using namespace std;
 
@@ -235,6 +236,29 @@ void other_test(void)
         void algorithm(void);
         algorithm();
     }
+    cout << "----------------------------" << endl;
+    {
+        unsigned char num = 0x23;
+        printf("num = 0x%.2x - %d\n", num, num);
+
+        int num2 = num;
+        printf("num2 = 0x%x - %d\n", num2, num2);
+    }
+    cout << "----------------------------" << endl;
+    {
+        typedef tuple<int ,string, tuple<string, string> > unit_t;
+
+        unit_t *p = NULL;
+
+        p = new unit_t;
+
+        get<0>(*p) = 10;
+        get<1>(*p) = "nice to meet you";
+        get<0>(get<2>(*p)) = "one";
+        get<1>(get<2>(*p)) = "two";
+
+        delete p;
+    }
 }
 
 void display(char *ptr)
@@ -399,6 +423,24 @@ void struct_test(void)
         }
     }
     cout << "----------------------------" << endl;
+    {
+        typedef struct{
+            int     id;
+#if 0
+            string  name;
+            string  mac;
+#else
+            char    name;
+#endif
+        }device_t;
+
+        union devInfo{
+            int         scene;
+            device_t    dev;
+        };
+
+        devInfo dev;
+    }
 }
 
 void test01(void)

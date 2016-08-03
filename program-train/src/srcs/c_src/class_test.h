@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-08-01 13:44:51
+ * Last modified: 2016-08-01 22:59:09
  */
 
 #ifndef _CLASS_TEST_H_
@@ -89,6 +89,7 @@ public:
     void on(void);
     void off(void);
     void print_fa(void);
+    void change_cb(int a);
     static void printa(void);
 private:
     friend class CB;
@@ -104,6 +105,20 @@ public:
 
     typedef CA::ttu_u TTU_U;
     void test(void);
+    void print_ma(void);
+    void print_mc(void);
+private:
+    //friend class CA;
+    friend void CA::change_cb(int a);
+    static int m_ba;
+    static int m_bc;
+};
+
+class CC{
+public:
+    CC();
+    ~CC();
+    void change_cc(int a);
 private:
 };
 

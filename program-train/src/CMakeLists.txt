@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-08-01 15:38:09
+# Last modified: 2016-08-02 09:03:59
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -34,6 +34,7 @@ set(SRC_LIST
    srcs/c_src/condition_variable.cpp
    srcs/c_src/class_test.cpp
    srcs/c_src/container_test.cpp
+   srcs/c_src/chrono_test.cpp
 #    srcs/c_src/lambda.cpp
 #    srcs/sort/insertion_sort.c
 )
