@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-08-02 10:44:00
+ * Last modified: 2016-08-04 19:05:08
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -1132,6 +1132,16 @@ void unordered_container(void)
         um.insert(unordered_map<int, tuple<int, string> >::value_type(1, make_tuple(1, "first")));
 
         cout << "um.size() : " << um.size() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        unordered_map<int, string> m2 = {
+            {1, "foo"},
+            {2, "bar"},
+            {3, "baz"}
+        };
+
+        cout << "m2[1] = " << m2[1] << endl;
     }
 }
 

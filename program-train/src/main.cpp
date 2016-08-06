@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-08-03 13:38:21
+ * Last modified: 2016-08-04 19:05:32
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -53,7 +53,7 @@ int main(void)
         //class_test();
         //chrono_test();
         //thread_test();
-        //container_test();
+        container_test();
         //lambda_test();
     }
     {
