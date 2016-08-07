@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-08-04 19:05:32
+ * Last modified: 2016-08-07 21:29:13
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -27,8 +27,9 @@
 #include "generic_test.h"
 #include "thread_test.h"
 #include "chrono_test.h"
+#include "db_test.h"
+#include "exception_test.h"
 
-#include "insertion_sort.h"
 
 using namespace std;
 
@@ -54,12 +55,11 @@ int main(void)
         //chrono_test();
         //thread_test();
         container_test();
+        exception_test();
         //lambda_test();
     }
     {
-#if 0
-        insertion_sort_test();
-#endif
+        db_test();
     }
 
     {

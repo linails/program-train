@@ -1,9 +1,8 @@
 /*
  * Progarm Name: ctest.c
  * Created Time: 2016-05-14 19:56:38
- * Last modified: 2016-05-14 20:12:23
+ * Last modified: 2016-08-07 21:17:34
  * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
  */
 
 #include "ctest.h"

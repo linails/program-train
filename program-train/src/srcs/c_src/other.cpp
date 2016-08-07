@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-08-03 16:37:59
+ * Last modified: 2016-08-07 22:41:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -258,6 +258,14 @@ void other_test(void)
         get<1>(get<2>(*p)) = "two";
 
         delete p;
+    }
+    cout << "----------------------------" << endl;
+    {
+#if 0
+        constexpr int new_sz(){return 43;};
+        constexpr int foo = new_sz();
+        cout << "constexpr foo : " << foo << endl;
+#endif
     }
 }
 

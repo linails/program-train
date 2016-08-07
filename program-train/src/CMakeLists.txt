@@ -1,18 +1,19 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-08-02 09:03:59
+# Last modified: 2016-08-07 21:29:35
 #
 cmake_minimum_required(VERSION 2.8)
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/libs
+    ${PROJECT_SOURCE_DIR}/src/libs/rapidjson
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/c_src
     ${PROJECT_SOURCE_DIR}/src/srcs/ooc
-    ${PROJECT_SOURCE_DIR}/src/srcs/sort
     ${PROJECT_SOURCE_DIR}/src/srcs/tools
     ${PROJECT_SOURCE_DIR}/src/srcs/linux
+    ${PROJECT_SOURCE_DIR}/src/srcs/db
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -35,8 +36,10 @@ set(SRC_LIST
    srcs/c_src/class_test.cpp
    srcs/c_src/container_test.cpp
    srcs/c_src/chrono_test.cpp
+   srcs/c_src/exception_test.cpp
 #    srcs/c_src/lambda.cpp
-#    srcs/sort/insertion_sort.c
+   srcs/db/db_test.cpp
+   srcs/db/normal.cpp
 )
 
 add_executable(program-train ${SRC_LIST})
