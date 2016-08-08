@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-08-08 09:38:14
+ * Last modified: 2016-08-08 22:19:48
  */
 
 #ifndef _CLASS_TEST_H_
@@ -46,9 +46,15 @@ private:
 	static const char static_val1 = 10;
     static const char version[];
 };
-/*类可以定义在头文件中，已知值的const对象和inline函数可以定义在头文件中*/
-/*const对象默认定义它的文件的局部变量，所以把它们定义放在头文件中是合法的*/
-/*如果const变量不是用常量表达式初始化，那么它就不应该在头文件中定义*/
+
+/* Note :
+ *
+ * 1.类可以定义在头文件中，已知值的const对象和inline函数可以定义在头文件中
+ * 2.const对象默认定义它的文件的局部变量，所以把它们定义放在头文件中是合法的
+ * 3.如果const变量不是用常量表达式初始化，那么它就不应该在头文件中定义
+ * 4.常量对象，以及常量对象的引用或指针都只能调用常量成员函数
+ *
+ * */
 
 class Base{
 public:
