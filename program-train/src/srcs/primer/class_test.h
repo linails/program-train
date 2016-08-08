@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-08-01 22:59:09
+ * Last modified: 2016-08-08 09:38:14
  */
 
 #ifndef _CLASS_TEST_H_
@@ -70,6 +70,7 @@ public:
 extern void class_test(void);
 
 class CB;
+class CC;
 
 class CA{
 public:
@@ -90,6 +91,7 @@ public:
     void off(void);
     void print_fa(void);
     void change_cb(int a);
+    void change_cc(CC *pcc, int c);
     static void printa(void);
 private:
     friend class CB;
@@ -119,7 +121,11 @@ public:
     CC();
     ~CC();
     void change_cc(int a);
+    void print_cc(void);
+    void do_once(void);
 private:
+    friend class CA;
+    int cc;
 };
 
 #endif //_CLASS_TEST_H_

@@ -1,9 +1,8 @@
 /*
  * Progarm Name: cast_test.cpp
  * Created Time: 2015-11-22 20:16:36
- * Last modified: 2016-01-03 22:02:34
+ * Last modified: 2016-08-08 21:56:23
  * @author: minphone.linails linails@foxmail.com 
- * @version 1.0
  */
 
 #include "cast_test.h"

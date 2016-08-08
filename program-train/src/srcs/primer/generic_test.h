@@ -1,9 +1,7 @@
 /*
  * Progarm Name: generic_test.h
  * Created Time: 2016-07-11 11:36:07
- * Last modified: 2016-07-11 14:43:00
- * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
+ * Last modified: 2016-08-08 21:50:02
  */
 
 #ifndef _GENERIC_TEST_H_

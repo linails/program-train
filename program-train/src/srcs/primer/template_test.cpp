@@ -1,9 +1,8 @@
 /*
  * Progarm Name: template_test.cpp
  * Created Time: 2016-02-02 16:38:52
- * Last modified: 2016-04-04 16:23:19
+ * Last modified: 2016-08-08 21:49:29
  * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.1
  */
 
 #include "template_test.h"

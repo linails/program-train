@@ -1,9 +1,7 @@
 /*
  * Progarm Name: refrence_test.cpp
  * Created Time: 2015-11-13 07:53:20
- * Last modified: 2016-01-03 22:02:58
- * @author: minphone.linails linails@foxmail.com 
- * @version 1.0
+ * Last modified: 2016-08-08 21:49:52
  */
 
 #include "refrence_test.h"

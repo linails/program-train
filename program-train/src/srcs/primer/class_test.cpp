@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-08-01 22:59:17
+ * Last modified: 2016-08-08 09:38:11
  */
 
 #include "class_test.h"
@@ -63,6 +63,11 @@ void class_test(void)
     cc.change_cc(222);
 
     cb.print_mc();
+
+    ca.change_cc(&cc, 12);
+    cc.print_cc();
+
+    cc.do_once();
 	cout<<"---------------------------"<<endl;
     {
         void (* pf)(void);
@@ -251,6 +256,11 @@ void CA::off(void)
     cout << "........CA::off........" << endl;
 }
 
+void CA::change_cc(CC *pcc, int c)
+{
+    pcc->cc = c;
+}
+
 void CA::printa(void)
 {
     cout << "........CA::printa........" << endl;
@@ -322,5 +332,18 @@ void CC::change_cc(int a)
 {
 }
 
+void CC::print_cc(void)
+{
+    cout << "CC:cc = " << this->cc << endl;
+}
+
+void CC::do_once(void)
+{
+    CA ca;
+
+    ca.change_cc(this, 8888);
+
+    this->print_cc();
+}
 
 
