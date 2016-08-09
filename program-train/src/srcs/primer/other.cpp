@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-08-07 22:41:28
+ * Last modified: 2016-08-08 23:19:34
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -266,6 +266,12 @@ void other_test(void)
         constexpr int foo = new_sz();
         cout << "constexpr foo : " << foo << endl;
 #endif
+    }
+    cout << "----------------------------" << endl;
+    {
+        using name = string;
+        name n("minphone");
+        cout << "name : " << n << endl;
     }
 }
 

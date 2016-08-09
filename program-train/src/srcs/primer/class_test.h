@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-08-08 22:19:48
+ * Last modified: 2016-08-09 13:27:29
  */
 
 #ifndef _CLASS_TEST_H_
@@ -9,15 +9,17 @@
 
 #include <string>
 
-/*Sales_item class define*/
-//struct Sales_item {//用struct/class定义类，唯一的差别在于默认访问级别的不同
+/* 用struct/class定义类，唯一的差别在于默认访问级别的不同 */
 class Sales_item {
 public:
-	Sales_item(void);
-	~Sales_item(void);
+    /* 
+     * 只有当类没有声明任何构造函数时，编译器才会自动地生成默认构造函数
+     * */
+	Sales_item();
+	~Sales_item();
 
-	/*定义一个新对象时，并用一个同类型的对象对它进行初始化时，将显式使用复制构造函数
-	 * 当将该类型的对象传递给函数或从函数返回该类型的对象时，将隐式使用复制构造函数*/
+	/* 定义一个新对象时，并用一个同类型的对象对它进行初始化时，将显式使用复制构造函数
+	 * 当将该类型的对象传递给函数或从函数返回该类型的对象时，将隐式使用复制构造函数  */
 	Sales_item(const Sales_item &r_si);
 
 	/*get units_sold*/
@@ -39,7 +41,12 @@ private:
 	std::string isbn;
 	unsigned units_sold;
 	double revenue;
+
+
+    /* mutable 数据成员，永远不会是const，即使它是const对象的成员 */
 	mutable char val;
+
+
 	/*static成员数据需要在类外部进行定义*/
 	static char static_val;
 	/*只有const static的成员-only type int，才可以在类中进行初始化*/
@@ -54,6 +61,7 @@ private:
  * 3.如果const变量不是用常量表达式初始化，那么它就不应该在头文件中定义
  * 4.常量对象，以及常量对象的引用或指针都只能调用常量成员函数
  *
+ * 5.一般来说，最好在类定义开始或者结束前的位置集中声明友元
  * */
 
 class Base{
@@ -129,6 +137,8 @@ public:
     void change_cc(int a);
     void print_cc(void);
     void do_once(void);
+    void func(const int a, const int b) const;
+    void func(const int a, int b);
 private:
     friend class CA;
     int cc;

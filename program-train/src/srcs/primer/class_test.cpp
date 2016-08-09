@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-08-08 09:38:11
+ * Last modified: 2016-08-09 13:29:56
  */
 
 #include "class_test.h"
@@ -85,6 +85,25 @@ void class_test(void)
         pf = CA::printa;
 
         do_pcb(pf);
+    }
+	cout<<"---------------------------"<<endl;
+    {
+        CC cc;
+
+        const int a = 10;
+        const int b = 12;
+        int c = 13;
+
+        cc.func(a, b);
+        cc.func(a, c);
+
+        const CC cc2;
+
+        const int a2 = 22;
+        const int b2 = 33;
+        int c2 = 44;
+        cc2.func(a2, b2);
+        cc2.func(a2, c2);
     }
 }
 
@@ -344,6 +363,18 @@ void CC::do_once(void)
     ca.change_cc(this, 8888);
 
     this->print_cc();
+}
+
+void CC::func(const int a, const int b) const
+{
+    cout << "called func(const int, const int)" << endl;
+    cout << "a = " << a << " b = " << b << endl;
+}
+
+void CC::func(const int a, int b)
+{
+    cout << "called func(const int, int)" << endl;
+    cout << "a = " << a << " b = " << b << endl;
 }
 
 
