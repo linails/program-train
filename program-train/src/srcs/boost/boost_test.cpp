@@ -1,14 +1,14 @@
 /*
  * Progarm Name: boost_test.cpp
  * Created Time: 2016-03-25 16:52:20
- * Last modified: 2016-08-03 13:37:56
+ * Last modified: 2016-08-10 15:05:50
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "boost_test.h"
 #include <iostream>
 #include <cstdio>
-#include <tuple>
+#include <tuple> /* c++ 11 support*/
 #include <bitset>
 #include <vector>
 

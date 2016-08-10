@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-08-08 23:19:34
+ * Last modified: 2016-08-10 23:33:19
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -258,14 +258,6 @@ void other_test(void)
         get<1>(get<2>(*p)) = "two";
 
         delete p;
-    }
-    cout << "----------------------------" << endl;
-    {
-#if 0
-        constexpr int new_sz(){return 43;};
-        constexpr int foo = new_sz();
-        cout << "constexpr foo : " << foo << endl;
-#endif
     }
     cout << "----------------------------" << endl;
     {
@@ -683,6 +675,11 @@ void chapter2(void)
     }
 }
 
+constexpr int new_sz()
+{
+    return 43;
+}
+
 void algorithm(void)
 {
     cout << "algorithm ..." << endl;
@@ -701,6 +698,19 @@ void algorithm(void)
             cout << "none is even" << endl;
         else
             cout << "none is odd" << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        constexpr int foo = new_sz();
+        cout << "constexpr foo : " << foo << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        int *p = new(int);
+
+        *p = 10;
+
+        cout << "*p = " << *p << endl;
     }
 }
 

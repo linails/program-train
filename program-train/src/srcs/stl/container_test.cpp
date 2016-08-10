@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-08-10 14:00:17
+ * Last modified: 2016-08-10 23:42:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -18,6 +18,7 @@
 #include <queue>
 #include <deque>
 #include <tuple>
+#include <unordered_set>
 
 
 /*c++中的标准库的包含了c标准库的头文件，
@@ -57,6 +58,10 @@ static void adaptor_queue_test(void);
 /*adaptor_priority_queue_test func*/
 static void adaptor_priority_queue_test(void);
 
+static void tuple_test(void);
+
+static void complex_test(void);
+
 /*container_test func*/
 void container_test(void)
 {
@@ -84,6 +89,11 @@ void container_test(void)
 	cout<<"---------------------------"<<endl;
     void unordered_container(void);
     unordered_container();
+
+    tuple_test();
+
+    complex_test();
+
 }
 
 //----------------------------------------------------------
@@ -1227,6 +1237,139 @@ void unordered_container(void)
 
         cout << "m2[1] = " << m2[1] << endl;
     }
+    cout << "---------------------------" << endl;
+    {
+        unordered_set<int> us;
+
+        us.insert(10);
+        us.insert(14);
+        us.insert(13);
+        us.insert(11);
+        us.insert(15);
+
+        cout << "us : ";
+        for(auto unit : us) cout << unit << " ";
+        cout << endl;
+
+        us.erase(13);
+        cout << "delete 13 " << endl;
+        cout << "us : ";
+        for(auto unit : us) cout << unit << " ";
+        cout << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        unordered_map<int, int> um;
+
+        um.insert(unordered_map<int, int>::value_type(10, 20));
+        um.insert(unordered_map<int, int>::value_type(11, 21));
+
+        size_t size = um.size();
+        cout << "size : " << size << endl;
+    }
 }
 
+void tuple_test(void)
+{
+    cout << "------------- tuple_test -------------" << endl;
+    {
+        vector<int> v;
+        v.push_back(1);
+        v.push_back(4);
+        v.push_back(3);
+        v.push_back(5);
+        v.push_back(6);
+        v.push_back(2);
+
+        tuple<int, vector<int>, int> t1(make_tuple(10, v, 20));
+
+        cout << "get<0>(t1) : " << get<0>(t1) << endl;
+        cout << "get<1>(t1).size() : " << get<1>(t1).size() << endl;
+        cout << "get<2>(t1) : " << get<2>(t1) << endl;
+
+        vector<int> v1;
+
+        v1 = get<1>(t1);
+
+        cout << "v1 : ";
+        for(auto unit : v1)
+            cout << unit << " ";
+        cout << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+    }
+}
+
+void complex_test(void)
+{
+    cout << "------------- complex_test -------------" << endl;
+    {
+        unordered_map<int, bool> m1;
+
+        m1.insert(unordered_map<int, bool>::value_type(10, false));
+        m1.insert(unordered_map<int, bool>::value_type(16, false));
+        m1.insert(unordered_map<int, bool>::value_type(12, false));
+        m1.insert(unordered_map<int, bool>::value_type(14, true));
+        m1.insert(unordered_map<int, bool>::value_type(13, true));
+
+        for(auto &unit : m1){
+            cout << "unit : " << unit.first << " -> " << (unit.second ? "true" : "false") << endl; 
+        }
+
+        cout << "m1.size() : " << m1.size() << endl;
+        cout << "m1[13] : " << (m1[13] ? "true" : "false") << endl;
+        cout << "m1.size() : " << m1.size() << endl;
+        cout << "m1[15] : " << (m1[15] ? "true" : "false") << endl;
+        cout << "m1.size() : " << m1.size() << endl;
+
+        auto got = m1.find(17);
+        if(got == m1.end()){
+            cout << "no this element" << endl;
+        }
+
+    }
+    cout << "---------------------------" << endl;
+    {
+        typedef tuple<int, unordered_map<int, string> > Data_t;
+
+        Data_t *p = new(Data_t);
+
+        cout << "Data_t *p = new(Data_t);" << endl;
+
+        if(p != NULL){
+            cout << "p != NULL" << endl;
+
+            get<0>(*p) = 10;
+            get<1>(*p).insert(unordered_map<int, string>::value_type(20, "hello"));
+
+            cout << "tuple<int, unordered_map<int, string> : ";
+            cout << get<0>(*p) << " , ";
+            for(auto &unit : get<1>(*p)){
+                cout << unit.first << " - " << unit.second << endl;
+            }
+        }
+    }
+    cout << "---------------------------" << endl;
+    {
+        typedef tuple<int, unordered_map<int, string> > Data_t;
+
+        Data_t *p = new Data_t;
+
+        cout << "Data_t *p = new Data_t;" << endl;
+
+        if(p != NULL){
+            cout << "p != NULL" << endl;
+
+            get<0>(*p) = 10;
+            get<1>(*p).insert(unordered_map<int, string>::value_type(20, "hello"));
+
+            cout << "tuple<int, unordered_map<int, string> : ";
+            cout << get<0>(*p) << " , ";
+            for(auto &unit : get<1>(*p)){
+                cout << unit.first << " - " << unit.second << endl;
+            }
+        }
+    }
+}
 
