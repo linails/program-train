@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-08-04 19:05:08
+ * Last modified: 2016-08-10 14:00:17
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -944,6 +944,90 @@ void list_test(void)
 
         if(begin == begin2) cout << "begin = begin2" << endl;
         if(begin3 == begin) cout << "begin = begin3" << " *begin3 = " << *begin3 << endl;
+    }
+    cout << "--------------------------------------" << endl;
+    {
+        list<int> l1;
+
+        l1.push_back(6);
+        l1.push_back(3);
+        l1.push_back(4);
+        l1.push_back(2);
+        l1.push_back(5);
+        l1.push_back(7);
+
+        cout << "l1 : " ;
+        for(auto unit : l1)
+            cout << unit << " ";
+        cout << endl;
+
+        list<int> l2;
+
+        l2.push_back(13);
+        l2.push_back(18);
+        l2.push_back(14);
+        l2.push_back(19);
+        l2.push_back(15);
+        l2.push_back(16);
+        l2.push_back(17);
+
+        cout << "l2 : " ;
+        for(auto unit : l2)
+            cout << unit << " ";
+        cout << endl;
+
+        l1.merge(l2);
+
+        cout << "l1 : " ;
+        for(auto unit : l1)
+            cout << unit << " ";
+        cout << endl;
+    }
+    cout << "--------------------------------------" << endl;
+    {
+        list<tuple<int, int> > l1;
+
+        cout << "l1.size() : " << l1.size() << endl;
+        cout << "l1.empty() : " << l1.empty() << endl;
+
+        l1.push_back(make_tuple(1, 100));
+        l1.push_back(make_tuple(3, 102));
+        l1.push_back(make_tuple(7, 106));
+        l1.push_back(make_tuple(8, 107));
+        l1.push_back(make_tuple(6, 105));
+        l1.push_back(make_tuple(2, 101));
+        l1.push_back(make_tuple(4, 103));
+        l1.push_back(make_tuple(5, 104));
+        cout << "l1.size() : " << l1.size() << endl;
+        cout << "l1.empty() : " << l1.empty() << endl;
+
+        cout << "L1 : " ;
+        for(auto &unit : l1)
+            cout << get<0>(unit) << "->" << get<1>(unit) << " ";
+        cout << endl;
+
+
+        list<tuple<int, int> > l2;
+        l2.push_back(make_tuple(12, 201));
+        l2.push_back(make_tuple(15, 204));
+        l2.push_back(make_tuple(17, 206));
+        l2.push_back(make_tuple(14, 203));
+        l2.push_back(make_tuple(11, 200));
+        l2.push_back(make_tuple(16, 205));
+        l2.push_back(make_tuple(13, 202));
+        l2.push_back(make_tuple(5, 104));
+
+        cout << "L2 : " ;
+        for(auto &unit : l2)
+            cout << get<0>(unit) << "->" << get<1>(unit) << " ";
+        cout << endl;
+
+        l1.merge(l2);
+        //l1.unique();
+        cout << "L1 : " ;
+        for(auto &unit : l1)
+            cout << get<0>(unit) << "->" << get<1>(unit) << " ";
+        cout << endl;
     }
 }
 
