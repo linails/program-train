@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-08-10 23:42:28
+ * Last modified: 2016-08-12 16:00:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -1039,6 +1039,62 @@ void list_test(void)
             cout << get<0>(unit) << "->" << get<1>(unit) << " ";
         cout << endl;
     }
+    cout << "--------------------------------------" << endl;
+    {
+        list<int> l;
+
+        l.push_back(26);
+        l.push_back(23);
+        l.push_back(24);
+        l.push_back(3);
+        l.push_back(25);
+        l.push_back(23);
+        l.push_back(27);
+        l.push_back(28);
+
+        cout << "l : " ;
+        for(auto &unit : l)
+            cout << unit << " ";
+        cout << endl;
+
+        l.sort();
+        cout << "after l.sort() :" << endl;
+        cout << "l : " ;
+        for(auto &unit : l)
+            cout << unit << " ";
+        cout << endl;
+
+        l.unique();
+        cout << "after l.unique() : " << endl;
+        cout << "l : " ;
+        for(auto &unit : l)
+            cout << unit << " ";
+        cout << endl;
+
+        cout << "get list front element" << endl;
+        auto front = l.front();
+        cout << "front : " << front << endl;
+
+        l.pop_front();
+        cout << "after l.pop_front() " << endl;
+        cout << "l : " ;
+        for(auto &unit : l)
+            cout << unit << " ";
+        cout << endl;
+
+        for(auto iter = l.begin();
+                 iter!= l.end(); iter++){
+            if(*iter == 25){
+                l.erase(iter);
+                break;
+            }
+        }
+        cout << "after l.erase(iter) | *iter = 25 " << endl;
+        cout << "l : " ;
+        for(auto &unit : l)
+            cout << unit << " ";
+        cout << endl;
+    }
 }
 
 /*queue test func*/
@@ -1266,6 +1322,10 @@ void unordered_container(void)
 
         size_t size = um.size();
         cout << "size : " << size << endl;
+
+        cout << "insert same key-value" << endl;
+        um.insert(unordered_map<int, int>::value_type(11, 21));
+        cout << "size : " << um.size() << endl;
     }
 }
 

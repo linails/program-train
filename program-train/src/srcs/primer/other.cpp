@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-08-10 23:33:19
+ * Last modified: 2016-08-12 17:44:08
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -264,6 +264,13 @@ void other_test(void)
         using name = string;
         name n("minphone");
         cout << "name : " << n << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        unsigned short int a = 3;
+
+        printf("a & 0xffff = %.x\n", a&0xffff);
+        printf("0xffff = %d\n", 0xffff);
     }
 }
 
@@ -680,6 +687,11 @@ constexpr int new_sz()
     return 43;
 }
 
+void afunc(int &a)
+{
+    cout << "a = " << a << endl;
+}
+
 void algorithm(void)
 {
     cout << "algorithm ..." << endl;
@@ -711,6 +723,14 @@ void algorithm(void)
         *p = 10;
 
         cout << "*p = " << *p << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        cout << "afunc(&a) ...." << endl;
+        int a = 10;
+        for(int i=0; i<10; i++)
+            afunc(a);
+        cout << "a = " << a << endl;
     }
 }
 

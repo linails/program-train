@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-08-09 13:29:56
+ * Last modified: 2016-08-12 23:31:57
  */
 
 #include "class_test.h"
@@ -16,58 +16,64 @@ using namespace std;
 void class_test(void)
 {
 	cout<<"class test start ..."<<endl;
-	Sales_item si;
-	cout<<"units_sold = "<<si.get_units_sold()<<endl;
-	cout<<"sales_item 's = "<<si.get_isbn()<<endl;
+    {
+        Sales_item si;
+        cout<<"units_sold = "<<si.get_units_sold()<<endl;
+        cout<<"sales_item 's = "<<si.get_isbn()<<endl;
 
-	/*此为基于const的重载*/
-	/*const对象只能使用const成员，非const对象可以使用任一个成员，但非const版本更匹配*/
-	si.display("010203");
-	const Sales_item csi;
-	csi.display("040506");
+        /*此为基于const的重载*/
+        /*const对象只能使用const成员，非const对象可以使用任一个成员，但非const版本更匹配*/
+        si.display("010203");
+        const Sales_item csi;
+        csi.display("040506");
 
-	si.change_val(10);
+        si.change_val(10);
 
-    Base *ptr = 0;
-    Derived od;
-    ptr = &od;
-    ptr->on();
+        Base *ptr = 0;
+        Derived od;
+        ptr = &od;
+        ptr->on();
 
-    od.abc();
-    ((Derived *)ptr)->abc();
+        od.abc();
+        ((Derived *)ptr)->abc();
 
+    }
 	cout<<"---------------------------"<<endl;
+    {
 
-    cout << "size of Base :" << sizeof(Base) << endl;
+        cout << "size of Base :" << sizeof(Base) << endl;
 
-    //void *p = ((Base *)0)->on;
-    //void *p = csi.display;
-    printf("addr Base::on : 0x%x\n",&Base::on);
-    printf("addr Base::off : 0x%x\n",&Base::off);
+        //void *p = ((Base *)0)->on;
+        //void *p = csi.display;
+        printf("addr Base::on : 0x%x\n",&Base::on);
+        printf("addr Base::off : 0x%x\n",&Base::off);
 
+    }
 	cout<<"---------------------------"<<endl;
-    CA  ca,ca1;
-    ca.test();
-    ca1.test();
+    {
+        CA  ca,ca1;
+        ca.test();
+        ca1.test();
 
-    CB  cb;
-    cb.test();
-    cb.func(12);
+        CB  cb;
+        cb.test();
+        cb.func(12);
 
-    ca.print_fa();
-    ca.change_cb(123);
+        ca.print_fa();
+        ca.change_cb(123);
 
-    cb.print_ma();
+        cb.print_ma();
 
-    CC cc;
-    cc.change_cc(222);
+        CC cc;
+        cc.change_cc(222);
 
-    cb.print_mc();
+        cb.print_mc();
 
-    ca.change_cc(&cc, 12);
-    cc.print_cc();
+        ca.change_cc(&cc, 12);
+        cc.print_cc();
 
-    cc.do_once();
+        cc.do_once();
+    }
 	cout<<"---------------------------"<<endl;
     {
         void (* pf)(void);
@@ -104,6 +110,11 @@ void class_test(void)
         int c2 = 44;
         cc2.func(a2, b2);
         cc2.func(a2, c2);
+    }
+	cout<<"---------------------------"<<endl;
+    {
+        void copy_control(void);
+        copy_control();
     }
 }
 
@@ -375,6 +386,74 @@ void CC::func(const int a, int b)
 {
     cout << "called func(const int, int)" << endl;
     cout << "a = " << a << " b = " << b << endl;
+}
+
+class CopyCtrl01{
+public:
+    CopyCtrl01():b(20){}
+    ~CopyCtrl01(){}
+private:
+    static const int a;
+    const int b;
+};
+
+const int CopyCtrl01::a = 10;
+
+void copy_control(void)
+{
+    /* 
+     * 如果不主动编写拷贝构造函数和赋值函数，
+     * 编译器将以"位拷贝"的方式自动生成缺省的函数
+     * 如果类中含有指针变量，则就隐含了错误
+     * */
+    cout << "----------- copy control -----------" << endl;
+    {
+        CopyCtrl01  cc1;
+
+        CopyCtrl01  cc2;
+
+        /* 1.如果类的某个成员的拷贝赋值运算符是删除的或不可访问的，
+         * 2.或是类有一个const的或引用成员
+         *
+         * => 则类的 {合成拷贝赋值运算符} 被定义为删除的 */
+        //cc2 = cc1;
+        
+        /* 
+         * 1.拷贝构造函数是在对象被创建时调用
+         * 2.赋值函数只能被已经存在了的对象调用
+         * eg. 
+         *   A a = aa; 拷贝构造函数
+         *   A b ;
+         *   b = a;  赋值函数
+         * */
+    }
+	cout << "---------------------------" << endl;
+    {
+        /* 赋值操作运算符函数的定义分4步：
+         *  1. 检查自赋值
+         *  2. 释放原有的内存资源
+         *  3. 分配新的内存资源，并复制内容
+         *  4. 返回本对象的引用
+         * */
+        #if 0
+        String & String::operator=(const String &other)
+        {
+            /* 1. 检查自赋值 */
+            if(this == &other) return *this;
+
+            /* 2. 释放原有的内存资源 */
+            delete [] m_data;
+
+            /* 3. 分配新的内存资源，并复制内容 */
+            int length = strlen(other.m_data);
+            m_data = new char[length+1];
+            strcpy(m_data, other.m_data);
+
+            /* 4. 返回本对象的引用 */
+            return *this;
+        }
+        #endif
+    }
 }
 
 
