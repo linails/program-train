@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-08-14 10:13:14
+ * Last modified: 2016-08-14 10:38:31
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -30,6 +30,7 @@
 #include "db_test.h"
 #include "exception_test.h"
 #include "cases_main.h"
+#include "algorithm_main.h"
 
 
 using namespace std;
@@ -64,6 +65,7 @@ int main(void)
     }
     {
         cases_main();
+        algorithm_main();
     }
     {
 #if 0

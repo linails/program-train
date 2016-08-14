@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-08-14 10:11:18
+# Last modified: 2016-08-14 10:37:51
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -17,6 +17,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/linux
     ${PROJECT_SOURCE_DIR}/src/srcs/db
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm
+    ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
@@ -43,12 +44,14 @@ set(SRC_LIST
    srcs/primer/thread_test.cpp
    srcs/primer/condition_variable.cpp
    srcs/primer/class_test.cpp
-   srcs/stl/container_test.cpp
    srcs/primer/chrono_test.cpp
    srcs/primer/exception_test.cpp
 #    srcs/primer/lambda.cpp
+   srcs/stl/container_test.cpp
    srcs/db/db_test.cpp
    srcs/db/normal.cpp
+   srcs/algorithm/algorithm_main.cpp
+   srcs/algorithm/stl/non-mutating-algo.cpp
 #####################################################################
    srcs/tools/timer.cpp
    srcs/tools/timing.c
