@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-08-08 22:02:52
+# Last modified: 2016-08-14 10:11:18
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -17,6 +17,9 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/linux
     ${PROJECT_SOURCE_DIR}/src/srcs/db
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -46,6 +49,12 @@ set(SRC_LIST
 #    srcs/primer/lambda.cpp
    srcs/db/db_test.cpp
    srcs/db/normal.cpp
+#####################################################################
+   srcs/tools/timer.cpp
+   srcs/tools/timing.c
+   srcs/cases/cases_main.cpp
+   srcs/cases/case001/src/infinite_loops_v2.cpp
+   srcs/cases/case001/test/test_main.cpp
 )
 
 add_executable(program-train ${SRC_LIST})

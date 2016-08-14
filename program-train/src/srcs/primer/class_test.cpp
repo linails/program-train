@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-08-12 23:31:57
+ * Last modified: 2016-08-13 08:59:38
  */
 
 #include "class_test.h"
@@ -9,6 +9,8 @@
 #include <string>
 #include <cstdio>
 #include "other.h"
+#include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
@@ -399,6 +401,65 @@ private:
 
 const int CopyCtrl01::a = 10;
 
+class CopyCtrl02{
+public:
+    CopyCtrl02(char *buf)
+    {   
+        p = new char[strlen(buf)+1];
+        memcpy(p, buf, strlen(buf)+1);
+    }
+    CopyCtrl02(const CopyCtrl02 &);
+    CopyCtrl02 &operator=(const CopyCtrl02 &);
+    ~CopyCtrl02(){ delete [] p; cout << "delete ..." << endl;};
+    int  write(char data, int index);
+    int  read(char &data, int index);
+    void print(void);
+private:
+    char *p;
+};
+
+CopyCtrl02::CopyCtrl02(const CopyCtrl02 &cc)
+{
+    this->p = new char [strlen(cc.p)+1];
+    memcpy(this->p, cc.p, strlen(cc.p)+1);
+    cout << "copy done !" << endl;
+}
+
+CopyCtrl02 &CopyCtrl02::operator=(const CopyCtrl02 &cc)
+{
+    cout << "operator = done !" << endl;
+    /* 
+     *  1. 检查自赋值
+     *  2. 释放原有的内存资源
+     *  3. 分配新的内存资源，并复制内容
+     *  4. 返回本对象的引用
+     * */
+    if(this == &cc) return *this;
+
+    delete [] p;
+    this->p = new char[strlen(cc.p)+1];
+    memcpy(this->p, cc.p, strlen(cc.p)+1);
+
+    return *this;
+}
+
+int  CopyCtrl02::write(char data, int index)
+{
+    this->p[index] = data;
+    return 0;
+}
+
+int  CopyCtrl02::read(char &data, int index)
+{
+    data = this->p[index];
+    return 0;
+}
+
+void CopyCtrl02::print(void)
+{
+    cout << "content : " << this->p << endl;
+}
+
 void copy_control(void)
 {
     /* 
@@ -453,7 +514,23 @@ void copy_control(void)
             return *this;
         }
         #endif
+
+        char data[] = "nice to";
+        cout << "data[] : " << data << endl;
+
+        char buf[] = "hello world";
+        cout << "buf[] : " << buf << endl;
+
+        CopyCtrl02  cc1(buf);
+        CopyCtrl02  cc2 = cc1;
+
+        CopyCtrl02  cc3(data);
+
+        cc3.print();
+        cc3 = cc1;
+        cc3.print();
     }
+	cout << "---------------------------" << endl;
 }
 
 

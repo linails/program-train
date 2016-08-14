@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-08-10 10:55:10
+ * Last modified: 2016-08-14 10:13:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,6 +29,7 @@
 #include "chrono_test.h"
 #include "db_test.h"
 #include "exception_test.h"
+#include "cases_main.h"
 
 
 using namespace std;
@@ -61,7 +62,9 @@ int main(void)
     {
         db_test();
     }
-
+    {
+        cases_main();
+    }
     {
 #if 0
     sqlite3 *db = NULL;
