@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cast_test.cpp
  * Created Time: 2015-11-22 20:16:36
- * Last modified: 2016-08-08 21:56:23
+ * Last modified: 2016-08-15 11:04:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -23,11 +23,11 @@ static void reinterpret_cast_test(void);
 /*cast test function*/
 void cast_test(void)
 {
-	cout<<"cast test function"<<endl;
-	const_cast_test();
-	static_cast_test();
-	reinterpret_cast_test();
-	cout<<"---------------------------"<<endl;
+    cout << "cast test function" << endl;
+    const_cast_test();
+    static_cast_test();
+    reinterpret_cast_test();
+    cout << "---------------------------" << endl;
 }
 
 /*const_cast_test*/

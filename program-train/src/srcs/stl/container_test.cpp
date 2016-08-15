@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-08-12 16:00:22
+ * Last modified: 2016-08-15 13:22:37
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -19,6 +19,7 @@
 #include <deque>
 #include <tuple>
 #include <unordered_set>
+#include <sstream>
 
 
 /*c++中的标准库的包含了c标准库的头文件，
@@ -65,16 +66,16 @@ static void complex_test(void);
 /*container_test func*/
 void container_test(void)
 {
-	cout<<"container test start..."<<endl;
-	string_test();
+    cout<<"container test start..."<<endl;
+    string_test();
 
-	vector_test();
+    vector_test();
 
     map_test();
-	
-	iterator_test();
 
-	bitset_test();
+    iterator_test();
+
+    bitset_test();
 
     list_test();
 
@@ -83,10 +84,17 @@ void container_test(void)
     queue_test();
 
     deque_test();
+
     adaptor_stack_test();
+
     adaptor_queue_test();
+
     adaptor_priority_queue_test();
-	cout<<"---------------------------"<<endl;
+
+    void sstream_test(void);
+    sstream_test();
+
+    cout<<"---------------------------"<<endl;
     void unordered_container(void);
     unordered_container();
 
@@ -101,49 +109,49 @@ void container_test(void)
 /*string test func*/
 void string_test(void)
 {
-	string s1;
-	cout<<"s1 = "<<s1<<endl;
-	cout<<"is s1 empty:"<<s1.empty()<<endl;
-	string s2("s2 hello");
-	cout<<"s2 = "<<s2<<endl;
-	string s3(s2);
-	cout<<"s3 = "<<s3<<endl;
-	string s4 = "s4 hello";
-	cout<<"s4 = "<<s4<<endl;
-	string s5(6,'s');
-	cout<<"s5 = "<<s5<<endl;
-	string s6 = s2 + s4;
-	cout<<"s6 = "<<s6<<endl;
-	cout<<"s6[0] = "<<s6[0]<<endl;
-	cout<<"s6[6] = "<<s6[6]<<endl;
-	cout<<"size of s6 = "<<s6.size()<<endl;
+    string s1;
+    cout<<"s1 = "<<s1<<endl;
+    cout<<"is s1 empty:"<<s1.empty()<<endl;
+    string s2("s2 hello");
+    cout<<"s2 = "<<s2<<endl;
+    string s3(s2);
+    cout<<"s3 = "<<s3<<endl;
+    string s4 = "s4 hello";
+    cout<<"s4 = "<<s4<<endl;
+    string s5(6,'s');
+    cout<<"s5 = "<<s5<<endl;
+    string s6 = s2 + s4;
+    cout<<"s6 = "<<s6<<endl;
+    cout<<"s6[0] = "<<s6[0]<<endl;
+    cout<<"s6[6] = "<<s6[6]<<endl;
+    cout<<"size of s6 = "<<s6.size()<<endl;
 
     /*string::size_type 的类型值是string长度返回值专用的
      * 不能赋值给int变量*/
-	string::size_type str_len;
-	str_len = s6.size();
-	cout<<"size_type of s6 = "<<str_len<<endl;
-	printf("hello world\n");
+    string::size_type str_len;
+    str_len = s6.size();
+    cout<<"size_type of s6 = "<<str_len<<endl;
+    printf("hello world\n");
 
-	string s7("s is same");
-	string s8("s is same");
-	cout<<"s7 :"<<s7<<endl;
-	cout<<"s8 :"<<s8<<endl;
-	if(s7 == s8){
-		cout<<"s7 = s8"<<endl;
-	}else{
-		cout<<"s7 != s8"<<endl;
-	}
+    string s7("s is same");
+    string s8("s is same");
+    cout<<"s7 :"<<s7<<endl;
+    cout<<"s8 :"<<s8<<endl;
+    if(s7 == s8){
+        cout<<"s7 = s8"<<endl;
+    }else{
+        cout<<"s7 != s8"<<endl;
+    }
 
     string str("hello string -> c string\n");
     printf("%s",str.c_str());
 
-	//for(int i=0;i<3;i++){
-	//	cout<<"input your line:";
-	//	/*getline()函数返回时会丢弃换行符*/
-	//	getline(cin,s1);
-	//	cout<<"get line:"<<s1<<endl;
-	//}
+    //for(int i=0;i<3;i++){
+    //	cout<<"input your line:";
+    //	/*getline()函数返回时会丢弃换行符*/
+    //	getline(cin,s1);
+    //	cout<<"get line:"<<s1<<endl;
+    //}
 
     string ss("hello world ss");
     string *ps = NULL;
@@ -169,14 +177,14 @@ void string_test(void)
     printf("cs1 = 0x%x\n",cs1);
     cout << "*ps = " << *ps << endl;
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     string content01("name:%s,hello");
     char buf[64];
     sprintf(buf,content01.c_str(),"xiaolin");
     string content = content01 + buf;
     cout << "content :" << content << endl;
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         string sa("nice");
         string sb(sa);
@@ -208,7 +216,7 @@ void string_test(void)
         printf("sa addr : 0x%x - 0x%x\n",&sa,sa.c_str());
         printf("sc addr : 0x%x - 0x%x\n",&sb,sc.c_str());
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         char temp[] = "hello string!";
         char temp1[4] = {'0','1','2','4'};
@@ -1166,6 +1174,72 @@ void adaptor_queue_test(void)
 /*adaptor_priority_queue_test func*/
 void adaptor_priority_queue_test(void)
 {
+}
+
+void sstream_test(void)
+{
+    cout << "------------- sstream_test -------------" << endl;
+    {
+        /* 作为输入输出使用 */
+        stringstream ostr("ccc");
+
+        ostr.put('d');
+        ostr.put('e');
+
+        ostr << "fg";
+
+        string gstr = ostr.str();
+
+        cout << "gstr = " << gstr << endl;
+
+        char a ;
+        ostr >> a;
+        cout << "a = " << a << endl;
+
+    }
+    cout << "---------------------------------------" << endl;
+    {
+        /* 类型转换 */
+        stringstream stream;
+        string result = "10000";
+
+        int n = 0;
+
+        stream << result;
+        stream >> n;
+
+        cout << "n = " << n << endl;
+
+        float f = 0.23445;
+
+        stream.clear();
+
+        stream << f;
+        result.clear();
+
+        stream >> result;
+        cout << "result = " << result << endl;
+    }
+    cout << "---------------------------------------" << endl;
+    {
+        char result[16];
+
+        double d = 2.3455664433;
+
+        stringstream sc;
+
+        sc << d;
+        sc >> result;
+
+        cout << "result = " << result << endl;
+
+        sc.clear();
+
+        sc << 1.034533;
+        sc >> result;
+        cout << "result = " << result << endl;
+
+    }
 }
 
 //----------------- unordered-container ---------------------------------
