@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-08-14 10:37:51
+# Last modified: 2016-08-15 21:40:22
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -39,17 +39,17 @@ set(SRC_LIST
 #   srcs/primer/regex_test.cpp
 #   srcs/primer/regex_cpp11.cpp
 #   srcs/primer/smart_pointer.cpp
-   srcs/primer/other.cpp
+#   srcs/primer/other.cpp
 #  srcs/primer/generic_test.cpp
-   srcs/primer/thread_test.cpp
-   srcs/primer/condition_variable.cpp
-   srcs/primer/class_test.cpp
-   srcs/primer/chrono_test.cpp
-   srcs/primer/exception_test.cpp
+#   srcs/primer/thread_test.cpp
+#   srcs/primer/condition_variable.cpp
+#   srcs/primer/class_test.cpp
+#   srcs/primer/chrono_test.cpp
+#   srcs/primer/exception_test.cpp
 #    srcs/primer/lambda.cpp
    srcs/stl/container_test.cpp
-   srcs/db/db_test.cpp
-   srcs/db/normal.cpp
+#   srcs/db/db_test.cpp
+#   srcs/db/normal.cpp
    srcs/algorithm/algorithm_main.cpp
    srcs/algorithm/stl/non-mutating-algo.cpp
 #####################################################################

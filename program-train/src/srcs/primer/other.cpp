@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-08-12 17:44:08
+ * Last modified: 2016-08-15 15:34:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,6 +17,7 @@
 #include <type_traits>
 #include <algorithm>
 #include <tuple>
+#include <functional>
 
 using namespace std;
 
@@ -731,6 +732,28 @@ void algorithm(void)
         for(int i=0; i<10; i++)
             afunc(a);
         cout << "a = " << a << endl;
+    }
+    cout << "----------------------------" << endl;
+    {
+        char nts1[] = "Test";
+        char nts2[] = "Test";
+
+        string str1(nts1);
+        string str2(nts2);
+
+        hash<char*> ptr_hash;
+        hash<string> str_hash;
+        hash<int>   int_hash;
+
+        cout << "hash value of nts1 : " << ptr_hash(nts1) << endl;
+        cout << "hash value of nts2 : " << ptr_hash(nts2) << endl;
+
+        cout << "hash value of str1 : " << str_hash(str1) << endl;
+        cout << "hash value of str2 : " << str_hash(str2) << endl;
+        cout << "hash value of str2 : " << hash<string>()(str2) << endl;
+
+        cout << "hash value of int : " << int_hash(10) << endl;
+        cout << "hash value of int : " << hash<int>()(10) << endl;
     }
 }
 

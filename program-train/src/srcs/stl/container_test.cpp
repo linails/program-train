@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-08-15 13:22:37
+ * Last modified: 2016-08-15 19:38:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -20,6 +20,7 @@
 #include <tuple>
 #include <unordered_set>
 #include <sstream>
+#include <algorithm>
 
 
 /*c++中的标准库的包含了c标准库的头文件，
@@ -233,7 +234,7 @@ void string_test(void)
         cout << "s2 length : " << s2.length() << endl;
         printf("%x%x%x%x\n",s2[0],s2[1],s2[2],s2[3]);
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         string s("怅	`1`怅`2`(1)<br>悵<br>chàng<br>(2)<br>(形声。从心,长声。本义:因失意而不痛快) 同本义 ");
 
@@ -252,7 +253,7 @@ void string_test(void)
         }
         cout << endl;
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         string s("(1)<br>chàng<br>(2)<br>");
         cout << "s.length() : " << s.length() << endl;
@@ -266,7 +267,7 @@ void string_test(void)
         cout << "is : " << is << endl;
         cout << "is.length() : " << is.length() << endl;
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         char buf[128] = {0,};
         string s("hello buffer");
@@ -278,80 +279,86 @@ void string_test(void)
         }
         cout << "buf : " << buf << endl;
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
+    {
+        /* 断行书写string */
+        string s = "111111111111111,"
+                   "22222222222222222222";
+        cout << "s = " << s << endl;
+    }
 }
 
 struct cell_t{
-	char cell[3];
+    char cell[3];
 };
 
 /*vector test func*/
 void vector_test(void)
 {
-	/*几种初始化vector对象的方式*/
-	//vector<T> v1;			vector保存类型为T的对象，默认构造函数v1为空
-	//vector<T> v2(v1);		v2是v1的一个副本
-	//vector<T> v3(n,i);	v3包含n个值为i的元素
-	//vector<T> v4(n);		v4含有值初始化的元素的n个副本
-	//
+    /*几种初始化vector对象的方式*/
+    //vector<T> v1;			vector保存类型为T的对象，默认构造函数v1为空
+    //vector<T> v2(v1);		v2是v1的一个副本
+    //vector<T> v3(n,i);	v3包含n个值为i的元素
+    //vector<T> v4(n);		v4含有值初始化的元素的n个副本
+    //
     
     /*vector 不是一种数据类型，而只是一个类模板
      * 可以用来定义任意多种数据类型
      * vector<int> & vector<string> 算数据类型*/
 
-	/*vector is class template*/
-	vector<int> v1;//定义了类型是vector<int>
-	/*虽然可以对给定元素个数的vector对象预先分配内存，
+    /*vector is class template*/
+    vector<int> v1;//定义了类型是vector<int>
+    /*虽然可以对给定元素个数的vector对象预先分配内存，
      * 但更有效的方法是先初始化一个空vector对象，
-	 * 然后再动态地增加元素*/
-	vector<int> fvec(10);//10 elements ,each initialized to 0
-	vector<string> svec;//10 elements,each an empty string
-	if(fvec.empty()){
-		cout<<"fvec is empty"<<endl;
-	}else{
-		cout<<"fvec is full"<<endl;
-	}
+     * 然后再动态地增加元素*/
+    vector<int> fvec(10);//10 elements ,each initialized to 0
+    vector<string> svec;//10 elements,each an empty string
+    if(fvec.empty()){
+        cout<<"fvec is empty"<<endl;
+    }else{
+        cout<<"fvec is full"<<endl;
+    }
 
-	cout<<"sizeof svec(10):"<<svec.size()<<endl;
-	//vector类型总是包括vector的元素类型
-	vector<string>::size_type sv_size;
-	sv_size = svec.size();
-	cout<<"sizeof svec(10):"<<sv_size<<endl;
-	string s1("hello");
-	string s2("world");
-	if(svec.empty()){
-		cout<<"svec is empty"<<endl;
-	}else{
-		cout<<"svec is full"<<endl;
-	}
-	svec.push_back(s1);
-	svec.push_back(s2);
-	cout<<svec[0]<<endl;
-	cout<<svec[1]<<endl;
-	svec[1] = "niceto";
-	for(vector<string>::size_type sv_len = 0;
-			sv_len < svec.size();//c++程序员习惯于优先选用！=而不是<来编写循环判断条件
-			sv_len++){
-		cout<<"svec["<<sv_len<<"]="<<svec[sv_len]<<endl;
-	}
+    cout<<"sizeof svec(10):"<<svec.size()<<endl;
+    //vector类型总是包括vector的元素类型
+    vector<string>::size_type sv_size;
+    sv_size = svec.size();
+    cout<<"sizeof svec(10):"<<sv_size<<endl;
+    string s1("hello");
+    string s2("world");
+    if(svec.empty()){
+        cout<<"svec is empty"<<endl;
+    }else{
+        cout<<"svec is full"<<endl;
+    }
+    svec.push_back(s1);
+    svec.push_back(s2);
+    cout<<svec[0]<<endl;
+    cout<<svec[1]<<endl;
+    svec[1] = "niceto";
+    for(vector<string>::size_type sv_len = 0;
+            sv_len < svec.size();//c++程序员习惯于优先选用！=而不是<来编写循环判断条件
+            sv_len++){
+        cout<<"svec["<<sv_len<<"]="<<svec[sv_len]<<endl;
+    }
 
-	vector<cell_t> cell_vec(1);
-	char p[4] = "你";
-	cell_vec[0].cell[0] = p[0];
-	cell_vec[0].cell[1] = p[1];
-	cell_vec[0].cell[2] = p[2];
-	printf("%.2x %.2x %.2x \n",p[0],p[1],p[2]);
-	printf("%.2x %.2x %.2x \n",cell_vec[0].cell[0],cell_vec[0].cell[1],cell_vec[0].cell[2]);
-	cout<<"cell_vec size : "<<cell_vec.size()<<endl;
-	cout<<"cell_vec length : "<<sizeof(cell_vec[0])<<endl;
+    vector<cell_t> cell_vec(1);
+    char p[4] = "你";
+    cell_vec[0].cell[0] = p[0];
+    cell_vec[0].cell[1] = p[1];
+    cell_vec[0].cell[2] = p[2];
+    printf("%.2x %.2x %.2x \n",p[0],p[1],p[2]);
+    printf("%.2x %.2x %.2x \n",cell_vec[0].cell[0],cell_vec[0].cell[1],cell_vec[0].cell[2]);
+    cout<<"cell_vec size : "<<cell_vec.size()<<endl;
+    cout<<"cell_vec length : "<<sizeof(cell_vec[0])<<endl;
 
-	char p1[4] = "是";
-	cell_t c1;
-	c1.cell[0] = p1[0];
-	c1.cell[1] = p1[1];
-	c1.cell[2] = p1[2];
-	cell_vec.push_back(c1);
-	cout<<"cell_vec size : "<<cell_vec.size()<<endl;
+    char p1[4] = "是";
+    cell_t c1;
+    c1.cell[0] = p1[0];
+    c1.cell[1] = p1[1];
+    c1.cell[2] = p1[2];
+    cell_vec.push_back(c1);
+    cout<<"cell_vec size : "<<cell_vec.size()<<endl;
 
     vector<int>::iterator iter_int;
     vector<int> vint(10);
@@ -399,13 +406,13 @@ void vector_test(void)
                vcell[vcellsize-1].cell[0],vcell[vcellsize-1].cell[1],vcell[vcellsize-1].cell[2]);
     }
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     vector<char *> pcvec;
     char *cp0 = (char *)0x01;
     pcvec.push_back(cp0);
     printf("pcvec :%d\n",pcvec[0]);
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     const vector<int> cvi(10);
     /* 新定义的时候，vector内分配的内存的容量是指定数量，并没有扩大
      * 只有做了push_back()的操作后，vector的容量会扩大*/
@@ -419,9 +426,9 @@ void vector_test(void)
     cout << "vector size :" << ncvi.size() << endl;
     cout << "vector capacity :" << ncvi.capacity() << endl;
     cout << "vector max size :" << ncvi.max_size() << endl;
-//    cvi.push_back(11);
+    //    cvi.push_back(11);
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
 
     vector<float> flvec;
     flvec.push_back(0.1234);
@@ -446,7 +453,7 @@ void vector_test(void)
     cout << "parry_vec[0][1] = " << (*parry_vec[0])[1] << endl;
     cout << "parry_vec[0][2] = " << (*parry_vec[0])[2] << endl;
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         vector<unsigned char> ucvec;
         ucvec.push_back(0x01);
@@ -458,7 +465,7 @@ void vector_test(void)
             printf("ucvec[%d] = 0x%.2x \n",i,ucvec[i]);
         }
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         vector<unsigned char> ucvec;
         vector<unsigned char>::iterator iter;
@@ -472,7 +479,7 @@ void vector_test(void)
 
         printf("*const_iterator = 0x%.2x\n",*iter);
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
 
 }
 
@@ -557,7 +564,7 @@ void map_test(void)
         cout << "ud1 = " << pair01.second.a << endl;
     }
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     map<int,int> m_nc;
     m_nc.insert(map<int,int>::value_type(make_pair(10,20)));
     const map<int ,int> m_c(m_nc);
@@ -593,7 +600,7 @@ void map_test(void)
     //m_cnss["name"] = "ming"; //-->false
 
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     map<int,vector<int> > m_iv;
     vector<int> iv;
     m_iv.insert(map<int,vector<int> >::value_type(1,iv));
@@ -624,7 +631,7 @@ void map_test(void)
     }
 
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
 
     map<int,int> iimap;
@@ -645,7 +652,7 @@ void map_test(void)
     auto iter = bitmap.begin();
     cout << "*bitmap->first = " << *iter->first << " bitmap->second = " << iter->second << endl;
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         map<int,string> ismap;
         
@@ -688,7 +695,7 @@ void map_test(void)
         }
 
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         map<pair<float,float>,float> mfff;
         mfff.insert(make_pair(make_pair(0.0001,0.0002),0.0001));
@@ -703,7 +710,7 @@ void map_test(void)
         /*此用法错误*/
         //cout << map[(0.0001,0.0002)] << endl;
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
 }
 
 /*标准库为每一种标准容器定义了一种迭代器类型，所有的标准库容器都定义了相应的迭代器类型，
@@ -711,7 +718,7 @@ void map_test(void)
 /*iterator test func*/
 void iterator_test(void)
 {
-	/*每个标准库容器类型都定义了一个名为iterator的成员*/
+    /*每个标准库容器类型都定义了一个名为iterator的成员*/
     vector<int>::iterator iter;
     vector<int> ivec(4,1);
     ivec[1] = 2;
@@ -722,18 +729,18 @@ void iterator_test(void)
     iter++;
     cout<<"iter = "<<*iter<<endl;
 
-	/*语句的定义必然是分号
-	 * 因此for(int i=0,int b=0;i<10;i++)是错误的*/
-	int i = 0;
-	for(vector<int>::iterator index = ivec.begin(); index != ivec.end(); index++,i++)
-		*index = i ;
-	/*const_iterator 是只读的，不可以进行改变其容器的值*/
-	for(vector<int>::const_iterator index = ivec.begin(); index != ivec.end(); index++){
-		cout<<"index = "<<*index<<endl;
-	}
-	/*任何改变vector长度的操作都会使已存在的迭代器失效*/
+    /*语句的定义必然是分号
+     * 因此for(int i=0,int b=0;i<10;i++)是错误的*/
+    int i = 0;
+    for(vector<int>::iterator index = ivec.begin(); index != ivec.end(); index++,i++)
+        *index = i ;
+    /*const_iterator 是只读的，不可以进行改变其容器的值*/
+    for(vector<int>::const_iterator index = ivec.begin(); index != ivec.end(); index++){
+        cout<<"index = "<<*index<<endl;
+    }
+    /*任何改变vector长度的操作都会使已存在的迭代器失效*/
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
 
     {
         vector<int> ivec;
@@ -752,7 +759,7 @@ void iterator_test(void)
         }
     }
 
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     {
         vector<int> ivec;
         ivec.push_back(1);
@@ -766,7 +773,7 @@ void iterator_test(void)
 
         //ivec.insert();
     }
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
     /*
      * for vector<>
      *
@@ -778,18 +785,18 @@ void iterator_test(void)
      * reverse_iterator rbegin();反向迭代器，最后一个元素迭代指针
      * reverse_iterator rend();反向迭代器，第一个元素之前的迭代指针
      * */
-	cout<<"---------------------------"<<endl;
+    cout<<"---------------------------"<<endl;
 }
 
 /*bitset_test func*/
 void bitset_test(void){
-	/*几种初始化bitset对象的方法*/
-	//bitset<n> b;			b有n位，每位都为0
-	//bitset<n> b(u);		b是unsigned long型u的一个副本
-	//bitset<n> b(s);		b是string对象s中含有的位串的副本
-	//bitset<n> b(s,pos,n);	b是s中从位置pos开始的n个位的副本
+    /*几种初始化bitset对象的方法*/
+    //bitset<n> b;			b有n位，每位都为0
+    //bitset<n> b(u);		b是unsigned long型u的一个副本
+    //bitset<n> b(s);		b是string对象s中含有的位串的副本
+    //bitset<n> b(s,pos,n);	b是s中从位置pos开始的n个位的副本
 
-	cout<<"-------------- bitset_test -------------"<<endl;
+    cout<<"-------------- bitset_test -------------"<<endl;
 
     {
         bitset<20> b(1);
@@ -1156,6 +1163,19 @@ void deque_test(void)
             }
         }while(sdd.empty() == false);
     }
+    cout << "--------------------------------------" << endl;
+    {
+        deque<string> ds;
+        ds.push_back("hello");
+        ds.push_back("nice");
+        ds.push_back("to");
+        ds.push_back("meet");
+
+        cout << "ds : " << endl;
+        for(auto &unit : ds){
+            cout << unit << endl;
+        }
+    }
 }
 
 //-----------------adaptor---------------------------------
@@ -1269,6 +1289,27 @@ struct keyequal{
     }
 };
 
+typedef struct{
+    int     devid;
+    int     ep;
+}DevKey_t;
+
+struct DevKeyHash{
+    size_t operator()(const DevKey_t& k) const
+    {
+        size_t ret = hash<int>()(k.devid) ^ hash<int>()(k.ep);
+        cout << "key hash ret : " << ret << endl;
+        return ret;
+    }
+};
+
+struct DevKeyEqual{
+    bool operator()(const DevKey_t& lhs, const DevKey_t& rhs) const
+    {
+        return lhs.devid == rhs.devid && lhs.ep == rhs.ep;
+    }
+};
+
 void unordered_container(void)
 {
     /* 1.map和set内部是红黑树，在插入元素时会自动排序
@@ -1318,6 +1359,7 @@ void unordered_container(void)
     }
     cout << "---------------------------" << endl;
     {
+        cout << "user key & user hash" << endl;
         unordered_map<key, string, keyhash, keyequal> m6 = {
             {{"John", "Doe"}, "example"},
             {{"Mary", "Sue"}, "another"}
@@ -1327,6 +1369,9 @@ void unordered_container(void)
         for(auto n : m6){
             cout << "n.first.first : " << n.first.first << " n.first.second : " << n.first.second << endl;
         }
+
+        key k = {"Mary", "Sue"};
+        cout << "m6[k] : " << m6[k] << endl;
     }
     cout << "---------------------------" << endl;
     {
@@ -1400,6 +1445,41 @@ void unordered_container(void)
         cout << "insert same key-value" << endl;
         um.insert(unordered_map<int, int>::value_type(11, 21));
         cout << "size : " << um.size() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        typedef unordered_map<DevKey_t, deque<string>, DevKeyHash, DevKeyEqual> DevType_t;
+        DevType_t m;
+
+        DevKey_t k = {1, 1};
+        deque<string> ds;
+
+        ds.push_back("on");
+        m.insert(DevType_t::value_type(k, ds));
+
+        k.devid = 2; k.ep = 1; ds.clear(); ds.push_back("off");
+        m.insert(DevType_t::value_type(k, ds));
+        
+        k.devid = 3; k.ep = 1; ds.clear(); ds.push_back("on");
+        m.insert(DevType_t::value_type(k, ds));
+        
+        cout << "m.size() : " << m.size() << endl;
+
+#if 0
+        auto f = [](pair<DevKey_t, string> &unit){
+            cout << unit.first.devid << " - " << unit.first.ep << " -> " << unit.second << endl;
+        };
+#endif
+
+        cout << "m : " << endl;
+        for(auto &unit : m){
+            cout << unit.first.devid << " - " << unit.first.ep << " -> " << unit.second.front() << endl;
+            //f(unit);
+        }
+        cout << endl;
+
+        k.devid = 2;
+        cout << "m[k] : " << m[k].front() << endl;
     }
 }
 

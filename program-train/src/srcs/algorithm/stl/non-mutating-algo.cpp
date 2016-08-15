@@ -1,13 +1,15 @@
 /*
  * Progarm Name: non-mutating-algo.cpp
  * Created Time: 2016-08-14 10:33:17
- * Last modified: 2016-08-14 23:02:42
+ * Last modified: 2016-08-15 22:03:03
  */
 
 #include "non-mutating-algo.h"
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <cstring>
+#include <list>
 
 using namespace std;
 
@@ -203,6 +205,71 @@ void non_mutating_algo(void)
         print(a2, 6);
         merge(a1, a1+3, a2, a2+6, a3);
         print(a3, 9);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        const char *str1 = "abcdef7ghijklnm";
+        const char *str2 = "zyx3pr7ys";
+
+        const char *ret  = find_first_of(str1, str1+strlen(str1),
+                                   str2, str2+strlen(str2));
+        cout << "*ret = " << *ret << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        list<int> l;
+
+        for(int i=0; i<100; i++) l.push_back(i % 20);
+
+        int num = 0;
+        int val = 9;
+
+        num = count(l.begin(), l.end(), val);
+
+        cout << "count {val = 9} : " << num << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        string str1 = "abcoiuhlngdlk";
+        string str2 = "abcoioiujhl";
+
+        auto iter = mismatch(str1.begin(), str1.end(), str2.begin());
+
+        if((iter.first != str1.end()) && (iter.second != str1.end())){
+            cout << "*iter.first : " << *iter.first << endl;
+            cout << "*iter.second : " << *iter.second << endl;
+        }
+
+        if(true == equal(str1.begin(), str1.end(), str2.begin())){
+            cout << "equal !" << endl;
+        }else{
+            cout << "not equal !" << endl;
+        }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        vector<int> v1;
+        v1.push_back(5);
+        v1.push_back(6);
+        v1.push_back(7);
+        v1.push_back(8);
+        v1.push_back(9);
+
+        vector<int> v2;
+        v2.push_back(7);
+        v2.push_back(8);
+
+        /* search 算法函数在一个序列中搜索与另一个序列匹配的子序列 */
+        auto iter = search(v1.begin(), v1.end(), v2.begin(), v2.end());
+
+        if(iter != v1.end()){
+            cout << "v1 : "; for(auto unit : v1) cout << unit << " "; cout << endl;
+            cout << "v2 : "; for(auto unit : v2) cout << unit << " "; cout << endl;
+            cout << "v2 started at v1[" << iter - v1.begin() << "]" << endl;
+        }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
     }
 }
 
