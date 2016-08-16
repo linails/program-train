@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-08-15 21:40:22
+# Last modified: 2016-08-16 15:56:44
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -52,6 +52,7 @@ set(SRC_LIST
 #   srcs/db/normal.cpp
    srcs/algorithm/algorithm_main.cpp
    srcs/algorithm/stl/non-mutating-algo.cpp
+   srcs/algorithm/stl/mutating-algo.cpp
 #####################################################################
    srcs/tools/timer.cpp
    srcs/tools/timing.c

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: non-mutating-algo.cpp
  * Created Time: 2016-08-14 10:33:17
- * Last modified: 2016-08-16 15:51:35
+ * Last modified: 2016-08-16 17:19:12
  */
 
 #include "non-mutating-algo.h"
@@ -17,10 +17,10 @@ void non_mutating_algo(void)
 {
 
     /* 逐元素循环提交处理的     for_each
-     * 元素查找的               find | find_if | adjacent_find | find_first_of
-     * 用于统计元素个数的       count | count_if 
+     * 元素查找的               find     | find_if  | adjacent_find | find_first_of
+     * 用于统计元素个数的       count    | count_if 
      * 两序列匹配比较           mismatch | equal 
-     * 子序列搜索               search | search_n | find_end
+     * 子序列搜索               search   | search_n | find_end
      * */
 
     cout << "----------- non_mutating_algo -----------" << endl;
