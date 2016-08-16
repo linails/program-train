@@ -1,7 +1,7 @@
 /*
  * Progarm Name: non-mutating-algo.cpp
  * Created Time: 2016-08-14 10:33:17
- * Last modified: 2016-08-15 22:03:03
+ * Last modified: 2016-08-16 15:51:35
  */
 
 #include "non-mutating-algo.h"
@@ -15,6 +15,14 @@ using namespace std;
 
 void non_mutating_algo(void)
 {
+
+    /* 逐元素循环提交处理的     for_each
+     * 元素查找的               find | find_if | adjacent_find | find_first_of
+     * 用于统计元素个数的       count | count_if 
+     * 两序列匹配比较           mismatch | equal 
+     * 子序列搜索               search | search_n | find_end
+     * */
+
     cout << "----------- non_mutating_algo -----------" << endl;
     {
         vector<int> v;
@@ -270,6 +278,56 @@ void non_mutating_algo(void)
     }
     cout << "-----------------------------------------" << endl;
     {
+        /* search_n 算法函数搜索序列中是否有一系列元素值均为某个给定值的子序列 */
+
+        vector<int> v;
+        v.push_back(1);
+        v.push_back(2);
+        v.push_back(3);
+        v.push_back(4);
+        v.push_back(4);
+        v.push_back(4);
+        v.push_back(4);
+        v.push_back(5);
+
+        auto iter = search_n(v.begin(), v.end(), 3, 4);
+        if(iter != v.end()){
+            cout << "search_n : " << *iter << endl;
+        }
+
+        iter = search_n(v.begin(), v.end(), 4, 4);
+        if(iter != v.end()){
+            cout << "search_n : " << *iter << endl;
+        }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* find_end 算法函数在一个序列中搜索出最后一个与另一序列匹配的子序列 
+         * 与find_first_of 相对*/
+        vector<int> v;
+        v.push_back(2);
+        v.push_back(3);
+        v.push_back(4);
+        v.push_back(6);
+        v.push_back(9);
+        v.push_back(2);
+        v.push_back(3);
+        v.push_back(4);
+        v.push_back(4);
+        v.push_back(6);
+        v.push_back(9);
+
+        vector<int> v1;
+        v1.push_back(2);
+        v1.push_back(3);
+        v1.push_back(4);
+
+        auto iter = find_end(v.begin(), v.end(), v1.begin(), v1.end());
+        if(iter != v.end()){
+            cout << "find_end(v.begin(), v.end(), v1.begin(), v2.end()) : " ;
+            for(; iter != v.end(); iter++) cout << *iter << " ";
+            cout << endl;
+        }
     }
 }
 
