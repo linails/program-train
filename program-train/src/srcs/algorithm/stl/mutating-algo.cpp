@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mutating-algo.cpp
  * Created Time: 2016-08-16 15:52:36
- * Last modified: 2016-08-16 22:16:06
+ * Last modified: 2016-08-17 10:19:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,16 @@
 #include <unordered_map>
 
 using namespace std;
+
+struct sequence{
+    int a;
+    sequence(){a = 0;};
+    /* 重载操作符() */
+    inline int operator()(){
+        a = a + 3;
+        return a;
+    };
+};
 
 void mutating_algo(void)
 {
@@ -240,6 +250,179 @@ void mutating_algo(void)
 
         replace_if(v2.begin(), v2.end(), f3, make_tuple(8, "go"));
         f2(v2, "v2");
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* replace_copy 算法先进行元素替换，再将元素复制到新容器 
+         * 将迭代器区间[first, last)中元素值为 old_value 的元素替换为 new_value，
+         * 并全部拷贝到[result, result+(last-first)) 中，包括没有替换的元素
+         * 迭代器 1 上的元素没有改变
+         * */
+
+        list<int> l1;
+
+        l1.push_back(1);
+        l1.push_back(3);
+        l1.push_back(4);
+        l1.push_back(2);
+        l1.push_back(1);
+        l1.push_back(1);
+        l1.push_back(5);
+        l1.push_back(1);
+
+        list<int> l2;
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+
+        auto f = [](list<int> &l, const char *str){
+            cout << str << " : ";
+            for(auto unit : l) cout << unit << " ";
+            cout << endl;
+        };
+
+        f(l1, "l1"); f(l2, "l2");
+        replace_copy(l1.begin(), l1.end(), l2.begin(), 1, 8);
+        f(l1, "l1"); f(l2, "l2");
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* replace_copy_if 算法是 replace_copy 算法的一个带谓词判断的版本 
+         * 将迭代器区间[first, last) 中满足一元谓词判断 pred 的元素替换为 new_value,
+         * 然后全部拷贝到 [result , result + (last - first))
+         * */
+
+        list<int> l1;
+
+        l1.push_back(1);
+        l1.push_back(3);
+        l1.push_back(4);
+        l1.push_back(2);
+        l1.push_back(1);
+        l1.push_back(1);
+        l1.push_back(5);
+        l1.push_back(1);
+
+        list<int> l2;
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+        l2.push_back(2);
+
+        auto f = [](list<int> &l, const char *str){
+            cout << str << " : ";
+            for(auto unit : l) cout << unit << " ";
+            cout << endl;
+        };
+
+        auto pred = [](int x){ if(x == 1) return true; };
+
+        f(l1, "l1"); f(l2, "l2");
+        replace_copy_if(l1.begin(), l1.end(), l2.begin(), pred, 8);
+        f(l1, "l1"); f(l2, "l2");
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* fill 算法将同一个值填充到容器的一个或多个元素处，
+         * 将迭代器区间[first, last) 上的元素全部填充为 value 值*/
+
+        vector<int> v(10);
+
+        cout << "vector<int> v(10) : v.size() : " << v.size() << endl;
+
+        auto f = [](vector<int> &v){
+            cout << "v : ";
+            auto print = [](int x){cout << x << " ";};
+            for_each(v.begin(), v.end(), print);
+            cout << endl;
+        };
+
+        f(v);
+        fill(v.begin(), v.end(), 8);
+        f(v);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* fill_n 类似于 fill ，可以指定填充的元素个数 */
+
+        vector<int> v(10);
+        fill(v.begin(), v.end(), 1);
+
+        cout << "vector<int> v(10) : v.size() : " << v.size() << endl;
+
+        auto f = [](vector<int> &v){
+            cout << "v : ";
+            auto print = [](int x){cout << x << " ";};
+            for_each(v.begin(), v.end(), print);
+            cout << endl;
+        };
+
+        f(v);
+        fill(v.begin(), v.end(), 8);
+        f(v);
+
+        /* 把前面4个元素填充为0 */
+        fill_n(v.begin(), 4, 0);
+        f(v);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* generate 算法为容器生成新元素，
+         * 将 gen 发生器产生的一系列元素存入迭代器 [first, last) 的元素区域处 */
+        vector<int> v(10);
+
+        auto f = [](vector<int> &v){
+            cout << "v : ";
+            auto print = [](int x){cout << x << " ";};
+            for_each(v.begin(), v.end(), print);
+            cout << endl;
+        };
+
+        auto change = [](){ return  1; };
+
+        f(v);
+        generate(v.begin(), v.end(), change);
+        f(v);
+
+        sequence an;
+        generate(v.begin(), v.end(), an);
+        f(v);
+
+        auto f1 = []{static int i = 0; return i++ + 1;};
+        generate_n(v.begin(), 5, f1);
+        f(v);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* random_shuffle 算法对容器元素进行随机的排列 */
+
+        vector<int> v;
+
+        for(int i=0; i<10; i++) v.push_back(i);
+
+        auto f = [](vector<int> &v){
+            cout << "v : ";
+            auto print = [](int x){cout << x << " ";};
+            for_each(v.begin(), v.end(), print);
+            cout << endl;
+        };
+
+        f(v);
+        random_shuffle(v.begin(), v.end());
+        f(v);
     }
 }
 
