@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-08-13 08:59:38
+ * Last modified: 2016-08-18 17:47:24
  */
 
 #include "class_test.h"
@@ -17,11 +17,11 @@ using namespace std;
 /*class test func*/
 void class_test(void)
 {
-	cout<<"class test start ..."<<endl;
+    cout << "class test start ..." << endl;
     {
         Sales_item si;
-        cout<<"units_sold = "<<si.get_units_sold()<<endl;
-        cout<<"sales_item 's = "<<si.get_isbn()<<endl;
+        cout << "units_sold = " << si.get_units_sold() << endl;
+        cout << "sales_item 's = " << si.get_isbn() << endl;
 
         /*此为基于const的重载*/
         /*const对象只能使用const成员，非const对象可以使用任一个成员，但非const版本更匹配*/
@@ -40,7 +40,7 @@ void class_test(void)
         ((Derived *)ptr)->abc();
 
     }
-	cout<<"---------------------------"<<endl;
+    cout << "---------------------------" << endl;
     {
 
         cout << "size of Base :" << sizeof(Base) << endl;
@@ -51,7 +51,7 @@ void class_test(void)
         printf("addr Base::off : 0x%x\n",&Base::off);
 
     }
-	cout<<"---------------------------"<<endl;
+    cout << "---------------------------" << endl;
     {
         CA  ca,ca1;
         ca.test();
@@ -76,7 +76,7 @@ void class_test(void)
 
         cc.do_once();
     }
-	cout<<"---------------------------"<<endl;
+    cout << "---------------------------" << endl;
     {
         void (* pf)(void);
 
@@ -85,7 +85,7 @@ void class_test(void)
 
         do_pcb(pf);
     }
-	cout<<"---------------------------"<<endl;
+    cout << "---------------------------" << endl;
     {
         void (* pf)(void);
 
@@ -94,7 +94,7 @@ void class_test(void)
 
         do_pcb(pf);
     }
-	cout<<"---------------------------"<<endl;
+    cout << "---------------------------" << endl;
     {
         CC cc;
 
@@ -113,10 +113,16 @@ void class_test(void)
         cc2.func(a2, b2);
         cc2.func(a2, c2);
     }
-	cout<<"---------------------------"<<endl;
+    cout << "---------------------------" << endl;
     {
         void copy_control(void);
         copy_control();
+    }
+    cout << "---------------------------" << endl;
+    {
+
+        void library_test(void);
+        library_test();
     }
 }
 
@@ -164,32 +170,32 @@ void Sales_item::change_units_sold(unsigned us) const
 /*get isbn*/
 const std::string &Sales_item::get_isbn(void) const
 {
-	return isbn;
+    return isbn;
 }
 
 /*display test func*/
 void Sales_item::display(const char *p_str) const
 {
-	cout<<p_str<<endl;
-	printf("static val:%d\n",static_val);
-	printf("static val1:%d\n",static_val1);
-	cout<<"const version"<<endl;
+	cout << p_str << endl;
+    printf("static val:%d\n",static_val);
+    printf("static val1:%d\n",static_val1);
+    cout << "const version" << endl;
 }
 
 /*display test func*/
 void Sales_item::display(const char *p_str)
 {
-	cout<<p_str<<endl;
-	printf("static val:%d\n",static_val);
-	printf("static val1:%d\n",static_val1);
-	cout<<"non const version"<<endl;
+    cout << p_str << endl;
+    printf("static val:%d\n",static_val);
+    printf("static val1:%d\n",static_val1);
+    cout << "non const version" << endl;
 }
 
 /*change val*/
 void Sales_item::change_val(char v) const
 {
-	/*const函数是可以修改mutable类型的数据成员*/
-	val = v;
+    /*const函数是可以修改mutable类型的数据成员*/
+    val = v;
 }
 
 Base::Base(void)
@@ -390,6 +396,8 @@ void CC::func(const int a, int b)
     cout << "a = " << a << " b = " << b << endl;
 }
 
+//-----------------------------------------------------------------------------
+
 class CopyCtrl01{
 public:
     CopyCtrl01():b(20){}
@@ -488,7 +496,7 @@ void copy_control(void)
          *   b = a;  赋值函数
          * */
     }
-	cout << "---------------------------" << endl;
+    cout << "---------------------------" << endl;
     {
         /* 赋值操作运算符函数的定义分4步：
          *  1. 检查自赋值
@@ -530,7 +538,151 @@ void copy_control(void)
         cc3 = cc1;
         cc3.print();
     }
-	cout << "---------------------------" << endl;
+    cout << "---------------------------" << endl;
 }
+
+//-----------------------------------------------------------------------------
+
+void library_test(void)
+{
+    cout << "LibraryBase ..." << endl;
+
+    /* 只有通过引用或指针进行函数调用，才可以使用动态绑定 */
+    LibraryBase *pl;
+
+    LibraryBase lb("11111");
+    LibraryDrived ld("22222");
+
+    pl = &lb;
+    double net_price = pl->net_price(10); cout << "net_price = " << net_price << endl;
+    print_total(lb, "lb", 10);
+    print_total(*pl, "*pl", 10);
+
+    pl = &ld;
+    net_price = pl->net_price(10); cout << "net_price = " << net_price << endl;
+    double ori_price = ((LibraryDrived*)pl)->ori_price(); cout << "ori_price = " << ori_price << endl;
+    pl->salebook();
+    print_total(ld, "ld", 10);
+    print_total(*pl, "*pl", 10);
+    cout << endl;
+
+    /* 派生类虚函数调用基类版本时，必须显式使用作用域操作符 
+     *
+     * 即 “覆盖虚函数机制” :
+     *  在某些情况下，希望覆盖虚函数机制并强制函数调用使用虚函数的特定版本，
+     *  这个时候可以使用作用域操作符
+     * */
+    net_price = pl->LibraryBase::net_price(10); cout << "net_price : " << net_price << endl;
+
+
+    /* 每个派生类对象包含一个基类部分，这意味着可以像使用基类对象一样在派生类对象上执行操作
+     *
+     * 因为每个派生类对象也是基类对象，所以存在从派生类型引用到基类类型引用的自动转换
+     *
+     * 一般可以使用派生类型对象对基类对象进行赋值或初始化
+     * */
+
+    /* 对基类对象进行初始化或赋值，实际上是在调用函数：初始化时调用构造函数，赋值时调用赋值操作符 */
+}
+
+LibraryBase::LibraryBase(std::string risbn)
+    :isbn(risbn)
+    ,price(10)
+{
+}
+
+std::string LibraryBase::book() const
+{
+    return this->isbn;
+}
+
+void LibraryBase::salebook(void) const
+{
+    cout << "LibraryBase::salebook ..." << endl;
+}
+
+double LibraryBase::net_price(int n, const char *s) const
+{
+    cout << "s = " << s << endl;
+    return n * this->price;
+}
+
+void LibraryBase::library(void)
+{
+    cout << "static library ... " << endl;
+}
+
+LibraryBase::~LibraryBase()
+{
+}
+
+/* 
+ * 派生类一般会重定义所继承的虚函数，
+ * 如果派生类没有重定义某个虚函数，则使用基类中定义的版本
+ * */
+LibraryDrived::LibraryDrived(std::string risbn)
+    :LibraryBase(risbn)
+    ,disbn(risbn)
+    ,price(20)
+{
+    /* 派生类的构造函数受继承关系的影响，每个派生类构造函数除了初始化自己的
+     * 数据成员之外，还要初始化基类 */
+}
+
+LibraryDrived::LibraryDrived(const LibraryDrived &ld)
+    :LibraryBase(ld)  /* 转换为对基类部分的引用，并调用基类复制构造函数 */
+{
+    cout << "LibraryDrived::LibraryDrived(const LibraryDrived &ld) !" << endl;
+}
+
+LibraryDrived &LibraryDrived::operator=(const LibraryDrived &rld)
+{
+    if(this != &rld){
+        LibraryBase::operator=(rld);
+        cout << "LibraryDrived::operator= !" << endl;
+        //...
+    }
+    return *this;
+}
+
+/* virtual 的目的是启动动态绑定 ，virtual保留字只能出现在类内 
+ *
+ * 虚函数 与 默认实参：虚函数是动态绑定，而默认实参是静态绑定，
+ *  也就是指针是哪种类型，就调用该类型对应的类中的默认实参，
+ *  因此 LibraryBase *pl; 中 pl 是基类，因此虚函数的默认实参均是基类中的实参，与实际指针指向是否是派生类无关*/
+double LibraryDrived::net_price(int n, const char *s) const 
+{
+    cout << "s = " << s << endl;
+    return n * this->price;
+}
+
+/* 类可以访问其基类的 public 和 protected 成员，就好像那些成员是派生类自己的成员一样 */
+double LibraryDrived::ori_price(void) const
+{
+    //return this->price;
+    //return LibraryBase::price;
+    return this->LibraryBase::price;
+}
+
+LibraryDrived::~LibraryDrived()
+{
+    /* 派生类析构函数不负责撤销基类对象的成员 
+     *
+     * 每个析构函数只负责清除自己的成员
+     *
+     * 如果析构函数是虚函数，那么通过指针调用时，运行哪个析构函数将因指针所指对象类型的不同而不同
+     * */
+}
+
+void print_total(const LibraryBase &lb, const char *str,  int n)
+{
+    cout << "...para : " << str << endl;
+    cout << "...lb.price : " << lb.price << endl;
+    cout << "...print_total : " << lb.price * n << endl;
+    cout << "...net_price : " << lb.net_price(n) << endl;
+    cout << endl;
+}
+
+
 
 

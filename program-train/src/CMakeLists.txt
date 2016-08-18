@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-08-17 11:13:40
+# Last modified: 2016-08-18 14:48:05
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -10,6 +10,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/libs/rapidjson
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
+    ${PROJECT_SOURCE_DIR}/src/srcs/complex
     ${PROJECT_SOURCE_DIR}/src/srcs/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/boost
     ${PROJECT_SOURCE_DIR}/src/srcs/ooc
@@ -39,21 +40,23 @@ set(SRC_LIST
 #   srcs/primer/regex_test.cpp
 #   srcs/primer/regex_cpp11.cpp
 #   srcs/primer/smart_pointer.cpp
-#   srcs/primer/other.cpp
-#  srcs/primer/generic_test.cpp
+   srcs/primer/other.cpp
+#   srcs/primer/generic_test.cpp
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
-#   srcs/primer/class_test.cpp
+   srcs/primer/class_test.cpp
 #   srcs/primer/chrono_test.cpp
 #   srcs/primer/exception_test.cpp
-#    srcs/primer/lambda.cpp
-   srcs/stl/container_test.cpp
+#   srcs/primer/lambda.cpp
+   srcs/primer/overload.cpp
+#   srcs/complex/
+#   srcs/stl/container_test.cpp
 #   srcs/db/db_test.cpp
 #   srcs/db/normal.cpp
-   srcs/algorithm/algorithm_main.cpp
-   srcs/algorithm/stl/non-mutating-algo.cpp
-   srcs/algorithm/stl/mutating-algo.cpp
-   srcs/algorithm/stl/sorting-algo.cpp
+#   srcs/algorithm/algorithm_main.cpp
+#   srcs/algorithm/stl/non-mutating-algo.cpp
+#   srcs/algorithm/stl/mutating-algo.cpp
+#   srcs/algorithm/stl/sorting-algo.cpp
 #####################################################################
    srcs/tools/timer.cpp
    srcs/tools/timing.c
