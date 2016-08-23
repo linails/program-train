@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-08-18 17:47:24
+ * Last modified: 2016-08-23 14:03:32
  */
 
 #include "class_test.h"
@@ -585,15 +585,33 @@ void library_test(void)
     /* 对基类对象进行初始化或赋值，实际上是在调用函数：初始化时调用构造函数，赋值时调用赋值操作符 */
 }
 
+#if 1
+void callback(void *fn)
+{
+    typedef int (*PFN)(void);
+    cout << "callback : " << ((PFN)fn)() << endl;
+}
+#endif
+
 LibraryBase::LibraryBase(std::string risbn)
     :isbn(risbn)
     ,price(10)
 {
+    printf("addr : get_price : 0x%x\n", &LibraryBase::get_price);
+#if 0
+    callback((void *)&LibraryBase::get_price);
+    cout << " wrong !!!" << endl;
+#endif
 }
 
 std::string LibraryBase::book() const
 {
     return this->isbn;
+}
+
+int LibraryBase::get_price(void)
+{
+    return this->price;
 }
 
 void LibraryBase::salebook(void) const

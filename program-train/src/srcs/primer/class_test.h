@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-08-18 15:59:14
+ * Last modified: 2016-08-23 13:25:50
  */
 
 #ifndef _CLASS_TEST_H_
@@ -151,6 +151,7 @@ class LibraryBase{
 public:
     LibraryBase(std::string risbn);
     std::string book() const;
+    int get_price(void);
     virtual void salebook(void) const;
     virtual double net_price(int n, const char *s = "base") const; /* virtual 的目的是启动动态绑定 ，virtual保留字只能出现在类内 */
     virtual ~LibraryBase();     /* 除了构造函数之外，任意非static成员函数，都可以是虚函数 */
