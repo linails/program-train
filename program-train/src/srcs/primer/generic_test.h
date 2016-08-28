@@ -1,7 +1,7 @@
 /*
  * Progarm Name: generic_test.h
  * Created Time: 2016-07-11 11:36:07
- * Last modified: 2016-08-23 14:18:09
+ * Last modified: 2016-08-24 09:49:56
  */
 
 #ifndef _GENERIC_TEST_H_
@@ -93,6 +93,20 @@ void array_init(T (&parm)[N])
         parm[i] = 0;
     }
 }
+
+template <typename T>
+struct TestClass{
+    TestClass(){};
+    virtual void dotest01(T const &d){};
+    virtual ~TestClass(){};
+#if 0
+    /* error : templates may not be 'virtual' 
+     * member function templates can't be virtual */
+    template<typename T1>
+    virtual void dotest02(T1 const &d){};
+#endif
+};
+
 
 /* 
  * 总结：

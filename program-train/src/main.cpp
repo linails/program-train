@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-08-23 13:21:16
+ * Last modified: 2016-08-27 07:41:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -30,6 +30,7 @@
 #include "exception_test.h"
 #include "cases_main.h"
 #include "algorithm_main.h"
+#include "linux_main.h"
 
 
 using namespace std;
@@ -47,9 +48,9 @@ int main(void)
         ctest();
 #endif
         //regex_test();
-        //smart_pointer();
-        other_test();
-        class_test();
+        smart_pointer();
+        //other_test();
+        //class_test();
         //chrono_test();
         //thread_test();
         //container_test();
@@ -60,10 +61,11 @@ int main(void)
     }
     {
         //db_test();
+        linux_main();
     }
     {
         cases_main();
-        //algorithm_main();
+        algorithm_main();
     }
     {
 #if 0

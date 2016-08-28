@@ -1,7 +1,7 @@
 /*
  * Progarm Name: overload.cpp
  * Created Time: 2016-02-02 17:01:21
- * Last modified: 2016-08-17 16:47:50
+ * Last modified: 2016-08-24 09:41:05
  */
 
 #include "overload.h"
@@ -24,6 +24,7 @@ private:
 
 Oprt& operator*(const Oprt& a, const Oprt& b)
 {
+    return (Oprt &)a;
 }
 
 /*overload_test*/

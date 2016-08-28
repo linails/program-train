@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-08-15 15:34:55
+ * Last modified: 2016-08-24 11:28:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <tuple>
 #include <functional>
+#include <typeinfo>
 
 using namespace std;
 
@@ -40,48 +41,52 @@ class CCC{};
 void other_test(void)
 {
     cout <<"-----------------------" << endl;
-    cout << "other test \n";
+    {
+        cout << "other test \n";
 
-    cout << "sizeof(A) :" << sizeof(A) << endl;
-    cout << "sizeof(int):" << sizeof(int) << endl;
-    cout << "sizeof(int *) :" << sizeof(int *) << endl;
+        cout << "sizeof(A) :" << sizeof(A) << endl;
+        cout << "sizeof(int):" << sizeof(int) << endl;
+        cout << "sizeof(int *) :" << sizeof(int *) << endl;
 
-    int *p = &a.i;
-    for(int i=0; i<4; i++){
-        printf("p[%d] = %x\n",i,&p[i]);
-        p[i] = i;
+        int *p = &a.i;
+        for(int i=0; i<4; i++){
+            printf("p[%d] = %x\n",i,&p[i]);
+            p[i] = i;
+        }
     }
-
     cout <<"-----------------------" << endl;
-    unsigned int a = 0xfffffff7;
-    unsigned char i = (unsigned char)a;
-    char *b = (char *)&a;
-    
-    /*两个b输出都是0xffff fff7，
-     * 指针的转换仅仅影响的是指针的寻址*/
-    printf("0x%08x, 0x%08x\n",i,*b);
-    printf("0x%08x, 0x%08x\n",i,*(char*)b);
-    void display(char *ptr);
-    display(b);
+    {
+        unsigned int a = 0xfffffff7;
+        unsigned char i = (unsigned char)a;
+        char *b = (char *)&a;
+        
+        /*两个b输出都是0xffff fff7，
+         * 指针的转换仅仅影响的是指针的寻址*/
+        printf("0x%08x, 0x%08x\n",i,*b);
+        printf("0x%08x, 0x%08x\n",i,*(char*)b);
+        void display(char *ptr);
+        display(b);
 
-    char array[5] = {0x01,0x02,0x03,0x04,0x05};
-    char *pt = array;
-    b = pt;
-    printf("0x%08x, 0x%08x\n",i,*b);
-
+        char array[5] = {0x01,0x02,0x03,0x04,0x05};
+        char *pt = array;
+        b = pt;
+        printf("0x%08x, 0x%08x\n",i,*b);
+    }
     cout <<"-----------------------" << endl;
+    {
 
-    float f = 1.0f;
-    int *pfi = (int *)&f;
-    int &rfi = (int &)f;
-    cout << "sizeof (f):" << sizeof(f) << endl;
-    cout << "(int)f " << (int)f << endl;
-    cout << "&f " << &f << endl;
-    cout << "(int&)f "<< (int&)f << endl;
-    cout << "rfi " << rfi << endl;
-    cout << "*(int *)&f " << *(int *)&f << endl; 
-    cout << "*pfi = " << *pfi << endl;
+        float f = 1.0f;
+        int *pfi = (int *)&f;
+        int &rfi = (int &)f;
+        cout << "sizeof (f):" << sizeof(f) << endl;
+        cout << "(int)f " << (int)f << endl;
+        cout << "&f " << &f << endl;
+        cout << "(int&)f "<< (int&)f << endl;
+        cout << "rfi " << rfi << endl;
+        cout << "*(int *)&f " << *(int *)&f << endl; 
+        cout << "*pfi = " << *pfi << endl;
 
+    }
     cout << "----------------------------" << endl;
     {
         typedef unsigned char uint8;
@@ -272,6 +277,11 @@ void other_test(void)
 
         printf("a & 0xffff = %.x\n", a&0xffff);
         printf("0xffff = %d\n", 0xffff);
+    }
+    cout << "----------------------------" << endl;
+    {
+        void typeid_test(void);
+        typeid_test();
     }
 }
 
@@ -755,5 +765,18 @@ void algorithm(void)
         cout << "hash value of int : " << int_hash(10) << endl;
         cout << "hash value of int : " << hash<int>()(10) << endl;
     }
+}
+
+void typeid_test(void)
+{
+    cout << "typeid(int).name() : "           << typeid(int).name()     << endl;
+    cout << "typeid(unsigned).name() : "      << typeid(unsigned).name()<< endl;
+    cout << "typeid(long).name() : "          << typeid(long).name()    << endl;
+    cout << "typeid(unsigned long).name() : " << typeid(unsigned long).name() << endl;
+    cout << "typeid(char).name() : "          << typeid(char).name()    << endl;
+    cout << "typeid(unsigned char).name() : " << typeid(unsigned char).name() << endl;
+    cout << "typeid(float).name() : "         << typeid(float).name()   << endl;
+    cout << "typeid(double).name() : "        << typeid(double).name()  << endl;
+    cout << "typeid(string).name() : "        << typeid(string).name()  << endl;
 }
 
