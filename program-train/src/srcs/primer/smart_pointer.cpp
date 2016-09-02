@@ -1,7 +1,7 @@
 /*
  * Progarm Name: smart_pointer.cpp
  * Created Time: 2016-06-27 13:09:30
- * Last modified: 2016-07-28 17:46:55
+ * Last modified: 2016-09-02 09:08:57
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -232,6 +232,7 @@ void smart_pointer(void)
     }
     cout << "-----------------------------------------" << endl;
     {
+#if 0
         struct A
         {
             shared_ptr<A> getself()
@@ -255,6 +256,7 @@ void smart_pointer(void)
         weak_ptr<A> wp(p);
         cout << "memory leak" << endl;
         cout << "wp.use_count() : " << wp.use_count() << endl;
+#endif
     }
     cout << "-----------------------------------------" << endl;
     {

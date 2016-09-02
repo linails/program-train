@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-08-15 19:38:00
+ * Last modified: 2016-09-02 09:26:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -709,6 +709,23 @@ void map_test(void)
         }
         /*此用法错误*/
         //cout << map[(0.0001,0.0002)] << endl;
+    }
+    cout<<"---------------------------"<<endl;
+    {
+        map<int, string> m;
+        m.insert(make_pair(1, "one"));
+        m.insert(make_pair(2, "two"));
+        m.insert(make_pair(3, "three"));
+
+        cout << "map erase null test" << endl;
+        cout << "m :" << endl;
+        for(auto &unit : m) cout << unit.first << " - " << unit.second << endl;
+
+        m.erase(2);
+        cout << "m :" << endl;
+        for(auto &unit : m) cout << unit.first << " - " << unit.second << endl;
+
+        m.erase(8); // failed , 
     }
     cout<<"---------------------------"<<endl;
 }
