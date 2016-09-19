@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-08-24 11:28:49
+ * Last modified: 2016-09-19 12:37:46
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -282,6 +282,16 @@ void other_test(void)
     {
         void typeid_test(void);
         typeid_test();
+    }
+    cout << "----------------------------" << endl;
+    {
+        void byte_alignment(void);
+        byte_alignment();
+    }
+    cout << "----------------------------" << endl;
+    {
+        void gcd(void);
+        gcd();
     }
 }
 
@@ -779,4 +789,63 @@ void typeid_test(void)
     cout << "typeid(double).name() : "        << typeid(double).name()  << endl;
     cout << "typeid(string).name() : "        << typeid(string).name()  << endl;
 }
+
+void byte_alignment(void)
+{
+    typedef struct{
+        char a;
+        char b;
+        short int c;
+        unsigned char d[0];
+    }Msg1_t;
+
+    typedef struct{
+        char a;
+        char b;
+        short int c;
+        unsigned char *p;
+    }Msg2_t;
+
+    cout << "sizeof(Msg1_t) : " << sizeof(Msg1_t) << endl;
+    cout << "sizeof(Msg2_t) : " << sizeof(Msg2_t) << endl;
+
+    char a[0];
+    cout << "sizeof(a) : " << sizeof(a) << endl;
+
+    char *p;
+    cout << "sizeof(p) : " << sizeof(p) << endl;
+}
+
+void gcd(void)
+{
+    int a = 1;
+    printf("sizeof(a) : %d\n", sizeof(a));
+
+    auto odd_judge = [](int a){
+        printf("+a = %.8x\n", a);
+        printf("-a = %.8x\n", -a);
+        printf("a & (-a) : %x(hex) --> %d(10)\n" , a & (-a), a & (-a));
+    };
+
+    odd_judge(1);
+    odd_judge(2);
+    odd_judge(0x8000);
+    odd_judge(0x400);
+    odd_judge(0x410);
+    odd_judge(11);
+    odd_judge(101);
+    odd_judge(1011);
+
+    printf("-------------\n");
+
+    odd_judge(-1);
+    odd_judge(-2);
+    odd_judge(0x8000 * -1);
+    odd_judge(0x400 * -1);
+    odd_judge(0x410 * -1);
+    odd_judge(-11);
+    odd_judge(-101);
+    odd_judge(-1011);
+}
+
 

@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-09-02 09:09:32
+# Last modified: 2016-09-19 12:38:35
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -41,7 +41,7 @@ set(SRC_LIST
 #   srcs/primer/regex_test.cpp
 #   srcs/primer/regex_cpp11.cpp
    srcs/primer/smart_pointer.cpp
-#   srcs/primer/other.cpp
+   srcs/primer/other.cpp
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
 #   srcs/primer/class_test.cpp

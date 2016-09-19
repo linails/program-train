@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cast_test.cpp
  * Created Time: 2015-11-22 20:16:36
- * Last modified: 2016-08-17 18:42:14
+ * Last modified: 2016-09-18 12:31:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -55,23 +55,23 @@ void static_cast_test(void)
     char c = static_cast<char>(a);
     printf("c = %d\n",c);
     double d = 97.3;
-    cout<<"d = "<<d<<endl;
+    cout << "d = " << d << endl;
     c = d; //隐式进行了转换
     printf("c = %d\n",c);
     c = static_cast<char>(d);
     printf("c = %d\n",c);
     void *p = &d;
     double *dp = static_cast<double*>(p); //这个时候就需要显示地进行转换
-    cout<<"*dp = "<<*dp<<endl;
+    cout << "*dp = " << *dp << endl;
     double *dp1 = (double *)p;
-    cout<<"*dp1 = "<<*dp1<<endl;
-    cout<<"---------------------------"<<endl;
+    cout << "*dp1 = " << *dp1 << endl;
+    cout << "---------------------------" << endl;
 }
 
 /*reinterpret_cast_test func*/
 void reinterpret_cast_test(void)
 {
     //reinterpret_cast通常为操作数的位模式提供较低层次的重新解释
-    cout<<"---------------------------"<<endl;
+    cout << "---------------------------" << endl;
 }
 
