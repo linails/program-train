@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-09-19 12:37:46
+ * Last modified: 2016-09-19 12:47:29
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -816,12 +816,14 @@ void byte_alignment(void)
     cout << "sizeof(p) : " << sizeof(p) << endl;
 }
 
+/* greatest common divisor */
 void gcd(void)
 {
     int a = 1;
     printf("sizeof(a) : %d\n", sizeof(a));
 
     auto odd_judge = [](int a){
+        /* a & -a : 判断变量a是2的最大公约数 */
         printf("+a = %.8x\n", a);
         printf("-a = %.8x\n", -a);
         printf("a & (-a) : %x(hex) --> %d(10)\n" , a & (-a), a & (-a));

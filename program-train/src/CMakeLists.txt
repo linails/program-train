@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-09-19 12:38:35
+# Last modified: 2016-09-20 11:05:49
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -53,6 +53,7 @@ set(SRC_LIST
    srcs/primer/overload.cpp
 #   srcs/complex/
    srcs/linux/linux_main.cpp
+   srcs/linux/sys_cmd.cpp
    srcs/stl/container_test.cpp
 #   srcs/db/db_test.cpp
 #   srcs/db/normal.cpp
