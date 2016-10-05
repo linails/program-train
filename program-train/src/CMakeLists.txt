@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-09-20 11:05:49
+# Last modified: 2016-10-05 16:44:56
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -44,7 +44,7 @@ set(SRC_LIST
    srcs/primer/other.cpp
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
-#   srcs/primer/class_test.cpp
+   srcs/primer/class_test.cpp
 #   srcs/primer/chrono_test.cpp
 #   srcs/primer/exception_test.cpp
 #   srcs/primer/lambda.cpp
@@ -52,8 +52,8 @@ set(SRC_LIST
    srcs/primer/template_test.cpp
    srcs/primer/overload.cpp
 #   srcs/complex/
-   srcs/linux/linux_main.cpp
-   srcs/linux/sys_cmd.cpp
+#   srcs/linux/linux_main.cpp
+#   srcs/linux/sys_cmd.cpp
    srcs/stl/container_test.cpp
 #   srcs/db/db_test.cpp
 #   srcs/db/normal.cpp
@@ -74,7 +74,13 @@ set(SRC_LIST
 
 add_executable(program-train ${SRC_LIST})
 
-set(libs_path ${PROJECT_SOURCE_DIR}/src/libs)
+if ("${SYSTEM_TYPE}" STREQUAL "i686")
+set(libs_path ${PROJECT_SOURCE_DIR}/src/libs/i686)
+endif()
+
+if ("${SYSTEM_TYPE}" STREQUAL "x86_64")
+set(libs_path ${PROJECT_SOURCE_DIR}/src/libs/x86_64)
+endif()
 
 set(link_lib
     ${libs_path}/libsqlite3.a
