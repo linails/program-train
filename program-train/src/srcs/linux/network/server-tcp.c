@@ -1,7 +1,7 @@
 /*
  * Progarm Name: server-tcp.c
  * Created Time: 2016-10-06 00:01:30
- * Last modified: 2016-10-23 20:55:52
+ * Last modified: 2016-10-23 22:39:32
  */
 
 #include "server-tcp.h"
@@ -13,7 +13,7 @@
 #include <sys/socket.h>
 
 /* 
- * linux 文件操作
+ * [linux 文件操作]
  *
  * 01. #include <sys/types.h>
  *     #include <sys/stat.h>
@@ -45,6 +45,22 @@
  * 04. #include <unistd.h>
  *     ssize_t read(int fd, void *buf, size_t nbytes);
  *
+ *
+ * * write 函数调用后，数据将移至输出缓冲
+ * * read 函数调用后，则从输入缓冲读取数据
+ *
+ **************************************************************************
+ *
+ * [关于I/O的特性]
+ *
+ *     <01> I/O 缓冲在每个 TCP 套接字中单独存在
+ *
+ *     <02> I/O 缓冲在创建套接字时自动生成
+ *
+ *     <03> 即使关闭套接字也会继续传递输出缓冲中遗留的数据
+ *
+ *     <04> 关闭套接字将丢失 "输入缓冲" 中的数据
+ *
  * */
 
 /*
@@ -59,7 +75,28 @@
 
 int server_tcp_main(int argc, char **argv)
 {
+    int ret = 0;
     printf("------ server_tcp_main ------\n");
+    {
+#if 0
+        int server_tcp_base(int argc, char **argv);
+        ret = server_tcp_base(argc, argv);
+#endif
+    }
+    printf("-----------------------------\n");
+    {
+#if 1
+        int server_tcp_echo(int argc, char **argv);
+        ret = server_tcp_echo(argc, argv);
+#endif
+    }
+
+    return ret;
+}
+
+int server_tcp_base(int argc, char **argv)
+{
+    printf("------ server-tcp-base ------\n");
 
     /* 
      * 文件描述符是系统分配给 '文件' 或 '套接字' 的整数
@@ -145,6 +182,98 @@ int server_tcp_main(int argc, char **argv)
 
     /* Close all fd */
     close(client_sock);
+    close(serv_sock);
+
+    return 0;
+}
+
+int server_tcp_echo(int argc, char **argv)
+{
+    printf("------ server-tcp-echo ------\n");
+
+    int serv_sock;
+    int client_sock;
+
+    struct sockaddr_in serv_addr;
+    struct sockaddr_in client_addr;
+
+    socklen_t clnt_addr_size;
+
+    char message[512] = "Hello World - echo!";
+
+
+
+    printf("\n");
+    printf("Print argv[] List :\n{\n");
+    for(int i=0; i<argc; i++){
+        printf("    argv[%d] : %s\n", i, argv[i]);
+    }
+    printf("}\n\n");
+
+
+
+    if(2 != argc){
+        printf("Usage : %s <port> \n", argv[0]);
+        exit(1);
+    }
+
+    /******************************************************************************/
+
+    /* Step 1 */
+    serv_sock = socket(PF_INET, SOCK_STREAM, 0);
+    if(-1 == serv_sock){
+        printf("socket() error !!!\n");
+        exit(1);
+    }
+
+    memset(&serv_addr, 0, sizeof(serv_addr));
+    serv_addr.sin_family        = AF_INET;
+    serv_addr.sin_addr.s_addr   = htonl(INADDR_ANY);
+    serv_addr.sin_port          = htons(atoi(argv[1]));
+
+    /* Step 2 */
+    if(-1 == bind(serv_sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))){
+        printf("bind() error !!!\n");
+        exit(1);
+    }
+
+    /* Step 3 */
+    if(-1 == listen(serv_sock, 5)){
+        printf("listen() error !!!\n");
+        exit(1);
+    }
+
+    for(int i=0; i<6; i++){
+        printf("for i = %d\n", i);
+        /* Step 4 */
+        clnt_addr_size  = sizeof(client_addr);
+        client_sock     = accept(serv_sock, (struct sockaddr*)&client_addr, &clnt_addr_size);
+        if(-1 == client_sock){
+            printf("accept() error\n");
+            exit(1);
+        }
+
+        /******************************************************************************/
+
+        printf("Client : %d -> port : %#x\n",
+                client_sock, 
+                client_addr.sin_port);
+
+        int str_len = 0;
+        while(0 != (str_len = read(client_sock, message, sizeof(message)))){
+            write(client_sock, message, str_len);
+            message[str_len] = '\0';
+
+            printf("Message To client : %s -> client : %d -> port : %#x\n",
+                    message, 
+                    client_sock, 
+                    client_addr.sin_port);
+        }
+
+        /* Close all fd */
+        close(client_sock);
+    }
+
     close(serv_sock);
 
     return 0;
