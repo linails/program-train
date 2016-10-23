@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-09-23 17:46:44
+ * Last modified: 2016-10-23 12:09:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -48,24 +48,24 @@ int main(void)
         ctest();
 #endif
         //regex_test();
-        smart_pointer();
+        //smart_pointer();
         //other_test();
-        class_test();
+        //class_test();
         //chrono_test();
         //thread_test();
-        container_test();
+        //container_test();
         //exception_test();
         //lambda_test();
-        template_test();
-        overload_test();
+        //template_test();
+        //overload_test();
     }
     {
         //db_test();
-        //linux_main();
+        linux_main();
     }
     {
-        cases_main();
-        algorithm_main();
+        //cases_main();
+        //algorithm_main();
     }
     {
 #if 0
