@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-10-20 10:06:29
+ * Last modified: 2016-10-21 14:33:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -940,6 +940,18 @@ void cout_tdv_tde(void)
                 tde[i].eposy,
                 tde[i].eposz
                 );
+    }
+    cout << "----------------------------" << endl;
+    {
+        cout << "汉字打印" << endl;
+
+        string s = "汉字";
+        char *chars = "汉字";
+        char arrays[] = "汉字";
+
+        cout << "s = " << s << endl;
+        cout << "chars = " << chars << endl;
+        cout << "arrays = " << arrays << endl;
     }
 }
 

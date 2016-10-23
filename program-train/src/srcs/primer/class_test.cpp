@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-08-23 14:03:32
+ * Last modified: 2016-10-20 13:51:31
  */
 
 #include "class_test.h"
@@ -632,6 +632,7 @@ void LibraryBase::library(void)
 
 LibraryBase::~LibraryBase()
 {
+    cout << "~LibraryBase : " << this->isbn << endl;
 }
 
 /* 
