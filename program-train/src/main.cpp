@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-10-24 17:26:25
+ * Last modified: 2016-10-24 21:06:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -46,7 +46,7 @@ int main(void)
         drived_test();
         boost_test();
 #endif
-        ctest();
+        //ctest();
         //regex_test();
         //smart_pointer();
         //other_test();

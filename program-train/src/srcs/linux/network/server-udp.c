@@ -1,11 +1,16 @@
 /*
  * Progarm Name: server-udp.c
  * Created Time: 2016-10-06 00:01:59
- * Last modified: 2016-10-23 23:17:36
+ * Last modified: 2016-10-24 21:23:47
  */
 
 #include "server-udp.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
 
 /* 
  * * UDP 提供不可靠的数据传输服务
@@ -21,14 +26,108 @@
  *      <2> 收发数据过程中为保证可靠性而添加的流控制
  * */
 
+/* 
+ * * UDP 服务器端/客户端不像TCP那样在连接状态下交换数据，因此无需经过连接过程
+ *   UDP 中只有创建套接字的过程 和 数据交换的过程
+ *
+ *******************************************************************************
+ *
+ * #include <sys/socket.h>
+ * ssize_t sendto(int sock, void *buff, size_t nbytes, int flags,
+ *                                      struct sockaddr *to, socklen_t addrlen);
+ *
+ *      --> 成功时返回传输的字节数，失败返回-1
+ *
+ *      - * sock    : 用于传输数据的UDP套接字文件描述符
+ *      - * buff    : 保存待传输数据的缓冲地址值
+ *      - * nbytes  : 待传输的数据长度，以字节为单位
+ *      - * flags   : 可选项参数，若没有则传递0
+ *      - * to      : 存有目标地址信息的 sockaddr 结构体变量的地址值
+ *      - * addrlen : 传递给参数to的地址值结构体变量长度
+ *
+ * ssize_t recvfrom(int sock, void *buff, size_t nbytes, int flags,
+ *                                        struct sockaddr *from, socklen_t *addrlen);
+ *
+ *      --> 成功时返回接收的字节数，失败返回-1
+ *
+ * */
+
 int server_udp_main(int argc, char **argv)
 {
+    int ret = 0;
     printf("------ server_udp_main ------\n");
     {
+        int server_udp_echo(int argc, char **argv);
+        ret = server_udp_echo(argc, argv);
     }
     printf("-----------------------------\n");
     {
     }
+    return ret;
+}
+
+int server_udp_echo(int argc, char **argv)
+{
+    printf("------ server-udp-echo ------\n");
+
+    int serv_sock;
+    int str_len;
+
+    char message[512];
+    socklen_t clnt_addr_size;
+    struct sockaddr_in serv_addr, client_addr;
+
+
+
+    printf("\n");
+    printf("Print argv[] List :\n{\n");
+    for(int i=0; i<argc; i++){
+        printf("    argv[%d] : %s\n", i, argv[i]);
+    }
+    printf("}\n\n");
+
+
+
+    if(argc != 2){
+        printf("Usage : %s <port>\n", argv[0]);
+        exit(1);
+    }
+
+
+    serv_sock = socket(PF_INET, SOCK_DGRAM, 0);
+    if(-1 == serv_sock){
+        printf("UDP socket creation error\n");
+        exit(1);
+    }
+
+    memset(&serv_addr, 0, sizeof(serv_addr));
+    serv_addr.sin_family      = AF_INET;
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serv_addr.sin_port        = htons(atoi(argv[1]));
+
+
+    if(-1 == bind(serv_sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr))){
+        printf("bind() error\n");
+        exit(1);
+    }
+
+
+    while(1){
+        clnt_addr_size = sizeof(client_addr);
+
+        str_len = recvfrom(serv_sock, message, sizeof(message), 0,
+                           (struct sockaddr *)&client_addr, &clnt_addr_size);
+
+        message[str_len] = '\0';
+        printf("Recvfrom message : %s - length : %d\n", message, str_len);
+
+        sendto(serv_sock, message, str_len, 0, 
+                           (struct sockaddr *)&client_addr, clnt_addr_size);
+    }
+
+
+    close(serv_sock);
+
     return 0;
 }
 
