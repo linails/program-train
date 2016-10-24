@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-10-23 18:09:51
+ * Last modified: 2016-10-24 21:21:36
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,6 +26,7 @@ void linux_main(void)
     }
     cout << "---------------------------" << endl;
     {
+#if 0
         //int client_tcp_main(int argc, char **argv);
         const char *argv[] = {
             "client_tcp_main",
@@ -38,12 +39,15 @@ void linux_main(void)
         }else{
             cout << "server - tcp - main - successed !" << endl;
         }
+#endif
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+#if 1
         const char *argv[] = {
             "client_udp_main",
+            "127.0.0.1",
+            "9190"
         };
 
         if(-1 == client_udp_main(sizeof(argv)/sizeof(const char *), (char **)argv)){

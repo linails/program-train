@@ -1,7 +1,7 @@
 /*
  * Progarm Name: client-tcp.c
  * Created Time: 2016-10-06 00:02:55
- * Last modified: 2016-10-23 22:28:56
+ * Last modified: 2016-10-24 21:09:48
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,7 +16,7 @@
 int client_tcp_main(int argc, char **argv)
 {
     int ret = 0;
-    printf("------ server_udp_main ------\n");
+    printf("------ client_tcp_main ------\n");
     {
 #if 0
         int client_tcp_base(int argc, char **argv);
