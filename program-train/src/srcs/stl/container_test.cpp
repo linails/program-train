@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-09-02 09:26:23
+ * Last modified: 2016-10-24 13:44:54
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -478,6 +478,36 @@ void vector_test(void)
         iter2 = ucvec.begin();
 
         printf("*const_iterator = 0x%.2x\n",*iter);
+    }
+    cout<<"---------------------------"<<endl;
+    {
+        vector<int> vi;
+        vi.push_back(1);
+        vi.push_back(2);
+        vi.push_back(3);
+
+        vector<int> vi0;
+
+        vi0 = vi;
+        cout << "vi0.size() : " << vi0.size() << endl;
+        //cout << "vi0.max_size() : " << vi0.max_size() << endl;
+
+        for(auto unit : vi0){
+            cout << "uint : " << unit << endl;
+        }
+
+        for(int i=0; i<1000; i++){
+            vi0.push_back(i);
+        }
+        
+        cout << "vi0.size() : " << vi0.size() << endl;
+        //cout << "vi0.max_size() : " << vi0.max_size() << endl;
+
+        vi0 = vi;
+
+        cout << "vi0 = vi" << endl;
+        cout << "vi0.size() : " << vi0.size() << endl;
+        //cout << "vi0.max_size() : " << vi0.max_size() << endl;
     }
     cout<<"---------------------------"<<endl;
 

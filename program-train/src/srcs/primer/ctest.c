@@ -1,13 +1,14 @@
 /*
  * Progarm Name: ctest.c
  * Created Time: 2016-05-14 19:56:38
- * Last modified: 2016-10-20 10:11:58
+ * Last modified: 2016-10-24 17:25:17
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "ctest.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /*ctest*/
 void ctest(void)
@@ -21,6 +22,23 @@ void ctest(void)
     {
         void cout_tdv_tde(void);
         cout_tdv_tde();
+    }
+    printf("--------------------------- ----- ---------------------------\n");
+    {
+        int *p = (int *)malloc(100);
+        unsigned addr[100];
+
+        for(int i=0; i<100; i++){
+            printf("&p[i] : %#x\n", &p[i]);
+            addr[i] = &p[i];
+        }
+
+        p = realloc(p, 1000);
+        for(int i=0; i<100; i++){
+            printf("&p[i] : %#x - orig : %#x\n", &p[i], addr[i]);
+        }
+
+        free(p);
     }
 }
 
