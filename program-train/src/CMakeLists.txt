@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-10-24 17:26:38
+# Last modified: 2016-10-25 13:37:59
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -43,7 +43,7 @@ set(SRC_LIST
 #   srcs/primer/regex_cpp11.cpp
 #   srcs/primer/smart_pointer.cpp
 #   srcs/primer/other.cpp
-   srcs/primer/ctest.c
+#   srcs/primer/ctest.c
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
 #   srcs/primer/class_test.cpp
@@ -55,16 +55,16 @@ set(SRC_LIST
 #   srcs/primer/overload.cpp
 #   srcs/complex/
    srcs/linux/linux_main.cpp
-   srcs/linux/network/server-udp.c
-   srcs/linux/network/server-tcp.c
-   srcs/linux/network/fd-test.c
-   srcs/linux/network/endian-conv.c
+#   srcs/linux/network/server-udp.c
+#   srcs/linux/network/server-tcp.c
+#   srcs/linux/network/fd-test.c
+#   srcs/linux/network/endian-conv.c
 #   srcs/linux/sys_cmd.cpp
 #   srcs/stl/container_test.cpp
 #   srcs/db/db_test.cpp
 #   srcs/db/normal.cpp
-#   srcs/algorithm/algorithm_main.cpp
-#   srcs/algorithm/stl/non-mutating-algo.cpp
+   srcs/algorithm/algorithm_main.cpp
+   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
 #   srcs/algorithm/ds/data_structure.cpp

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-10-23 17:27:57
+ * Last modified: 2016-10-25 13:40:38
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -23,11 +23,14 @@ void linux_main(void)
     }
     cout << "---------------------------" << endl;
     {
-        fd_test();
-        endian_conv();
+#if 0
+        //fd_test();
+        //endian_conv();
+#endif
     }
     cout << "---------------------------" << endl;
     {
+#if 0
         //int server_tcp_main(int argc, char **argv);
 
         const char *argv[] = {
@@ -40,6 +43,7 @@ void linux_main(void)
         }else{
             cout << "server - tcp - main - successed ! " << endl;
         }
+#endif
     }
     cout << "---------------------------" << endl;
     {

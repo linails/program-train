@@ -1,7 +1,7 @@
 /*
  * Progarm Name: algorithm_main.cpp
  * Created Time: 2016-08-14 10:35:26
- * Last modified: 2016-08-27 09:04:37
+ * Last modified: 2016-10-25 13:39:58
  */
 
 #include "algorithm_main.h"
@@ -17,7 +17,7 @@ void algorithm_main(void)
 {
     cout << "----------- algorithm_main -----------" << endl;
     {
-        //non_mutating_algo();
+        non_mutating_algo();
 
         //mutating_algo();
 
@@ -25,7 +25,7 @@ void algorithm_main(void)
     }
     cout << "-----------------------------------------" << endl;
     {
-        data_structure_test();
+        //data_structure_test();
     }
 }
 

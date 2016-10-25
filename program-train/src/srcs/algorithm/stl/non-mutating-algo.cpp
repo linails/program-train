@@ -1,7 +1,7 @@
 /*
  * Progarm Name: non-mutating-algo.cpp
  * Created Time: 2016-08-14 10:33:17
- * Last modified: 2016-08-16 17:19:12
+ * Last modified: 2016-10-25 13:55:55
  */
 
 #include "non-mutating-algo.h"
@@ -10,6 +10,7 @@
 #include <vector>
 #include <cstring>
 #include <list>
+#include <string>
 
 using namespace std;
 
@@ -160,6 +161,63 @@ void non_mutating_algo(void)
         iter = find_first_of(v.begin(), v.end(), v1.begin(), v1.end());
         if(iter != v.end()){
             cout << "find_first_of : " << *iter << endl;
+        }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        //find_if
+
+        struct TestData{
+            int     a;
+            int     b;
+            int     c;
+            string  d;
+            TestData():a(0),b(0),c(0),d("Test"){};
+        };
+        auto empty = [](TestData &data){
+            if(data.d == "Test") return true;
+            else return false;
+        };
+
+        vector<TestData> vtd;
+
+        TestData td;
+        td.a = 0;
+        vtd.push_back(td);
+
+        td.d = "1";
+        td.a = 1;
+        vtd.push_back(td);
+
+        td.d = "2";
+        td.a = 2;
+        vtd.push_back(td);
+
+        td.d = "3";
+        td.a = 3;
+        vtd.push_back(td);
+
+        td.d = "Test";
+        td.a = 4;
+        vtd.push_back(td);
+
+        cout << "vtd : " << endl;
+        for(auto &unit : vtd){
+            cout << "unit.d : " << unit.d << endl;
+        }
+
+        auto iter = find_if(vtd.begin(), vtd.end(), empty);
+        if(iter != vtd.end()){
+            cout << "Find empty unit" << endl;
+            cout << "iter->d : " << iter->d << " - iter->a = " << iter->a << endl;
+        }
+
+        iter++;
+
+        iter = find_if(iter, vtd.end(), empty);
+        if(iter != vtd.end()){
+            cout << "Find empty unit" << endl;
+            cout << "iter->d : " << iter->d << " - iter->a = " << iter->a << endl;
         }
     }
     cout << "-----------------------------------------" << endl;
