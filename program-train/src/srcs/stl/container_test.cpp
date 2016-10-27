@@ -1,11 +1,12 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-10-24 13:44:54
+ * Last modified: 2016-10-27 15:25:56
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "container_test.h"
+#include "container_test.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -663,24 +664,23 @@ void map_test(void)
 
     cout<<"---------------------------"<<endl;
     {
-
-    map<int,int> iimap;
-    iimap.insert(make_pair(2,4));
-    auto iter = iimap.begin();
-    cout << "iimap.first : " << iter->first << endl;
+        map<int,int> iimap;
+        iimap.insert(make_pair(2,4));
+        auto iter = iimap.begin();
+        cout << "iimap.first : " << iter->first << endl;
     }
-
+    cout<<"---------------------------"<<endl;
     {
-    bitset<20> b("1");
+        bitset<20> b("1");
 
-    vector<bitset<20>> bitvec;
-    bitvec.push_back(b);
+        vector<bitset<20>> bitvec;
+        bitvec.push_back(b);
 
-    map<bitset<20>*,int> bitmap;
-    bitmap.insert(make_pair(&bitvec[0],3));
+        map<bitset<20>*,int> bitmap;
+        bitmap.insert(make_pair(&bitvec[0],3));
 
-    auto iter = bitmap.begin();
-    cout << "*bitmap->first = " << *iter->first << " bitmap->second = " << iter->second << endl;
+        auto iter = bitmap.begin();
+        cout << "*bitmap->first = " << *iter->first << " bitmap->second = " << iter->second << endl;
     }
     cout<<"---------------------------"<<endl;
     {
@@ -758,7 +758,93 @@ void map_test(void)
         m.erase(8); // failed , 
     }
     cout<<"---------------------------"<<endl;
+    {
+        map<int, SData_t> mis;
+
+        SData_t sd = {0, 1, 2};
+
+        mis.insert(map<int, SData_t>::value_type(1111, sd));
+
+        sd.a += sd.b;
+        sd.b += sd.c;
+        sd.c += sd.a;
+        mis.insert(map<int, SData_t>::value_type(1112, sd));
+
+        cout << "mis data :" << endl;
+        for(auto &u : mis){
+            cout << "u.second.a = " << u.second.a << endl;
+            cout << "u.second.b = " << u.second.b << endl;
+            cout << "u.second.c = " << u.second.c << endl;
+        }
+
+        cout << "mis[1111] : " << endl;
+        {
+            cout << "mis[1111].a = " << mis[1111].a << endl;
+            cout << "mis[1111].b = " << mis[1111].b << endl;
+            cout << "mis[1111].c = " << mis[1111].c << endl;
+        }
+    }
+    cout<<"---------------------------"<<endl;
+    {
+        struct Mn{
+            int m;
+            int n;
+            Mn(){};
+            Mn(int depth){m = -(depth - 1); n = -(depth - 1);};
+        };
+
+        /* <dir,    <depth, <int, int> > > */
+        map<int, map<int, Mn> > xyz;
+        cout << " map<int, map<int, Mn> > xyz " << endl;
+
+        auto disp = [](map<int, map<int, Mn> > &xyz){
+            cout << "[disp] : " << endl;
+            for(auto &unit : xyz){
+                cout << " - dir : " << unit.first << endl;
+                for(auto &u : unit.second){
+                    cout << "   - depth : " << u.first << " | ";
+                    cout << " m : " << u.second.m << " , n : " << u.second.n << endl;
+                }
+            }
+        };
+
+        Mn mn(2);
+        map<int, Mn> mim;
+        mim.insert(make_pair(2, mn));
+
+        xyz.insert(make_pair(1, mim));
+
+        disp(xyz);
+
+        map<int, Mn> &rmim = xyz[1];
+        Mn &rmn = rmim[2];
+
+        rmn.m = 10;
+        rmn.n = 11;
+        disp(xyz);
+
+
+        Mn *pmn = &rmim[2];
+        pmn->m = 11;
+        pmn->n = 12;
+        disp(xyz);
+
+
+        map<int, Mn> *pmim = &xyz[1];
+        Mn *pmn0 = &(*pmim)[2];
+        pmn0->m = 20;
+        pmn0->n = 20;
+        disp(xyz);
+
+
+        Mn *pmn1 = &xyz[1][2];
+        pmn1->m = 30;
+        pmn1->n = 30;
+        disp(xyz);
+    }
+    cout<<"---------------------------"<<endl;
 }
+
 
 /*标准库为每一种标准容器定义了一种迭代器类型，所有的标准库容器都定义了相应的迭代器类型，
  *而只有少数的容器支持下标操作*/

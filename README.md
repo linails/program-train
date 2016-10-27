@@ -9,6 +9,9 @@
 - C++
 - C++11
 - Linux
+- data structure
+- algorithm
+
 - 多线程
 - 多进程
 - 网络
