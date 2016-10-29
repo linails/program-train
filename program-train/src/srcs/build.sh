@@ -22,6 +22,14 @@ for eachline in `cat /etc/issue`; do
         echo "system version : 14"
         c_compiler="x86_64-unknown-linux-gnu-gcc-4.9.2"
         cxx_compiler="x86_64-unknown-linux-gnu-g++"
+
+        if [ "`which $c_compiler`" ]; then
+            echo "$c_compiler is exist"
+        else
+            c_compiler="/opt/gcc-4.9.2/bin/x86_64-unknown-linux-gnu-gcc-4.9.2"
+            cxx_compiler="/opt/gcc-4.9.2/bin/x86_64-unknown-linux-gnu-g++"
+        fi
+
         break
     fi
 done
