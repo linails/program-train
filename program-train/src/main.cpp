@@ -1,11 +1,12 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-10-23 12:09:12
+ * Last modified: 2016-10-29 14:18:26
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include <iostream>
+#include <cstdio>
 #include "object_c.h"
 #include "sqlite3.h"
 
@@ -35,8 +36,13 @@
 
 using namespace std;
 
-int main(void)
+int main(int argc, char **argv)
 {
+    cout << "main : argc - " << argc << endl;
+    for(int i=0; i<argc; i++){
+        printf("argv[%d] : %s\n", i, argv[i]);
+    }
+
     {
 #if 0
         refrence_test();
@@ -61,7 +67,7 @@ int main(void)
     }
     {
         //db_test();
-        linux_main();
+        linux_main(argc, argv);
     }
     {
         //cases_main();
