@@ -1,7 +1,7 @@
 /*
  * Progarm Name: server-tcp.h
  * Created Time: 2016-10-06 00:01:40
- * Last modified: 2016-10-23 20:19:22
+ * Last modified: 2016-10-30 20:13:58
  */
 
 #ifndef _SERVER_TCP_H_
@@ -35,7 +35,7 @@ extern "C" {
  *                                      // struct sockaddr 见 readme.txt 说明
  *  }
  *
- *  struct In_addr_t{
+ *  struct in_addr{
  *      In_addr_t       s_addr;         // 32 bit IPv4 addr
  *  }
  *  */

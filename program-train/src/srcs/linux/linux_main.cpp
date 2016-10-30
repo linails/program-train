@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-10-24 21:22:10
+ * Last modified: 2016-10-30 21:49:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include "server-udp.h"
 #include "fd-test.h"
 #include "endian-conv.h"
+#include "socket-opt.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ void linux_main(void)
     {
         fd_test();
         endian_conv();
+        sock_opt_main( 0, NULL);
     }
     cout << "---------------------------" << endl;
     {
@@ -45,7 +47,7 @@ void linux_main(void)
     }
     cout << "---------------------------" << endl;
     {
-#if 1
+#if 0
         //int server_udp_main(int argc, char **argv);
         
         const char *argv[] = {
