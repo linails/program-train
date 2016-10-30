@@ -1,7 +1,7 @@
 /*
  * Progarm Name: server-udp.c
  * Created Time: 2016-10-06 00:01:59
- * Last modified: 2016-10-24 21:23:47
+ * Last modified: 2016-10-29 14:13:43
  */
 
 #include "server-udp.h"
@@ -74,6 +74,7 @@ int server_udp_echo(int argc, char **argv)
     int str_len;
 
     char message[512];
+    char *padr = NULL;
     socklen_t clnt_addr_size;
     struct sockaddr_in serv_addr, client_addr;
 
@@ -88,9 +89,14 @@ int server_udp_echo(int argc, char **argv)
 
 
 
+#if 0
     if(argc != 2){
         printf("Usage : %s <port>\n", argv[0]);
         exit(1);
+    }
+#endif
+    if(argc == 3){
+        padr = argv[1];
     }
 
 
@@ -102,8 +108,13 @@ int server_udp_echo(int argc, char **argv)
 
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family      = AF_INET;
-    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serv_addr.sin_port        = htons(atoi(argv[1]));
+    if(NULL == padr){
+        serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+        serv_addr.sin_port        = htons(atoi(argv[1]));
+    }else{
+        serv_addr.sin_addr.s_addr = inet_addr(padr);
+        serv_addr.sin_port        = htons(atoi(argv[2]));
+    }
 
 
     if(-1 == bind(serv_sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr))){
@@ -117,6 +128,12 @@ int server_udp_echo(int argc, char **argv)
 
         str_len = recvfrom(serv_sock, message, sizeof(message), 0,
                            (struct sockaddr *)&client_addr, &clnt_addr_size);
+        
+        printf("Client connect :\n");
+        printf("    client addr : %s - port : %d\n",
+                inet_ntoa(client_addr.sin_addr),
+                client_addr.sin_port
+                );
 
         message[str_len] = '\0';
         printf("Recvfrom message : %s - length : %d\n", message, str_len);

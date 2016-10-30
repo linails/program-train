@@ -1,13 +1,21 @@
 /*
  * Progarm Name: endian-conv.c
  * Created Time: 2016-10-23 17:25:44
- * Last modified: 2016-10-23 17:34:33
+ * Last modified: 2016-10-29 11:06:39
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "endian-conv.h"
 #include <stdio.h>
 #include <arpa/inet.h>
+
+/* 
+ * 地址与字节转换：
+ *      unsigned short htons(unsigned short);
+ *      unsigned short ntohs(unsigned short);
+ *      unsigned long htonl(unsigned long);
+ *      unsigned long ntohl(unsigned long);
+ * */
 
 void endian_conv(void)
 {
