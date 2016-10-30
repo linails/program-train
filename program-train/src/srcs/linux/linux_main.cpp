@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-10-29 19:52:20
+ * Last modified: 2016-10-30 14:25:36
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,7 +29,7 @@ void linux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+#if 1
         //int server_tcp_main(int argc, char **argv);
 
         int ret = 0;
@@ -82,7 +82,7 @@ void linux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 1
+#if 0
         //int p2p_server_main(int argc, char **argv);
 
         int ret = 0;

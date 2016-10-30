@@ -1,7 +1,7 @@
 /*
  * Progarm Name: server-tcp.c
  * Created Time: 2016-10-06 00:01:30
- * Last modified: 2016-10-29 13:30:08
+ * Last modified: 2016-10-30 14:29:14
  */
 
 #include "server-tcp.h"
@@ -85,9 +85,16 @@ int server_tcp_main(int argc, char **argv)
     }
     printf("-----------------------------\n");
     {
-#if 1
+#if 0
         int server_tcp_echo(int argc, char **argv);
         ret = server_tcp_echo(argc, argv);
+#endif
+    }
+    printf("-------------------------------\n");
+    {
+#if 1
+        int server_tcp_half_close(int argc, char **argv);
+        ret = server_tcp_half_close(argc, argv);
 #endif
     }
 
@@ -338,3 +345,125 @@ int server_tcp_echo(int argc, char **argv)
  *
  * */
 
+/* 
+ * TCP 的断开过程比建立过程更重要
+ *
+ *  Half-close 才可以明确断开过程
+ *      : 可以传输数据，但是无法接收，或可以接收但无法传输，即关闭了流的一半
+ *
+ *  close 函数会完全断开连接
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * #include <sys/socket.h>
+ *
+ * int shutdown(int sock, int howto);
+ *      -> 成功返回0 ， 失败返回 -1
+ *      - * sock    : 需要断开的套接字文件描述符
+ *      - * howto   : 传递断开方式信息
+ *          {
+ *              SHUT_RD     : 断开输入流
+ *              SHUT_WR     : 断开输出流
+ *              SHUT_RDWR   : 同时断开两个流
+ *          }
+ *
+ *
+ * */
+
+int server_tcp_half_close(int argc, char **argv)
+{
+    printf("------ server-tcp-half-close ------\n");
+
+    int ret = 0;
+    int serv_sock;
+    int client_sock;
+
+    struct sockaddr_in serv_addr;
+    struct sockaddr_in client_addr;
+    socklen_t clnt_addr_size;
+
+    char message[512] = "Hello World - echo!";
+
+
+
+    printf("\n");
+    printf("Print argv[] List :\n{\n");
+    for(int i=0; i<argc; i++){
+        printf("    argv[%d] : %s\n", i, argv[i]);
+    }
+    printf("}\n\n");
+
+
+
+    if(2 != argc){
+        printf("Usage : %s <port> \n", argv[0]);
+        exit(1);
+    }
+
+    /******************************************************************************/
+
+    /* Step 1 */
+    serv_sock = socket(PF_INET, SOCK_STREAM, 0);
+    if(-1 == serv_sock){
+        printf("socket() error !!!\n");
+        exit(1);
+    }
+
+    memset(&serv_addr, 0, sizeof(serv_addr));
+    serv_addr.sin_family        = AF_INET;
+    serv_addr.sin_addr.s_addr   = htonl(INADDR_ANY);
+    serv_addr.sin_port          = htons(atoi(argv[1]));
+
+    /* Step 2 */
+    if(-1 == bind(serv_sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))){
+        printf("bind() error !!!\n");
+        exit(1);
+    }
+
+    /* Step 3 */
+    if(-1 == listen(serv_sock, 5)){
+        printf("listen() error !!!\n");
+        exit(1);
+    }
+
+    for(int i=0; i<6; i++){
+        printf("for i = %d\n", i);
+        /* Step 4 */
+        clnt_addr_size  = sizeof(client_addr);
+        client_sock     = accept(serv_sock, (struct sockaddr*)&client_addr, &clnt_addr_size);
+        if(-1 == client_sock){
+            printf("accept() error\n");
+            exit(1);
+        }
+
+        /******************************************************************************/
+
+        printf("Client : %d -> port : %#x\n",
+                client_sock, 
+                client_addr.sin_port);
+
+        int str_len = 0;
+        while(0 != (str_len = read(client_sock, message, sizeof(message)))){
+            write(client_sock, message, str_len);
+            message[str_len] = '\0';
+
+            printf("Message To client : %s -> client : %d -> port : %#x\n",
+                    message, 
+                    client_sock, 
+                    client_addr.sin_port);
+        }
+
+        printf("received data end !\n");
+
+        char *ends = "Thank you for you - from server";
+
+        write(client_sock, ends, strlen(ends));
+
+        /* Close all fd */
+        close(client_sock);
+    }
+
+    close(serv_sock);
+
+
+    return ret;
+}
