@@ -1,7 +1,7 @@
 /*
  * Progarm Name: p2p-client.c
  * Created Time: 2016-10-29 14:22:58
- * Last modified: 2016-10-29 22:16:47
+ * Last modified: 2016-10-30 09:51:17
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <pthread.h>
 
 /* 
  * 这个 P2P 的实例原理是基于 UDP 通信原理
@@ -42,17 +43,39 @@ typedef struct {
     struct sockaddr_in addr;
 }TMsg_t;
 
+pthread_mutex_t mutex;
+
+TMsg_t msg = { 0, };
+
+int  sock;
+
+int  quit_flag = -1;
+
+socklen_t addrlen;
+
+struct sockaddr_in serv_addr = { 0, };
+struct sockaddr_in from_addr = { 0, };
+
 int client(int argc, char **argv)
 {
-    TMsg_t msg = { 0, };
+    int ret = 0;
 
-    int  sock;
+    pthread_t   thread;
+    void       *thread_result;
 
-    socklen_t addrlen;
+    /* init recv thread */
+    {
+        if(0 != (ret = pthread_mutex_init(&mutex, NULL))){
+            perror("mutex init failed");
+            exit(EXIT_FAILURE);
+        }
 
-    struct sockaddr_in serv_addr = { 0, };
-    struct sockaddr_in from_addr = { 0, };
-
+        void *thread_recv(void *arg);
+        if(0 != (ret = pthread_create(&thread, NULL, thread_recv, NULL))){
+            perror("thread_a creation failed!");
+            exit(EXIT_FAILURE);
+        }
+    }
 
 
     printf("\n");
@@ -106,7 +129,10 @@ int client(int argc, char **argv)
         printf("Input message(q to Quit) : ");
         fgets(msg.data, sizeof(msg.data), stdin);
 
-        if(!strcmp(msg.data, "q\n") || !strcmp(msg.data, "Q\n")) break;
+        if(!strcmp(msg.data, "q\n") || !strcmp(msg.data, "Q\n")){
+            quit_flag = 0;
+            break;
+        }
         printf("Input message length : %d\n", (int)strlen(msg.data));
 
 
@@ -116,6 +142,30 @@ int client(int argc, char **argv)
         sendto(sock, (char *)&msg, sizeof(msg), 0,
                 (struct sockaddr *)&serv_addr, sizeof(serv_addr));
 
+    }
+
+    close(sock);
+
+    /* uninit thread recv  */
+    {
+        if(0 != (ret = pthread_join(thread, &thread_result))){
+            perror("thread join failed!");
+            exit(EXIT_FAILURE);
+        }
+        pthread_mutex_destroy(&mutex);
+    }
+
+    return ret;
+}
+
+void *thread_recv(void *arg)
+{
+    printf("thread_recv running...\n");
+
+    while(1){
+        if(0 == quit_flag){
+            break;
+        }
 
         addrlen = sizeof(from_addr);
         recvfrom(sock, (char *)&msg, sizeof(msg), 0, 
@@ -127,11 +177,8 @@ int client(int argc, char **argv)
                 msg.data);
     }
 
-    close(sock);
-
-    return 0;
+    pthread_exit("recv thread exit!");
 }
-
 
 
 
