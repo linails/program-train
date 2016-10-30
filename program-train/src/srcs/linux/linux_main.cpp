@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-10-29 21:28:54
+ * Last modified: 2016-10-30 14:27:54
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -27,15 +27,24 @@ void linux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+#if 1
         //int client_tcp_main(int argc, char **argv);
-        const char *argv[] = {
+        
+        int ret = 0;
+
+        const char *sargv[] = {
             "client_tcp_main",
             "127.0.0.1",
             "9190",
         };
 
-        if(-1 == client_tcp_main(sizeof(argv)/sizeof(const char *), (char **)argv)){
+        if((3 != argc) && (1 == argc)){
+            ret = client_tcp_main(sizeof(sargv)/sizeof(const char *), (char **)sargv);
+        }else{
+            ret = client_tcp_main(argc, (char **)argv);
+        }
+
+        if(-1 == ret){
             cout << "server - tcp - main - failed !" << endl;
         }else{
             cout << "server - tcp - main - successed !" << endl;
@@ -68,7 +77,7 @@ void linux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 1
+#if 0
         int ret = 0;
 
         const char *sargv[] = {
