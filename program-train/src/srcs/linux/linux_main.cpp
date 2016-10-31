@@ -1,11 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
-<<<<<<< HEAD
- * Last modified: 2016-10-30 21:49:44
-=======
- * Last modified: 2016-10-30 14:25:36
->>>>>>> 32e7243b260c4b4e6569fe042382230ebcb1e281
+ * Last modified: 2016-10-31 21:21:51
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,11 +12,8 @@
 #include "server-udp.h"
 #include "fd-test.h"
 #include "endian-conv.h"
-<<<<<<< HEAD
 #include "socket-opt.h"
-=======
 #include "p2p-server.h"
->>>>>>> 32e7243b260c4b4e6569fe042382230ebcb1e281
 
 using namespace std;
 
@@ -38,7 +31,7 @@ void linux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 1
+#if 0
         //int server_tcp_main(int argc, char **argv);
 
         int ret = 0;
