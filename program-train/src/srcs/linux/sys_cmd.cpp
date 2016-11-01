@@ -1,7 +1,7 @@
 /*
  * Progarm Name: sys_cmd.cpp
  * Created Time: 2016-09-20 10:59:19
- * Last modified: 2016-09-20 17:25:26
+ * Last modified: 2016-10-28 13:14:45
  */
 
 #include "sys_cmd.hpp"
@@ -63,6 +63,10 @@ void sys_cmd_called(void)
     cout << "---------------------------" << endl;
     {
         do_shell("cd ~/share/temp/test; ./a.out", "minphone1 minphone2 minphone3");
+    }
+    cout << "---------------------------" << endl;
+    {
+        //do_shell("~/share/qt-at-tester/python/main.py");
     }
 
     pclose(fp);

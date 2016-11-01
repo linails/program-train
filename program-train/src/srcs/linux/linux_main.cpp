@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-10-25 13:40:38
+ * Last modified: 2016-10-28 13:30:03
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,11 +15,11 @@
 
 using namespace std;
 
-void linux_main(void)
+void linux_main(int argc, char **argv)
 {
     cout << "------------- linux_main --------------" << endl;
     {
-        //sys_cmd_called();
+        sys_cmd_called();
     }
     cout << "---------------------------" << endl;
     {

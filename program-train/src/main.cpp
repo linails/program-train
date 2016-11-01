@@ -35,7 +35,7 @@
 
 using namespace std;
 
-int main(void)
+int main(int argc, char **argv)
 {
     {
 #if 0
@@ -61,7 +61,7 @@ int main(void)
     }
     {
         //db_test();
-        linux_main();
+        linux_main(argc, argv);
     }
     {
         //cases_main();
