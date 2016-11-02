@@ -1,7 +1,7 @@
 /*
  * Progarm Name: sys_cmd.cpp
  * Created Time: 2016-09-20 10:59:19
- * Last modified: 2016-10-28 13:14:45
+ * Last modified: 2016-11-01 11:16:17
  */
 
 #include "sys_cmd.hpp"
@@ -11,6 +11,7 @@
 #include <string>
 #include <cstdio>
 #include <cstring>
+#include <unistd.h>
 
 using namespace std;
 
@@ -41,6 +42,7 @@ void sys_cmd_called(void)
         }
     };
 
+#if 0
     {
         do_shell("ls -l ~/share/temp");
     }
@@ -52,6 +54,7 @@ void sys_cmd_called(void)
     {
         do_shell("ls ~/share/temp; ls -l ~/share/temp");
     }
+#endif
 #if 0
     cout << "---------------------------" << endl;
     {
@@ -62,11 +65,23 @@ void sys_cmd_called(void)
 #endif
     cout << "---------------------------" << endl;
     {
-        do_shell("cd ~/share/temp/test; ./a.out", "minphone1 minphone2 minphone3");
+        //do_shell("cd ~/share/temp/test; ./a.out", "minphone1 minphone2 minphone3");
     }
     cout << "---------------------------" << endl;
     {
-        //do_shell("~/share/qt-at-tester/python/main.py");
+        char buf[128];
+        getcwd(buf, sizeof(buf));
+        cout << "pwd : " << buf << endl;
+
+        string pwd(buf);
+        string script = "numpy-exercise.py";
+
+        /* python script path */
+        pwd += "/../src/srcs/linux/python/";
+
+        pwd += script;
+
+        do_shell(pwd.c_str());
     }
 
     pclose(fp);

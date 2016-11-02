@@ -11,6 +11,7 @@
 - Linux
 - data structure
 - algorithm
+- python
 - 多线程
 - 多进程
 - 网络
