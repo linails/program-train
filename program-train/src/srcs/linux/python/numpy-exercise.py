@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 # Created Time: 2016-10-28 14:00:57
-# Last modified: 2016-11-02 13:47:45
+# Last modified: 2016-11-03 11:01:48
 # 
 
 import sys,os
@@ -184,6 +184,34 @@ print "a[2] :", a[2]
 print
 print "a[::-1] :"
 pprint(a[::-1])
+
+print "------------------------------------"
+
+# Note: 除了切片下标存取元素之外，Numpy还提供了整数列表、整数数组和布尔数组等几种高级下标存取方法
+#       当使用整数列表对数组元素进行存取时，将使用列表中的每个元素作为下标
+#       使用列表作为下标得到的数组不和原始数组共享数据
+
+x = np.arange(10, 1, -1)    # x = [10, 1) , interval = -1
+print "x = np.arange(10, 1, -1) :"
+pprint(x)
+
+b = x[[3, 3, 1, 8]]
+print 
+print "b = x[[3, 3, 1, 8]] :"
+pprint(b)
+
+b[1] = 10
+print 
+print "b[1] = 10"
+print "b = ", pprint(b)
+print "x = ", pprint(x)
+
+c = x[np.array([3, 3, 1, 8])]
+print 
+print "c = x[np.array([3, 3, 1, 8])] :" 
+pprint(c)
+
+print "------------------------------------"
 
 print "------------------------------------"
 
