@@ -1,7 +1,7 @@
 /*
  * Progarm Name: sys_cmd.cpp
  * Created Time: 2016-09-20 10:59:19
- * Last modified: 2016-11-01 11:16:17
+ * Last modified: 2016-11-02 13:40:56
  */
 
 #include "sys_cmd.hpp"
@@ -31,8 +31,12 @@ void sys_cmd_called(void)
         }
 
         if(NULL == in){
-            while(fgets(line, sizeof(line) - 1, fp) != NULL)
-                cout << "line : " << line ;
+            int lines = 0;
+            cout << endl;
+            while(fgets(line, sizeof(line) - 1, fp) != NULL){
+                printf("line %.4d : %s", lines++, line);
+            }
+            cout << endl;
         }else{
             if(NULL != in){
                 cout << "input ..." << endl;

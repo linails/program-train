@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 # Created Time: 2016-10-28 14:00:57
-# Last modified: 2016-11-01 16:36:45
+# Last modified: 2016-11-02 13:47:45
 # 
 
 import sys,os
@@ -140,6 +140,50 @@ pprint(a)
 a = np.fromstring(s, dtype=np.float)
 print "a : - %d " % len(a)
 pprint(a)
+
+print "------------------------------------"
+
+print "(10, ) : "
+pprint((10, ))
+
+def func(i):
+    return i*2
+
+# Note: 第一个参数为计算数组元素的函数，第二个参数指定数组的形状 | 因此第二个参数必须是一个序列
+a = np.fromfunction(func, (10, ))
+print "a : - %d " % len(a)
+pprint(a)
+
+def func2(i, j):
+    return (i+1) * (j+1)
+
+a = np.fromfunction(func2, (9, 9))
+print "a : - %d " % len(a)
+pprint(a)
+
+print "------------------------------------"
+
+# Note: 可以使用和列表相同的方式对数组的元素进行存取
+#       和列表不同的是，通过切片获取的新数组是原始数组的一个视图，是共享一个存储空间的
+#       有点类似于引用了
+a = np.arange(10)
+print "a : - %d " % len(a)
+pprint(a)
+
+print "a[4] :", a[4]
+print "a[1:-1:2] :"
+pprint(a[1:-1:2])   # Note: 第三个参数表示步长，2表示间隔1个元素获取一个元素
+
+print
+
+a = np.array([1, 2, 3, 4])
+print "a : - %d " % len(a)
+pprint(a)
+print "a[2] :", a[2]
+
+print
+print "a[::-1] :"
+pprint(a[::-1])
 
 print "------------------------------------"
 
