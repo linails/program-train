@@ -1,7 +1,7 @@
 /*
  * Progarm Name: sys_cmd.cpp
  * Created Time: 2016-09-20 10:59:19
- * Last modified: 2016-11-02 13:40:56
+ * Last modified: 2016-11-03 16:00:05
  */
 
 #include "sys_cmd.hpp"
@@ -78,7 +78,8 @@ void sys_cmd_called(void)
         cout << "pwd : " << buf << endl;
 
         string pwd(buf);
-        string script = "numpy-exercise.py";
+        //string script = "numpy-exercise.py";
+        string script = "traitsui-default-view.py";
 
         /* python script path */
         pwd += "/../src/srcs/linux/python/";
