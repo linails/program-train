@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.cpp
  * Created Time: 2016-11-09 15:06:00
- * Last modified: 2016-11-10 15:23:58
+ * Last modified: 2016-11-10 17:40:51
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -161,7 +161,7 @@ int  SceneSetv3::collecting_gateway2defense(void)
     for(auto &device : this->m_devices_set){
         auto got = this->m_gateways.find(device.gateway);
         if(got == this->m_gateways.end()){
-            size_t idx = this->m_gateways.size();
+            size_t idx = this->m_gateways.size() + 1;
             this->m_gateways.insert(unordered_map<string, int>::value_type(device.gateway, idx));
         }
     }
@@ -180,7 +180,7 @@ int  SceneSetv3::collecting_gateway2defense(void)
         stream << defense.alarm;
         stream >> device.status;
         
-        device.id       = gw.second;
+        device.id       = gw.second + 0xffff;
         device.gateway  = gw.first;
 
         this->m_device2defense.insert(Device2Defense_t::value_type(device, defense));

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: v3_test.cpp
  * Created Time: 2016-11-10 14:49:57
- * Last modified: 2016-11-10 15:22:24
+ * Last modified: 2016-11-10 16:34:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,18 +26,10 @@ void v3_test(void)
 {
     cout << "......TEST-v3......" << endl;
 
-#if 0
-    for(int i=0; i<1000; i++){
-        device_t dev = {
-            i,
-            "gw:009029876758893798759832",
-            "json ctrl cmd"
-        };
 
-        vdev.push_back(dev);
-    }
-#endif
-
+    /* 
+     * For v2-Test
+     * */
     void v2_test(void);
     v2_test();
 

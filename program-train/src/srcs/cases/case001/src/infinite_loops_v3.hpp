@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.hpp
  * Created Time: 2016-11-09 15:05:54
- * Last modified: 2016-11-10 11:28:54
+ * Last modified: 2016-11-10 17:25:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -93,14 +93,14 @@ private:
     struct DefenseHash{
         size_t operator()(const defense_t &defense) const
         {
-            size_t ret = hash<string>()(defense.gateway);
+            size_t ret = hash<string>()(defense.gateway) ^ hash<int>()(defense.alarm);
             return ret;
         }
     };
     struct DefenseEqual{
         bool operator()(const defense_t &ld, const defense_t &rd) const
         {
-            return ld.gateway == rd.gateway;
+            return ld.gateway == rd.gateway && ld.alarm == rd.alarm;
         }
     };
     /* <m_pos, defense_t> = <0xffff++, defense_t> */
