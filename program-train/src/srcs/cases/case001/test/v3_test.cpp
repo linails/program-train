@@ -1,7 +1,7 @@
 /*
  * Progarm Name: v3_test.cpp
  * Created Time: 2016-11-10 14:49:57
- * Last modified: 2016-11-10 16:34:06
+ * Last modified: 2016-11-11 11:02:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,9 +13,11 @@
 #include "common.h"
 #include "timer.h"
 #include <thread>
+#include <sstream>
 
 using std::cout;
 using std::endl;
+using std::stringstream;
 
 static vector<device_t> vdev;
 static vector<scene_t> vscene;
@@ -30,12 +32,18 @@ void v3_test(void)
     /* 
      * For v2-Test
      * */
-    void v2_test(void);
-    v2_test();
+    //void subtest_v2(void);
+    //subtest_v2();
 
+
+    /* 
+     * For v3-Test
+     * */
+    void subtest_v3(void);
+    subtest_v3();
 }
 
-void v2_test(void)
+void subtest_v2(void)
 {
     string s("**********************************");
     cout << s << s << s << endl;
@@ -1436,6 +1444,66 @@ void eg05(SceneSetv3 &ss)
     }
 }
 
+void subtest_v3(void)
+{
+    string s("**********************************");
+    cout << s << s << s << endl;
+    cout << s << s << s << endl;
+
+    cout << "......TEST-v3......" << endl;
+
+    vdev.clear();
+
+    size_t gatewayid = 100000000000000000;
+    cout << "gatewayid : " << gatewayid << endl;
+
+    for(int i=0; i<1000; i++){
+        device_t        dev;
+        stringstream    stream;
+
+        dev.id      = i;
+        dev.status  = "json ctrl cmd";
+
+        stream << gatewayid;
+        stream >> dev.gateway;
+
+        vdev.push_back(dev);
+
+        if(0 == (i % 10)){
+            gatewayid++;
+        }
+    }
+
+    cout << "gatewayid : " << gatewayid << endl;
+
+    get_scene_vector(vscene);
+
+    SceneSetv3  ss(vdev, vscene);
+
+    ss.print_all_set();
+
+    cout << "----------------------------------------------------------------" << endl;
+
+    void eg01(SceneSetv3 &ss);
+    eg01(ss);
+
+    void eg02(SceneSetv3 &ss);
+    eg02(ss);
+
+    void eg03(SceneSetv3 &ss);
+    eg03(ss);
+
+    void eg04(SceneSetv3 &ss);
+    eg04(ss);
+
+    void eg05(SceneSetv3 &ss);
+    eg05(ss);
+
+    cout << "----------------------------------------------------------------" << endl;
+
+    ss.print_all_set();
+
+}
 
 
 

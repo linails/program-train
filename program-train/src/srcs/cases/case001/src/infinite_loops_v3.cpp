@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.cpp
  * Created Time: 2016-11-09 15:06:00
- * Last modified: 2016-11-10 17:40:51
+ * Last modified: 2016-11-11 10:52:17
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -163,6 +163,7 @@ int  SceneSetv3::collecting_gateway2defense(void)
         if(got == this->m_gateways.end()){
             size_t idx = this->m_gateways.size() + 1;
             this->m_gateways.insert(unordered_map<string, int>::value_type(device.gateway, idx));
+            cout << "gateway : " << device.gateway << " - " << idx << endl;
         }
     }
 
@@ -195,6 +196,38 @@ int  SceneSetv3::collecting_gateway2defense(void)
 
         this->m_device2defense.insert(Device2Defense_t::value_type(device, defense));
         this->m_defense2device.insert(Defense2Device_t::value_type(defense, device));
+    }
+
+
+    /* For debug print */
+    {
+#if 1
+        cout << "----------------------------- collecting_gateway2defense -----------------------------" << endl;
+        int i = 0;
+        for(auto &unit : this->m_device2defense){
+            printf( "[%d]\n", i);
+            cout << "|defense : " << endl;
+            cout << "|   alarm : " << unit.second.alarm << endl;
+            cout << "|   gateway : " << unit.second.gateway << endl;
+            cout << "|device :" << endl;
+            cout << "|   id : " << unit.first.id << endl;
+            cout << "|   status : " << unit.first.status << endl;
+            printf( "|__________________________________[%d]\n", i++);
+        }
+        cout << "----------------------------------------------------------" << endl;
+        i = 0;
+        for(auto &unit : this->m_defense2device){
+            printf( "[%d]\n", i);
+            cout << "|defense : " << endl;
+            cout << "|   alarm : " << unit.first.alarm << endl;
+            cout << "|   gateway : " << unit.first.gateway << endl;
+            cout << "|device :" << endl;
+            cout << "|   id : " << unit.second.id << endl;
+            cout << "|   status : " << unit.second.status << endl;
+            printf( "|__________________________________[%d]\n", i++);
+        }
+        cout << "----------------------------- collecting_gateway2defense -----------------------------" << endl;
+#endif
     }
 
     return ret;
