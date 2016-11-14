@@ -1,30 +1,55 @@
 /*
- * Progarm Name: test_main.cpp
- * Created Time: 2016-08-01 14:33:20
- * Last modified: 2016-11-10 15:43:24
+ * Progarm Name: v3_test.cpp
+ * Created Time: 2016-11-10 14:49:57
+ * Last modified: 2016-11-11 11:02:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
-#include "test_main.h"
-#include "infinite_loops_v2.h"
+#include "v3_test.hpp"
+#include "infinite_loops_v3.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 #include "common.h"
 #include "timer.h"
 #include <thread>
-#include "v3_test.hpp"
+#include <sstream>
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::stringstream;
 
 static vector<device_t> vdev;
 static vector<scene_t> vscene;
 
 static void get_scene_vector(vector<scene_t> &r_vscene);
 
-void test_main(void)
+void v3_test(void)
 {
-    cout << "......TEST-MAIN......" << endl;
+    cout << "......TEST-v3......" << endl;
+
+
+    /* 
+     * For v2-Test
+     * */
+    //void subtest_v2(void);
+    //subtest_v2();
+
+
+    /* 
+     * For v3-Test
+     * */
+    void subtest_v3(void);
+    subtest_v3();
+}
+
+void subtest_v2(void)
+{
+    string s("**********************************");
+    cout << s << s << s << endl;
+    cout << s << s << s << endl;
+
+    cout << "......TEST-v2......" << endl;
 
     for(int i=0; i<1000; i++){
         device_t dev = {
@@ -38,25 +63,25 @@ void test_main(void)
 
     get_scene_vector(vscene);
 
-    SceneSetv2  ss(vdev, vscene);
+    SceneSetv3  ss(vdev, vscene);
 
     ss.print_all_set();
 
     cout << "----------------------------------------------------------------" << endl;
 
-    void eg01(SceneSetv2 &ss);
+    void eg01(SceneSetv3 &ss);
     eg01(ss);
 
-    void eg02(SceneSetv2 &ss);
+    void eg02(SceneSetv3 &ss);
     eg02(ss);
 
-    void eg03(SceneSetv2 &ss);
+    void eg03(SceneSetv3 &ss);
     eg03(ss);
 
-    void eg04(SceneSetv2 &ss);
+    void eg04(SceneSetv3 &ss);
     eg04(ss);
 
-    void eg05(SceneSetv2 &ss);
+    void eg05(SceneSetv3 &ss);
     eg05(ss);
 
     cout << "----------------------------------------------------------------" << endl;
@@ -69,11 +94,6 @@ void test_main(void)
     ss.print_all_set();
 #endif
 
-
-    /*
-     * For v3-test 
-     * */
-    v3_test();
 }
 
 static void get_scene_vector(vector<scene_t> &r_vscene)
@@ -132,7 +152,7 @@ static void get_scene_vector(vector<scene_t> &r_vscene)
     }
 }
 
-void eg01(SceneSetv2 &ss)
+void eg01(SceneSetv3 &ss)
 {
     scene_t scene;
     {
@@ -183,7 +203,7 @@ void eg01(SceneSetv2 &ss)
     cout << "----------------------------------------------------------------" << endl;
 }
 
-void eg02(SceneSetv2 &ss)
+void eg02(SceneSetv3 &ss)
 {
     scene_t scene;
     {
@@ -234,7 +254,7 @@ void eg02(SceneSetv2 &ss)
     cout << "----------------------------------------------------------------" << endl;
 }
 
-void eg03(SceneSetv2 &ss)
+void eg03(SceneSetv3 &ss)
 {
     scene_t scene;
     {
@@ -285,7 +305,7 @@ void eg03(SceneSetv2 &ss)
     cout << "----------------------------------------------------------------" << endl;
 }
 
-void eg04(SceneSetv2 &ss)
+void eg04(SceneSetv3 &ss)
 {
     scene_t scene;
     {
@@ -336,7 +356,7 @@ void eg04(SceneSetv2 &ss)
     cout << "----------------------------------------------------------------" << endl;
 }
 
-void eg05(SceneSetv2 &ss)
+void eg05(SceneSetv3 &ss)
 {
     {
         scene_t scene;
@@ -1423,5 +1443,69 @@ void eg05(SceneSetv2 &ss)
         cout << "----------------------------------------------------------------" << endl;
     }
 }
+
+void subtest_v3(void)
+{
+    string s("**********************************");
+    cout << s << s << s << endl;
+    cout << s << s << s << endl;
+
+    cout << "......TEST-v3......" << endl;
+
+    vdev.clear();
+
+    size_t gatewayid = 100000000000000000;
+    cout << "gatewayid : " << gatewayid << endl;
+
+    for(int i=0; i<1000; i++){
+        device_t        dev;
+        stringstream    stream;
+
+        dev.id      = i;
+        dev.status  = "json ctrl cmd";
+
+        stream << gatewayid;
+        stream >> dev.gateway;
+
+        vdev.push_back(dev);
+
+        if(0 == (i % 10)){
+            gatewayid++;
+        }
+    }
+
+    cout << "gatewayid : " << gatewayid << endl;
+
+    get_scene_vector(vscene);
+
+    SceneSetv3  ss(vdev, vscene);
+
+    ss.print_all_set();
+
+    cout << "----------------------------------------------------------------" << endl;
+
+    void eg01(SceneSetv3 &ss);
+    eg01(ss);
+
+    void eg02(SceneSetv3 &ss);
+    eg02(ss);
+
+    void eg03(SceneSetv3 &ss);
+    eg03(ss);
+
+    void eg04(SceneSetv3 &ss);
+    eg04(ss);
+
+    void eg05(SceneSetv3 &ss);
+    eg05(ss);
+
+    cout << "----------------------------------------------------------------" << endl;
+
+    ss.print_all_set();
+
+}
+
+
+
 
 

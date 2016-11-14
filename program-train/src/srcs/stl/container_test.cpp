@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-10-27 15:25:56
+ * Last modified: 2016-11-10 17:31:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -1399,6 +1399,7 @@ void sstream_test(void)
 
 #include <unordered_map>
 
+/* case 01 */
 struct key{
     string first;
     string second;
@@ -1422,6 +1423,8 @@ struct keyequal{
     }
 };
 
+
+/* case 02 */
 typedef struct{
     int     devid;
     int     ep;
@@ -1442,6 +1445,51 @@ struct DevKeyEqual{
         return lhs.devid == rhs.devid && lhs.ep == rhs.ep;
     }
 };
+
+
+/* case 03 */
+typedef struct{
+    int     id;
+    string  gateway;
+    string  status;
+}device_t;
+
+typedef struct{
+    string gateway;
+    int    alarm;    /* alarm - status : On[1], off[0] */
+}defense_t;
+
+struct DeviceHash{
+    size_t operator()(const device_t &device) const
+    {
+        size_t ret = hash<int>()(device.id) ^ hash<string>()(device.gateway) ^ hash<string>()(device.status);
+        return ret;
+    }
+};
+
+struct DeviceEqual{
+    bool operator()(const device_t &ld, const device_t &rd) const
+    {
+        return ld.gateway == rd.gateway && ld.id == rd.id;
+    }
+};
+
+struct DefenseHash{
+    size_t operator()(const defense_t &defense) const
+    {
+        size_t ret = hash<string>()(defense.gateway) ^ hash<int>()(defense.alarm);
+        return ret;
+    }
+};
+
+struct DefenseEqual{
+    bool operator()(const defense_t &ld, const defense_t &rd) const
+    {
+        return ld.gateway == rd.gateway && ld.alarm == rd.alarm;
+    }
+};
+
+
 
 void unordered_container(void)
 {
@@ -1613,6 +1661,100 @@ void unordered_container(void)
 
         k.devid = 2;
         cout << "m[k] : " << m[k].front() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        /* <m_pos, defense_t> = <0xffff++, defense_t> */
+        typedef unordered_map<device_t, defense_t, DeviceHash, DeviceEqual> Device2Defense_t;
+        typedef unordered_map<defense_t, device_t, DefenseHash, DefenseEqual> Defense2Device_t;
+
+        Defense2Device_t defense2device;
+        {
+            defense_t       defense;
+            device_t        device;
+            stringstream    stream;
+
+            defense.alarm   = 0;
+            defense.gateway = "00000000000000000000001";
+            device.gateway  = "00000000000000000000001";
+            device.id       = defense2device.size();
+            stream << defense.alarm;
+            stream >> device.status;
+
+            defense2device.insert(Defense2Device_t::value_type(defense, device));
+        }
+        {
+            defense_t       defense;
+            device_t        device;
+            stringstream    stream;
+
+            defense.alarm   = 1;
+            defense.gateway = "00000000000000000000001";
+            device.gateway  = "00000000000000000000001";
+            device.id       = defense2device.size();
+            stream << defense.alarm;
+            stream >> device.status;
+
+            defense2device.insert(Defense2Device_t::value_type(defense, device));
+        }
+        {
+            defense_t       defense;
+            device_t        device;
+            stringstream    stream;
+
+            defense.alarm   = 0;
+            defense.gateway = "00000000000000000000002";
+            device.gateway  = "00000000000000000000002";
+            device.id       = defense2device.size();
+            stream << defense.alarm;
+            stream >> device.status;
+
+            defense2device.insert(Defense2Device_t::value_type(defense, device));
+        }
+        {
+            defense_t       defense;
+            device_t        device;
+            stringstream    stream;
+
+            defense.alarm   = 1;
+            defense.gateway = "00000000000000000000002";
+            device.gateway  = "00000000000000000000002";
+            device.id       = defense2device.size();
+            stream << defense.alarm;
+            stream >> device.status;
+
+            defense2device.insert(Defense2Device_t::value_type(defense, device));
+        }
+
+        cout << "defense2device.size() : " << defense2device.size() << endl;
+        for(auto &unit : defense2device){
+            cout << "defense : " << endl;
+            cout << "   alarm : " << unit.first.alarm << endl;
+            cout << "   gateway : " << unit.first.gateway << endl;
+            cout << "device :" << endl;
+            cout << "   id : " << unit.second.id << endl;
+            cout << "   status : " << unit.second.status << endl;
+        }
+
+        cout << endl;
+        cout << "====== read from defense2device =====" << endl;
+        cout << endl;
+
+        {
+            defense_t       defense;
+            device_t        device;
+
+            defense.alarm   = 1;
+            defense.gateway = "00000000000000000000002";
+
+            device.id       = defense2device[defense].id;
+            device.gateway  = defense2device[defense].gateway;
+            device.status   = defense2device[defense].status;
+
+            cout << "   device.id      : " << device.id << endl;
+            cout << "   device.gateway : " << device.gateway << endl;
+            cout << "   device.status  : " << device.status << endl;
+        }
     }
 }
 
