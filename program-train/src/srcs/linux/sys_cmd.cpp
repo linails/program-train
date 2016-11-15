@@ -1,7 +1,7 @@
 /*
  * Progarm Name: sys_cmd.cpp
  * Created Time: 2016-09-20 10:59:19
- * Last modified: 2016-11-03 16:00:05
+ * Last modified: 2016-11-04 10:32:29
  */
 
 #include "sys_cmd.hpp"
@@ -73,16 +73,34 @@ void sys_cmd_called(void)
     }
     cout << "---------------------------" << endl;
     {
+        cout << " ** python script **" << endl;
         char buf[128];
         getcwd(buf, sizeof(buf));
         cout << "pwd : " << buf << endl;
 
         string pwd(buf);
-        //string script = "numpy-exercise.py";
-        string script = "traitsui-default-view.py";
+        string script = "numpy-exercise.py";
+        //string script = "traitsui-default-view.py";
 
         /* python script path */
         pwd += "/../src/srcs/linux/python/";
+
+        pwd += script;
+
+        do_shell(pwd.c_str());
+    }
+    cout << "---------------------------" << endl;
+    {
+        cout << " ** shell script **" << endl;
+        char buf[128];
+        getcwd(buf, sizeof(buf));
+        cout << "pwd : " << buf << endl;
+
+        string pwd(buf);
+        string script = "base-bash.sh";
+
+        /* python script path */
+        pwd += "/../src/srcs/linux/shell/";
 
         pwd += script;
 

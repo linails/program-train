@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 # Created Time: 2016-10-28 14:00:57
-# Last modified: 2016-11-03 11:01:48
+# Last modified: 2016-11-04 09:41:24
 # 
 
 import sys,os
@@ -212,6 +212,22 @@ print "c = x[np.array([3, 3, 1, 8])] :"
 pprint(c)
 
 print "------------------------------------"
+
+x = np.arange(5, 0, -1)
+print "x = ", pprint(x)
+
+print # Note: 布尔数组中下标为0、2的元素为True，因此获取数组x中下标为0、2的元素
+print "x[np.array([True, False, True, False, False])] = ", pprint(x[np.array([True, False, True, False, False])])
+
+print # Note: 如果是布尔列表，则把True当作1，False当作0，按照整数序列方式获取数组x中的元素
+print "x[[True, False, True, False, False]] = ", pprint(x[[True, False, True, False, False]])
+
+print # Note: 布尔数组的长度不够时，不够的部分都当作False
+print "x[np.array([True, False, True, True])] = ", pprint(x[np.array([True, False, True, True])])
+
+print 
+x[np.array([True, False, True, True])] = -1, -2, -3
+print "x[np.array([True, False, True, True])] = -1, -2, -3  : ", pprint(x)
 
 print "------------------------------------"
 
