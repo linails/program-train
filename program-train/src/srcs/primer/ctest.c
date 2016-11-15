@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ctest.c
  * Created Time: 2016-05-14 19:56:38
- * Last modified: 2016-10-24 17:25:17
+ * Last modified: 2016-11-11 16:45:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -39,6 +39,18 @@ void ctest(void)
         }
 
         free(p);
+    }
+    printf("--------------------------- ----- ---------------------------\n");
+    {
+        Test_t td = {
+            .a = 10,
+            .b = 20,
+            .c = 30
+        };
+
+        printf("td.a = %d\n", td.a);
+        printf("td.b = %d\n", td.b);
+        printf("td.c = %d\n", td.c);
     }
 }
 
