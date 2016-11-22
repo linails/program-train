@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-11-11 16:45:35
+ * Last modified: 2016-11-17 12:22:07
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
         //linux_main(argc, argv);
     }
     {
-        //cases_main();
+        cases_main();
         //algorithm_main();
     }
     {

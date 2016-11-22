@@ -10,6 +10,9 @@
 <FORM>
     <INPUT TYPE = "Button", onClick ="showdate();" VALUE = "show time">
 </FORM>
+<FORM NAME=form1>
+    <INPUT TYPE = "Button", NAME=button1 VALUE = "show time">
+</FORM>
 
 <PRE>
 <SCRIPT Language = 'JavaScript' TYPE = 'text/javascript'>
@@ -143,14 +146,25 @@
         document.write("back color : " + bgColor + ".\n");
     }
     
-    object_test();
+    built_in_object_test();
 
     {
         print("====================================================");
         myFun = new Function("x", "y", "return x+y");
         print("myFun(3, 4) : " + myFun(3, 4));
     }
+
+    print("====================================================");
+    js_event();
+
+    var count = 0;
+
+    /* 指定事件响应函数 */
+    document.form1.button1.onclick=showdate;
 </SCRIPT>
+    <A href="www.baidu.com" onMouseOver = "event_mouse()"> Please move mouse here ! </A>
+    <A href="www.retwell.com" onMouseOver = "count++; alert('count = ' + count)">
+    Please move mouse here to increase count! </A>
 
 </PRE>
 </BODY>

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: built-in-obj.js
  * Created Time: 2016-11-14 16:57:28
- * Last modified: 2016-11-15 15:51:09
+ * Last modified: 2016-11-17 13:47:51
  */
 
 /* 
@@ -204,11 +204,40 @@ function date_test()
     print("date('15 Jul, 2016 20:20:20') : " + date);
 }
 
+function object_test()
+{
+    /* 
+     * object 对象是派生所有其他对象的对象，其属性和方法可以派生给所有其他对象
+     * */
+    print("");
+    print("====================================================");
+    print("");
+
+    var myobj1 = new Object(true);
+    var myobj2 = new Object(20);
+
+    print("myobj1.constructor = " + myobj1.constructor());
+    print("myobj2.constructor = " + myobj2.constructor());
+
+    print("myobj1.valueOf() = " + myobj1.valueOf());
+    print("myobj2.valueOf() = " + myobj2.valueOf());
+}
+
+function other_test()
+{
+    var mystr = "other - test";
+    print("mystr.length : " + mystr.length);
+
+    var mystr1 = new String("nice");
+    print("mystr1.length : " + mystr1.length);
+    print("mystr1.bold() : " + mystr1.bold());
+}
+
 /* 
  * 如果此函数定义在前面，也不需要做类似C的那种前向声明，
  * 只要处于一个文件，都可以进行调用
  * */
-function object_test()
+function built_in_object_test()
 {
     print("");
     print("=============== --- object_test --- ================");
@@ -218,6 +247,88 @@ function object_test()
     boolean_test();
 
     date_test();
+
+    object_test();
+
+    other_test();
+}
+
+function event_mouse()
+{
+    alert("mouse move to here !!!");
+}
+
+function openwin()
+{
+    var newwin = open("", "", "height=20, width=800, resizable=1");
+    newwin.document.write("<FORM>");
+    newwin.document.write("click to close win: <P>");
+    newwin.document.write("<INPUT type=BUTTON value='close' onclick=window.close()>");
+    newwin.document.write("</FORM>");
+
+    prompt("please input password" , "password");
+}
+
+function js_event()
+{
+    var str = "js - event";
+    print(str.bold());
+
+    {
+        /* 异常可以嵌套，同C++ */
+        var data = 20;
+        try{
+            if(data == 20){
+                throw 'Error1';
+            }else
+                throw 'Error2';
+        }
+        catch(exception){
+            if(exception == 'Error1'){
+                print("exception : Error1");
+            }else{
+                print("exception : Error2");
+            }
+        }
+    }
+
+    /* all 仅在 IE 中 */
+    //print("all.item() : " + all.item());
+
+    {
+        //alert(" a new alert window");
+
+        //confirm("a new confirm window");
+
+        //openwin();
+    }
+
+    /* 函数对象可以嵌套定义 */
+    function embed_fun()
+    {
+        print("embed func");
+    }
+
+    embed_fun();
+
+    function blur_focus()
+    {
+        /* 
+         * blur是移出焦点，focus是使当前窗口获得焦点 
+         * 焦点就是当前窗口变成了谁
+         * */
+        var newwin = open("", "", "height=20, width=800, resizable=1");
+        newwin.document.write("<H3>This is subwin !</H3>");
+        newwin.document.close();
+
+        //self.focus();
+    }
+
+    //blur_focus();
+
+    print("document.form1.length = " + document.form1.length);
+    print("document.forms[0].length = " + document.forms[0].length);
+    document.write("<INPUT TYPE=file><P><BR>");
 }
 
 

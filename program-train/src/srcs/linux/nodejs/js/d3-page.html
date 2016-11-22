@@ -1,0 +1,120 @@
+<! reference d3-cookbook srcs>
+<!>
+<!>
+<!>
+<HTML>
+
+<HEAD>
+<meta charset = "utf-8">
+    <TITLE>Click event eg</TITLE>
+    <link rel="stylesheet" type="text/css" href="../libs/css/styles.css">
+</HEAD>
+
+
+<BODY>
+
+
+<PRE>
+
+    <div></div>
+    <div></div>
+    <div></div>
+
+    <p id="myid"> target </p><!-- A -->
+
+<script src="../libs/d3/d3.js" charset = "utf-8"></script>
+<SCRIPT Language = 'JavaScript' TYPE = 'text/javascript'">
+    var count = 0;
+
+    function mprint(msg)
+    {
+        document.write(msg + "\n");
+    }
+
+    function d3_hw()
+    {
+        var c = d3.select("body")   // d3.select() : 是选择所有指定元素的第一个
+                  .selectAll("p")   // d3.selectAll() : 是选择指定元素的全部
+                  .text("hello world!");
+
+        c.style("color", "red")
+         .style("font-size", "22px");
+    }
+
+    d3_hw();
+
+    function bind()
+    {
+        var str = "china";
+        var body = d3.select("body");
+        var p = body.selectAll("p");
+
+        p.datum(str);
+
+        p.text(function(d, i){  // function(d, i) 是无名函数; d代表数据，i代表索引
+            return "第 " + i + "个元素绑定的数据是 " + d;
+        })
+    }
+
+    bind();
+
+    function bind1()
+    {
+        var dataset = ["I like dog", "I like cat", "I like snake"];
+
+        var body = d3.select("body");
+
+        var p = body.selectAll("p");
+
+        /* bind过之后，就可以灵活使用 function(d, i) */
+        p.data(dataset).text(function(d, i){
+            return d;
+        });
+    }
+
+    bind1();
+
+    function fselect()
+    {
+        d3.select("p").attr("foo", "goo");
+        d3.select("p").style("font-size", "30px");
+        d3.select("p").text();
+        d3.select("p").text("Nice D3 !");
+        d3.select("p").style("color", "pink");
+
+        //d3.select("p").html();
+        d3.select("p").html("<b>hello</b>");
+    }
+
+    fselect();
+
+    function add()
+    {
+        var body = d3.select("body");
+        body.append("p").text("append a new p element");
+
+        body.style("color", "green");
+
+        body.insert("p", "#xid").text("insert p element");
+
+        //mprint(body.body());
+
+        mprint("add end ...");
+    }
+
+    add();
+
+    var body = d3.select("body");
+    var p = body.select("#xid");
+    mprint(p.remove());
+
+    d3.selectAll("div").attr("class", "red box");
+</script>
+
+    <A href="www.retwell.com" onMouseOver = "count++; alert('count = ' + count)">
+    Please move mouse here to increase count! </A>
+
+</PRE>
+</BODY>
+</HTML>
+
