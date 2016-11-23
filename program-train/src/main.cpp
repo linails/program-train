@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-11-17 12:22:07
+ * Last modified: 2016-11-23 21:54:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,7 +26,7 @@
 #include "smart_pointer.h"
 #include "thread_test.h"
 #include "chrono_test.h"
-#include "db_test.h"
+#include "db_test.hpp"
 #include "exception_test.h"
 #include "cases_main.h"
 #include "algorithm_main.h"
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
         drived_test();
         boost_test();
 #endif
-        ctest();
+        //ctest();
         //regex_test();
         //smart_pointer();
         //other_test();
@@ -60,19 +60,12 @@ int main(int argc, char **argv)
         //overload_test();
     }
     {
-        //db_test();
+        db_test();
         //linux_main(argc, argv);
     }
     {
-        cases_main();
+        //cases_main();
         //algorithm_main();
-    }
-    {
-#if 0
-    sqlite3 *db = NULL;
-    sqlite3_open("first.db",&db);
-    sqlite3_close(db);
-#endif
     }
     return 0;
 }

@@ -1,21 +1,21 @@
 /*
  * Progarm Name: db_test.cpp
- * Created Time: 2016-08-07 06:35:41
- * Last modified: 2016-08-07 20:51:32
+ * Created Time: 2016-11-23 21:53:39
+ * Last modified: 2016-11-23 21:56:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
-#include "db_test.h"
-#include "normal.h"
-
+#include "normal.hpp"
+#include "db_test.hpp"
 #include <iostream>
-#include <string>
-#include <vector>
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 void db_test(void)
 {
-    cout << "-------- db_test --------" << endl;
+    cout << "----------- db_test -----------" << endl;
 }
+
+
 

@@ -1,0 +1,58 @@
+# readme.txt
+# Created Time: 2016-04-28 17:05:29
+# Last modified: 2016-05-02 13:39:04
+#
+
+----------------------------------------------------
+字段级的约束：not null      unique      primary key
+              foreign key   check       collate
+----------------------------------------------------
+表一级的约束：primary key   unique      check
+----------------------------------------------------
+check 约束允许定义表达式来测试要插入或者更新的字段值
+
+
+sqlite 存储类
+    a) integer
+    b) real
+    c) text
+    d) blob
+    e) NULL
+
+/************************** sqlite cmd **************************/
+1.alter table mytable add column email text;            //添加mytable中的email字段
+  alter table foo a int b int;
+2.create table pkey(x text,y text,primary key(x,y));    //此处主键横跨两个字段
+  create table contacts(
+          id integer primary key,
+          name text not null collate nocase,
+          phone text not null default 'UNKNOWN',        //insert语句中没有提供指定值，
+          unique(name , phone));                        //若没有默认值，则会赋值为null
+    或者添加一个check约束 --> check(length(phone)>=7)
+  create table tims(
+          id integer,
+          date not null default current_date,
+          time not null default current_time,
+          timestamp not null default current_timestamp);
+  create table foo(
+          x integer,
+          y integer check(y>x),
+          z integer check(z>abs(y)));
+  create table domain(x);
+3.select * from mytable;
+  select count(*) from mytable;
+  select rowid,x,y from table;
+  select rowid,x,typeof(x) from table;
+  select * from foo where c=3 and d>3 and e>6;
+  select * from foo where c=3 and d=3;
+4.insert into mytable (id,value,email) values(5,'min','linails@foxmail.com');
+  insert into tblname values('x','y');            //所有字段都插入数据时，不需要指定
+  insert into tblname values(1,x'30');            //插入16进制
+5.update foo set y = -3,where x=-3;
+6.create index [unique] index_name on table_name (columns);
+7.drop index index_name;
+8.delete from tblname;                            //删除所有行
+  
+
+
+
