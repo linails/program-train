@@ -1,7 +1,7 @@
 /*
  * Progarm Name: v3_test.cpp
  * Created Time: 2016-11-10 14:49:57
- * Last modified: 2016-11-11 11:02:24
+ * Last modified: 2016-11-24 16:00:02
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -1042,6 +1042,51 @@ void eg05(SceneSetv3 &ss)
         scene.recover_scenes    = rcscenes;
 
         cout << "----------------------------------------------------------------" << endl;
+        Timer timer;
+        timer.timing();
+        int ret = ss.infinite_loops_check(scene);    // aim 
+        cout << "ret : " << ret << endl;
+     
+        if(0 == ret){
+            cout << "infinite loop ? : YES" << endl;
+        }else if(1 == ret){
+            cout << "timing error !" << endl;
+        }else{
+            cout << "infinite loop ? : NO" << endl;
+        }
+        timer.timing();
+        cout << "----------------------------------------------------------------" << endl;
+    }
+    {
+        scene_t scene;
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 19;
+        scene.time              = 8 * 3600; // 6:00:00
+        scene.timetype          = 2;
+
+        cdevs.push_back(vdev[1]);
+
+        rdevs.push_back(vdev[1]);
+
+        rcdevs.push_back(vdev[1]);
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        cout << "----------------------------------------------------------------" << endl;
+        cout << "Tang sir request !" << endl;
         Timer timer;
         timer.timing();
         int ret = ss.infinite_loops_check(scene);    // aim 

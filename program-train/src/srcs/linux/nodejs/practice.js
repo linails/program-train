@@ -1,7 +1,7 @@
 /*
  * Progarm Name: practice.js
  * Created Time: 2016-11-23 09:17:21
- * Last modified: 2016-11-23 14:27:04
+ * Last modified: 2016-11-23 16:27:47
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -140,6 +140,23 @@ function fun_print()
 }
 
 fun_print();
+
+function fun0()
+{
+    print("");
+    print("fun0");
+
+    var data = [0, 1, 2, 3, 4, 5];
+
+    var next = function(x){
+        return x + 2;
+    };
+
+    data.push(next);
+    //print("data : " + data);
+}
+
+fun0();
 
 /* 
  * 总结：

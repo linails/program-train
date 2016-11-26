@@ -1,7 +1,7 @@
 /*
  * Progarm Name: test_main.cpp
  * Created Time: 2016-08-01 14:33:20
- * Last modified: 2016-11-17 12:30:59
+ * Last modified: 2016-11-24 15:50:20
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -73,7 +73,7 @@ void test_main(void)
     /*
      * For v3-test 
      * */
-    //v3_test();
+    v3_test();
 }
 
 static void get_scene_vector(vector<scene_t> &r_vscene)
