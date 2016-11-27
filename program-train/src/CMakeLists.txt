@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-11-25 10:43:04
+# Last modified: 2016-11-27 11:12:15
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -20,6 +20,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/os
     ${PROJECT_SOURCE_DIR}/src/srcs/sep/
     ${PROJECT_SOURCE_DIR}/src/srcs/db
+    ${PROJECT_SOURCE_DIR}/src/srcs/db/sqlite
+    ${PROJECT_SOURCE_DIR}/src/srcs/db/postgresql
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/ds
@@ -67,7 +69,7 @@ set(SRC_LIST
    srcs/linux/os/mos.cpp
 #   srcs/stl/container_test.cpp
    srcs/db/db_test.cpp
-   srcs/db/normal.cpp
+   srcs/db/sqlite/normal.cpp
 #   srcs/algorithm/algorithm_main.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
