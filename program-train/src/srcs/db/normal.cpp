@@ -1,7 +1,7 @@
 /*
  * Progarm Name: normal.cpp
  * Created Time: 2016-11-23 21:53:09
- * Last modified: 2016-11-26 12:09:16
+ * Last modified: 2016-11-26 21:19:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,6 +17,9 @@ using std::cout;
 using std::endl;
 using std::string;
 
+/* 
+ * sqlite 中最主要的两个对象：database_connection 和 prepared_statement
+ * */
 NormalDB::NormalDB(string path, string db)
     :m_path(path)
     ,m_db(db)
@@ -77,7 +80,7 @@ NormalDB::~NormalDB()
         return;
     }
     if(sqlite3_step(stmt3) == SQLITE_DONE){
-        cout<<"The test table has been dropped."<<endl;
+        cout << "The test table has been dropped." << endl;
     }
     sqlite3_finalize(stmt3);
 #endif
@@ -107,7 +110,7 @@ int NormalDB::generic_insert(void)
             sqlite3_close(this->m_conn);
             return -1;
         }
-        cout<<"Insert success"<<endl;
+        cout << "Insert success" << endl;
     }
     sqlite3_finalize(stmt2);
 
@@ -135,7 +138,7 @@ int NormalDB::bulk_insert(void)
 
 
     /*6.构建基于绑定变量的插入数据*/
-    cout<<"6. ..."<<endl;
+    cout << "6. ..." << endl;
     string insertSQL = "insert into testtable values(?,?,?)";
     sqlite3_stmt *stmt3 = NULL;
 
@@ -150,7 +153,7 @@ int NormalDB::bulk_insert(void)
 
 
     /*7.基于已有的SQL语句，迭代的绑定不同的变量数据*/
-    cout<<"7. ..."<<endl;
+    cout << "7. ..." << endl;
     for(int i=0; i<insertCount; i++){
         /*在绑定时，最左面的变量索引值是1*/
         sqlite3_bind_int(stmt3, 1, i);
@@ -160,18 +163,18 @@ int NormalDB::bulk_insert(void)
         if(sqlite3_step(stmt3) != SQLITE_DONE){
             sqlite3_finalize(stmt3);
             sqlite3_close(this->m_conn);
-            cout<<"sqlite3_close"<<endl;
+            cout << "sqlite3_close" << endl;
             return -1;
         }
         /*重新初始化该sqlite3_stmt对象绑定的变量*/
         sqlite3_reset(stmt3);
-        cout<<"Insert succeed"<<endl;
+        cout << "Insert succeed" << endl;
     }
     sqlite3_finalize(stmt3);
 
 
     /*8.提交之前的事物*/
-    cout<<"8. ..."<<endl;
+    cout << "8. ..." << endl;
     string commitSQL = "commit";
     sqlite3_stmt *stmt4 = NULL;
 
@@ -241,7 +244,7 @@ int NormalDB::get_schema(void)
 int NormalDB::query(void)
 {
     /*5.为后面的查询操作插入测试数据*/
-    cout<<"5. .."<<endl;
+    cout << "5. .." << endl;
     sqlite3_stmt *stmt2 = NULL;
     string insertSQL = "insert into testtable values(20,21.0,'this is a test.')";
 
@@ -256,14 +259,71 @@ int NormalDB::query(void)
         sqlite3_close(this->m_conn);
         return -1;
     }
-    cout<<"success to insert test data."<<endl;
+    cout << "success to insert test data." << endl;
     sqlite3_finalize(stmt2);
 
 
     /*6.执行select语句查询数据*/
-    cout<<"6. .."<<endl;
-    //const char *selectSQL = "select * from testtable";
-    //sqlite3_stmt *stmt3 = NULL;
+    cout << "6. .." << endl;
+    string selectSQL = "select * from testtable";
+    sqlite3_stmt *stmt3 = NULL;
+
+    if(sqlite3_prepare_v2(this->m_conn, selectSQL.c_str(), selectSQL.size(), &stmt3, NULL) != SQLITE_OK){
+        if(stmt3)
+            sqlite3_finalize(stmt3);
+        sqlite3_close(this->m_conn);
+        return -1;
+    }
+
+    /*6.根据select语句的对象，获取结果集中的字段数量*/
+    int fieldCount = sqlite3_column_count(stmt3);
+    printf("The column count is %d.\n", fieldCount);
+
+    do{
+
+        int ret = sqlite3_step(stmt3);
+
+        if(ret == SQLITE_ROW){
+
+            for(int i=0; i<fieldCount; i++){
+                /* 
+                 * 这里需要先判断当前记录字段的类型，再根据返回的类型使用不同的API函数
+                 * 去获取实际的数据值
+                 * */
+                int vtype = sqlite3_column_type(stmt3, i);
+
+                /* 此处不能使用switch-case，否则会出错 */
+                if(vtype == SQLITE_INTEGER){
+                    int data = sqlite3_column_int(stmt3, i);
+                    cout << "The integer data is " << data << endl;
+                }
+                else if(vtype == SQLITE_FLOAT){
+                    double data = sqlite3_column_double(stmt3, i);
+                    cout << "The double data is " << data << endl;
+                }
+                else if(vtype == SQLITE_TEXT){
+                    string data((const char *)sqlite3_column_text(stmt3, i));
+                    cout << "The text data is " << data << endl;
+                }
+                else if(vtype == SQLITE_NULL){
+                    cout << "This value is Null" << endl;
+                }
+            }
+
+        }else if(ret == SQLITE_DONE){
+            cout << "select finished " << endl;
+            break;
+        }else{
+            cout << "[ERROR] select failed" << endl;
+            sqlite3_finalize(stmt3);
+            sqlite3_close(this->m_conn);
+            return -1;
+        }
+
+    }while(1);
+
+    sqlite3_finalize(stmt3);
+
     return 0;
 }
 

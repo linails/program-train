@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mos.cpp
  * Created Time: 2016-11-25 09:24:26
- * Last modified: 2016-11-25 09:32:14
+ * Last modified: 2016-11-27 10:55:01
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -41,6 +41,5 @@ int Mos::pwd(string &cpath)
     else
         return -1;
 }
-
 
 
