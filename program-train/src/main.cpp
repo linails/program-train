@@ -1,12 +1,11 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-11-24 17:04:16
+ * Last modified: 2016-11-27 18:48:25
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include <iostream>
-#include "object_c.h"
 #include "sqlite3.h"
 
 #include "refrence_test.h"

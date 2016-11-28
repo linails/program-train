@@ -1,7 +1,7 @@
 /*
  * Progarm Name: normal.cpp
  * Created Time: 2016-11-23 21:53:09
- * Last modified: 2016-11-27 12:54:41
+ * Last modified: 2016-11-28 21:07:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -292,7 +292,14 @@ int NormalDB::query(void)
                  * */
                 int vtype = sqlite3_column_type(stmt3, i);
 
-                /* 此处不能使用switch-case，否则会出错 */
+                /* 此处不能使用switch-case，否则会出错 
+                 *
+                 * #define SQLITE_INTEGER   1
+                 * #define SQLITE_FLOAT     2
+                 * #define SQLITE_TEXT      3
+                 * #define SQLITE_BLOB      4
+                 * #define SQLITE_NULL      5
+                 * */
                 if(vtype == SQLITE_INTEGER){
                     int data = sqlite3_column_int(stmt3, i);
                     cout << "The integer data is " << data << endl;
@@ -363,8 +370,8 @@ char *NormalDB::strlwr(char *str)
  *      4> sqlite3_column_*
  *          此系列函数用于获取当前行指定列的数据
  *          sqlite3_column_count
- *          sqlite3_column_blob
- *          sqlite3_column_bytes
+ *          sqlite3_column_blob     : 返回blob数据
+ *          sqlite3_column_bytes    : 返回blob数据的长度
  *          sqlite3_column_bytes16
  *          sqlite3_column_double
  *          sqlite3_column_int
@@ -372,6 +379,7 @@ char *NormalDB::strlwr(char *str)
  *          sqlite3_column_text
  *          sqlite3_column_text16
  *          sqlite3_column_type
+ *          sqlite3_column_name     : 返回列名
  *          sqlite3_column_value
  *      5> sqlite3_finalize
  *          此函数用于销毁 prepared_statement 对象，否则会导致内存泄漏
@@ -382,6 +390,13 @@ char *NormalDB::strlwr(char *str)
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *      1> 参数绑定
  *          sqlite3_reset / sqlite3_bind
+ *      2> 事务
+ *          a> 开始事务
+ *              sqlite3_exec(dbHandle, "BEGIN");
+ *          b> 回滚事务
+ *              sqlite3_exec(dbHandle, "ROLLBACK");
+ *          c> 提交事务
+ *              sqlite3_exec(dbHandle, "COMMIT")/sqlite3_exec(dbHandle, "END");
  *
  *  */
 
