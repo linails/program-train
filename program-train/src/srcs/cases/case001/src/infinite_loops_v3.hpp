@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.hpp
  * Created Time: 2016-11-09 15:05:54
- * Last modified: 2016-11-10 17:25:04
+ * Last modified: 2016-11-29 14:09:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -113,6 +113,7 @@ private:
     Defense2Device_t      m_defense2device;
     vector<device_t>      m_devices_set;
     GatewaySet_t          m_gateways;
+    vector<scene_t>       m_orig_scenes;
 };
 
 #endif //_INFINITE_LOOPS_V3_HPP_

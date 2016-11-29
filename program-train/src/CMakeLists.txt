@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-11-25 10:43:04
+# Last modified: 2016-11-29 13:24:10
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -64,10 +64,10 @@ set(SRC_LIST
 #   srcs/linux/network/fd-test.c
 #   srcs/linux/network/endian-conv.c
 #   srcs/linux/sys_cmd.cpp
-   srcs/linux/os/mos.cpp
+#   srcs/linux/os/mos.cpp
 #   srcs/stl/container_test.cpp
-   srcs/db/db_test.cpp
-   srcs/db/normal.cpp
+#   srcs/db/db_test.cpp
+#   srcs/db/normal.cpp
 #   srcs/algorithm/algorithm_main.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
@@ -79,11 +79,11 @@ set(SRC_LIST
    srcs/tools/timer.cpp
    srcs/tools/timing.c
    srcs/tools/format.c
-#   srcs/cases/cases_main.cpp
-#   srcs/cases/case001/src/infinite_loops_v2.cpp
-#   srcs/cases/case001/src/infinite_loops_v3.cpp
-#   srcs/cases/case001/test/test_main.cpp
-#   srcs/cases/case001/test/v3_test.cpp
+   srcs/cases/cases_main.cpp
+   srcs/cases/case001/src/infinite_loops_v2.cpp
+   srcs/cases/case001/src/infinite_loops_v3.cpp
+   srcs/cases/case001/test/test_main.cpp
+   srcs/cases/case001/test/v3_test.cpp
 )
 
 add_executable(program-train ${SRC_LIST})

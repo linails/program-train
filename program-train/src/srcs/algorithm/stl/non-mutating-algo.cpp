@@ -1,7 +1,7 @@
 /*
  * Progarm Name: non-mutating-algo.cpp
  * Created Time: 2016-08-14 10:33:17
- * Last modified: 2016-10-25 13:55:55
+ * Last modified: 2016-11-29 11:13:20
  */
 
 #include "non-mutating-algo.h"
@@ -73,6 +73,55 @@ void non_mutating_algo(void)
         }else{
             cout << "find : " << *iter << endl;
         }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        cout << " ** find_if struct{} data ** " << endl;
+        typedef struct{
+            int id;
+            string s;
+        }Data_t;
+
+        vector<Data_t> v;
+
+        Data_t data[] = {
+            {1, "s1"},
+            {2, "s2"},
+            {3, "s3"},
+            {4, "s4"},
+            {5, "s5"},
+            {6, "s6"},
+            {7, "s7"}
+        };
+
+        for(size_t i=0; i<sizeof(data)/sizeof(Data_t); i++){
+            v.push_back(data[i]);
+        }
+
+        cout << "List v :" << endl;
+        for(auto &u : v){
+            cout << "u : " << u.id << " - " << u.s << endl;
+        }
+        cout << endl;
+
+        Data_t orig_data = {3, "s3"};
+
+        auto func = [&orig_data](Data_t d){
+            if(orig_data.id == d.id){
+                return 1; // find it
+            }else{
+                return 0;
+            }
+        };
+
+        auto iter = find_if(v.begin(), v.end(), func);
+
+        if(iter == v.end()){
+            cout << "find_if nothing !" << endl;
+        }else{
+            cout << "find : " << iter->id << " - " << iter->s << endl;
+        }
+
     }
     cout << "-----------------------------------------" << endl;
     {

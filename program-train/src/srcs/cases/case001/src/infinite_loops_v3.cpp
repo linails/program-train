@@ -1,13 +1,14 @@
 /*
  * Progarm Name: infinite_loops_v3.cpp
  * Created Time: 2016-11-09 15:06:00
- * Last modified: 2016-11-11 10:52:17
+ * Last modified: 2016-11-29 14:08:41
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "infinite_loops_v3.hpp"
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 using std::cout;
 using std::endl;
@@ -53,6 +54,7 @@ using std::stringstream;
 
 SceneSetv3::SceneSetv3(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
     :m_devices_set(r_vdev)
+    ,m_orig_scenes(r_vscene)
 {
     this->init(r_vdev, r_vscene);
 }
@@ -83,11 +85,77 @@ int  SceneSetv3::reinit(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
 
 int  SceneSetv3::infinite_loops_check(scene_t &r_scene)    /* aim */
 {
-    scene_t scenev2;
+    int ret = 0;
 
-    this->scenev3_to_scenev2(scenev2, r_scene);
+    auto check_loopself = [](scene_t &scenev3){
+        auto iter = find(scenev3.condition_scenes.begin(), 
+                         scenev3.condition_scenes.end(), 
+                         scenev3.id);
+        if(iter == scenev3.condition_scenes.end()){
+            cout << "check_loopself find nothing !" << endl;
+            return -1;
+        }else{
+            cout << "*iter : " << *iter << endl;
+            return 0;
+        }
+    };
 
-    return this->m_sst2->infinite_loops_check(scenev2);
+    if(0 == check_loopself(r_scene)){
+        cout << "[Warning] self-loop " << endl;
+        return 0;
+    }
+
+    auto check = [this](scene_t &scenev3){
+        scene_t scenev2;
+        this->scenev3_to_scenev2(scenev2, scenev3);
+        return this->m_sst2->infinite_loops_check(scenev2);
+    };
+
+    ret = check(r_scene);
+
+    if(0 == ret){        /* exist infinite-loop */
+        cout << "[Warning] exist infinite loops v3 " << endl;
+
+        scene_t origin;
+
+        auto isexist = [&origin, &r_scene](scene_t scene){
+            if(r_scene.id == scene.id){
+                /* exist */
+                origin = scene;
+                return 1;
+            }else{
+                return 0;
+            }
+        };
+
+        /* Is exist before
+         *
+         *  Y : restore
+         *  N : break
+         * */
+        auto iter = find_if(this->m_orig_scenes.begin(), 
+                            this->m_orig_scenes.end(), 
+                            isexist);
+
+        if(iter == this->m_orig_scenes.end()){
+            /* N */
+            cout << "find nothing !" << endl;
+        }else{
+            /* Y */
+            cout << "find it : sceie.id(" << iter->id << ")" << endl;
+            if(0 == check(origin)){
+                cout << "[Error] restore scene error" << endl;
+            }else{
+                cout << "restore success !" << endl;
+            }
+        }
+
+    }else if(-1 == ret){ /* normal */
+        /* Add this new scene to this->m_orig_scenes */
+        this->m_orig_scenes.push_back(r_scene);
+    }
+
+    return ret;
 }
 
 int  SceneSetv3::del_scene(int sceneid)
