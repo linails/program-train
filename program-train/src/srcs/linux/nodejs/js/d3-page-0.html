@@ -1,0 +1,70 @@
+<! reference "数据可视化实战" srcs>
+<!>
+<!>
+<!>
+<html>
+
+    <head>
+        <meta charset = "utf-8">
+        <title>hello world</title>
+        <link rel="stylesheet" type="text/css" href="../libs/css/styles.css">
+        <!script src="http://d3js.org/d3.v3.min.js" charset = "utf-8"><!/script>
+        <script src="../libs/d3/d3.js" charset = "utf-8"></script>
+    </head>
+
+    <body>
+    <pre>
+
+
+        <script>
+            function mprint(msg){
+                document.write(msg + '\n');
+            }
+
+            function d3_attr(){
+                var dataset = [];
+
+                for(var i=0; i<125; i++){
+                    var num = Math.random() * 30;
+                    dataset.push(num);
+                }
+
+                mprint("dataset : " + dataset);
+
+                d3.select("body")
+                    .selectAll("div")   // 这句测试下来是很有必要的，选择所有的div元素，然后
+                                        // 筛选出还不够dataset数量的div进行创建
+
+                    .data(dataset)      // data() 函数可以遍历给它的任意长度的数据集
+
+                    .enter()
+                    .append("div")
+                    .attr("class", "bar")
+                    .style("height", function(d){
+                            return d * 1.5 + "px";
+                        });
+                    /*
+                    .style("color", function(d){
+                            if(d > 13) return "blue";
+                            else return "red";
+                        });
+                     */
+            }
+
+            d3_attr();
+
+            function gen_svg(){
+                var svg = d3.select("body")
+                            .append("svg");
+
+                svg.attr("width", 500)
+                   .attr("height", 50);
+            }
+            
+            gen_svg();
+
+        </script>
+    </pre>
+    </body>
+</html>
+
