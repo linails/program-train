@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-11-29 14:34:26
+# Last modified: 2016-12-01 17:03:36
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -53,7 +53,7 @@ set(SRC_LIST
 #   srcs/primer/condition_variable.cpp
 #   srcs/primer/class_test.cpp
 #   srcs/primer/chrono_test.cpp
-#   srcs/primer/exception_test.cpp
+   srcs/primer/exception_test.cpp
 #   srcs/primer/lambda.cpp
 #   srcs/primer/generic_test.cpp
 #   srcs/primer/template_test.cpp
@@ -66,10 +66,10 @@ set(SRC_LIST
 #   srcs/linux/network/fd-test.c
 #   srcs/linux/network/endian-conv.c
 #   srcs/linux/sys_cmd.cpp
-   srcs/linux/os/mos.cpp
+#   srcs/linux/os/mos.cpp
 #   srcs/stl/container_test.cpp
-   srcs/db/db_test.cpp
-   srcs/db/sqlite/normal.cpp
+#   srcs/db/db_test.cpp
+#   srcs/db/sqlite/normal.cpp
 #   srcs/algorithm/algorithm_main.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp

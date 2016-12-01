@@ -219,14 +219,42 @@
             </div>
         </section>
 
-            <script>
-                d3.select("#section1 > div")
-                  .attr("class", "blue box");
+        <script>
+            d3.select("#section1 > div")
+              .attr("class", "blue box");
 
-                d3.select("#section2")
-                  .select("div")
-                  .attr("class", "red box");
-            </script>
+            d3.select("#section2")
+              .select("div")
+              .attr("class", "red box");
+
+            function d3_attr(){
+                var dataset = [15, 10, 15, 20, 25];
+
+                //mprint("dataset : " + dataset);
+
+                //var dataset = [5, 10, 15];
+
+                d3.select("body")
+                    //.selectAll("div")
+                    .data(dataset)
+                    .enter()
+                    .append("div")
+                    .attr("class", "bar")
+                    .style("height", function(d){
+                            return d * 1.5 + "px";
+                        });
+                    /*
+                    .style("color", function(d){
+                            if(d > 13) return "blue";
+                            else return "red";
+                        });
+                     */
+            }
+
+            d3_attr();
+
+
+        </script>
     </body>
 </html>
 

@@ -57,6 +57,15 @@ button {
     padding: 5px;
 }
 
+.bar{
+    display: inline-block;
+    width: 20px;
+    height: 75px;
+    color: #f0f8ff;
+    background-color: steelblue;
+    margin-right: 2px;
+}
+
 .h-bar {
     min-height: 15px;
     min-width: 10px;

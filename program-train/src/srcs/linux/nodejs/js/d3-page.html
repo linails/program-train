@@ -8,6 +8,7 @@
 <meta charset = "utf-8">
     <TITLE>Click event eg</TITLE>
     <link rel="stylesheet" type="text/css" href="../libs/css/styles.css">
+    <script src="../libs/d3/d3.js" charset = "utf-8"></script>
 </HEAD>
 
 
@@ -16,14 +17,11 @@
 
 <PRE>
 
-    <div></div>
-    <div></div>
-    <div></div>
-
     <p id="myid"> target </p><!-- A -->
 
-<script src="../libs/d3/d3.js" charset = "utf-8"></script>
-<SCRIPT Language = 'JavaScript' TYPE = 'text/javascript'">
+    <SCRIPT Language = 'JavaScript' TYPE = 'text/javascript'">
+
+
     var count = 0;
 
     function mprint(msg)
@@ -102,14 +100,94 @@
         mprint("add end ...");
     }
 
-    add();
+    //add();
 
     var body = d3.select("body");
     var p = body.select("#xid");
     mprint(p.remove());
 
-    d3.selectAll("div").attr("class", "red box");
-</script>
+    //d3.selectAll("div").attr("class", "red box");
+
+    /*
+    d3.select("body")
+      .append("div")
+      .attr("class", "blue box");
+     */
+
+    </script>
+
+    <script Language = 'JavaScript' TYPE = 'text/javascript'">
+        function d3_0(){
+            d3.select("body")
+              .append("div")
+              .attr("class", "blue h-bar");
+
+            /* D3 - 数据操作精髓 */
+            var dataset = [1, 2, 3, 4, 5, 6];
+            d3.select("body")           // 选择DOM中的body元素，把它交给连缀方法中的下一个方法
+                .selectAll("span")      // 选择DOM中的所有span元素，因为还没有span，所以返回空元素代表马上会创建
+                .data(dataset)          // 解析并输出数据值，dataset中有5个值，[则后续的所有方法都将执行5遍]
+
+                .enter()                // 要创建新的绑定数据的元素，必须使用enter()
+                                        // 这个方法会分析当前选择的DOM元素和传递给它的数据，如果数据值比
+                                        // 对应的DOM元素多，就创建一个新的占位元素，然后把这个新的占位元素的引用
+                                        // 交给下一个方法
+                .append("p")            // 取得由enter()创建的空占位元素，并把一个p元素追加到相应的DOM中
+                                        // 然后再把自己刚创建的元素交给下一个方法
+                .append("strong")
+                .append("em")
+                .text(function(d){      // 取得新创建的em元素，插入文本值
+                        return d;
+                        })
+                //.style("color", "red");
+                .attr("class", "h-bar") //像这种，都可以随意添加
+                .style("color", function(d){
+                        if(d > 3){
+                            return "red";
+                        }else{
+                            return "black";
+                        }
+                    });
+                /* 
+                 */
+
+            //console.log(d3.selectAll("p"));
+
+            /* 
+                *> attr() 和 style() 可以分别用来设置取得的元素的HTML属性和CSS属性 
+                *> attr() 设定DOM属性的值，而style() 直接给元素添加CSS样式
+                *> classed() 方法用于快速地添加或删除元素的类
+             */
+        }
+
+        d3_0();
+
+        function d3_attr(){
+            var dataset = [5, 10, 15, 20, 25];
+
+            mprint("dataset : " + dataset);
+
+            //var dataset = [5, 10, 15];
+
+            d3.select("body")
+                //.selectAll("div")
+                .data(dataset)
+                .enter()
+                .append("div")
+                .attr("class", "bar")
+                .style("height", function(d){
+                        return d * 1.5 + "px";
+                    });
+                /*
+                .style("color", function(d){
+                        if(d > 13) return "blue";
+                        else return "red";
+                    });
+                 */
+        }
+
+        d3_attr();
+    </script>
 
     <A href="www.retwell.com" onMouseOver = "count++; alert('count = ' + count)">
     Please move mouse here to increase count! </A>

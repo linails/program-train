@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-11-29 14:34:39
+ * Last modified: 2016-12-01 17:03:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -53,13 +53,13 @@ int main(int argc, char **argv)
         //chrono_test();
         //thread_test();
         //container_test();
-        //exception_test();
+        exception_test();
         //lambda_test();
         //template_test();
         //overload_test();
     }
     {
-        db_test();
+        //db_test();
         //linux_main(argc, argv);
     }
     {
