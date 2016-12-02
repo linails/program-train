@@ -100,6 +100,25 @@
                             });
                      */
 
+                /* 添加文本 */
+                svg.selectAll("text")
+                    .data(dataset)
+                    .enter()
+                    .append("text")
+                    .text(function(d){
+                            return Math.round(d);
+                            })
+                    .attr("x", function(d, i){
+                            return i * (w / dataset.length) + 5;
+                            })
+                    .attr("y", function(d){
+                            return h - (d * 18) + 15;
+                            })
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "11px")
+                    .attr("fill", "white")
+                    //.attr("text-anchor", "middle")  //水平居中 , 暂时没有起作用
+
             }
 
             draw_bar();
