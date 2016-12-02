@@ -1,11 +1,13 @@
 /*
  * Progarm Name: db_test.cpp
  * Created Time: 2016-11-23 21:53:39
- * Last modified: 2016-11-25 22:17:30
+ * Last modified: 2016-12-01 22:17:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "normal.hpp"
+#include "normal-pg.hpp"
+#include "advanced.hpp"
 #include "db_test.hpp"
 #include <iostream>
 #include "mos.hpp"
