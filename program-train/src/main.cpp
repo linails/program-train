@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-01 17:03:53
+ * Last modified: 2016-12-02 17:38:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 #endif
         //ctest();
         //regex_test();
-        //smart_pointer();
+        smart_pointer();
         //other_test();
         //class_test();
         //chrono_test();

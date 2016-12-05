@@ -1,7 +1,7 @@
 /*
  * Progarm Name: smart_pointer.cpp
  * Created Time: 2016-06-27 13:09:30
- * Last modified: 2016-09-02 09:08:57
+ * Last modified: 2016-12-02 17:47:29
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -35,6 +35,7 @@ void smart_pointer(void)
 
         int *ip = ptr.get();
         cout << "*ip = " << *ip << endl;
+        cout << "ptr.use_count() : " << ptr.use_count() << endl;
 
         int *ip2 = new int(10);
         int *ip3 = new int(20);
@@ -58,6 +59,7 @@ void smart_pointer(void)
         while(1);
 #endif
 #if 0
+        /* 这种方式，内存就不会自动释放 */
         struct ta{
             int a[1024];
         };
