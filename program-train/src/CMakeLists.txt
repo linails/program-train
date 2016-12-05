@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-02 17:38:27
+# Last modified: 2016-12-05 09:15:46
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -43,7 +43,7 @@ include_directories(
 
 set(SRC_LIST
    main.cpp 
-#   srcs/primer/primer.cpp
+   srcs/primer/primer.cpp
 #   srcs/primer/regex_test.cpp
 #   srcs/primer/regex_cpp11.cpp
    srcs/primer/smart_pointer.cpp
@@ -66,10 +66,12 @@ set(SRC_LIST
 #   srcs/linux/network/fd-test.c
 #   srcs/linux/network/endian-conv.c
 #   srcs/linux/sys_cmd.cpp
-#   srcs/linux/os/mos.cpp
+   srcs/linux/os/mos.cpp
 #   srcs/stl/container_test.cpp
-#   srcs/db/db_test.cpp
-#   srcs/db/sqlite/normal.cpp
+   srcs/db/db_test.cpp
+   srcs/db/sqlite/normal.cpp
+#   srcs/db/postgresql/normal-pg.cpp
+#   srcs/db/sqlite/advanced.cpp
 #   srcs/algorithm/algorithm_main.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp

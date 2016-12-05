@@ -1,7 +1,7 @@
 /*
  * Progarm Name: exception_test.cpp
  * Created Time: 2016-08-07 21:27:27
- * Last modified: 2016-12-02 14:56:51
+ * Last modified: 2016-12-05 09:15:16
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -180,6 +180,15 @@ int Excep::outof_excep(void) throw(int, char)
  *              (4) 如果 H 和 E 都是引用类型，且符合(1)||(2)
  *              (5) 如果 H 是 E 的基类，那么捕获的时候，会类似class一样进行切割，丢失继承部分的信息
  *          }
+ * */
+
+/* 
+ * 析构函数在栈展开的过程中执行，这一事实影响着我们编写析构函数的方式
+ *
+ * 析构函数得能够在本函数内处理异常，不能抛出异常
+ *
+ * 在实际的编程过程中，因为析构函数仅仅是释放资源，所以它不太可能抛出异常，所有标准库
+ * 类型都能够确保它们的析构函数不会引发异常
  * */
 
 
