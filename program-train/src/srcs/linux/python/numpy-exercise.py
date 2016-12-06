@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 # Created Time: 2016-10-28 14:00:57
-# Last modified: 2016-11-04 09:41:24
+# Last modified: 2016-12-06 17:18:34
 # 
 
 import sys,os
@@ -230,4 +230,6 @@ x[np.array([True, False, True, True])] = -1, -2, -3
 print "x[np.array([True, False, True, True])] = -1, -2, -3  : ", pprint(x)
 
 print "------------------------------------"
+
+print "range(1) :", range(1)
 
