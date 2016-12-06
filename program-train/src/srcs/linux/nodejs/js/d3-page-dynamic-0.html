@@ -71,7 +71,7 @@
                         })
                 .attr("fill", function(d){
                         /* 这个暂时不起作用,没有添加.transition的时候没有使用 */
-                        return "rgb(0, " + (d * 10) + ", " + (d * 10) + ")";
+                        return "rgb(0, " + (d * 10) + ", 0)";
                         })
         }
 
@@ -103,7 +103,7 @@
                         
                         var dataset = [];
                         for(var i=0; i<20; i++){
-                            var num = Math.random() * 30;
+                            var num = Math.random() * 130;
                             dataset.push(num);
                         }
 
