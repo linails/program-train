@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-10-28 13:30:03
+ * Last modified: 2016-12-06 22:39:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,14 +12,19 @@
 #include "server-udp.h"
 #include "fd-test.h"
 #include "endian-conv.h"
+#include "process.hpp"
 
 using namespace std;
 
-void linux_main(int argc, char **argv)
+int linux_main(int argc, char **argv)
 {
+    int ret = 0;
+
     cout << "------------- linux_main --------------" << endl;
     {
+#if 0
         sys_cmd_called();
+#endif
     }
     cout << "---------------------------" << endl;
     {
@@ -61,5 +66,13 @@ void linux_main(int argc, char **argv)
         }
 #endif
     }
+    cout << "---------------------------" << endl;
+    {
+        Process process;
+
+        ret = process.process_main(argc, argv);
+    }
+
+    return ret;
 }
 

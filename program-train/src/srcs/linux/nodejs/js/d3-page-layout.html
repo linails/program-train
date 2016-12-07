@@ -1,0 +1,145 @@
+<! reference "数据可视化实战" srcs>
+<!>
+<!>
+<!>
+
+<html>
+
+    <head>
+        <meta charset = "utf-8">
+        <title>hello world</title>
+        <link rel="stylesheet" type="text/css" href="../libs/css/styles.css">
+        <!script src="http://d3js.org/d3.v3.min.js" charset = "utf-8"><!/script>
+        <script src="../libs/d3/d3.js" charset = "utf-8"></script>
+    </head>
+
+    <p>
+        click to draw graph.
+    </p>
+
+    <body>
+    <pre>
+    <script>
+
+    function printf(msg){
+        console.log(msg + "\n");
+    }
+
+    var click_times = 0;
+
+    var w = 400;
+    var h = 400;
+
+    var svg = d3.select("body")
+                .append("svg");
+
+    svg.attr("width", w)
+       .attr("height", h);
+
+    var color = d3.scale.category10()
+    var pie = d3.layout.pie()
+    var outerRadius = h / 2;
+    var innerRadius = 0;
+
+    /* 
+     *> d3.svg.arc()这种函数就是用来生成path元素的
+     *>
+     */
+    var arc = d3.svg.arc()
+                .innerRadius(innerRadius)
+                .outerRadius(outerRadius)
+
+    function draw_arc(dataset){
+
+        if(0 == click_times){
+            var arcs = svg.selectAll("g.arc")
+                        .data(pie(dataset))
+                        .enter()
+                        .append("g")
+                        .attr("class", "arc")
+                        .attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")")
+
+            arcs.append("path")
+                .attr("fill", function(d, i){
+                        return color(i);
+                        })
+                .attr("d", arc)
+        }else{
+            /* update arcs */
+            svg.selectAll("path")
+               .data(pie(dataset))
+               .attr("d", arc)
+        }
+    }
+
+    function event_to_update(){
+
+        /* 
+         *> 事件监听 
+         *>
+         *> D3 的 selection.on() 方法是添加事件监听器的简便方法
+         *> 它接受两个参数: 事件类型("click") 和 监听器(匿名函数)
+         *>
+         *>
+         */
+        d3.select("p").on("click", function(){
+                    if(0 == click_times){
+
+                        var dataset = [
+                                        5, 10, 13, 19, 21
+                                      ];
+
+                        draw_arc(dataset);
+                        click_times = 1;
+
+                    }else{
+                        
+                        var dataset = [];
+                        for(var i=0; i<5; i++){
+                            var num = Math.random() * 30;
+                            dataset.push(num);
+                        }
+
+                        printf("dataset : " + dataset);
+
+                        draw_arc(dataset);
+                    }
+                    //alert("Hey, draw graph ok!");
+                })
+    }
+
+    event_to_update();
+
+    /* 
+     *> 总结：
+     *>
+     *>     <1> D3的布局只是名字而已，D3不会对屏幕上的元素布什么局
+     *>         D3的布局方法没有直接的视觉输出，而是致力于将提供的数据重新映射或变换成新的格式
+     *>         以便于在某些更特定的图表中使用
+     *>         有了变换后的新格式的数据，怎么使用还是取决于使用者
+     *>
+     *>     <2> D3的全部的布局方法
+     *>         Bundle : 把霍尔顿的分层捆绑算法应用到连线(edge)
+     *>         Chord : 根据矩阵关系生成弦形图(chord diagram)
+     *>         Cluster : 聚集实体生成系统树图(dendrogram)
+     *>         Force : 根据物理模拟定位链接的结点 [力导向图]
+     *>         Hierarchy : 派生自定义的系统（分层的）布局实现
+     *>         Histogram : 基于量化的分组计算数据分布
+     *>         Pack : 基于递归圆形填充(circle packing)产生分层布局
+     *>         Partition : 递归细分结点树，呈射线或冰挂状
+     *>         Pie : 计算饼图或圆环图中弧形的起止角度 [饼图]
+     *>         Stack : 计算一系列堆叠的条形或面积图的基线 [堆叠]
+     *>         Tree : 整齐地定位树结点
+     *>         Treemap : 基于递归空间细分来显示结点树
+     *>
+     *>     <3> path是SVG用来绘制不规则图形的一个元素
+     *>         任何不是矩形、圆形或其他基本形状的图形，都可以用path来绘制
+     *>
+     */
+
+    </script>
+    </pre>
+
+    </body>
+</html>
+

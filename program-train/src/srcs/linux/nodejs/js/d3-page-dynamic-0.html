@@ -1,0 +1,151 @@
+<! reference "数据可视化实战" srcs>
+<!>
+<!>
+<!>
+
+<html>
+
+    <head>
+        <meta charset = "utf-8">
+        <title>hello world</title>
+        <link rel="stylesheet" type="text/css" href="../libs/css/styles.css">
+        <!script src="http://d3js.org/d3.v3.min.js" charset = "utf-8"><!/script>
+        <script src="../libs/d3/d3.js" charset = "utf-8"></script>
+    </head>
+
+    <p>
+        click to draw graph.
+    </p>
+
+    <body>
+    <pre>
+    <script>
+
+    var click_times = 0;
+
+    var w = 800;
+    var h = 250;
+
+    var svg = d3.select("body")
+                .append("svg");
+
+    svg.attr("width", w)
+       .attr("height", h);
+
+    function draw_bar(dataset){
+
+        var xscale = d3.scale.ordinal()     //这里用的序数比例尺 <2>
+                       .domain(d3.range(dataset.length))    // <1>
+                       .rangeRoundBands([0, w], 0.05)       // <3>
+
+        if(0 == click_times){
+            /* SVG只支持左上角坐标系 */
+            svg.selectAll("rect")
+                .data(dataset)
+                .enter()
+                .append("rect")
+                .attr("x", function(d, i){
+                        //return i * w / dataset.length;
+                        return xscale(i);   //通过序数比例尺来设定 x 坐标
+                        })
+                .attr("y", function(d){
+                        return h - d;
+                        })
+                //.attr("width", w/dataset.length-4)
+                .attr("width", xscale.rangeBand())
+                .attr("height", function(d){
+                        return d;
+                        })
+                .attr("fill", "red")
+        }else{
+            /* SVG只支持左上角坐标系 */
+            svg.selectAll("rect")
+                .data(dataset)
+                .transition()   //<4>
+                .duration(1000) // 单位是毫秒，设置变换的保持时间, 默认是250ms
+                .attr("y", function(d){
+                        return h - d;
+                        })
+                .attr("height", function(d){
+                        return d;
+                        })
+                .attr("fill", function(d){
+                        /* 这个暂时不起作用,没有添加.transition的时候没有使用 */
+                        return "rgb(0, " + (d * 10) + ", 0)";
+                        })
+        }
+
+    }
+
+    //draw_bar();
+
+    function event_to_update(){
+        /* 
+         *> 事件监听 
+         *>
+         *> D3 的 selection.on() 方法是添加事件监听器的简便方法
+         *> 它接受两个参数: 事件类型("click") 和 监听器(匿名函数)
+         *>
+         *>
+         */
+        d3.select("p").on("click", function(){
+                    if(0 == click_times){
+
+                        var dataset = [
+                                        5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+                                        7, 11, 15, 19, 21, 26, 22, 19, 17, 14
+                                      ];
+
+                        draw_bar(dataset);
+                        click_times = 1;
+
+                    }else{
+                        
+                        var dataset = [];
+                        for(var i=0; i<20; i++){
+                            var num = Math.random() * 130;
+                            dataset.push(num);
+                        }
+
+                        draw_bar(dataset);
+                    }
+                    //alert("Hey, draw graph ok!");
+                })
+    }
+
+    event_to_update();
+
+    /* 
+     *> 总结：
+     *>     <1> d3.scale.ordinal()
+     *>         此有一个优势，它支持范围分档(banding), 与定量的比例尺(eg. d3.scale.linear())返回连续的
+     *>         范围值不同，序数比例尺使用的离散的范围值
+     *>         也就是输出值是事先确定好的，可以是数值，也可以不是
+     *>
+     *>     <2> 序数比例尺设置值域(domain)
+     *>         线性比例尺中设置[0, 100]这样的区间数组来设定值域，而序数比例尺中得用包含序数的数组设置
+     *>         且序数通常是非数值的，当然也是可以使用数值
+     *>         eg. .domain(['新生', '大二', '大三', '毕业班'])
+     *>             .domain([0, 1, 2, 3, 4, 5, 6, 7, 8, ...])
+     *>
+     *>     <3> 映射范围时，可以使用range() or rangeBands(), 后者接收一个最小值和最大值
+     *>         .rangeBands([0, w])
+     *>         .rangeBands([0, w], 0.2) # 0.2是指定间距
+     *>         要想得到整数值，可以使用rangeRoundBands()
+     *>
+     *>     <4> 要创建一个精致、流畅、动态的过渡效果，只需要简单的一行代码
+     *>         .transition()
+     *>         要把这个调用插到选择元素之后，改变任何属性之前
+     *>
+     *>     <5> 为图表赋予交互能力很简单，只有两步
+     *>         绑定事件监听器
+     *>         定义行为
+     *>
+     */
+
+    </script>
+    </pre>
+
+    </body>
+</html>
+
