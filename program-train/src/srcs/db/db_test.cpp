@@ -1,7 +1,7 @@
 /*
  * Progarm Name: db_test.cpp
  * Created Time: 2016-11-23 21:53:39
- * Last modified: 2016-12-01 22:17:24
+ * Last modified: 2016-12-05 21:45:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,9 +11,11 @@
 #include "db_test.hpp"
 #include <iostream>
 #include "mos.hpp"
+#include <string>
 
 using std::cout;
 using std::endl;
+using std::string;
 
 void db_test(void)
 {
@@ -39,6 +41,7 @@ void db_test(void)
     if(-1 == ndb.query()){
         cout << "ndb.query() failed " << endl;
     }
+
 }
 
 

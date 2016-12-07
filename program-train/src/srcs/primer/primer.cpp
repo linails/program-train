@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2016-12-02 21:52:38
+ * Last modified: 2016-12-05 21:49:25
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -51,7 +51,7 @@ Primer::Primer()
         //chrono_test();
         //thread_test();
         //container_test();
-        exception_test();
+        //exception_test();
         //lambda_test();
         //template_test();
         //overload_test();

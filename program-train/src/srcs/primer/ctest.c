@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ctest.c
  * Created Time: 2016-05-14 19:56:38
- * Last modified: 2016-11-11 16:45:00
+ * Last modified: 2016-12-05 21:49:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -51,6 +51,14 @@ void ctest(void)
         printf("td.a = %d\n", td.a);
         printf("td.b = %d\n", td.b);
         printf("td.c = %d\n", td.c);
+    }
+    printf("--------------------------- ----- ---------------------------\n");
+    {
+        char *sp = "line 1\n"
+                   "line 2\n"
+                   "line 3\n";
+
+        printf("string sp = %s", sp);
     }
 }
 
