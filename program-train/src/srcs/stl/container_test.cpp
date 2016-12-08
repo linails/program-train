@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container_test.cpp
  * Created Time: 2015-11-13 07:53:08
- * Last modified: 2016-11-10 17:31:52
+ * Last modified: 2016-12-05 21:46:16
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -286,6 +286,15 @@ void string_test(void)
         string s = "111111111111111,"
                    "22222222222222222222";
         cout << "s = " << s << endl;
+    }
+    cout<<"---------------------------"<<endl;
+    {
+        string s = "line 1"
+                   "line 2"
+                   "line 3"
+                   "line 4";
+
+        cout << "string : " << s << endl;
     }
 }
 

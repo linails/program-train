@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-07 12:31:10
+# Last modified: 2016-12-08 17:15:20
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -55,7 +55,7 @@ set(SRC_LIST
 #   srcs/primer/condition_variable.cpp
 #   srcs/primer/class_test.cpp
 #   srcs/primer/chrono_test.cpp
-   srcs/primer/exception_test.cpp
+#   srcs/primer/exception_test.cpp
 #   srcs/primer/lambda.cpp
 #   srcs/primer/generic_test.cpp
 #   srcs/primer/template_test.cpp
