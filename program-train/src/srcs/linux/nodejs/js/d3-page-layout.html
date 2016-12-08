@@ -68,6 +68,8 @@
             /* update arcs */
             svg.selectAll("path")
                .data(pie(dataset))
+               .transition()
+               .duration(1000) // 单位是毫秒，设置变换的保持时间, 默认是250ms
                .attr("d", arc)
         }
     }
