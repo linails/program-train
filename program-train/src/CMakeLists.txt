@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-10 00:05:13
+# Last modified: 2016-12-10 12:01:26
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -19,6 +19,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/network
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/os
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/process
+    ${PROJECT_SOURCE_DIR}/src/srcs/linux/threads
     ${PROJECT_SOURCE_DIR}/src/srcs/sep/
     ${PROJECT_SOURCE_DIR}/src/srcs/db
     ${PROJECT_SOURCE_DIR}/src/srcs/db/sqlite
@@ -70,6 +71,7 @@ set(SRC_LIST
 #   srcs/linux/sys_cmd.cpp
    srcs/linux/os/mos.cpp
    srcs/linux/process/process.cpp
+   srcs/linux/threads/cthread.cpp
 #   srcs/stl/container_test.cpp
    srcs/db/db_test.cpp
    srcs/db/sqlite/normal.cpp
