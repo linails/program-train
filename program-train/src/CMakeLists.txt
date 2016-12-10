@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-10 12:01:26
+# Last modified: 2016-12-10 20:49:44
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -71,6 +71,7 @@ set(SRC_LIST
 #   srcs/linux/sys_cmd.cpp
    srcs/linux/os/mos.cpp
    srcs/linux/process/process.cpp
+   srcs/linux/process/ipc_msgq.c
    srcs/linux/threads/cthread.cpp
 #   srcs/stl/container_test.cpp
    srcs/db/db_test.cpp

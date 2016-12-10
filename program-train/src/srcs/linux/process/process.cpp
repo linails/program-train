@@ -1,7 +1,7 @@
 /*
  * Progarm Name: process.cpp
  * Created Time: 2016-12-02 17:31:52
- * Last modified: 2016-12-10 11:45:22
+ * Last modified: 2016-12-10 20:53:54
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,9 +15,11 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include "timer.h"
+#include "ipc_msgq.h"
 
 using std::cout;
 using std::endl;
+using std::string;
 
 Process::Process()
 {
@@ -50,7 +52,13 @@ int Process::process_main(int argc, char **argv)
 
     //ret = this->destroy_zombie_by_system();
 
-    ret = this->timing_create_process();
+    //ret = this->timing_create_process();
+
+    //ret = this->communicate_by_pipe();
+
+    //ret = this->communicate_by_pipe(1);
+
+    ret = this->communicate_by_msg();
 
     return ret;
 }
@@ -555,4 +563,180 @@ int  Process::timing_create_process(void)
     return 0;
 }
 
+/* 单个管道的通信 */
+int  Process::communicate_by_pipe(void)
+{
+    /* 
+     * 管道不是进程资源，和套接字一样，属于操作系统
+     * 进入管道的数据任何进程都可以读取，包括自身进程
+     *
+     *  #include <unistd.h>
+     *  int pipe(int filedes[2]);
+     *      -> 成功时返回0， 失败时返回-1
+     *      -- filedes[0] : 通过管道接收数据时使用的文件描述符，即管道出口 out
+     *      -- filedes[1] : 通过管道传输数据时使用的文件描述符，即管道入口 in
+     *
+     *  fds[0]-<----+  +-->-fds[0]
+     *           +--+--+
+     *  fds[1]->-+  +-----<-fds[1]
+     *
+     * */
+
+    int ret = 0;
+
+    int fds[2];
+
+    if(0 == (ret = pipe(fds))){
+
+        pid_t pid = 0;
+
+        if(0 == (pid = fork())){
+            cout << "child process pid : " << getpid() << endl;
+
+            string s("child write data !");
+            write(fds[1], s.c_str(), s.length());
+
+            /* 
+             * 此处的延时是保证了自己写入管道的数据不会被自己读取
+             * 如果去掉，则写入的数据，会被自身读取
+             * */
+            sleep(2);
+
+            char buf[128];
+            read(fds[0], buf, 128);
+            cout << "read from parent process buf : " << buf << endl;
+
+        }else{
+            cout << "parent process pid : " << getpid() << endl;
+
+            char buf[128];
+            read(fds[0], buf, 128);
+            cout << "read from child process buf : " << buf << endl;
+
+            sleep(3);
+            string s("parent write data !");
+            write(fds[1], s.c_str(), s.length());
+        }
+
+        if(0 == pid){
+            cout << "end child " << endl;
+        }else{
+            cout << "end parent " << endl;
+        }
+
+    }else{
+        cout << "[Error] create pipe failed !" << endl;
+    }
+
+    return ret;
+}
+
+/* 两个管道的通信 */
+int  Process::communicate_by_pipe(int)
+{
+    /* 
+     *  #include <unistd.h>
+     *  int pipe(int filedes[2]);
+     *      -> 成功时返回0， 失败时返回-1
+     *      -- filedes[0] : 通过管道接收数据时使用的文件描述符，即管道出口 out
+     *      -- filedes[1] : 通过管道传输数据时使用的文件描述符，即管道入口 in
+     *
+     *  fds1[0]-<----+  +-->-fds2[0]
+     *           +--+--+
+     *  fds2[1]->-+  +-----<-fds1[1]
+     *
+     * */
+
+    int ret = 0;
+
+    int p2c[2];
+    int c2p[2];
+
+    if((0 == (ret = pipe(p2c))) && (0 == (ret = pipe(c2p)))){
+
+        pid_t pid = 0;
+
+        if(0 == (pid = fork())){
+            cout << "child process pid : " << getpid() << endl;
+
+            string s("child write data !");
+            write(c2p[1], s.c_str(), s.length());
+
+            char buf[128];
+            read(p2c[0], buf, 128);
+            cout << "read from parent process buf : " << buf << endl;
+
+        }else{
+            cout << "parent process pid : " << getpid() << endl;
+
+            char buf[128];
+            read(c2p[0], buf, 128);
+            cout << "read from child process buf : " << buf << endl;
+
+            string s("parent write data !");
+            write(p2c[1], s.c_str(), s.length());
+            sleep(1);
+        }
+
+        if(0 == pid){
+            cout << "end child " << endl;
+        }else{
+            cout << "end parent " << endl;
+        }
+
+    }else{
+        cout << "[Error] create pipe failed !" << endl;
+    }
+
+    return ret;
+}
+
+/* 通过消息队列通信 */
+int  Process::communicate_by_msg(void)
+{
+    int ret = 0;
+
+    pid_t pid = 0;
+
+    if(0 == (pid = fork())){
+        cout << "child process pid : " << getpid() << endl;
+
+        string s("data write from child");
+        while(1){
+            if(0 == ipc_msg_send((char *)s.c_str(), s.length())){
+                cout << "ipc msg send successed" << endl;
+                break;
+            }else{
+                cout << "[Error] ipc msg send error" << endl;
+            }
+            usleep(100 * 1000);
+        }
+        sleep(1);
+
+    }else{
+        cout << "parent process pid : " << getpid() << endl;
+
+        int  rlen = 0;
+        char buf[128] = "";
+        while(1){
+            if(0 == ipc_msg_recv(buf, &rlen)){
+                cout << "read data : " << buf << endl;
+                break;
+            }else{
+                cout << "[Error] ipc msg read error" << endl;
+            }
+            usleep(100 * 1000);
+        }
+
+        sleep(2);
+    }
+
+    if(0 == pid){
+        cout << "end child process " << endl;
+    }else{
+        cout << "end parent process" << endl;
+    }
+
+    return ret;
+}
 
