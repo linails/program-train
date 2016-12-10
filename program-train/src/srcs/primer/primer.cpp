@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2016-12-10 00:14:58
+ * Last modified: 2016-12-10 08:43:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -55,19 +55,40 @@ Primer::Primer()
         //template_test();
         //overload_test();
     }
+#if 0
     {
         cPrimer_t *cprimer = cprimer_constructor();
         if(NULL != cprimer){
             cout << "cprimer constructor successed !" << endl;
-        }
 
-        /* cPrimer main */
-        cprimer->cprimer_main(cprimer, 0, NULL);
+            /* cPrimer main */
+            cprimer->cprimer_main((void *)cprimer, 0, NULL);
 
-        if(0 == cprimer->destructor(&cprimer)){
-            cout << "cprimer destructor successed !" << endl;
+            if(0 == cprimer->destructor(&cprimer)){
+                cout << "cprimer destructor successed !" << endl;
+            }
         }
     }
+#else
+    {
+        cPrimer_t *cprimer = NULL;
+        //cPrimer_t *cprimer;
+
+        if(0 == cprimer_constructor_safety(&cprimer)){
+
+            if(NULL != cprimer){
+                cout << "cprimer constructor successed !" << endl;
+
+                /* cPrimer main */
+                cprimer->cprimer_main((void *)cprimer, 0, NULL);
+
+                if(0 == cprimer->destructor(&cprimer)){
+                    cout << "cprimer destructor successed !" << endl;
+                }
+            }
+        }
+    }
+#endif
 }
 
 Primer::~Primer()

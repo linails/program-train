@@ -1,7 +1,7 @@
 /*
  * Progarm Name: process.hpp
  * Created Time: 2016-12-02 17:31:56
- * Last modified: 2016-12-09 22:20:22
+ * Last modified: 2016-12-10 11:28:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -30,6 +30,7 @@ private:
     int  for_sigaction(void);
     int  multiprocess_signal(void);
     int  multiprocess_signal(int);
+    int  timing_create_process(void);
     static void timeout_cb(int sig);
     static void keyctrl_cb(int sig);
 private:

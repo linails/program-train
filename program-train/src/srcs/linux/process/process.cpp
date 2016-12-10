@@ -1,7 +1,7 @@
 /*
  * Progarm Name: process.cpp
  * Created Time: 2016-12-02 17:31:52
- * Last modified: 2016-12-09 22:51:37
+ * Last modified: 2016-12-10 11:45:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,7 @@
 #include <string>
 #include <sys/wait.h>
 #include <signal.h>
+#include "timer.h"
 
 using std::cout;
 using std::endl;
@@ -47,7 +48,9 @@ int Process::process_main(int argc, char **argv)
 
     //ret = this->multiprocess_signal(1);
 
-    ret = this->destroy_zombie_by_system();
+    //ret = this->destroy_zombie_by_system();
+
+    ret = this->timing_create_process();
 
     return ret;
 }
@@ -491,5 +494,65 @@ void Process::keyctrl_cb(int sig)
     }
 }
 
+/* 
+ * 用于粗略检测创建线程所需要的时间 
+ *  
+ *  本机测试创建进程需要 3-8ms 的时间
+ * */
+int  Process::timing_create_process(void)
+{
+    cout << "Timing create process !" << endl;
+
+    auto read_childproc = [](int sig) -> void{
+
+        if(sig == SIGCHLD){
+            int status;
+            pid_t pid = 0;
+
+            if(0 == (pid = waitpid(-1, &status, WNOHANG))){
+                cout << "error ..." << endl;
+            }else{
+                if(WIFEXITED(status)){
+                    printf("removed child pid : %d -  return : %d\n", pid, WEXITSTATUS(status));
+                }
+            }
+        }
+    };
+
+    pid_t pid = 0;
+
+    {
+#if 1
+        struct sigaction act;
+
+        act.sa_handler  = read_childproc;
+        sigemptyset(&act.sa_mask);
+        act.sa_flags    = 0;
+
+        sigaction(SIGCHLD, &act, 0);
+#endif
+    }
+
+    Timer timer;
+
+    /* Timing ... */
+    timer.timing();
+
+    if(0 == (pid = fork())){
+        cout << "child process create successed : " << getpid() << endl;
+    }else{
+        cout << "parent process : " << getpid() << endl;
+    }
+
+    /* Timing Stop ... For created process successed */
+    cout << endl;
+    cout << "pid : " << getpid() << "  ->  ";
+    timer.timing();
+    cout << endl;
+
+    if(0 != pid){ sleep(1); }
+
+    return 0;
+}
 
 

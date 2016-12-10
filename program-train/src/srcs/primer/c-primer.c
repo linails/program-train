@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2016-12-10 00:18:26
+ * Last modified: 2016-12-10 08:42:15
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,22 +17,17 @@ int  cprimer_main(void *cthis, int argc, char **argv)
 
     int ret = 0;
 
-    //((cPrimer_t *)cthis)->other_test();
+    if(NULL != cthis){
 
-    ((cPrimer_t *)cthis)->process_token();
+        //((cPrimer_t *)cthis)->other_test();
 
-    return ret;
-}
+        ((cPrimer_t *)cthis)->process_token();
 
-int  destructor(struct cPrimer_ **pobj)
-{
-    if(NULL != *pobj){
-        free(*pobj);
-        return 0;
     }else{
-        printf("[Error] destructor is failed , because *pobj is null\n");
-        return -1;
+        ret = -1;
+        printf("[Warning] cthis is NULL !\n");
     }
+    return ret;
 }
 
 int  process_token(void)
@@ -56,6 +51,18 @@ int  process_token(void)
 
 
 //----------------------------------------------------------------------------------------------
+
+int  destructor(struct cPrimer_ **pobj)
+{
+    if(NULL != *pobj){
+        free(*pobj);
+        *pobj = NULL;
+        return 0;
+    }else{
+        printf("[Error] destructor is failed , because *pobj is null\n");
+        return -1;
+    }
+}
 
 cPrimer_t *cprimer_constructor(void)
 {
@@ -81,4 +88,36 @@ cPrimer_t *cprimer_constructor(void)
     }
 }
 
+int  cprimer_constructor_safety(cPrimer_t **pobj)
+{
+    int ret = 0;
+
+    if(NULL == *pobj){
+        *pobj = (cPrimer_t *)malloc(sizeof(cPrimer_t));
+
+        if(NULL == *pobj){
+            printf("[Error] constructor -> malloc failed\n");
+            ret = -1;
+        }else{
+
+            /* 
+             * Loading all functions here !
+             * */
+
+            //cprimer->other_test = other_test;
+
+            (*pobj)->destructor = destructor;
+
+            (*pobj)->process_token = process_token;
+
+            (*pobj)->cprimer_main = cprimer_main;
+
+        }
+    }else{
+        printf("[Error] constructor -> *pobj is not NULL !\n");
+        ret = -1;
+    }
+
+    return ret;
+}
 

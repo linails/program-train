@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.h
  * Created Time: 2016-12-09 23:19:02
- * Last modified: 2016-12-10 00:13:57
+ * Last modified: 2016-12-10 07:16:03
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -19,6 +19,8 @@ extern "C" {
     }cPrimer_t;
 
     extern cPrimer_t *cprimer_constructor(void);
+
+    extern int  cprimer_constructor_safety(cPrimer_t **pobj);
 
 #ifdef __cplusplus
 }
