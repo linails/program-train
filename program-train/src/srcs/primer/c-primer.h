@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.h
  * Created Time: 2016-12-09 23:19:02
- * Last modified: 2016-12-10 07:16:03
+ * Last modified: 2016-12-10 15:44:19
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,9 +11,16 @@
 extern "C" {
 #endif
 
+#define cPrivate
+#define cPublic
+
     typedef struct cPrimer_{
+    cPrivate
         void (*other_test)(void);
         int  (*process_token)(void);
+        int  (*para_uncertainty)(void *cthis);
+        int  (*pu_fun)(int n, ...);
+    cPublic
         int  (*cprimer_main)(void *cthis, int argc, char **argv);
         int  (*destructor)(struct cPrimer_ **pobj);
     }cPrimer_t;

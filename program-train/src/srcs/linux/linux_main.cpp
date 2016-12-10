@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-12-10 12:05:41
+ * Last modified: 2016-12-10 13:40:42
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -69,7 +69,7 @@ int linux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+#if 1
         Process process;
 
         ret = process.process_main(argc, argv);
@@ -77,7 +77,7 @@ int linux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 1
+#if 0
         cThread cthread;
 
         ret = cthread.cthread_main(argc, argv);
