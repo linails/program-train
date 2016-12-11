@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-10 20:49:44
+# Last modified: 2016-12-11 09:08:17
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -20,6 +20,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/os
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/process
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/threads
+    ${PROJECT_SOURCE_DIR}/src/srcs/linux/io
     ${PROJECT_SOURCE_DIR}/src/srcs/sep/
     ${PROJECT_SOURCE_DIR}/src/srcs/db
     ${PROJECT_SOURCE_DIR}/src/srcs/db/sqlite
@@ -70,6 +71,7 @@ set(SRC_LIST
 #   srcs/linux/network/endian-conv.c
 #   srcs/linux/sys_cmd.cpp
    srcs/linux/os/mos.cpp
+   srcs/linux/io/io.cpp
    srcs/linux/process/process.cpp
    srcs/linux/process/ipc_msgq.c
    srcs/linux/threads/cthread.cpp
