@@ -1,7 +1,7 @@
 /*
  * Progarm Name: process.cpp
  * Created Time: 2016-12-02 17:31:52
- * Last modified: 2016-12-10 20:53:54
+ * Last modified: 2016-12-12 20:48:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -642,7 +642,7 @@ int  Process::communicate_by_pipe(int)
      *      -- filedes[1] : 通过管道传输数据时使用的文件描述符，即管道入口 in
      *
      *  fds1[0]-<----+  +-->-fds2[0]
-     *           +--+--+
+     *            +--+--+
      *  fds2[1]->-+  +-----<-fds1[1]
      *
      * */

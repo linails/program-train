@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2016-12-10 15:53:17
+ * Last modified: 2016-12-12 21:26:58
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include "ctest.h"
 #include <stdarg.h>
 
+static
 int  cprimer_main(void *cthis, int argc, char **argv)
 {
     printf(" cprimer_main ...\n");
@@ -33,6 +34,7 @@ int  cprimer_main(void *cthis, int argc, char **argv)
     return ret;
 }
 
+static
 int  process_token(void)
 {
     printf("process_token ...\n");
@@ -52,6 +54,7 @@ int  process_token(void)
     return 0;
 }
 
+static
 int  para_uncertainty(void *cthis)
 {
     /* 
@@ -88,6 +91,7 @@ int  para_uncertainty(void *cthis)
     return ret;
 }
 
+static
 int  pu_fun(int n, ...)
 {
     printf("call ... function \n");
@@ -113,6 +117,7 @@ int  pu_fun(int n, ...)
 
 //----------------------------------------------------------------------------------------------
 
+static
 int  destructor(struct cPrimer_ **pobj)
 {
     if(NULL != *pobj){

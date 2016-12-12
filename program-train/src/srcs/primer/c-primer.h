@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.h
  * Created Time: 2016-12-09 23:19:02
- * Last modified: 2016-12-10 15:44:19
+ * Last modified: 2016-12-12 20:44:54
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,8 +11,7 @@
 extern "C" {
 #endif
 
-#define cPrivate
-#define cPublic
+#include "object-c-macro.h"
 
     typedef struct cPrimer_{
     cPrivate
