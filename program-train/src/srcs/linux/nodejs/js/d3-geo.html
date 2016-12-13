@@ -60,6 +60,9 @@
         }
 
         function draw_geo(hG, pC, leg, tF, fData){
+
+            pGeo = {};
+
             var w = 780;
             var h = 580;
 
@@ -124,49 +127,144 @@
                         .on("mouseover", mouseover)
                         .on("mouseout", mouseout)
 
-                   function fill(d){
-                        var out = d.properties.out;
-                        if(out){
-                            return color(out);
-                        }else{
-                            return "rgb(" + 0 + ", " + 0 + "," + 169 + ")";
+                    function draw_circle(svg){
+                        var dataset = [4, 3, 5, 2, 7, 23, 11, 9];
+
+                        //var circles = svg.selectAll("circle")
+                        var circles = svg.selectAll("circle")
+                            .data(dataset)
+                            .enter()
+                            .append("circle");
+
+                        circles.attr("cx", function(d, i){
+                                    return (i * 110) + 25;
+                                    })
+                            .attr("cy", 405)
+                            .attr("r", function(d){
+                                    return d;
+                                    })
+                            .attr("fill", "yellow")
+                            .attr("stroke", "orange")
+                            .attr("stroke-width", function(d){
+                                    return d/2;
+                                    })
+                            .on("mouseover", bmouseover)
+                            .on("mouseout", bmouseout)
+
+                           function bmouseover(d, i){
+                                d3.select(this).transition().duration(100)
+                                    .attr("fill", "red")
+                                printf("bmouseover");
+                           }
+
+                           function bmouseout(d, i){
+                                d3.select(this).transition().duration(100)
+                                    .attr("fill", "green")
+                                printf("bmouseout");
+                           }
+                    }
+
+                    function draw_bar(svg){
+
+                        var dataset = [];
+
+                        for(var i=0; i<35; i++){
+                            dataset.push(Math.random() * 10);
                         }
-                   }
 
-                   function mouseover(d, i){
-                        d3.select(this).transition().duration(100)
-                            .attr("fill", "green")
+                        /* SVG只支持左上角坐标系 */
+                        svg.selectAll("rect")
+                            .data(dataset)
+                            .enter()
+                            .append("rect")
+                            .attr("x", function(d, i){
+                                    return i * w / dataset.length;
+                                    })
+                            //.attr("y", 0) // 这样输出的图像是倒着的
+                            .attr("y", function(d){
+                                    return h - d * 20;
+                                    })
+                            .attr("width", w/dataset.length-4)
+                            .attr("height", function(d){
+                                    return d * 20;
+                                    })
+                            .attr("fill", "red")
+                            .on("mouseover", bmouseover)
+                            .on("mouseout", bmouseout)
 
-                        var st = fData.filter(function(s){ return s.State == d.properties.name;})[0],
-                            nD = d3.keys(st.devices).map(function(s){ return {type:s,devices:st.devices[s]};});
+                           function bmouseover(d, i){
+                                d3.select(this).transition().duration(100)
+                                    .attr("fill", "green")
+                                printf("bmouseover");
+                           }
 
-                        pC.update(nD, "draw - geo ...");
-                        leg.update(nD);
+                           function bmouseout(d, i){
+                                d3.select(this).transition().duration(100)
+                                    .attr("fill", "green")
+                                printf("bmouseout");
+                           }
+                    }
 
-                        printf("d.properties.out : " + d.properties.out);
-                   }
+                    draw_circle(svg);
 
-                   function mouseout(d, i){
-                        d3.select(this).transition().duration(100)
-                            .attr("fill", color(d.properties.out))
-
-                        pC.update(tF, "draw - geo out");
-                        leg.update(tF);
-
-                        printf("mouseout");
-                   }
+                    //draw_bar(svg);
                 });
             });
+
+            /* 可以把每一个d对象添加到一个集合中 */
+            var d_set = [];
+
+           function fill(d){
+                var out = d.properties.out;
+                d_set.push(d);
+                if(out){
+                    return color(out);
+                }else{
+                    return "rgb(" + 0 + ", " + 0 + "," + 169 + ")";
+                }
+           }
+
+           function mouseover(d, i){
+                d3.select(this).transition().duration(100)
+                    .attr("fill", "green")
+
+                var st = fData.filter(function(s){ return s.State == d.properties.name;})[0],
+                    nD = d3.keys(st.devices).map(function(s){ return {type:s,devices:st.devices[s]};});
+
+                pC.update(nD, "draw - geo ...");
+                leg.update(nD);
+
+                printf("d.properties.out : " + d.properties.out);
+
+                for(var i = 0; i<10; i++){
+                    printf("d = " + d_set[i]);
+                }
+           }
+
+           function mouseout(d, i){
+                d3.select(this).transition().duration(100)
+                    .attr("fill", color(d.properties.out))
+
+                pC.update(tF, "draw - geo out");
+                leg.update(tF);
+
+                printf("mouseout");
+           }
+
+            pGeo.update_in = mouseover;
+            pGeo.update_out = mouseout;
+
+            return pGeo;
         }
 
         //-----------------------------------------------------------------
 
         var barColor = 'steelblue';
         function segColor(c){ return {coo:"#807dba", rou:"#e08214",end:"#41ab5d"}[c]; }
-        
+
         // compute total for each state.
         fData.forEach(function(d){d.total=d.devices.coo+d.devices.rou+d.devices.end;});
-        
+
         function histoGram(fD){
 
             var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
@@ -409,7 +507,7 @@
             pC = pieChart(tF),
             leg= legend(tF);
 
-            draw_geo( hG, pC, leg, tF, fData);
+        var pGeo = draw_geo( hG, pC, leg, tF, fData);
     }
 
     /*

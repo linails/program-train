@@ -24,16 +24,16 @@
         {"state" : "河南", "out" : 21, "devices":{"coo" :172, "rou" :608, "end" :871}},
         {"state" : "辽宁", "out" : 22, "devices":{"coo" :92, "rou" :308, "end" :571}},
         {"state" : "山东", "out" : 23, "devices":{"coo" :272, "rou" :1308, "end" :571}},
-        {"state" : "天津", "out" : 24, "devices":{"coo" :102, "rou" :208, "end" :1271}},
-        {"state" : "江西", "out" : 15, "devices":{"coo" :182, "rou" :208, "end" :971}},
-        {"state" : "江苏", "out" : 26, "devices":{"coo" :232, "rou" :108, "end" :471}},
-        {"state" : "上海", "out" : 27, "devices":{"coo" :232, "rou" :108, "end" :471}},
-        {"state" : "浙江", "out" : 28, "devices":{"coo" :232, "rou" :108, "end" :471}},
-        {"state" : "吉林", "out" : 9, "devices":{"coo" :232, "rou" :108, "end" :471}},
-        {"state" : "内蒙古", "out" : 30, "devices":{"coo" :232, "rou" :108, "end" :471}},
-        {"state" : "黑龙江", "out" : 31, "devices":{"coo" :232, "rou" :108, "end" :471}},
-        {"state" : "香港", "out" : 32, "devices":{"coo" :232, "rou" :108, "end" :471}},
-        {"state" : "澳门", "out" : 23, "devices":{"coo" :232, "rou" :108, "end" :471}},
-        {"state" : "台湾", "out" : 34, "devices":{"coo" :232, "rou" :108, "end" :471}}
+        {"state" : "天津", "out" : 24, "devices":{"coo" :102, "rou" :598, "end" :1271}},
+        {"state" : "江西", "out" : 15, "devices":{"coo" :182, "rou" :298, "end" :971}},
+        {"state" : "江苏", "out" : 26, "devices":{"coo" :132, "rou" :958, "end" :1471}},
+        {"state" : "上海", "out" : 27, "devices":{"coo" :32, "rou" :508, "end" :271}},
+        {"state" : "浙江", "out" : 28, "devices":{"coo" :22, "rou" :308, "end" :371}},
+        {"state" : "吉林", "out" : 9, "devices":{"coo" :23, "rou" :140, "end" :401}},
+        {"state" : "内蒙", "out" : 30, "devices":{"coo" :332, "rou" :198, "end" :271}},
+        {"state" : "黑龙江", "out" : 31, "devices":{"coo" :132, "rou" :208, "end" :471}},
+        {"state" : "香港", "out" : 32, "devices":{"coo" :192, "rou" :148, "end" :401}},
+        {"state" : "澳门", "out" : 23, "devices":{"coo" :138, "rou" :128, "end" :571}},
+        {"state" : "台湾", "out" : 34, "devices":{"coo" :38, "rou" :118, "end" :471}}
         ]
 }
