@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-08 17:15:20
+# Last modified: 2016-12-12 21:24:55
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -20,6 +20,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/os
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/process
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/threads
+    ${PROJECT_SOURCE_DIR}/src/srcs/linux/io
     ${PROJECT_SOURCE_DIR}/src/srcs/sep/
     ${PROJECT_SOURCE_DIR}/src/srcs/db
     ${PROJECT_SOURCE_DIR}/src/srcs/db/sqlite
@@ -50,6 +51,7 @@ set(SRC_LIST
 #   srcs/primer/regex_cpp11.cpp
    srcs/primer/smart_pointer.cpp
 #   srcs/primer/other.cpp
+   srcs/primer/c-primer.c
 #   srcs/primer/ctest.c
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
@@ -69,8 +71,10 @@ set(SRC_LIST
 #   srcs/linux/network/endian-conv.c
 #   srcs/linux/sys_cmd.cpp
    srcs/linux/os/mos.cpp
+   srcs/linux/io/io.cpp
    srcs/linux/process/process.cpp
-#   srcs/linux/threads/cthread.cpp
+   srcs/linux/process/ipc_msgq.c
+   srcs/linux/threads/cthread.cpp
 #   srcs/stl/container_test.cpp
    srcs/db/db_test.cpp
    srcs/db/sqlite/normal.cpp
@@ -80,7 +84,8 @@ set(SRC_LIST
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
-#   srcs/algorithm/ds/data_structure.cpp
+#   srcs/algorithm/ds/data-structure.cpp
+   srcs/algorithm/ds/data-structure.c
 #   srcs/algorithm/ds/seq_list.cpp
 #   srcs/sep/sep.cpp
 #####################################################################

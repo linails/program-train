@@ -1,9 +1,8 @@
 /*
  * Progarm Name: ipc_msgq.c
  * Created Time: 2016-05-05 14:17:02
- * Last modified: 2016-05-25 10:15:39
+ * Last modified: 2016-12-10 21:07:43
  * @author: minphone.linails linails@foxmail.com 
- * @version 0.0.2
  */
 
 #include "ipc_msgq.h"
@@ -16,7 +15,7 @@
 #include <string.h>
 
 #define MSG_KEYID_READ  0x0001
-#define MSG_KEYID_WRITE 0x0002
+#define MSG_KEYID_WRITE 0x0001
 
 #define MSG_FLAG   IPC_CREAT | 0666
 

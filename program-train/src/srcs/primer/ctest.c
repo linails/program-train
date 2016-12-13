@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ctest.c
  * Created Time: 2016-05-14 19:56:38
- * Last modified: 2016-12-05 21:49:21
+ * Last modified: 2016-12-09 23:58:07
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,10 +10,9 @@
 #include <stdio.h>
 #include <string.h>
 
-/*ctest*/
-void ctest(void)
+void other_test(void)
 {
-    printf("--------------------------- ctest ---------------------------\n");
+    printf("-------------------- ctest other_test -----------------------\n");
     {
         int test01(void);
         printf("test01 return : %d\n",test01());

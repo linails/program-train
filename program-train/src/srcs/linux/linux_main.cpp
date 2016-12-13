@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linux_main.cpp
  * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-12-07 12:33:27
+ * Last modified: 2016-12-11 09:06:13
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,7 @@
 #include "endian-conv.h"
 #include "process.hpp"
 #include "cthread.hpp"
+#include "io.hpp"
 
 using namespace std;
 
@@ -69,7 +70,7 @@ int linux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 1
+#if 0
         Process process;
 
         ret = process.process_main(argc, argv);
@@ -83,6 +84,14 @@ int linux_main(int argc, char **argv)
         ret = cthread.cthread_main(argc, argv);
 #endif
     }
+    cout << "---------------------------" << endl;
+#if 1
+    {
+        Io io;
+
+        ret = io.io_main(argc, argv);
+    }
+#endif
 
     return ret;
 }

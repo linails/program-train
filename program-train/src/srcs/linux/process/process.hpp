@@ -1,7 +1,7 @@
 /*
  * Progarm Name: process.hpp
  * Created Time: 2016-12-02 17:31:56
- * Last modified: 2016-12-06 22:44:30
+ * Last modified: 2016-12-10 20:41:35
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -19,14 +19,25 @@ class Process{
 public:
     Process();
     ~Process();
-    int process_main(int argc, char **argv);
+    int  process_main(int argc, char **argv);
 private:
-    int fork_child_porc(void);
-    int zombie(void);
-    int destroy_zombie(void);
-    int destroy_zombie(int);
+    int  fork_child_porc(void);
+    int  zombie(void);
+    int  destroy_zombie(void);
+    int  destroy_zombie(int);
+    int  destroy_zombie_by_system(void);
+    int  for_signal(void);
+    int  for_sigaction(void);
+    int  multiprocess_signal(void);
+    int  multiprocess_signal(int);
+    int  timing_create_process(void);
+    int  communicate_by_pipe(void);
+    int  communicate_by_pipe(int);
+    int  communicate_by_msg(void);
+    static void timeout_cb(int sig);
+    static void keyctrl_cb(int sig);
 private:
-    int m_global;
+    int  m_global;
 };
 
 #endif //_PROCESS_HPP_
