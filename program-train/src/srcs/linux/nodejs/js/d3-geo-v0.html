@@ -62,7 +62,7 @@
         var fset   = {};
 
         fset.geo   = {};
-        fset.histo = {};
+        fset.hg    = {};
         fset.pie   = {};
         fset.leg   = {};
         fset.json  = geojson;
@@ -148,8 +148,8 @@
 
             function gmouseover(d, i){
                 d3.select(this)
-                    //.transition()
-                    //.duration(100)
+                    .transition()
+                    .duration(100)
                     .attr("fill", "green")
 
                 //var st = fData.filter(function(s){ return s.State == d.properties.name;})[0],
@@ -163,8 +163,8 @@
 
             function gmouseout(d, i){
                 d3.select(this)
-                    //.transition()
-                    //.duration(100)
+                    .transition()
+                    .duration(100)
                     .attr("fill", color(d.properties.total))
 
                 //leg.update(tF);
@@ -272,6 +272,9 @@
             var barColor = 'steelblue';
             function segColor(c){ return {coo:"#807dba", rou:"#e08214",end:"#41ab5d"}[c]; }
 
+            fset.svgs.barColor = barColor;
+            fset.svgs.segColor = segColor;
+
             hGDim.w = 850 - hGDim.l - hGDim.r,
             hGDim.h = 300 - hGDim.t - hGDim.b;
 
@@ -296,6 +299,8 @@
                             .enter()
                             .append("g")
                             .attr("class", "bar");
+
+            printf("bars : " + bars)
 
             /*
              */
@@ -326,53 +331,83 @@
              */
 
             function mouseover(d, i){
-                // filter for selected state.
-                //var st = fset.json.features.filter(function(s){ return s.name == d.properties.name;})[0],
-                //    nD = d3.keys(st.devices).map(function(s){ return {type:s,devices:st.devices[s]};});
 
                 // call update functions of pie-chart and legend.
-                //pC.update(nD, "---");
                 //leg.update(nD);
+
+                /* update piechart */
+                var piedata ;
+
+                if(d.properties){
+                    fset.pie.devices_tmp = d.properties.devices;
+
+                    piedata = ['coo','rou','end'].map(function(pd){
+                        return{
+                                type:pd,
+                                devices: fset.pie.devices_tmp[pd]
+                              };
+                    });
+
+                }else{
+                    fset.pie.devices_tmp = fset.json.features
+                                                    .filter(function(t){ return t.properties.name == d[0];})[0]
+                                                    .properties
+                                                    .devices;
+
+                    piedata = ['coo','rou','end'].map(function(pd){
+                        return{
+                                type:pd,
+                                devices: fset.pie.devices_tmp[pd]
+                              };
+                    });
+
+                }
+
+                fset.pie.update(piedata);
 
                 /* update geo graph */
                 //fset.geo.update(d.properties.name, 'in');
             }
 
-            function mouseout(d, i){    // utility function to be called on mouseout.
-                // reset the pie-chart and legend.
-                //pC.update(tF, "===");
+            function mouseout(d, i){
+
+                /* update piechart */
+                var piedata = ['coo','rou','end'].map(function(pd){
+                    return{
+                            type:pd,
+                            devices:d3.sum(fset.json.features.map(function(t){ return t.properties.devices[pd]; }))
+                          };
+                });
+
+                fset.pie.update(piedata);
+
                 //leg.update(tF);
 
                 /* update geo graph */
                 //fset.geo.update(d.properties.name, 'out');
             }
 
-            /*
-            hG.update = function(nD, color){
-                // update the domain of the y-axis map to reflect change in devices.
+            fset.hg.update = function(nD, color){
+
                 y.domain([0, d3.max(nD, function(d) { return d[1]; })]);
 
-                // Attach the new data to the bars.
-                var bars = hGsvg.selectAll(".bar").data(nD);
+                printf("hg - nD = " + JSON.stringify(nD));
 
-                // transition the height and color of rectangles.
+                var bars = fset.svgs.svg.selectAll(".bar").data(nD);
+
                 bars.select("rect")
-                    //.transition()
-                    //.duration(500)
+                    .transition()
+                    .duration(500)
                     .attr("y", function(d) {return y(d[1]); })
                     .attr("height", function(d) { return hGDim.h - y(d[1]); })
                     .attr("fill", color);
 
-                // transition the devices labels location and change value.
                 bars.select("text")
-                    //.transition()
-                    //.duration(500)
+                    .transition()
+                    .duration(500)
                     .text(function(d){ return d3.format(",")(d[1])})
                     .attr("y", function(d) {return y(d[1])-5; });
             }
-             */
-
-            return hG;
         }
 
         function pieChart()
@@ -389,44 +424,109 @@
                         .sort(null)
                         .value(function(d) { return d.devices; });
 
+            var piedata = ['coo','rou','end'].map(function(d){
+                return{
+                        type:d,
+                        devices:d3.sum(fset.json.features.map(function(t){ return t.properties.devices[d]; }))
+                      };
+            });
+
             fset.svgs.svg.selectAll("ppath")
-                  .data(pie())
+                  .data(pie(piedata))
                   .enter()
                   .append("path")
                   .attr("d", arc)
                   .each(function(d) { this._current = d; })
-                  .style("fill", function(d) { return segColor(d.data.type); })
+                  .style("fill", function(d) { return fset.svgs.segColor(d.data.type); })
+                  .attr("transform", "translate("
+                          + 740 // x
+                          + ","
+                          + 550 // y
+                          +")")
                   .on("mouseover",mouseover)
-                  .on("mouseout",mouseout);
+                  .on("mouseout",mouseout)
 
-            /*
-            pC.update = function(nD, s){
-                piesvg.selectAll("path")
+            fset.pie.update = function(nD){
+                printf("nD : " + JSON.stringify(nD))
+
+                printf("ppath : " + JSON.stringify(fset.svgs.svg.selectAll("path").data(pie(nD))))
+
+                /*
+                 */
+                fset.svgs.svg.selectAll("path")
                       .data(pie(nD))
+                      .select("path")
                       .transition()
                       .duration(500)
-                      .attrTween("d", arcTween);
-                printf("pc.update s = " + s);
+                      .attrTween("d", function(a){
+                            printf("arcTween a = " + JSON.stringify(a))
+                            var i = d3.interpolate(this._current, a);
+                            printf("i = " + i)
+                            this._current = i(0);
+                            return function(t) { return arc(i(t)); };
+                      })
+
+                /*
+                    piesvg.selectAll("path")
+                          .data(pie(nD))
+                          .transition()
+                          .duration(500)
+                          .attrTween("d", arcTween);
+                 */
+
+                /*
+                fset.svgs.svg.selectAll("ppath")
+                      .data(pie(nD))
+                      //.enter()
+                      //.append("path")
+                      .attr("d", arc)
+                      .each(function(d) { this._current = d; })
+                      .style("fill", function(d) { return fset.svgs.segColor(d.data.type); })
+                      .attr("transform", "translate("
+                              + 740 // x
+                              + ","
+                              + 550 // y
+                              +")")
+                      .on("mouseover",mouseover)
+                      .on("mouseout",mouseout)
+                 */
             }
-             */
 
             function mouseover(d){
-                // call the update function of histogram with new data.
-                //hG.update(fData.map(function(v){
-                //    return [v.State,v.devices[d.data.type]];}), segColor(d.data.type));
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .style("fill", function(d) { return fset.svgs.segColor(d.data.type); })
+
+                fset.hg.update(
+                    fset.json.features.map(
+                        function(t){
+                            val = t.properties.devices[d.data.type];
+                            //printf("d = " + JSON.stringify(d) + " - val = " + val);
+                            return [t.properties.name, val]; }
+                        ),
+                    fset.svgs.segColor(d.data.type)
+                );
             }
 
             function mouseout(d){
-                // call the update function of histogram with all data.
-                // hG.update(fData.map(function(v){
-                //    return [v.State,v.total];}), barColor);
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .style("fill", function(d) { return fset.svgs.segColor(d.data.type); })
+
+                fset.hg.update(
+                    fset.json.features.map(
+                        function(t){ return [t.properties.name,
+                                                t.properties.devices["coo"] +
+                                                t.properties.devices["rou"] +
+                                                t.properties.devices["end"]
+                                            ]; }
+                        ),
+                    fset.svgs.barColor
+                );
             }
 
-            function arcTween(a) {
-                //var i = d3.interpolate(this._current, a);
-                //this._current = i(0);
-                //return function(t) { return arc(i(t)); };
-            }
         }
 
         function legend()
@@ -474,6 +574,8 @@
             /*
              * Step 4
              */
+            printf(" ... pieChart() ...");
+            pieChart();
 
             /*
              * Step 5
@@ -507,6 +609,19 @@
 
     /* json to string */
     console.log("js = " + JSON.stringify(js))
+
+    var blok = {
+        "coo" : 1,
+        "rou" : 2,
+        "end" : 3
+    };
+
+    console.log("blok : " + JSON.stringify(blok));
+
+    map_blok = ["coo", "rou", "end"].map(function(d){
+            return { type:d, device:blok[d] };
+        });
+    console.log("map_blok : " + JSON.stringify(map_blok));
 
     </script>
     <script>

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: app.js
  * Created Time: 2016-11-18 18:01:58
- * Last modified: 2016-12-09 14:49:03
+ * Last modified: 2016-12-13 14:17:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -36,6 +36,36 @@ function do_cb(cb)
 
 do_cb(callback);
 
+printf("------------------------------------------------------------");
+
+function jsmap()
+{
+    /* 
+     * map() 方法返回一个由原数组中的每个元素调用一个指定方法后的返回值组成的新数组
+     * */
+
+    /*
+    var a = map.call("Hello world", function(x){ return x.charCodeAt(0); });
+    printf("a = " + a);
+     * */
+
+    var blok = {
+        "coo":1,
+        "rou":2,
+        "end":3
+    }
+
+    printf("blok" + blok);
+    //printf("blok + " + JSONstringify(blok));
+
+    tf = ["coo", "rou", "end"].map(function(d){
+        return {type:d , device:blok[d]};
+    });
+
+    printf("tf.coo" + tf.coo);
+}
+
+jsmap();
 
 
 

@@ -403,6 +403,9 @@
 
             // create function to update pie-chart. This will be used by histogram.
             pC.update = function(nD, s){
+
+                printf("piesvg.selectAll('path')" + JSON.stringify(piesvg.selectAll("path").data(pie(nD))));
+
                 piesvg.selectAll("path")
                       .data(pie(nD))
                       .transition()
