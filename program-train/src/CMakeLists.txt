@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-12 21:24:55
+# Last modified: 2016-12-15 22:39:53
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -31,6 +31,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case002
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -49,7 +50,7 @@ set(SRC_LIST
    srcs/primer/primer.cpp
 #   srcs/primer/regex_test.cpp
 #   srcs/primer/regex_cpp11.cpp
-   srcs/primer/smart_pointer.cpp
+#   srcs/primer/smart_pointer.cpp
 #   srcs/primer/other.cpp
    srcs/primer/c-primer.c
 #   srcs/primer/ctest.c
@@ -64,17 +65,17 @@ set(SRC_LIST
 #   srcs/primer/overload.cpp
 #   srcs/primer/operator-overload.cpp
 #   srcs/complex/
-   srcs/linux/linux_main.cpp
+#   srcs/linux/linux_main.cpp
 #   srcs/linux/network/server-udp.c
 #   srcs/linux/network/server-tcp.c
 #   srcs/linux/network/fd-test.c
 #   srcs/linux/network/endian-conv.c
 #   srcs/linux/sys_cmd.cpp
    srcs/linux/os/mos.cpp
-   srcs/linux/io/io.cpp
-   srcs/linux/process/process.cpp
-   srcs/linux/process/ipc_msgq.c
-   srcs/linux/threads/cthread.cpp
+#   srcs/linux/io/io.cpp
+#   srcs/linux/process/process.cpp
+#   srcs/linux/process/ipc_msgq.c
+#   srcs/linux/threads/cthread.cpp
 #   srcs/stl/container_test.cpp
    srcs/db/db_test.cpp
    srcs/db/sqlite/normal.cpp
@@ -85,18 +86,26 @@ set(SRC_LIST
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
 #   srcs/algorithm/ds/data-structure.cpp
-   srcs/algorithm/ds/data-structure.c
+#   srcs/algorithm/ds/data-structure.c
 #   srcs/algorithm/ds/seq_list.cpp
 #   srcs/sep/sep.cpp
 #####################################################################
    srcs/tools/timer.cpp
    srcs/tools/timing.c
    srcs/tools/format.c
-#   srcs/cases/cases_main.cpp
+   srcs/cases/cases.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case001/src/infinite_loops_v2.cpp
 #   srcs/cases/case001/src/infinite_loops_v3.cpp
 #   srcs/cases/case001/test/test_main.cpp
 #   srcs/cases/case001/test/v3_test.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   srcs/cases/case002/dic-parser.cpp
+   srcs/cases/case002/formatParsing.cpp
+   srcs/cases/case002/regex_common.cpp
+   srcs/cases/case002/rfileoprt.cpp
+   srcs/cases/case002/rwfileoprt.cpp
+   srcs/cases/case002/stringTools.cpp
 )
 
 add_executable(program-train ${SRC_LIST})
