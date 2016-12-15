@@ -1,12 +1,13 @@
 /*
- * Progarm Name: linux_main.cpp
- * Created Time: 2016-08-24 09:17:33
- * Last modified: 2016-12-11 09:06:13
+ * Progarm Name: mlinux.cpp
+ * Created Time: 2016-12-15 13:36:26
+ * Last modified: 2016-12-15 13:38:51
  * @author: minphone.linails linails@foxmail.com 
  */
 
-#include "linux_main.h"
+#include "mlinux.hpp"
 #include <iostream>
+#include <string>
 #include "sys_cmd.hpp"
 #include "server-tcp.h"
 #include "server-udp.h"
@@ -16,9 +17,19 @@
 #include "cthread.hpp"
 #include "io.hpp"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 
-int linux_main(int argc, char **argv)
+mLinux::mLinux()
+{
+}
+
+mLinux::~mLinux()
+{
+}
+
+int  mLinux::mlinux_main(int argc, char **argv)
 {
     int ret = 0;
 

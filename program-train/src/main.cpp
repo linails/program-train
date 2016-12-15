@@ -1,16 +1,16 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-06 22:31:58
+ * Last modified: 2016-12-15 13:41:15
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include <iostream>
 #include "primer.hpp"
 #include "db_test.hpp"
-#include "cases_main.h"
-#include "algorithm_main.h"
-#include "linux_main.h"
+#include "cases.hpp"
+#include "mlinux.hpp"
+#include "m-algorithm.hpp"
 
 
 using namespace std;
@@ -24,11 +24,25 @@ int main(int argc, char **argv)
     }
     {
         db_test();
-        ret = linux_main(argc, argv);
     }
     {
-        //cases_main();
-        //algorithm_main();
+        mLinux mlinux;
+
+        ret = mlinux.mlinux_main(argc, argv);
+    }
+    {
+#if 0
+        Cases cases;
+
+        ret = cases.cases_main();
+#endif
+    }
+    {
+#if 0
+        mAlgorithm malgorithm;
+
+        ret = malgorithm.algorithm_main(argc, argv);
+#endif
     }
     return ret;
 }

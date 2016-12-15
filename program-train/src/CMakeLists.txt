@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-12 21:24:55
+# Last modified: 2016-12-15 13:39:31
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -28,6 +28,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/ds
+    ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/sl
     ${PROJECT_SOURCE_DIR}/src/srcs/cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
@@ -64,7 +65,7 @@ set(SRC_LIST
 #   srcs/primer/overload.cpp
 #   srcs/primer/operator-overload.cpp
 #   srcs/complex/
-   srcs/linux/linux_main.cpp
+   srcs/linux/mlinux.cpp
 #   srcs/linux/network/server-udp.c
 #   srcs/linux/network/server-tcp.c
 #   srcs/linux/network/fd-test.c
@@ -80,19 +81,20 @@ set(SRC_LIST
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp
 #   srcs/db/sqlite/advanced.cpp
-#   srcs/algorithm/algorithm_main.cpp
+   srcs/algorithm/m-algorithm.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
 #   srcs/algorithm/ds/data-structure.cpp
-   srcs/algorithm/ds/data-structure.c
+#   srcs/algorithm/ds/data-structure.c
 #   srcs/algorithm/ds/seq_list.cpp
+#   srcs/algorithm/sl/statistical-learning.cpp
 #   srcs/sep/sep.cpp
 #####################################################################
    srcs/tools/timer.cpp
    srcs/tools/timing.c
    srcs/tools/format.c
-#   srcs/cases/cases_main.cpp
+#   srcs/cases/cases.cpp
 #   srcs/cases/case001/src/infinite_loops_v2.cpp
 #   srcs/cases/case001/src/infinite_loops_v3.cpp
 #   srcs/cases/case001/test/test_main.cpp
