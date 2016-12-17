@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-15 22:39:53
+# Last modified: 2016-12-17 19:59:56
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -49,7 +49,7 @@ set(SRC_LIST
    main.cpp 
    srcs/primer/primer.cpp
 #   srcs/primer/regex_test.cpp
-#   srcs/primer/regex_cpp11.cpp
+   srcs/primer/regex_cpp11.cpp
 #   srcs/primer/smart_pointer.cpp
 #   srcs/primer/other.cpp
    srcs/primer/c-primer.c
@@ -64,6 +64,7 @@ set(SRC_LIST
 #   srcs/primer/template_test.cpp
 #   srcs/primer/overload.cpp
 #   srcs/primer/operator-overload.cpp
+#   srcs/primer/type-traits.cpp
 #   srcs/complex/
 #   srcs/linux/linux_main.cpp
 #   srcs/linux/network/server-udp.c

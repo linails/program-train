@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2016-12-15 22:07:42
+ * Last modified: 2016-12-17 19:20:17
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,33 +11,36 @@
 #include <string>
 #include <vector>
 
+using std::string;
+using std::vector;
+
 /*
  * stringTools 
  *  pattern 1: usual pattern
- *  pattern 2: {`1`, ,[1-9],`,`[1-9]`}
+ *  pattern 2: {'1', '[1-9]', '[1-9]'}
  * */
 class stringTools{
 public:
-    stringTools(std::string &str);
+    stringTools(string &str);
     stringTools(const char *str);
     ~stringTools();
 
     /*filter success return 0
-     *  pattern 2: {`1`, ,[1-9],`,`[1-9]`}
+     *  pattern 2: {'1', '[1-9]', '[1-9]'}
      * */
-    int filter(const char *pattern2, std::string &unit);
+    int filter(const char *pattern2, string &unit);
     int filter(const char *pattern2, char *unit);
+    int match(const char *pattern, string &unit, int index=0);
+    int match(const char *pattern, char *unit, int index=0);
+    int match(const char *pattern, vector<string> &units);
 private:
     int get_pattern_mode(const char *pattern);
     int get_subpatterns(const char *pattern);
 private:
-    std::string              m_str;
-    std::string              m_pattern;
-    std::vector<std::string> m_subpatterns;
+    string              m_str;
+    string              m_pattern;
+    vector<string>      m_subpatterns;
 };
-
-
-
 
 #endif //_STRINGTOOLS_H_
 

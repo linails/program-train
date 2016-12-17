@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-15 22:56:53
+ * Last modified: 2016-12-17 19:46:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include "regex_common.h"
+#include "stringTools.h"
 
 using namespace std;
 
@@ -81,17 +82,35 @@ int formatPrint(string fname,string line)
 /*format parsing for xinhuazidian*/
 void formatTool::formatParsing_xhzd(string &s)
 {
+    auto print_units = [](vector<string> &us){
+        cout << "us.size() : " << us.size() << endl;
+        for(auto &u : us){
+            cout << "us : " << u << endl;
+        }
+    };
+
     cout << "s : " << s << endl;
     cout << "s.length() : " << s.length() << endl;
     cout << "sizeof(WordCell_t) : " << sizeof(WordCell_t) << endl;
 
-    regex_common_c0x("^[^`]{0,5}", s, this->m_wc.word);
+    regex_common_c0x("^[\\w\\W][^`<\\s]+", s, this->m_wc.word);
 
-    regex_common_c0x("`\\d`[^<]{0,4}", s, this->m_wc.attr);
+    regex_common_c0x("`\\d`[\\W\\w][^`<]+", s, this->m_wc.attr);
 
     vector<string> units;
     vector<string> subunits;
-    regex_common_c0x("(\\(\\d\\)){1}.+?(?=>\\(\\d\\))|\\(\\d\\).*", s, units);
+    //regex_common_c0x("(\\(\\d\\)){1}.+?(?=>\\(\\d\\))|\\(\\d\\).*", s, units);
+    {
+#if 0
+        stringTools st(s);
+
+        st.match("([1-9])-[([1-9])|$]", units);
+#else
+#endif
+    }
+
+    print_units(units);
+
     for(auto iter = units.begin();
              iter!= units.end(); iter++){
         regex_common_c0x("<br>[^<]+", *iter, subunits);
@@ -159,7 +178,11 @@ void formatTool::formatParsing_xhzd(string &s)
  * <br><font size=3 color=blue>【近义词】舐犊之爱<br>【反义词】
  * <br><font size=3 color=red>【歇后语】<br>【灯谜面】
  * <br><font size=3 color=green>【用法】联合式；作谓语、定语；含褒义
- * <br><font size=3 color=purple>【英文】parently love<br>【故事】东汉末年，曹操进攻刘备，在斜谷界口驻扎，陷于进退两难境地，部将夏侯淳询问夜间口令，曹操随口说鸡肋。杨修认为是曹操退兵的意思，叫士兵打点行装，曹操借口杀了杨修。后见到骨瘦如柴的杨修父亲杨彪，问为何？杨彪说有舐犊之爱\n
+ * <br><font size=3 color=purple>【英文】parently love<br>
+ *                              【故事】东汉末年，曹操进攻刘备，在斜谷界口驻扎，陷于进退两难境地，
+ *                                部将夏侯淳询问夜间口令，曹操随口说鸡肋。杨修认为是曹操退兵的意思，
+ *                                叫士兵打点行装，曹操借口杀了杨修。后见到骨瘦如柴的杨修父亲杨彪，
+ *                                问为何？杨彪说有舐犊之爱\n
  *
  * */
 
@@ -181,7 +204,10 @@ void formatTool::formatParsing_hytycfyccd(string &s)
 /* 
  * “左”倾机会主义	<font size=+2 color="red">[“左”倾机会主义]</font>zuǒqīnɡjīhuìzhǔyì见627页〖机会主义〗。\n
  *
- * 一下	<font size=+2 color="red">[一下]</font>yīxià(～儿)①<font size=+1 color="green">数</font>量词。用在动词后面，表示做一次或试着做：看～儿｜打听～｜研究～。②<font size=+1 color="green">副</font>表示短暂的时间：灯～儿又亮了｜这天气，～冷，～热。‖也说一下子。\n
+ * 一下	<font size=+2 color="red">[一下]</font>yīxià(～儿)
+ * ①<font size=+1 color="green">数</font>量词。
+ * 用在动词后面，表示做一次或试着做：看～儿｜打听～｜研究～。
+ * ②<font size=+1 color="green">副</font>表示短暂的时间：灯～儿又亮了｜这天气，～冷，～热。‖也说一下子。\n
  * */
 
 /*format parsing for xiandaihanyucidian*/

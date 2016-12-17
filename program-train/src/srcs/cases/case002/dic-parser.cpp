@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-15 23:07:42
+ * Last modified: 2016-12-17 19:31:11
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -72,4 +72,5 @@ int  DicParser::parser_xhzd(int argc, char **argv)
 
     return ret;
 }
+
 

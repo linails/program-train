@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-15 22:34:30
+ * Last modified: 2016-12-17 20:12:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -23,13 +23,17 @@ int main(int argc, char **argv)
         Primer  primer;
     }
     {
+#if 0
         db_test();
         //ret = linux_main(argc, argv);
+#endif
     }
     {
+#if 0
         Cases cases;
 
         ret = cases.cases_main(argc, argv);
+#endif
     }
     {
         //algorithm_main();

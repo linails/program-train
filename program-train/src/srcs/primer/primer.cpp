@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2016-12-10 08:43:43
+ * Last modified: 2016-12-17 20:13:08
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -25,6 +25,7 @@
 #include "chrono_test.h"
 #include "exception_test.h"
 #include "c-primer.h"
+#include "regex_cpp11.h"
 
 using std::cout;
 using std::endl;
@@ -55,8 +56,22 @@ Primer::Primer()
         //template_test();
         //overload_test();
     }
+    {
+        cout << "---------------------------------------------------------" << endl;
+
+        regex_cpp11 re;
+
+        if(0 == re.regex_base()){
+            cout << "cpp 11 regex successed !" << endl;
+        }else{
+            cout << "cpp 11 regex failed !" << endl;
+        }
+
+    }
 #if 0
     {
+        cout << "---------------------------------------------------------" << endl;
+
         cPrimer_t *cprimer = cprimer_constructor();
         if(NULL != cprimer){
             cout << "cprimer constructor successed !" << endl;
@@ -71,6 +86,8 @@ Primer::Primer()
     }
 #else
     {
+        cout << "---------------------------------------------------------" << endl;
+
         cPrimer_t *cprimer = NULL;
         //cPrimer_t *cprimer;
 

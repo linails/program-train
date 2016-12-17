@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2016-12-15 22:07:38
+ * Last modified: 2016-12-17 19:37:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,7 +11,8 @@
 #include <cstdio>
 #include <cstring>
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 stringTools::stringTools(std::string &str)
     :m_str(str)
@@ -28,7 +29,7 @@ stringTools::~stringTools()
 }
 
 /*filter success return 0
- *  pattern 2: {`1`, ,[1-9],`,`[1-9]`}
+ *  pattern 2: {'1', '[1-9]', '[1-9]'}
  * */
 int stringTools::filter(const char *pattern2, std::string &unit)
 {
@@ -42,7 +43,7 @@ int stringTools::filter(const char *pattern2, std::string &unit)
 }
 
 /*filter success return 0
- *  pattern 2: {`1`, ,[1-9],`,`[1-9]`}
+ *  pattern 2: {'1', '[1-9]', '[1-9]'}
  * */
 int stringTools::filter(const char *pattern2, char *unit)
 {
@@ -59,6 +60,31 @@ int stringTools::filter(const char *pattern2, char *unit)
     return ret;
 }
 
+int stringTools::match(const char *pattern, string &unit, int index)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+int stringTools::match(const char *pattern, char *unit, int index)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+int stringTools::match(const char *pattern, vector<string> &units)
+{
+    int ret = 0;
+
+    int mode = this->get_pattern_mode(pattern);
+
+    cout << "mode = " << mode << endl;
+
+    return ret;
+}
+
 /*success return pattern mode >= 0
  * mode :
  *    0) fixed string
@@ -67,13 +93,28 @@ int stringTools::filter(const char *pattern2, char *unit)
  * */
 int stringTools::get_pattern_mode(const char *pattern)
 {
-    return 0;
+    int ret = 0;
+
+    string s(pattern);
+
+    if(0 == s.size()){
+        ret = -1;
+    }else{
+        if(s[0] == '[' && s[s.size()] == ']'){
+            ret = 1;
+        }else if(string::npos != s.find('[') && string::npos != s.find(']')){
+                ret = 2;
+        }
+    }
+
+    return ret;
 }
 
 /*get sub patterns success return 0*/
 int stringTools::get_subpatterns(const char *pattern)
 {
+    int ret = 0;
+
+    return ret;
 }
-
-
 
