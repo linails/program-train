@@ -1,7 +1,7 @@
 /*
  * Progarm Name: regex_cpp11.cpp
  * Created Time: 2016-06-16 11:24:06
- * Last modified: 2016-12-17 20:36:44
+ * Last modified: 2016-12-17 23:56:08
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 using std::endl;
 using std::cout;
@@ -351,6 +352,42 @@ int  regex_cpp11::regex_base(void)
 
         print_contents(s, units);
     }
+    cout << "---------------------------------------------------------" << endl;
+    {
+        string s("Is is the cost of of gasoline going up up of Of?");
+        vector<string> units;
+
+        this->regex_common_c0x("\\b[a-z]{3}\\b", s, units);
+
+        print_contents(s, units);
+    }
+    cout << "---------------------------------------------------------" << endl;
+    {
+        string s("得出	`1`得出`2`déchū<br>(1)<br>[reach;obtain;arrive]∶获得;达到<br>他得出这个结论是多次考虑的结果<br>(2)<br>[confirm (a calculation,etc.)]∶算出<br>计算了这道题得出答案为46<br>(3)<br>[confirm (a calculation,etc.)]∶算出<br>计算了这道题得出答案为46");
+        //string s("(3)<br>[confirm (a calculation,etc.)]∶算出<br>计算了这道题得出答案为46");
+        vector<string> units;
+
+        //this->regex_common_c0x("(\\(\\d\\)).+?(?=\\(\\d\\))|(\\(\\d\\)).+?$", s, units);
+        //this->regex_common_c0x("(\\(\\d\\)).+?(?=\\(\\d\\))", s, units);
+        this->regex_common_c0x("(\\(\\d\\)).+$", s, units);
+
+        //print_contents(s, units);
+
+        this->regex_split(s, print_contents);
+    }
+    cout << "---------------------------------------------------------" << endl;
+    {
+        string s("亶1	`1`亶1`2`dǎn<br>(1)<br>(形声。本义:谷多)<br>(2)<br>同本义 [full of grains]<br>亶,多谷也。――《说文》<br>择三有事,亶侯多藏。――《诗·小雅·十月之交》<br>(3)<br>厚道;忠实 [kind and sincere]<br>亶,信也;又,诚也。――《尔雅》<br>不实于亶。――《诗·大雅·板》<br>(4)<br>又如:亶厚(忠厚,淳厚);亶诚(真诚)<br>(5)<br>平坦;广大 [smooth]。如:亶亶(平坦。通“坦坦”)<br>(6)<br>姓");
+        vector<string> units;
+
+        //this->regex_common_c0x("(\\(\\d\\)).+?(?=\\(\\d\\))|(\\(\\d\\)).+?$", s, units);
+        this->regex_common_c0x("(\\(\\d\\)).+?(?=\\(\\d\\))", s, units);
+        //this->regex_common_c0x("(\\(\\d\\)).+$", s, units);
+
+        //print_contents(s, units);
+
+        this->regex_split(s, print_contents);
+    }
 
     return ret;
 }
@@ -371,4 +408,42 @@ int  regex_cpp11::regex_common_c0x(const char *pattern, string &contents, vector
     return 0;
 }
 
+int  regex_cpp11::regex_split(string s, void (*fp)(string &, vector<string> &))
+{
+    int ret = 0;
+
+    cout << "[re_split ...]" << endl;
+
+    char *ptr = new char[s.size() + 1];
+
+    if(nullptr != ptr){
+
+        size_t len = 0;
+        vector<string> last;
+        vector<string> units;
+
+        this->regex_common_c0x("(\\(\\d\\)).+?(?=\\(\\d\\))", s, units);
+
+        memcpy(ptr, s.c_str(), s.size());
+        ptr[s.size()] = '\0';
+
+        for(auto &u : units) len += u.size();
+
+        if(len < s.size()){
+            string sptr = &ptr[len];
+            this->regex_common_c0x("(\\(\\d\\)).+$", sptr, last);
+
+            units.push_back(last[0]);
+        }
+
+        fp(s, units);
+
+        delete [] ptr;
+    }else{
+        ret = -1;
+        cout << "[Error] new failed !" << endl;
+    }
+
+    return ret;
+}
 

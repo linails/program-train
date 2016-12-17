@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2016-12-17 20:13:08
+ * Last modified: 2016-12-17 21:58:10
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -56,18 +56,6 @@ Primer::Primer()
         //template_test();
         //overload_test();
     }
-    {
-        cout << "---------------------------------------------------------" << endl;
-
-        regex_cpp11 re;
-
-        if(0 == re.regex_base()){
-            cout << "cpp 11 regex successed !" << endl;
-        }else{
-            cout << "cpp 11 regex failed !" << endl;
-        }
-
-    }
 #if 0
     {
         cout << "---------------------------------------------------------" << endl;
@@ -106,6 +94,18 @@ Primer::Primer()
         }
     }
 #endif
+    {
+        cout << "---------------------------------------------------------" << endl;
+
+        regex_cpp11 re;
+
+        if(0 == re.regex_base()){
+            cout << "cpp 11 regex successed !" << endl;
+        }else{
+            cout << "cpp 11 regex failed !" << endl;
+        }
+
+    }
 }
 
 Primer::~Primer()

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-17 19:31:11
+ * Last modified: 2016-12-18 00:26:05
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -57,6 +57,9 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     timer.timing();
 
 
+    /* 
+     *
+     * */
     auto print_line = [](string line) ->void{
         static unsigned int index = 0;
         cout << endl;
@@ -68,7 +71,38 @@ int  DicParser::parser_xhzd(int argc, char **argv)
 
     ret = fo.read_index_line(10000, dline, print_line);
 
-    ret = formatPrint(fn, dline);
+    //ret = formatPrint(fn, dline);
+
+
+
+    /* 
+     *
+     * */
+    auto parser = [](string line) -> void{
+
+        WordCell_t wc;
+        string fn = "/home/minphone/space_sdc/workspace/"
+                "dic_parse/dicparse/src/dic/xhzd.txt";
+
+        formatTool ftool(fn,line);
+
+        ftool.get_wordcell(wc);
+
+        cout << "line : " << line << endl;
+        cout << "wc.word : " << wc.word << endl;
+        for(auto &u : wc.attr){
+            cout << "wc.attr : " << u << endl;
+        }
+        for(auto &uv : wc.contents){
+            for(auto &u : uv){
+                cout << "wc.cont : " << u << endl;
+            }
+        }
+    };
+
+    //ret = fo.read_index_line(10000, dline, parser);
+    ret = fo.read_linebyline(parser);
+    //ret = fo.read_index_line(2, dline, parser);
 
     return ret;
 }

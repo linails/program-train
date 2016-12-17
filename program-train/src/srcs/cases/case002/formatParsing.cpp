@@ -1,21 +1,22 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-17 19:46:23
+ * Last modified: 2016-12-18 00:26:31
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "formatParsing.h"
 #include <iostream>
-#include <string>
-#include <vector>
 #include <map>
 #include <cstdio>
 #include <cstdlib>
 #include "regex_common.h"
 #include "stringTools.h"
+#include <cstring>
 
-using namespace std;
+using std::map;
+using std::cout;
+using std::endl;
 
 //---------------------------------------------------------
 
@@ -89,16 +90,17 @@ void formatTool::formatParsing_xhzd(string &s)
         }
     };
 
+#if 0
     cout << "s : " << s << endl;
     cout << "s.length() : " << s.length() << endl;
     cout << "sizeof(WordCell_t) : " << sizeof(WordCell_t) << endl;
+#endif
 
     regex_common_c0x("^[\\w\\W][^`<\\s]+", s, this->m_wc.word);
 
     regex_common_c0x("`\\d`[\\W\\w][^`<]+", s, this->m_wc.attr);
 
     vector<string> units;
-    vector<string> subunits;
     //regex_common_c0x("(\\(\\d\\)){1}.+?(?=>\\(\\d\\))|\\(\\d\\).*", s, units);
     {
 #if 0
@@ -106,13 +108,16 @@ void formatTool::formatParsing_xhzd(string &s)
 
         st.match("([1-9])-[([1-9])|$]", units);
 #else
+        this->regex_split(s, units);
 #endif
     }
 
-    print_units(units);
+//    print_units(units);
 
+    vector<string> subunits;
     for(auto iter = units.begin();
              iter!= units.end(); iter++){
+
         regex_common_c0x("<br>[^<]+", *iter, subunits);
         if(false == subunits.empty()){
             for(auto iiter = subunits.begin();
@@ -121,10 +126,11 @@ void formatTool::formatParsing_xhzd(string &s)
             }
             this->m_wc.contents.push_back(subunits);
         }
+
         subunits.clear();
     }
 
-#if 1
+#if 0
     cout << "print wc info" << endl;
     cout << "word : " << this->m_wc.word << endl;
     for(auto iter = this->m_wc.attr.begin();
@@ -249,4 +255,51 @@ formatTool::~formatTool()
 {
 }
 
+int  formatTool::regex_split(string &s, vector<string> &units)
+{
+    int ret = 0;
+
+    char *ptr = new char[s.size() + 1];
+
+    if(nullptr != ptr){
+
+        size_t len = 0;
+        vector<string> last;
+
+        regex_common_c0x("(\\(\\d\\)).+?(?=\\(\\d\\))", s, units);
+        if(0 != units.size()){
+
+            memcpy(ptr, s.c_str(), s.size());
+            ptr[s.size()] = '\0';
+
+            for(auto &u : units) len += u.size();
+
+            if(len < s.size()){
+                string sptr = &ptr[len];
+                regex_common_c0x("(\\(\\d\\)).+$", sptr, last);
+
+                if(last.size() > 0){
+                    units.push_back(last[0]);
+                }
+                //cout << "last[0] : " << last[0] << endl;
+            }
+        }else{
+            units.push_back(s);
+        }
+
+        delete [] ptr;
+    }else{
+        ret = -1;
+        cout << "[Error] new failed !" << endl;
+    }
+
+    return ret;
+}
+
+int  formatTool::get_wordcell(WordCell_t &wc)
+{
+    wc = this->m_wc;
+
+    return 0;
+}
 
