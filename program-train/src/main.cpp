@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-18 09:38:30
+ * Last modified: 2016-12-18 21:52:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -40,8 +40,12 @@ int main(int argc, char **argv)
 #endif
     }
     {
-        //assert(-1 != ret);
-        //algorithm_main();
+#if 0
+        mAlgorithm  malgo;
+
+        assert(-1 != ret);
+        ret = malgo.malgo_main(argc, argv);
+#endif
     }
     return ret;
 }

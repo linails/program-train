@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-18 17:27:41
+ * Last modified: 2016-12-18 22:17:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -202,16 +202,54 @@ void formatTool::formatParsing_hytycfyccd(string &s)
 /* 
  * list :  ①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮
  *
- * “左”倾机会主义	<font size=+2 color="red">[“左”倾机会主义]</font>zuǒqīnɡjīhuìzhǔyì见627页〖机会主义〗。\n
+ * “左”倾机会主义	
+ *      <font size=+2 color="red">[“左”倾机会主义]</font>zuǒqīnɡjīhuìzhǔyì见627页〖机会主义〗。\n
  *
- * 一下	<font size=+2 color="red">[一下]</font>yīxià(～儿)
- * ①<font size=+1 color="green">数</font>量词。
- * 用在动词后面，表示做一次或试着做：看～儿｜打听～｜研究～。
- * ②<font size=+1 color="green">副</font>表示短暂的时间：灯～儿又亮了｜这天气，～冷，～热。‖也说一下子。\n
  *
+ * 一下	
+ *      <font size=+2 color="red">[一下]</font>yīxià(～儿)
+ *      ①<font size=+1 color="green">数</font>量词。用在动词后面，表示做一次或试着做：看～儿｜打听～｜研究～。
+ *      ②<font size=+1 color="green">副</font>表示短暂的时间：灯～儿又亮了｜这天气，～冷，～热。‖也说一下子。\n
  *
  * 
- * 一	*<font size=+2 color="red">一</font>1yī①<font size=+1 color="green">数</font>最小的正整数。参看1271页〖<font size=+1 color="green">数</font>字〗。②<font size=+1 color="green">数</font>表示同一：咱们是～家人｜你们～路走｜这不是～码事。③<font size=+1 color="green">数</font>表示另一：番茄～<font size=+1 color="green">名</font>西红柿。④<font size=+1 color="green">数</font>表示整个；全：～冬｜～生｜～路平安｜～屋子人｜～身的汗。⑤表示专一：～心～意。⑥<font size=+1 color="green">数</font>表示动作是一次，或表示动作是短暂的，或表示动作是试试的。a)用在重叠的动词(多为单音)中间：歇～歇｜笑～笑｜让我闻～闻。b)用在动词之后，<font size=+1 color="green">动</font>量词之前：笑～声｜看～眼｜让我们商量～下。⑦<font size=+1 color="green">数</font>用在动词或动量词前面，表示先做某个动作(下文说明动作结果)：～跳跳了过去｜～脚把它踢开｜他在旁边～站，再也不说什么。⑧<font size=+1 color="green">数</font>与“就”配合，表示两个动作紧接着发生：～请就来｜～说就明白了。⑨一旦；一经：～失足成千古恨。⑩〈书〉<font size=+1 color="green">助</font>用在某些词前加强语气：～何速也｜为害之甚，～至于此!‖注意“一”字单用或在一词一句末尾念阴平，如“十一、一一得一”，在去声字前念阳平，如“一半、一共”，在阴平、阳平、上声字前念去声，如“一天、一年、一点”。本词典为简便起见，条目中的“一”字，都注阴平。\n
+ * 一	*
+ *      <font size=+2 color="red">一</font>1yī
+ *      ①<font size=+1 color="green">数</font>最小的正整数。参看1271页〖<font size=+1 color="green">数</font>字〗。
+ *      ②<font size=+1 color="green">数</font>表示同一：咱们是～家人｜你们～路走｜这不是～码事。
+ *      ③<font size=+1 color="green">数</font>表示另一：番茄～<font size=+1 color="green">名</font>西红柿。
+ *      ④<font size=+1 color="green">数</font>表示整个；全：～冬｜～生｜～路平安｜～屋子人｜～身的汗。
+ *      ⑤表示专一：～心～意。
+ *      ⑥<font size=+1 color="green">数</font>表示动作是一次，或表示动作是短暂的，或表示动作是试试的。
+ *          a)用在重叠的动词(多为单音)中间：歇～歇｜笑～笑｜让我闻～闻。
+ *          b)用在动词之后，<font size=+1 color="green">动</font>量词之前：笑～声｜看～眼｜让我们商量～下。
+ *      ⑦<font size=+1 color="green">数</font>用在动词或动量词前面，表示先做某个动作(下文说明动作结果)：
+ *          ～跳跳了过去｜～脚把它踢开｜他在旁边～站，再也不说什么。
+ *      ⑧<font size=+1 color="green">数</font>与“就”配合，表示两个动作紧接着发生：～请就来｜～说就明白了。
+ *      ⑨一旦；一经：～失足成千古恨。
+ *      ⑩〈书〉<font size=+1 color="green">助</font>用在某些词前加强语气：～何速也｜为害之甚，～至于此!
+ *          ‖注意“一”字单用或在一词一句末尾念阴平，如“十一、一一得一”，在去声字前念阳平，
+ *          如“一半、一共”，在阴平、阳平、上声字前念去声，如“一天、一年、一点”。
+ *          本词典为简便起见，条目中的“一”字，都注阴平。\n
+ *
+ *
+ * 好	*
+ *      <font size=+2 color="red">好</font>hǎo 
+ *      ①<font size=+1 color="green">形</font>优点多的；使人满意的(跟“坏”相对)：～人｜～东西｜～事情｜～脾气｜庄稼长得很～。
+ *      ②<font size=+1 color="green">形</font>合宜；妥当：初次见面，不知跟他说些什么～。
+ *      ③用在动词前，表示使人满意的性质在哪方面：～看｜～听｜～吃。
+ *      ④<font size=+1 color="green">形</font>友爱；和睦：友～｜～朋友｜他跟我～。
+ *      ⑤<font size=+1 color="green">形</font>(身体)健康；(疾病)痊愈：体质～｜身子比去年～多了|他的病～了。
+ *      ⑥<font size=+1 color="green">形</font>用于套语：～睡｜您～走。
+ *      ⑦<font size=+1 color="green">形</font>用在动词后，表示完成或达到完善的地步：计划订～了｜功课准备～了｜外边太冷，穿～了衣服再出去｜坐～吧，要开会了。
+ *      ⑧<font size=+1 color="green">形</font>表示赞许、同意或结束等语气：～，就这么办｜～了，不要再说了。
+ *      ⑨<font size=+1 color="green">形</font>反话，表示不满意：～，这一下可麻烦了。
+ *      ⑩<font size=+1 color="green">形</font>容易(限用于动词前)：那个歌儿～唱｜这问题很～回答。
+ *      ○11动便于：地整平了～种庄稼｜告诉我他在哪儿，我～找他去。
+ *      ○12〈方〉<font size=+1 color="green">动</font>应该；可以：我～进来吗?｜时间不早了，你～走了。
+ *      ○13副用在形容词、<font size=+1 color="green">数</font>量词等前面，表示多或久：～多｜～久｜～几个｜～一会儿｜～半天。
+ *      ○14副用在形容词、<font size=+1 color="green">动</font>词前，表示程度深，并带感叹语气：～冷｜～香｜～漂亮｜～面熟｜～大的工程｜原来你躲在这儿，害得我～找!
+ *      ○15〈方〉<font size=+1 color="green">副</font>用在形容词前面问数量或程度，用法跟“多”相同：哈尔滨离北京～远?\n
+ *
  * */
 
 /*format parsing for xiandaihanyucidian*/

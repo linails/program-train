@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-18 17:31:22
+ * Last modified: 2016-12-18 22:07:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include "formatParsing.h"
 #include "timer.h"
 #include <string>
+#include <algorithm>
 
 using std::cout;
 using std::endl;
@@ -157,6 +158,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
 
         index++;
 
+    #if 1
         if(line.size() > maxlen){
             maxlen = line.size();
 
@@ -164,6 +166,16 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
             cout << "Line " << index << " : " << line << endl;
             cout << endl;
         }
+    #else
+        int cnt = count(line.begin(), line.end(), '<');
+        if(cnt > maxlen){
+            maxlen = cnt;
+
+            cout << endl;
+            cout << "Line " << index << " : " << line << endl;
+            cout << endl;
+        }
+    #endif
     };
 
     ret = fo.read_linebyline(filter);

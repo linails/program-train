@@ -1,7 +1,7 @@
 /*
  * Progarm Name: non-mutating-algo.cpp
  * Created Time: 2016-08-14 10:33:17
- * Last modified: 2016-11-29 11:13:20
+ * Last modified: 2016-12-18 21:43:46
  */
 
 #include "non-mutating-algo.h"
@@ -342,6 +342,16 @@ void non_mutating_algo(void)
         num = count(l.begin(), l.end(), val);
 
         cout << "count {val = 9} : " << num << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        string s = "djoianoabbbbabadjijabjoija";
+
+        int num = 0;
+
+        num = count(s.begin(), s.end(), 'a');
+
+        cout << "s : " << s << " - count 'a' : " << num << endl;
     }
     cout << "-----------------------------------------" << endl;
     {
