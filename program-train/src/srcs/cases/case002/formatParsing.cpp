@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-18 07:17:41
+ * Last modified: 2016-12-18 17:27:41
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -200,12 +200,18 @@ void formatTool::formatParsing_hytycfyccd(string &s)
 }
 
 /* 
+ * list :  ①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮
+ *
  * “左”倾机会主义	<font size=+2 color="red">[“左”倾机会主义]</font>zuǒqīnɡjīhuìzhǔyì见627页〖机会主义〗。\n
  *
  * 一下	<font size=+2 color="red">[一下]</font>yīxià(～儿)
  * ①<font size=+1 color="green">数</font>量词。
  * 用在动词后面，表示做一次或试着做：看～儿｜打听～｜研究～。
  * ②<font size=+1 color="green">副</font>表示短暂的时间：灯～儿又亮了｜这天气，～冷，～热。‖也说一下子。\n
+ *
+ *
+ * 
+ * 一	*<font size=+2 color="red">一</font>1yī①<font size=+1 color="green">数</font>最小的正整数。参看1271页〖<font size=+1 color="green">数</font>字〗。②<font size=+1 color="green">数</font>表示同一：咱们是～家人｜你们～路走｜这不是～码事。③<font size=+1 color="green">数</font>表示另一：番茄～<font size=+1 color="green">名</font>西红柿。④<font size=+1 color="green">数</font>表示整个；全：～冬｜～生｜～路平安｜～屋子人｜～身的汗。⑤表示专一：～心～意。⑥<font size=+1 color="green">数</font>表示动作是一次，或表示动作是短暂的，或表示动作是试试的。a)用在重叠的动词(多为单音)中间：歇～歇｜笑～笑｜让我闻～闻。b)用在动词之后，<font size=+1 color="green">动</font>量词之前：笑～声｜看～眼｜让我们商量～下。⑦<font size=+1 color="green">数</font>用在动词或动量词前面，表示先做某个动作(下文说明动作结果)：～跳跳了过去｜～脚把它踢开｜他在旁边～站，再也不说什么。⑧<font size=+1 color="green">数</font>与“就”配合，表示两个动作紧接着发生：～请就来｜～说就明白了。⑨一旦；一经：～失足成千古恨。⑩〈书〉<font size=+1 color="green">助</font>用在某些词前加强语气：～何速也｜为害之甚，～至于此!‖注意“一”字单用或在一词一句末尾念阴平，如“十一、一一得一”，在去声字前念阳平，如“一半、一共”，在阴平、阳平、上声字前念去声，如“一天、一年、一点”。本词典为简便起见，条目中的“一”字，都注阴平。\n
  * */
 
 /*format parsing for xiandaihanyucidian*/

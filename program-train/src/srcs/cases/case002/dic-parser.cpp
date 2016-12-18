@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-18 09:38:55
+ * Last modified: 2016-12-18 17:31:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,7 +29,9 @@ int  DicParser::dicparser_main(int argc, char **argv)
 {
     int ret = 0;
 
-    ret = this->parser_xhzd(argc, argv);
+    //ret = this->parser_xhzd(argc, argv);
+
+    ret = this->parser_xdhycd(argc, argv);
 
     return ret;
 }
@@ -105,8 +107,69 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     };
 
     //ret = fo.read_index_line(10000, dline, parser);
-    //ret = fo.read_linebyline(parser);
-    ret = fo.read_index_line(2, dline, parser);
+    ret = fo.read_linebyline(parser);
+    //ret = fo.read_index_line(2, dline, parser);
+
+    return ret;
+}
+
+int  DicParser::parser_xdhycd(int argc, char **argv)
+{
+    cout << "parser_xdhycd ..." << endl;
+
+    int ret = 0;
+
+    string fn = "/home/minphone/space_sdc/workspace/"
+                "dic_parse/dicparse/src/dic/xdhycd.txt";
+
+    string dline;
+
+    if(1 != argc){
+        fn = string(argv[1]);
+    }
+    cout << "fn : " << fn << endl;
+
+
+    Timer timer;
+    timer.timing();
+    rFileOprt fo(fn);
+    timer.timing();
+
+
+    /* 
+     *
+     * */
+    auto print_line = [](string line) ->void{
+        static unsigned int index = 0;
+        cout << endl;
+        cout << "Line " << ++index << " : " << line << endl;
+        cout << endl;
+    };
+
+    //ret = fo.read_linebyline(print_line);
+
+    //ret = fo.read_index_line(10000, dline, print_line);
+
+#if 1
+    auto filter = [](string line) -> void{
+        static size_t index = 0;
+        static size_t maxlen = 0;
+
+        index++;
+
+        if(line.size() > maxlen){
+            maxlen = line.size();
+
+            cout << endl;
+            cout << "Line " << index << " : " << line << endl;
+            cout << endl;
+        }
+    };
+
+    ret = fo.read_linebyline(filter);
+#endif
+
+
 
     return ret;
 }

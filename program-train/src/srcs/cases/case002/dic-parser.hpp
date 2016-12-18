@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.hpp
  * Created Time: 2016-12-15 22:09:32
- * Last modified: 2016-12-15 22:31:46
+ * Last modified: 2016-12-18 17:03:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,7 @@ public:
     int  dicparser_main(int argc, char **argv);
 private:
     int  parser_xhzd(int argc, char **argv);
+    int  parser_xdhycd(int argc, char **argv);
 };
 
 #endif //_DIC_PARSER_HPP_
