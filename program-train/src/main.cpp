@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-17 23:19:35
+ * Last modified: 2016-12-18 09:38:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,7 +11,7 @@
 #include "cases.hpp"
 #include "algorithm_main.h"
 #include "linux_main.h"
-
+#include <cassert>
 
 using namespace std;
 
@@ -21,9 +21,12 @@ int main(int argc, char **argv)
 
     {
         Primer  primer;
+
+        ret = primer.primer_main(argc, argv);
     }
     {
 #if 0
+        assert(-1 != ret);
         db_test();
         //ret = linux_main(argc, argv);
 #endif
@@ -32,10 +35,12 @@ int main(int argc, char **argv)
 #if 1
         Cases cases;
 
+        assert(-1 != ret);
         ret = cases.cases_main(argc, argv);
 #endif
     }
     {
+        //assert(-1 != ret);
         //algorithm_main();
     }
     return ret;

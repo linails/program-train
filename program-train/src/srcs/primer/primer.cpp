@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2016-12-17 21:58:10
+ * Last modified: 2016-12-18 09:34:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,12 +26,19 @@
 #include "exception_test.h"
 #include "c-primer.h"
 #include "regex_cpp11.h"
+#include <cassert>
 
 using std::cout;
 using std::endl;
 
 Primer::Primer()
 {
+}
+
+int  Primer::primer_main(int argc, char **argv)
+{
+    int ret = 0;
+
     cout << endl;
     cout << "Beginning primer ..." << endl;
     cout << endl;
@@ -52,7 +59,6 @@ Primer::Primer()
         //thread_test();
         //container_test();
         //exception_test();
-        //lambda_test();
         //template_test();
         //overload_test();
     }
@@ -99,13 +105,23 @@ Primer::Primer()
 
         regex_cpp11 re;
 
-        if(0 == re.regex_base()){
+        assert(-1 != ret);
+        if(0 == (ret = re.regex_base())){
             cout << "cpp 11 regex successed !" << endl;
         }else{
             cout << "cpp 11 regex failed !" << endl;
         }
 
     }
+    {
+        cout << "---------------------------------------------------------" << endl;
+        mLambda mlambda;
+
+        assert(-1 != ret);
+        ret = mlambda.mlambda_main(argc, argv);
+    }
+
+    return ret;
 }
 
 Primer::~Primer()

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-18 00:26:31
+ * Last modified: 2016-12-18 07:17:41
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,7 @@
 #include "regex_common.h"
 #include "stringTools.h"
 #include <cstring>
+#include <cassert>
 
 using std::map;
 using std::cout;
@@ -90,19 +91,27 @@ void formatTool::formatParsing_xhzd(string &s)
         }
     };
 
-#if 0
-    cout << "s : " << s << endl;
-    cout << "s.length() : " << s.length() << endl;
-    cout << "sizeof(WordCell_t) : " << sizeof(WordCell_t) << endl;
-#endif
 
+    /* get wc.word */
     regex_common_c0x("^[\\w\\W][^`<\\s]+", s, this->m_wc.word);
 
-    regex_common_c0x("`\\d`[\\W\\w][^`<]+", s, this->m_wc.attr);
 
-    vector<string> units;
-    //regex_common_c0x("(\\(\\d\\)){1}.+?(?=>\\(\\d\\))|\\(\\d\\).*", s, units);
+    /* get wc.attr */
     {
+        vector<string> units;
+
+        regex_common_c0x("`\\d`[\\W\\w][^\\(]*", s, units);
+        assert(units.size() == 1);
+
+        regex_common_c0x("`\\d`[\\W\\w][^`<]*", units[0], this->m_wc.attr);
+    }
+
+
+    /* get units */
+    {
+        vector<string> units;
+        //regex_common_c0x("(\\(\\d\\)){1}.+?(?=>\\(\\d\\))|\\(\\d\\).*", s, units);
+
 #if 0
         stringTools st(s);
 
@@ -110,43 +119,26 @@ void formatTool::formatParsing_xhzd(string &s)
 #else
         this->regex_split(s, units);
 #endif
-    }
 
-//    print_units(units);
+    //    print_units(units);
 
-    vector<string> subunits;
-    for(auto iter = units.begin();
-             iter!= units.end(); iter++){
+        vector<string> subunits;
+        for(auto iter = units.begin();
+                 iter!= units.end(); iter++){
 
-        regex_common_c0x("<br>[^<]+", *iter, subunits);
-        if(false == subunits.empty()){
-            for(auto iiter = subunits.begin();
-                     iiter!= subunits.end(); iiter++){
-                iiter->erase(0, iiter->find_first_not_of("<br>"));
+            regex_common_c0x("<br>[^<]+", *iter, subunits);
+            if(false == subunits.empty()){
+                for(auto iiter = subunits.begin();
+                         iiter!= subunits.end(); iiter++){
+                    iiter->erase(0, iiter->find_first_not_of("<br>"));
+                }
+                this->m_wc.contents.push_back(subunits);
             }
-            this->m_wc.contents.push_back(subunits);
+
+            subunits.clear();
         }
 
-        subunits.clear();
     }
-
-#if 0
-    cout << "print wc info" << endl;
-    cout << "word : " << this->m_wc.word << endl;
-    for(auto iter = this->m_wc.attr.begin();
-             iter!= this->m_wc.attr.end(); iter++){
-        cout << "attr : " << *iter << endl;
-    }
-    for(auto iter = this->m_wc.contents.begin();
-             iter!= this->m_wc.contents.end(); iter++){
-        cout << "   -------" << endl;
-        for(auto iiter = iter->begin();
-                 iiter!= iter->end(); iiter++){
-            cout << "contents : " << *iiter << endl;
-        }
-    }
-#endif
-
 }
 
 /*

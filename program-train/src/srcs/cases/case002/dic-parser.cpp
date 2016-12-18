@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-18 00:26:05
+ * Last modified: 2016-12-18 09:38:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -93,16 +93,20 @@ int  DicParser::parser_xhzd(int argc, char **argv)
         for(auto &u : wc.attr){
             cout << "wc.attr : " << u << endl;
         }
+
+        int index = 0;
         for(auto &uv : wc.contents){
+            index++;
             for(auto &u : uv){
-                cout << "wc.cont : " << u << endl;
+                printf("[%d]cout : %s\n", index, u.c_str());
             }
         }
+        cout << endl;
     };
 
     //ret = fo.read_index_line(10000, dline, parser);
-    ret = fo.read_linebyline(parser);
-    //ret = fo.read_index_line(2, dline, parser);
+    //ret = fo.read_linebyline(parser);
+    ret = fo.read_index_line(2, dline, parser);
 
     return ret;
 }

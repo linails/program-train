@@ -1,7 +1,7 @@
 /*
  * Progarm Name: regex_cpp11.cpp
  * Created Time: 2016-06-16 11:24:06
- * Last modified: 2016-12-17 23:56:08
+ * Last modified: 2016-12-18 07:16:09
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -15,6 +15,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cassert>
 
 using std::endl;
 using std::cout;
@@ -387,6 +388,18 @@ int  regex_cpp11::regex_base(void)
         //print_contents(s, units);
 
         this->regex_split(s, print_contents);
+    }
+    cout << "---------------------------------------------------------" << endl;
+    {
+        string s("齪	`1`齪`2`(1)<br>齪<br>chuò<br>(2)<br>整治;整顿 [renovate;reorganize]。如:龊灯(持灯。也指持灯人);龊茶(送茶水)<br>(3)<br>戒备 [guard]。如:龊巷(街巷戒严)");
+        vector<string> first;
+        vector<string> second;
+
+        regex_common_c0x("`\\d`[\\W\\w][^\\(]*", s, first);
+        assert(first.size() == 1);
+        this->regex_common_c0x("`\\d`[\\W\\w][^`<]+", first[0], second);
+
+        print_contents(s, second);
     }
 
     return ret;
