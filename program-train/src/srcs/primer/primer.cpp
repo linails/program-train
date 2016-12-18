@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2016-12-18 09:34:49
+ * Last modified: 2016-12-18 13:24:58
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -114,11 +114,13 @@ int  Primer::primer_main(int argc, char **argv)
 
     }
     {
+#if 0
         cout << "---------------------------------------------------------" << endl;
         mLambda mlambda;
 
         assert(-1 != ret);
         ret = mlambda.mlambda_main(argc, argv);
+#endif
     }
 
     return ret;

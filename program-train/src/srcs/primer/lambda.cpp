@@ -1,7 +1,7 @@
 /*
  * Progarm Name: lambda.cpp
  * Created Time: 2016-03-28 20:57:04
- * Last modified: 2016-12-18 12:09:24
+ * Last modified: 2016-12-18 12:33:16
  */
 
 #include "lambda.h"
@@ -157,6 +157,55 @@ int  mLambda::mlambda_cb(void)
         };
 
         f(cb);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+#if 0
+        /*
+         * Warning : 错误用法
+         *    这种用法是错误的，lambda表达式中如果包含捕获，则通过普通的回调函数指针赋值传递为语法错误
+         * */
+
+        string sa = "this is sa";
+        string sb = "this is sb";
+
+        auto f = [&sa](int (*pf)(char *s)){
+            pf((char *)sa.c_str());
+        };
+
+        auto cb = [&sb](char *s) -> int{
+            int ret = 0;
+            cout << "cb : " << s << endl;
+            cout << "sb : " << sb << endl;
+            return ret;
+        };
+
+        f(cb);
+#endif
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        string sa = "this is sa";
+        string sb = "this is sb";
+
+        /* 
+         * Warning : 正确用法
+         *   lambda 表达式有捕获功能的时候作为回调函数，则需要通过函数包装器进行传递
+         * */
+        auto f = [&sa](function<int (char *)> pf){
+            pf((char *)sa.c_str());
+        };
+
+        auto cb = [&sb](char *s) -> int{
+            int ret = 0;
+            cout << "cb : " << s << endl;
+            cout << "sb : " << sb << endl;
+            return ret;
+        };
+
+        function<int(char *)> fr = cb;
+
+        f(fr);
     }
 
     return ret;
