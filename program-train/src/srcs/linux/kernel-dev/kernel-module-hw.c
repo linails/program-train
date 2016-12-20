@@ -1,7 +1,7 @@
 /*
  * Progarm Name: kernel-module-hw.c
  * Created Time: 2016-12-19 23:26:55
- * Last modified: 2016-12-19 23:33:20
+ * Last modified: 2016-12-20 16:30:58
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,14 +11,14 @@
 static
 int hello_init(void)
 {
-    printk(KERN_VARNING"init hello!\n");
+    printk("init hello!\n");
     return 0;
 }
 
 static
 void hello_exit(void)
 {
-    printk(KERN_INFO"exit hello ...\n");
+    printk("exit hello ...\n");
 }
 
 /* 

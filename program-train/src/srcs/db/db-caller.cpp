@@ -1,25 +1,46 @@
 /*
- * Progarm Name: db_test.cpp
- * Created Time: 2016-11-23 21:53:39
- * Last modified: 2016-12-05 21:45:24
+ * Progarm Name: db-caller.cpp
+ * Created Time: 2016-12-20 17:32:32
+ * Last modified: 2016-12-20 17:42:09
  * @author: minphone.linails linails@foxmail.com 
  */
 
+#include "db-caller.hpp"
+#include <iostream>
 #include "normal.hpp"
 #include "normal-pg.hpp"
 #include "advanced.hpp"
-#include "db_test.hpp"
-#include <iostream>
 #include "mos.hpp"
 #include <string>
+#include <cassert>
 
 using std::cout;
 using std::endl;
 using std::string;
 
-void db_test(void)
+dbCaller::dbCaller()
 {
-    cout << "----------- db_test -----------" << endl;
+}
+
+dbCaller::~dbCaller()
+{
+}
+
+int  dbCaller::dbcaller_main(int argc, char **argv)
+{
+    int ret = 0;
+
+    ret = this->sqlite_normal(argc, argv);
+
+    assert(-1 != ret);
+    //ret = this->sqlite_advanced(argc, argv);
+
+    return ret;
+}
+
+int  dbCaller::sqlite_normal(int argc, char **argv)
+{
+    int ret = 0;
 
     Mos mos;
     string path = mos.pwd();
@@ -42,7 +63,13 @@ void db_test(void)
         cout << "ndb.query() failed " << endl;
     }
 
+    return ret;
 }
 
+int  dbCaller::sqlite_advanced(int argc, char **argv)
+{
+    int ret = 0;
 
+    return ret;
+}
 

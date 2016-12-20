@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-12-19 22:19:25
-# Last modified: 2016-12-19 23:51:39
+# Last modified: 2016-12-20 16:50:31
 #
 
 make clean      : remove most generated files but keep the config
@@ -42,6 +42,26 @@ mkinitrd initrd-$version $version   : 制作 init ramdisk
 [install kernel modules]
   *> insmod     : 加载 insmod hello.ko
   *> rmmod      : 卸载 rmmod hello
-  *> lsmod      : 查看
+  *> lsmod      : 查看      =  cat /proc/modules
   *> modprobe   : 加载 modprobe hello
+
+
+obj-$(CONFIG_XXX_DRV)  += xxxx.o
+    : 当 XXX_DRV 的配置选项被选择为 Y / M ，即 obj-$(CONFIG_XXX_DRV) 等同于 obj-y / obj-m
+
+
+[Kconfig]
+  (1)config
+      1> 每个配置选项都必须指定类型，类型包括：bool , tristate , string , hex , int
+         tristate , string 是两个基本类型，其他类型都是基于这两个基本类型
+         tristate(三态：内建、模块、移除)
+      2> bool 类型的只能选中或者不选中，显示为[]; tristate 类型的菜单项多了编译成内核模块的选项，显示为<>
+         假如选择编译成内核模块，则会在 .config 中生成一个 CONFIG_XXX_MODULE=m 的配置，假如选择内建，就是
+         直接编译进内核镜像，就会在 .config 中生成一个 CONFIG_XXX_MODULE=y 的配置，hex 十六进制显示为 ( )
+  (2)目录层次迭代
+      1> 在 Kconfig 中有类似语句：source "drivers/usb/Kconfig"
+         用来包含（或嵌套）新的 Kconfig 文件
+
+
+
 

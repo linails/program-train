@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-18 21:52:57
+# Last modified: 2016-12-20 17:35:18
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -8,6 +8,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/libs
     ${PROJECT_SOURCE_DIR}/src/libs/rapidjson
+    ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
     ${PROJECT_SOURCE_DIR}/src/srcs/complex
@@ -77,8 +78,9 @@ set(SRC_LIST
 #   srcs/linux/process/process.cpp
 #   srcs/linux/process/ipc_msgq.c
 #   srcs/linux/threads/cthread.cpp
+#   srcs/stl/container.cpp
 #   srcs/stl/container_test.cpp
-   srcs/db/db_test.cpp
+   srcs/db/db-caller.cpp
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp
 #   srcs/db/sqlite/advanced.cpp
@@ -121,6 +123,8 @@ endif()
 
 set(link_lib
     ${libs_path}/libsqlite3.a
+    ${libs_path}/lib/libssl.a
+    ${libs_path}/lib/libcrypto.a
     pthread
     dl
 )
