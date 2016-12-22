@@ -1,7 +1,7 @@
 /*
  * Progarm Name: sha-test.cpp
  * Created Time: 2016-12-15 17:40:17
- * Last modified: 2016-12-22 09:05:12
+ * Last modified: 2016-12-22 12:35:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -32,6 +32,9 @@ int  shaTest::st_main(int argc, char **argv)
     this->str2hex(s);
 
     cout << "this->sha256() : " << this->sha256(s) << endl;
+
+    ret = this->md5();
+
     return ret;
 }
 
@@ -71,5 +74,12 @@ string shaTest::sha256(const string &s)
     }
 
     return ns;
+}
+
+int  shaTest::md5(void)
+{
+    int ret = 0;
+
+    return ret;
 }
 

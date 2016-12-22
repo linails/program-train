@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-22 09:16:23
+# Last modified: 2016-12-22 14:43:08
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -34,6 +34,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case002
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -113,7 +115,7 @@ set(SRC_LIST
    srcs/cases/case002/rwfileoprt.cpp
    srcs/cases/case002/stringTools.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/exlib-cases/case-json/mjson.cpp
+   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 )
 
