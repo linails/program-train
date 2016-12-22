@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-22 09:07:26
+# Last modified: 2016-12-22 09:16:23
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -56,6 +56,7 @@ set(SRC_LIST
 #   srcs/primer/other.cpp
    srcs/primer/c-primer.c
 #   srcs/primer/ctest.c
+   srcs/primer/jump.c
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
 #   srcs/primer/class_test.cpp
