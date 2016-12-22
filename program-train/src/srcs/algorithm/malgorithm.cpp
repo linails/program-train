@@ -1,10 +1,10 @@
 /*
- * Progarm Name: algorithm_main.cpp
+ * Progarm Name: malgorithm.cpp
  * Created Time: 2016-08-14 10:35:26
- * Last modified: 2016-12-18 21:47:42
+ * Last modified: 2016-12-21 10:25:31
  */
 
-#include "algorithm_main.h"
+#include "malgorithm.hpp"
 #include <iostream>
 #include "non-mutating-algo.h"
 #include "mutating-algo.h"

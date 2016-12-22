@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2016-12-15 22:23:56
+ * Last modified: 2016-12-21 10:11:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,6 +9,8 @@
 #include <iostream>
 #include "test_main.h"
 #include "dic-parser.hpp"
+#include "exlibCases.hpp"
+#include <cassert>
 
 using std::cout;
 using std::endl;
@@ -32,7 +34,14 @@ int Cases::cases_main(int argc, char **argv)
     {
         DicParser dp;
 
+        assert(-1 != ret);
         ret = dp.dicparser_main(argc, argv);
+    }
+    {
+        exlibCases exlibcases;
+
+        assert(-1 != ret);
+        ret = exlibcases.exlibcases_main(argc, argv);
     }
 
     return ret;

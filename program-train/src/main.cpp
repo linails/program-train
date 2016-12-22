@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-20 17:37:08
+ * Last modified: 2016-12-21 10:26:51
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,10 +9,10 @@
 #include "primer.hpp"
 #include "db-caller.hpp"
 #include "cases.hpp"
-#include "algorithm_main.h"
-#include "linux_main.h"
+#include "malgorithm.hpp"
 #include <cassert>
 #include "container.hpp"
+#include "mlinux.hpp"
 
 using namespace std;
 
@@ -39,9 +39,14 @@ int main(int argc, char **argv)
 
         assert(-1 != ret);
         ret = dbcaller.dbcaller_main(argc, argv);
+#endif
+    }
+    {
+#if 0
+        mLinux mlinux;
 
         assert(-1 != ret);
-        //ret = linux_main(argc, argv);
+        ret = mlinux.mlinux_main(argc, argv);
 #endif
     }
     {

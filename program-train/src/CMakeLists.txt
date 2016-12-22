@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-20 17:35:18
+# Last modified: 2016-12-22 09:07:26
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -33,6 +33,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case002
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -67,7 +68,7 @@ set(SRC_LIST
 #   srcs/primer/operator-overload.cpp
 #   srcs/primer/type-traits.cpp
 #   srcs/complex/
-#   srcs/linux/linux_main.cpp
+#   srcs/linux/mlinux.cpp
 #   srcs/linux/network/server-udp.c
 #   srcs/linux/network/server-tcp.c
 #   srcs/linux/network/fd-test.c
@@ -84,7 +85,7 @@ set(SRC_LIST
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp
 #   srcs/db/sqlite/advanced.cpp
-#   srcs/algorithm/algorithm_main.cpp
+#   srcs/algorithm/malgorithm.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
@@ -97,6 +98,7 @@ set(SRC_LIST
    srcs/tools/timing.c
    srcs/tools/format.c
    srcs/cases/cases.cpp
+   srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case001/src/infinite_loops_v2.cpp
 #   srcs/cases/case001/src/infinite_loops_v3.cpp
@@ -109,6 +111,9 @@ set(SRC_LIST
    srcs/cases/case002/rfileoprt.cpp
    srcs/cases/case002/rwfileoprt.cpp
    srcs/cases/case002/stringTools.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#   srcs/cases/exlib-cases/case-json/mjson.cpp
+#   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 )
 
 add_executable(program-train ${SRC_LIST})

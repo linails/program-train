@@ -1,11 +1,11 @@
 /*
- * Progarm Name: algorithm_main.h
+ * Progarm Name: malgorithm.hpp
  * Created Time: 2016-08-14 10:35:30
- * Last modified: 2016-12-18 21:47:48
+ * Last modified: 2016-12-21 10:26:15
  */
 
-#ifndef _ALGORITHM_MAIN_H_
-#define _ALGORITHM_MAIN_H_
+#ifndef _MALGORITHM_HPP_
+#define _MALGORITHM_HPP_
 
 class mAlgorithm{
 public:
@@ -15,5 +15,5 @@ public:
 private:
 };
 
-#endif //_ALGORITHM_MAIN_H_
+#endif //_MALGORITHM_HPP_
 

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: kernel-module-hw.c
  * Created Time: 2016-12-19 23:26:55
- * Last modified: 2016-12-20 16:30:58
+ * Last modified: 2016-12-21 10:15:15
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -31,4 +31,11 @@ module_init(hello_init);
  * */
 module_exit(hello_exit);
 
+/* 
+ * 字符设备驱动：
+ *
+ *  *> file_operations 结构体中成员函数是字符设备驱动与内核的接口，是用户空间对Linux进行系统
+ *     调用最终的落实者
+ *
+ * */
 

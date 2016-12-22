@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-12-19 22:19:25
-# Last modified: 2016-12-20 16:50:31
+# Last modified: 2016-12-21 13:07:42
 #
 
 make clean      : remove most generated files but keep the config
@@ -62,6 +62,12 @@ obj-$(CONFIG_XXX_DRV)  += xxxx.o
       1> 在 Kconfig 中有类似语句：source "drivers/usb/Kconfig"
          用来包含（或嵌套）新的 Kconfig 文件
 
-
+[linux下的专门文件系统]
+  1> devfs
+     devfs 是在 2.4 内核出现，用来解决Linux中设备管理混乱的问题
+  2> sysfs
+     sysfs 是 Linux 2.6 所提供的一种虚拟文件系统，也是用来对系统的设备进行管理的，
+     它把实际连接到系统上的设备和总线组织成一个分级的文件，用户空间的程序同样可以
+     利用这些信息以实现和内核的交互
 
 
