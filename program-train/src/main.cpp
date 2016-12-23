@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-21 10:26:51
+ * Last modified: 2016-12-23 15:17:58
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 #endif
     }
     {
-#if 1
+#if 0
         Cases cases;
 
         assert(-1 != ret);

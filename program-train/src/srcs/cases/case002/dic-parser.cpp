@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-18 22:07:28
+ * Last modified: 2016-12-23 09:07:58
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -85,7 +85,7 @@ int  DicParser::parser_xhzd(int argc, char **argv)
 
         WordCell_t wc;
         string fn = "/home/minphone/space_sdc/workspace/"
-                "dic_parse/dicparse/src/dic/xhzd.txt";
+                    "dic_parse/dicparse/src/dic/xhzd.txt";
 
         formatTool ftool(fn,line);
 
