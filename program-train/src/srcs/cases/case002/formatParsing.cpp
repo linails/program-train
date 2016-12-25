@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-18 22:17:06
+ * Last modified: 2016-12-25 21:38:18
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -255,6 +255,31 @@ void formatTool::formatParsing_hytycfyccd(string &s)
 /*format parsing for xiandaihanyucidian*/
 void formatTool::formatParsing_xdhycd(string &s)
 {
+
+    /* get wc.word 
+     * 1> "^.[^*<\\s]+" */
+    regex_common_c0x("^.[^*<\\s]+", s, this->m_wc.word);
+
+#if 1
+
+    vector<string> units;
+    regex_common_c0x(">.+?<|>.+?$", s, units);
+
+#else
+    /* get wc.attr */
+    {
+        vector<string> units;
+
+        regex_common_c0x("`\\d`[\\W\\w][^\\(]*", s, units);
+        assert(units.size() == 1);
+
+        regex_common_c0x("`\\d`[\\W\\w][^`<]*", units[0], this->m_wc.attr);
+    }
+#endif
+
+
+
+
 }
 
 //---------------------------------------------------------

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-23 09:07:58
+ * Last modified: 2016-12-25 20:58:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -151,7 +151,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
 
     //ret = fo.read_index_line(10000, dline, print_line);
 
-#if 1
+#if 0
     auto filter = [](string line) -> void{
         static size_t index = 0;
         static size_t maxlen = 0;
@@ -181,7 +181,39 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     ret = fo.read_linebyline(filter);
 #endif
 
+    /* 
+     *
+     * */
+    auto parser = [](string line) -> void{
 
+        WordCell_t wc;
+        string fn = "/home/minphone/space_sdc/workspace/"
+                    "dic_parse/dicparse/src/dic/xdhycd.txt";
+
+        formatTool ftool(fn,line);
+
+        ftool.get_wordcell(wc);
+
+        cout << "line : " << line << endl;
+        cout << "wc.word : " << wc.word << endl;
+        for(auto &u : wc.attr){
+            cout << "wc.attr : " << u << endl;
+        }
+
+        int index = 0;
+        for(auto &uv : wc.contents){
+            index++;
+            for(auto &u : uv){
+                printf("[%d]cout : %s\n", index, u.c_str());
+            }
+        }
+        cout << endl;
+    };
+
+
+    ret = fo.read_index_line(41779, dline, parser);
+
+    //ret = fo.read_linebyline(parser);
 
     return ret;
 }
