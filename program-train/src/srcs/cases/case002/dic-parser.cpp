@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-25 20:58:55
+ * Last modified: 2016-12-26 21:32:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -212,6 +212,8 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
 
 
     ret = fo.read_index_line(41779, dline, parser);
+
+    ret = fo.read_index_line(26347, dline, parser);
 
     //ret = fo.read_linebyline(parser);
 

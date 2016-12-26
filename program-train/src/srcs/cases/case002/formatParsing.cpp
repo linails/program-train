@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-25 21:38:18
+ * Last modified: 2016-12-26 23:28:54
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -141,65 +141,17 @@ void formatTool::formatParsing_xhzd(string &s)
     }
 }
 
-/*
- * 佹得佹失 
- * </font><font size=5 color=red>佹得佹失
- * <br></font><font size=3 color=green>guǐ  dé  guǐ  shī<br>
- * <br><font size=3 color=blue>【解释】佹：出于偶然的。指得失出于偶然。
- * <br><font size=3 color=black>【出处】《列子·力命》：“佹佹成者，俏成者也，初非成也。佹佹败者，俏败者也，初非败也。”
- * <br><font size=3 color=brown>【示例】
- * <br><font size=3 color=yellow>【拼音码】gdgs
- * <br><font size=3 color=blue>【近义词】有得有失<br>【反义词】
- * <br><font size=3 color=red>【歇后语】<br>【灯谜面】
- * <br><font size=3 color=green>【用法】联合式；作谓语；指得失出于偶然
- * <br><font size=3 color=purple>【英文】<br>【故事】\n
- *
- * 偭规错矩	
- * </font><font size=5 color=red>偭规错矩
- * <br></font><font size=3 color=green>miǎn  guī  cuò  jǔ<br> 
- * <br><font size=3 color=blue>【解释】偭：违背；规、矩：标准、法则和习惯。指违背改变正常的法则
- * <br><font size=3 color=black>【出处】战国·楚·屈原《楚辞·离骚》：“固时俗之工巧兮，偭规矩而改错。”
- * <br><font size=3 color=brown>【示例】清·薛福成《分别教案治本治标之计疏》：“西洋习俗如此，教士～，亦犹中国僧道之不能尽守戒律。”
- * <br><font size=3 color=yellow>【拼音码】mgcj
- * <br><font size=3 color=blue>【近义词】<br>【反义词】
- * <br><font size=3 color=red>【歇后语】<br>【灯谜面】
- * <br><font size=3 color=green>【用法】联合式；作谓语、定语；含贬义
- * <br><font size=3 color=purple>【英文】<br>【故事】\n
- *
- * 舐犊情深	
- * </font><font size=5 color=red>舐犊情深
- * <br></font><font size=3 color=green>shì  dú  qíng  shēn 
- * <br> <br><font size=3 color=blue>【解释】比喻对子女的慈爱。
- * <br><font size=3 color=black>【出处】《后汉书·杨彪传》：“犹怀老牛舐犊之爱。”
- * <br><font size=3 color=brown>【示例】
- * <br><font size=3 color=yellow>【拼音码】sdqs
- * <br><font size=3 color=blue>【近义词】舐犊之爱<br>【反义词】
- * <br><font size=3 color=red>【歇后语】<br>【灯谜面】
- * <br><font size=3 color=green>【用法】联合式；作谓语、定语；含褒义
- * <br><font size=3 color=purple>【英文】parently love<br>
- *                              【故事】东汉末年，曹操进攻刘备，在斜谷界口驻扎，陷于进退两难境地，
- *                                部将夏侯淳询问夜间口令，曹操随口说鸡肋。杨修认为是曹操退兵的意思，
- *                                叫士兵打点行装，曹操借口杀了杨修。后见到骨瘦如柴的杨修父亲杨彪，
- *                                问为何？杨彪说有舐犊之爱\n
- *
- * */
-
-/*format parsing for chengyucidian*/
-void formatTool::formatParsing_cycd(string &s)
-{
-}
-
-/*format parsing for chengyucidiandaquan*/
-void formatTool::formatParsing_hycddq(string &s)
-{
-}
-
-/*format parsing for hanyutongyicifanyicicidian*/
-void formatTool::formatParsing_hytycfyccd(string &s)
-{
-}
-
 /* 
+ * 12大类:
+ *      名词、动词、形容词、数词、量词、代词、副词、介词、连词、助词、叹词、拟声词
+ *
+ *      名词    : 时间词、方位词
+ *      动词    : 助动词、趋向动词
+ *      形容词  : 属性词、状态词
+ *      代词    : 人称代词、指示代词、疑问代词
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
  * list :  ①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮
  *
  * “左”倾机会主义	
@@ -260,26 +212,77 @@ void formatTool::formatParsing_xdhycd(string &s)
      * 1> "^.[^*<\\s]+" */
     regex_common_c0x("^.[^*<\\s]+", s, this->m_wc.word);
 
-#if 1
-
-    vector<string> units;
-    regex_common_c0x(">.+?<|>.+?$", s, units);
-
-#else
     /* get wc.attr */
     {
         vector<string> units;
 
-        regex_common_c0x("`\\d`[\\W\\w][^\\(]*", s, units);
-        assert(units.size() == 1);
+        //regex_common_c0x(">.+?<|>.+?$", s, units);
+        regex_common_c0x(">.+?<", s, units);
+        cout << "units.size() : " << units.size() << endl;
+        //assert(units.size() == 1);
 
-        regex_common_c0x("`\\d`[\\W\\w][^`<]*", units[0], this->m_wc.attr);
+        //regex_common_c0x("`\\d`[\\W\\w][^`<]*", units[0], this->m_wc.attr);
     }
-#endif
 
 
+}
 
+/*
+ * 佹得佹失 
+ * </font><font size=5 color=red>佹得佹失
+ * <br></font><font size=3 color=green>guǐ  dé  guǐ  shī<br>
+ * <br><font size=3 color=blue>【解释】佹：出于偶然的。指得失出于偶然。
+ * <br><font size=3 color=black>【出处】《列子·力命》：“佹佹成者，俏成者也，初非成也。佹佹败者，俏败者也，初非败也。”
+ * <br><font size=3 color=brown>【示例】
+ * <br><font size=3 color=yellow>【拼音码】gdgs
+ * <br><font size=3 color=blue>【近义词】有得有失<br>【反义词】
+ * <br><font size=3 color=red>【歇后语】<br>【灯谜面】
+ * <br><font size=3 color=green>【用法】联合式；作谓语；指得失出于偶然
+ * <br><font size=3 color=purple>【英文】<br>【故事】\n
+ *
+ * 偭规错矩	
+ * </font><font size=5 color=red>偭规错矩
+ * <br></font><font size=3 color=green>miǎn  guī  cuò  jǔ<br> 
+ * <br><font size=3 color=blue>【解释】偭：违背；规、矩：标准、法则和习惯。指违背改变正常的法则
+ * <br><font size=3 color=black>【出处】战国·楚·屈原《楚辞·离骚》：“固时俗之工巧兮，偭规矩而改错。”
+ * <br><font size=3 color=brown>【示例】清·薛福成《分别教案治本治标之计疏》：“西洋习俗如此，教士～，亦犹中国僧道之不能尽守戒律。”
+ * <br><font size=3 color=yellow>【拼音码】mgcj
+ * <br><font size=3 color=blue>【近义词】<br>【反义词】
+ * <br><font size=3 color=red>【歇后语】<br>【灯谜面】
+ * <br><font size=3 color=green>【用法】联合式；作谓语、定语；含贬义
+ * <br><font size=3 color=purple>【英文】<br>【故事】\n
+ *
+ * 舐犊情深	
+ * </font><font size=5 color=red>舐犊情深
+ * <br></font><font size=3 color=green>shì  dú  qíng  shēn 
+ * <br> <br><font size=3 color=blue>【解释】比喻对子女的慈爱。
+ * <br><font size=3 color=black>【出处】《后汉书·杨彪传》：“犹怀老牛舐犊之爱。”
+ * <br><font size=3 color=brown>【示例】
+ * <br><font size=3 color=yellow>【拼音码】sdqs
+ * <br><font size=3 color=blue>【近义词】舐犊之爱<br>【反义词】
+ * <br><font size=3 color=red>【歇后语】<br>【灯谜面】
+ * <br><font size=3 color=green>【用法】联合式；作谓语、定语；含褒义
+ * <br><font size=3 color=purple>【英文】parently love<br>
+ *                              【故事】东汉末年，曹操进攻刘备，在斜谷界口驻扎，陷于进退两难境地，
+ *                                部将夏侯淳询问夜间口令，曹操随口说鸡肋。杨修认为是曹操退兵的意思，
+ *                                叫士兵打点行装，曹操借口杀了杨修。后见到骨瘦如柴的杨修父亲杨彪，
+ *                                问为何？杨彪说有舐犊之爱\n
+ *
+ * */
 
+/*format parsing for chengyucidian*/
+void formatTool::formatParsing_cycd(string &s)
+{
+}
+
+/*format parsing for chengyucidiandaquan*/
+void formatTool::formatParsing_hycddq(string &s)
+{
+}
+
+/*format parsing for hanyutongyicifanyicicidian*/
+void formatTool::formatParsing_hytycfyccd(string &s)
+{
 }
 
 //---------------------------------------------------------
