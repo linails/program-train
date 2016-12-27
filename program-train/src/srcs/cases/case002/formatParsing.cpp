@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-26 23:28:54
+ * Last modified: 2016-12-27 13:00:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -214,11 +214,23 @@ void formatTool::formatParsing_xdhycd(string &s)
 
     /* get wc.attr */
     {
+        size_t size = this->m_wc.word.size();
+
         vector<string> units;
 
         //regex_common_c0x(">.+?<|>.+?$", s, units);
-        regex_common_c0x(">.+?<", s, units);
+        //regex_common_c0x(">.+?<", s, units);
+        //regex_common_c0x("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮].+?[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]", s, units);
+        //cout << "regex : [①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮].+?[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]" << endl;
+
+        stringTools st(s);
+        st.match("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]", units);
         cout << "units.size() : " << units.size() << endl;
+
+        for(auto &u : units){
+            cout << "u : " << u << endl;
+        }
+
         //assert(units.size() == 1);
 
         //regex_common_c0x("`\\d`[\\W\\w][^`<]*", units[0], this->m_wc.attr);

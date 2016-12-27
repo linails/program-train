@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2016-12-17 19:20:17
+ * Last modified: 2016-12-27 12:34:29
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -27,15 +27,17 @@ public:
 
     /*filter success return 0
      *  pattern 2: {'1', '[1-9]', '[1-9]'}
+     *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'}
      * */
-    int filter(const char *pattern2, string &unit);
-    int filter(const char *pattern2, char *unit);
-    int match(const char *pattern, string &unit, int index=0);
-    int match(const char *pattern, char *unit, int index=0);
-    int match(const char *pattern, vector<string> &units);
+    int  filter(const char *pattern2, string &unit);
+    int  filter(const char *pattern2, char *unit);
+    int  match(const char *pattern, string &unit, int index=0);
+    int  match(const char *pattern, char *unit, int index=0);
+    int  match(const char *pattern, vector<string> &units);
 private:
-    int get_pattern_mode(const char *pattern);
-    int get_subpatterns(const char *pattern);
+    int  get_pattern_mode(const char *pattern);
+    int  get_subpatterns(const char *pattern);
+    int  count_char(const char *str, char ch);
 private:
     string              m_str;
     string              m_pattern;

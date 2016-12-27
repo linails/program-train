@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2016-12-17 19:37:06
+ * Last modified: 2016-12-27 13:02:35
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -82,6 +82,9 @@ int stringTools::match(const char *pattern, vector<string> &units)
 
     cout << "mode = " << mode << endl;
 
+    if(3 == mode){
+    }
+
     return ret;
 }
 
@@ -90,6 +93,7 @@ int stringTools::match(const char *pattern, vector<string> &units)
  *    0) fixed string
  *    1) []
  *    2) fixed string & []
+ *    3) []-[]
  * */
 int stringTools::get_pattern_mode(const char *pattern)
 {
@@ -100,10 +104,19 @@ int stringTools::get_pattern_mode(const char *pattern)
     if(0 == s.size()){
         ret = -1;
     }else{
-        if(s[0] == '[' && s[s.size()] == ']'){
-            ret = 1;
-        }else if(string::npos != s.find('[') && string::npos != s.find(']')){
-                ret = 2;
+
+        switch(this->count_char(pattern, '[')){
+            case 1:
+                if(s[0] == '[' && s[s.size()] == ']'){
+                    ret = 1;
+                }else if(string::npos != s.find('[') && string::npos != s.find(']')){
+                        ret = 2;
+                }
+                break;
+            case 2:
+                cout << "count_char '[' : " << 2 << endl;
+                ret = 3;
+                break;
         }
     }
 
@@ -114,6 +127,28 @@ int stringTools::get_pattern_mode(const char *pattern)
 int stringTools::get_subpatterns(const char *pattern)
 {
     int ret = 0;
+
+    return ret;
+}
+
+int  stringTools::count_char(const char *str, char ch)
+{
+    int ret = 0;
+#if 0
+    const char *index = str;
+
+    while(*index != '\0'){
+        if(*index++ == ch){
+            if(index - str < 2){
+                ret++;
+            }else if(*(index - 2) != '\\'){
+                ret++;
+            }
+        }
+    }
+#else
+    while(*str != '\0') if(*str++ == ch) ret++;
+#endif
 
     return ret;
 }
