@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2016-12-27 13:02:35
+ * Last modified: 2016-12-27 23:52:40
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -83,6 +83,108 @@ int stringTools::match(const char *pattern, vector<string> &units)
     cout << "mode = " << mode << endl;
 
     if(3 == mode){
+        const char * pair_l = pattern;
+        const char * pair_r = pattern; while(*pair_r++ != ']');
+
+        string start(pair_l++ + 1, pair_r++ - 1); while(*pair_l++ != '['); while(*pair_r++ != ']');
+        string end;
+
+        if(0 == this->count_char(pattern, '^')){
+            string str(pair_l - 1 + 1, pair_r - 1); end = str;
+        }else{
+            string str(pair_l - 1 + 2, pair_r - 1); end = str;
+        }
+
+        cout << "start : " << start << " - size : " << start.size() << endl;
+        cout << "end : " << end << " - size : " << end.size() << endl;
+
+        /* parser start & end */
+        {
+            vector<string> vstart;
+            vector<string> vend;
+
+            auto parser = [](vector<string> &dst, string &str){
+                auto siter = str.begin();
+                auto eiter = siter;
+                while(eiter != str.end()){
+                    eiter += 3;
+                    string s(siter, eiter); siter = eiter;
+
+                    dst.push_back(s);
+                }
+
+                //for(auto &s : dst){
+                //    cout << "dst : " << s << endl;
+                //}
+            };
+
+            parser(vstart, start);
+            parser(vend, end);
+
+            /* 
+             * 编码格式为 utf-8
+             *
+             * utf-8 是 unicode 的实现方式之一
+             * utf-8 最大的一个特点，就是它是一种变长的编码方式，它可以使用 1~6 字节来
+             * 表示一个符号，根据不同的符号而变化字节长度
+             *
+             * 规则：(只有两条)
+             *  1> 对于单字节的符号，字节的第一位设为0，后面7位为这个符号的 unicode 码，
+             *     因此对于英语字母，utf-8 与 ascii 相同
+             *  2> 对于 n 字节的符号(n>1), 第一个字节的前 n 位都设为1，第 n+1 位设为0，
+             *     后面字节的前两位一律设置为 10，剩下的没有提及的二进制位，即为这个符号
+             *     的 unicode 编码
+             *
+             *  eg .
+             *    1 byte : 0xxxxxxx
+             *    2 byte : 110xxxxx 10xxxxxx
+             *    3 byte : 1110xxxx 10xxxxxx 10xxxxxx
+             *    4 byte : 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+             *    5 byte : 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+             *    6 byte : 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+             * */
+            string hz("名词、动词、形容词、数词、量词、代词、副词、介词、连词、助词、叹词、拟声词");
+            cout << "hz.size() : " << hz.size() << endl;
+            for(size_t i=0; i<hz.size(); i++){
+                if(0 == ((i+1) % 3)){
+                    printf(" %.2x-%.2x-%.2x\n", hz[i-2], hz[i-1], hz[i]);
+                }
+            }
+
+        }
+
+        const char * index = this->m_str.c_str(); 
+
+        pair_l = index;
+        pair_r = index;
+
+        while(*index != '\0'){
+
+#if 0
+            if(pair_r >= pair_l){
+                for(size_t i=0; i<start.size(); i++){
+                    if(start[i] == *index){
+                        pair_l = index;
+                        break;
+                    }
+                }
+            }else{
+                for(size_t i=0; i<end.size(); i++){
+                    if(end[i] == *index){
+                        pair_r = index;
+
+                        string u(pair_l, pair_r);
+                        cout << "u : " << u << endl;
+
+                        break;
+                    }
+                }
+            }
+#endif
+
+            index++;
+        }
+
     }
 
     return ret;

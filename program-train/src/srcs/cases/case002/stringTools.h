@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2016-12-27 12:34:29
+ * Last modified: 2016-12-27 23:07:48
  * @author: minphone.linails linails@foxmail.com 
  */
 
