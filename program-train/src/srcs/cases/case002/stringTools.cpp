@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2016-12-27 23:52:40
+ * Last modified: 2016-12-28 13:01:56
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -143,11 +143,45 @@ int stringTools::match(const char *pattern, vector<string> &units)
              *    5 byte : 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
              *    6 byte : 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
              * */
+
+            auto print_utf_v = [](vector<unsigned char> &vch){
+                cout << "0b : ";
+                for(auto ch : vch){
+                    for(int i=0; i<8; i++){
+                        if(ch & (0x01 << (7-i))) cout << "1";
+                        else                     cout << "0";
+                    }
+                    cout << "-";
+                }
+                cout << endl;
+            };
+
+            auto print_utf = [](unsigned char ch){
+                cout << "0b : ";
+                for(int i=0; i<8; i++){
+                    if(ch & (0x01 << (7-i))) cout << "1";
+                    else                     cout << "0";
+                }
+                cout << endl;
+            };
+
             string hz("名词、动词、形容词、数词、量词、代词、副词、介词、连词、助词、叹词、拟声词");
             cout << "hz.size() : " << hz.size() << endl;
             for(size_t i=0; i<hz.size(); i++){
                 if(0 == ((i+1) % 3)){
-                    printf(" %.2x-%.2x-%.2x\n", hz[i-2], hz[i-1], hz[i]);
+
+                    #if 0
+                    unsigned char ch0 = hz[i-2];
+                    unsigned char ch1 = hz[i-1];
+                    unsigned char ch2 = hz[i];
+                    printf(" %.2x-%.2x-%.2x\n", ch0, ch1, ch2);
+                    #else
+                    vector<unsigned char> vch;
+                    vch.push_back(hz[i-2]);
+                    vch.push_back(hz[i-1]);
+                    vch.push_back(hz[i]);
+                    print_utf_v(vch);
+                    #endif
                 }
             }
 
@@ -186,6 +220,23 @@ int stringTools::match(const char *pattern, vector<string> &units)
         }
 
     }
+
+    return ret;
+}
+
+/* 
+ * mode : [0/bin | 1/hex]
+ * */
+int  stringTools::print_utf_code(string &s, int mode)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+int  stringTools::print_utf_code(const char *str, int mode)
+{
+    int ret = 0;
 
     return ret;
 }

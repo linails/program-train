@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2016-12-27 23:07:48
+ * Last modified: 2016-12-28 13:01:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -34,6 +34,8 @@ public:
     int  match(const char *pattern, string &unit, int index=0);
     int  match(const char *pattern, char *unit, int index=0);
     int  match(const char *pattern, vector<string> &units);
+    int  print_utf_code(string &s, int mode = 0);   // mode : [0/bin | 1/hex]
+    int  print_utf_code(const char *str, int mode = 0);
 private:
     int  get_pattern_mode(const char *pattern);
     int  get_subpatterns(const char *pattern);
