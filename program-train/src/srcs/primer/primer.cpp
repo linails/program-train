@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2016-12-20 17:16:46
+ * Last modified: 2016-12-30 12:50:08
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,7 +17,7 @@
 #include "other.h"
 #include "overload.h"
 #include "lambda.h"
-#include "template_test.h"
+#include "template.hpp"
 #include "regex_test.h"
 #include "smart_pointer.h"
 #include "thread_test.h"
@@ -58,7 +58,6 @@ int  Primer::primer_main(int argc, char **argv)
         //thread_test();
         //container_test();
         //exception_test();
-        //template_test();
         //overload_test();
     }
 #if 0
@@ -100,6 +99,7 @@ int  Primer::primer_main(int argc, char **argv)
     }
 #endif
     {
+#if 0
         cout << "---------------------------------------------------------" << endl;
 
         regex_cpp11 re;
@@ -111,6 +111,7 @@ int  Primer::primer_main(int argc, char **argv)
             cout << "cpp 11 regex failed !" << endl;
         }
 
+#endif
     }
     {
 #if 0

@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-24 19:44:51
+# Last modified: 2016-12-30 15:30:37
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -53,7 +53,7 @@ set(SRC_LIST
    main.cpp 
    srcs/primer/primer.cpp
 #   srcs/primer/regex_test.cpp
-   srcs/primer/regex_cpp11.cpp
+#   srcs/primer/regex_cpp11.cpp
 #   srcs/primer/smart_pointer.cpp
 #   srcs/primer/other.cpp
    srcs/primer/c-primer.c
@@ -64,9 +64,8 @@ set(SRC_LIST
 #   srcs/primer/class_test.cpp
 #   srcs/primer/chrono_test.cpp
 #   srcs/primer/exception_test.cpp
-   srcs/primer/lambda.cpp
-#   srcs/primer/generic_test.cpp
-#   srcs/primer/template_test.cpp
+#   srcs/primer/lambda.cpp
+#   srcs/primer/template.cpp
 #   srcs/primer/overload.cpp
 #   srcs/primer/operator-overload.cpp
 #   srcs/primer/type-traits.cpp
@@ -88,13 +87,19 @@ set(SRC_LIST
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp
 #   srcs/db/sqlite/advanced.cpp
-#   srcs/algorithm/malgorithm.cpp
+   srcs/algorithm/malgorithm.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
-#   srcs/algorithm/ds/data-structure.cpp
-#   srcs/algorithm/ds/data-structure.c
-#   srcs/algorithm/ds/seq_list.cpp
+   srcs/algorithm/ds/data-structure.cpp
+   srcs/algorithm/ds/data-structure.c
+   srcs/algorithm/ds/linear-list.cpp
+   srcs/algorithm/ds/seq-list.cpp
+   srcs/algorithm/ds/graph.cpp
+   srcs/algorithm/ds/search.cpp
+   srcs/algorithm/ds/sort.cpp
+   srcs/algorithm/ds/tree.cpp
+   srcs/algorithm/ds/mstack.cpp
 #   srcs/sep/sep.cpp
 #####################################################################
    srcs/tools/timer.cpp
@@ -108,12 +113,12 @@ set(SRC_LIST
 #   srcs/cases/case001/test/test_main.cpp
 #   srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case002/dic-parser.cpp
-   srcs/cases/case002/formatParsing.cpp
-   srcs/cases/case002/regex_common.cpp
-   srcs/cases/case002/rfileoprt.cpp
-   srcs/cases/case002/rwfileoprt.cpp
-   srcs/cases/case002/stringTools.cpp
+#   srcs/cases/case002/dic-parser.cpp
+#   srcs/cases/case002/formatParsing.cpp
+#   srcs/cases/case002/regex_common.cpp
+#   srcs/cases/case002/rfileoprt.cpp
+#   srcs/cases/case002/rwfileoprt.cpp
+#   srcs/cases/case002/stringTools.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
