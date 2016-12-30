@@ -2,7 +2,7 @@
  * Progarm Name: linear-list-def.hpp
  * Reference : <<数据结构：用面向对象方法与C++语言描述>>
  * Created Time: 2016-08-27 08:41:39
- * Last modified: 2016-12-30 17:50:56
+ * Last modified: 2016-12-30 21:56:08
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,7 +17,7 @@ template <typename T>
 class LinearList{
 public:
     LinearList(){};
-    virtual ~LinearList();
+    virtual ~LinearList(){};
     virtual int  size(void) const = 0;
     virtual int  length(void) const = 0;
     virtual int  search(T& x) const = 0;
@@ -27,10 +27,9 @@ public:
     virtual int  remove(int i, T& x) = 0;
     virtual int  isempty(void) const = 0;
     virtual int  isfull(void) const = 0;
-    virtual void sort(void) = 0;
-    virtual void input(void) = 0;
+    virtual int  sort(void) = 0;
+    virtual int  input(T x) = 0;
     virtual void output(void) = 0;
-    virtual LinearList<T> &operator=(const LinearList<T> &L) = 0;
 };
 
 #endif //_LINEAR_LIST_DEF_HPP_

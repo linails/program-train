@@ -2,7 +2,7 @@
  * Progarm Name: seq-list-def.hpp
  * Reference : <<数据结构：用面向对象方法与C++语言描述>>
  * Created Time: 2016-08-27 08:44:20
- * Last modified: 2016-12-30 17:59:08
+ * Last modified: 2016-12-30 21:59:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <typeinfo>
 
 using std::cout;
 using std::endl;
@@ -38,10 +39,11 @@ public:
     int  remove(int i, T &x);
     int  isempty(void) const { return (this->last == -1) ? 0 : -1 ; }
     int  isfull(void) const { return (this->last == this->max_size - 1) ? 0 : -1 ; }
-    void sort(void);
-    void input(void);
+    int  sort(void);
+    int  input(T x);
     void output(void);
     SeqList<T> &operator=(const SeqList<T> &L);
+    SeqList<T> &operator=(const LinearList<T> &L);
 protected:
     int  resize(int size);
 protected:
@@ -124,7 +126,7 @@ int  SeqList<T>::remove(int i, T &x)
     else if((0 > i) || (i > this->last)) ret = -1;
     else{
         x = this->data[i];
-        for(int j=i; j<(this->last+1); j++) this->data[j-1] = this->data[j];
+        for(int j=i; j<(this->last+1); j++) this->data[j] = this->data[j+1];
         this->last--;
     }
 
@@ -132,21 +134,34 @@ int  SeqList<T>::remove(int i, T &x)
 }
 
 template <typename T>
-void SeqList<T>::sort(void)
+int  SeqList<T>::sort(void)
 {
     cout << "sort" << endl;
+    return 0;
 }
 
 template <typename T>
-void SeqList<T>::input(void)
+int  SeqList<T>::input(T x)
 {
-    cout << "input" << endl;
+    int ret = 0;
+
+    if(this->last == this->max_size - 1)    ret = -1;
+    else{
+        this->data[++this->last] = x;
+    }
+
+    return ret;
 }
 
 template <typename T>
 void SeqList<T>::output(void)
 {
-    cout << "output" << endl;
+    cout << "this->last : " << this->last << endl;
+    cout << "SeqList<T> : " << typeid(this->data[0]).name() << " ";
+    for(int i=0; i<=this->last; i++){
+        cout << this->data[i] << "-";
+    }
+    cout << endl;
 }
 
 template <typename T>
