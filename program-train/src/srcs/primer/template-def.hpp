@@ -1,14 +1,69 @@
 /*
- * Progarm Name: generic_test.h
- * Created Time: 2016-07-11 11:36:07
- * Last modified: 2016-08-24 09:49:56
+ * Progarm Name: template-def.hpp
+ * Created Time: 2016-02-02 16:38:46
+ * Last modified: 2016-12-30 12:54:45
+ * @author: minphone.linails linails@foxmail.com 
  */
 
-#ifndef _GENERIC_TEST_H_
-#define _GENERIC_TEST_H_
+#ifndef _TEMPLATE_DEF_HPP_
+#define _TEMPLATE_DEF_HPP_
 
+#include <string>
 #include <iostream>
-#include <cstdlib>
+#include <cstdio>
+#include <typeinfo>
+
+using std::string;
+using std::cout;
+using std::endl;
+
+/* 
+ * Note :
+ *  模版头文件中需要包含定义和实现，不要把模版类与非模版类混合定义在一个头文件中，
+ *  会引起重复定义问题
+ * */
+
+
+/* 
+ * 如果函数参数为引用类型，而函数的实参则为数组或函数类型，
+ * 那么将不会进行任何隐式转换
+ * */
+template <typename T>
+inline string const mmax(T const &a,T const &b)
+{
+    cout << "template<typename T>" << endl;
+
+    cout << "typeid(a).name() = " << typeid(a).name() << endl;
+    cout << "typeid(string).name() = " << typeid(string).name() << endl;
+
+#if 0
+    if(typeid(a) == typeid(string)){
+        cout << "The same typeid" << endl;
+    }else
+        printf("a(0x%x) - b(0x%x) \n", a, b);
+#endif
+
+#if 0
+    if(typeid(a) != typeid(string))
+        printf("a(0x%x) - b(0x%x) \n", a, b);
+#endif
+
+    if(a < b) return "<";
+    if(b < a) return ">";
+    return "><";
+}
+
+#if 1
+/* 模板特化 */
+template<>
+inline string const mmax<const char*>(const char * const &a, const char * const &b)
+{
+    cout << "template<>" << endl;
+    if(a < b) return "<";
+    if(b < a) return ">";
+    return "><";
+}
+#endif
 
 /* 
  * 函数模板可以用与非模板函数一样的方式声明为 inline
@@ -131,7 +186,5 @@ struct TestClass{
  * 7. 部分特化的模板形参表只列出未知模板实参的那些形参
  * */
 
-#include "generic_test.cpp"
-
-#endif //_GENERIC_TEST_H_
+#endif //_TEMPLATE_DEF_HPP_
 

@@ -1,21 +1,34 @@
 /*
- * Progarm Name: template_test.cpp
+ * Progarm Name: template.cpp
  * Created Time: 2016-02-02 16:38:52
- * Last modified: 2016-08-24 11:13:44
+ * Last modified: 2016-12-30 12:49:37
  * @author: minphone.linails linails@foxmail.com 
  */
 
-#include "template_test.h"
+#include "template.hpp"
+#include "template-def.hpp"
 #include <iostream>
 #include <vector>
 #include <string>
-#include "generic_test.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
 
-void template_test(void)
+Template::Template()
 {
-    cout << "--------- template_test ----------" << endl;
+}
+
+Template::~Template()
+{
+}
+
+int  Template::template_main(int argc, char **argv)
+{
+    int ret = 0;
+
+    cout << "--------- template-main ----------" << endl;
     {
         int a = 10,b = 12;
         cout << "a=10;b=12; max(a,b):" << mmax(a,b) << endl;
@@ -45,6 +58,7 @@ void template_test(void)
         else cout << "sa < sb" << endl;
         cout << "max(sa,sb) : " << mmax(sa, sb) << endl;
     }
-}
 
+    return ret;
+}
 
