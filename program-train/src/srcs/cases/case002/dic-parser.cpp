@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-26 21:32:23
+ * Last modified: 2016-12-29 21:06:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -137,6 +137,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     timer.timing();
 
 
+#if 0
     /* 
      *
      * */
@@ -150,15 +151,17 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     //ret = fo.read_linebyline(print_line);
 
     //ret = fo.read_index_line(10000, dline, print_line);
+#endif
 
 #if 0
     auto filter = [](string line) -> void{
+        #if 0
         static size_t index = 0;
         static size_t maxlen = 0;
 
         index++;
 
-    #if 1
+        # if 1
         if(line.size() > maxlen){
             maxlen = line.size();
 
@@ -166,7 +169,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
             cout << "Line " << index << " : " << line << endl;
             cout << endl;
         }
-    #else
+        # else
         int cnt = count(line.begin(), line.end(), '<');
         if(cnt > maxlen){
             maxlen = cnt;
@@ -175,7 +178,37 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
             cout << "Line " << index << " : " << line << endl;
             cout << endl;
         }
-    #endif
+        # endif
+        #else
+        static size_t max = 0;
+
+        WordCell_t wc;
+        string fn = "/home/minphone/space_sdc/workspace/"
+                    "dic_parse/dicparse/src/dic/xdhycd.txt";
+
+        formatTool ftool(fn,line);
+
+        ftool.get_wordcell(wc);
+
+        if(wc.attr.size() > max){
+            //cout << "line : " << line << endl;
+            cout << "wc.word : " << wc.word << endl;
+            for(auto &u : wc.attr){
+                cout << "wc.attr : " << u << endl;
+            }
+
+            int index = 0;
+            for(auto &uv : wc.contents){
+                index++;
+                for(auto &u : uv){
+                    printf("[%d]cout : %s\n", index, u.c_str());
+                }
+            }
+            cout << endl;
+            max = wc.attr.size();
+        }
+
+        #endif
     };
 
     ret = fo.read_linebyline(filter);
@@ -194,7 +227,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
 
         ftool.get_wordcell(wc);
 
-        cout << "line : " << line << endl;
+        //cout << "line : " << line << endl;
         cout << "wc.word : " << wc.word << endl;
         for(auto &u : wc.attr){
             cout << "wc.attr : " << u << endl;
@@ -211,11 +244,21 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     };
 
 
+    timer.timing();
     ret = fo.read_index_line(41779, dline, parser);
+    timer.timing();
 
+    timer.timing();
     ret = fo.read_index_line(26347, dline, parser);
+    timer.timing();
 
+    timer.timing();
+    ret = fo.read_index_line(17078, dline, parser);
+    timer.timing();
+
+    timer.timing();
     //ret = fo.read_linebyline(parser);
+    timer.timing();
 
     return ret;
 }

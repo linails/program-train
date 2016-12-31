@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2016-12-28 13:01:53
+ * Last modified: 2016-12-28 22:48:05
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -21,7 +21,7 @@ using std::vector;
  * */
 class stringTools{
 public:
-    stringTools(string &str);
+    stringTools(string str = "");
     stringTools(const char *str);
     ~stringTools();
 
@@ -36,10 +36,12 @@ public:
     int  match(const char *pattern, vector<string> &units);
     int  print_utf_code(string &s, int mode = 0);   // mode : [0/bin | 1/hex]
     int  print_utf_code(const char *str, int mode = 0);
+    int  split_utf_code(vector<string> &result, string s = "");
 private:
     int  get_pattern_mode(const char *pattern);
     int  get_subpatterns(const char *pattern);
     int  count_char(const char *str, char ch);
+    int  parser_utf_code(vector<vector<unsigned char> > &vvch, string &s);
 private:
     string              m_str;
     string              m_pattern;
