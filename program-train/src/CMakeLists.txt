@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2016-12-30 15:30:37
+# Last modified: 2017-01-02 19:14:34
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -81,8 +81,8 @@ set(SRC_LIST
 #   srcs/linux/process/process.cpp
 #   srcs/linux/process/ipc_msgq.c
 #   srcs/linux/threads/cthread.cpp
-#   srcs/stl/container.cpp
-#   srcs/stl/container_test.cpp
+   srcs/stl/container.cpp
+   srcs/stl/container-test.cpp
    srcs/db/db-caller.cpp
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp
@@ -113,12 +113,12 @@ set(SRC_LIST
 #   srcs/cases/case001/test/test_main.cpp
 #   srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case002/dic-parser.cpp
-#   srcs/cases/case002/formatParsing.cpp
-#   srcs/cases/case002/regex_common.cpp
-#   srcs/cases/case002/rfileoprt.cpp
-#   srcs/cases/case002/rwfileoprt.cpp
-#   srcs/cases/case002/stringTools.cpp
+   srcs/cases/case002/dic-parser.cpp
+   srcs/cases/case002/formatParsing.cpp
+   srcs/cases/case002/regex_common.cpp
+   srcs/cases/case002/rfileoprt.cpp
+   srcs/cases/case002/rwfileoprt.cpp
+   srcs/cases/case002/stringTools.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp

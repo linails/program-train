@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-30 08:58:49
+ * Last modified: 2017-01-02 19:54:41
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,7 +26,7 @@ int main(int argc, char **argv)
         ret = primer.primer_main(argc, argv);
     }
     {
-#if 0 
+#if 0
         Container container;
 
         assert(-1 != ret);
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 #endif
     }
     {
-#if 0
+#if 1
         Cases cases;
 
         assert(-1 != ret);
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 #endif
     }
     {
-#if 1
+#if 0
         mAlgorithm  malgo;
 
         assert(-1 != ret);

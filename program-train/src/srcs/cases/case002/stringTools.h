@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2016-12-28 22:48:05
+ * Last modified: 2017-01-02 21:42:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,25 +10,28 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 using std::string;
 using std::vector;
+using std::list;
 
 /*
  * stringTools 
- *  pattern 1: usual pattern
- *  pattern 2: {'1', '[1-9]', '[1-9]'}
+ *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"}
+ *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'}
  * */
 class stringTools{
 public:
     stringTools(string str = "");
-    stringTools(const char *str);
     ~stringTools();
 
-    /*filter success return 0
-     *  pattern 2: {'1', '[1-9]', '[1-9]'}
+    /*
+     * filter/match success return 0
+     *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"}
      *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'}
      * */
+    int  filter(const char *pattern2);
     int  filter(const char *pattern2, string &unit);
     int  filter(const char *pattern2, char *unit);
     int  match(const char *pattern, string &unit, int index=0);
@@ -42,6 +45,13 @@ private:
     int  get_subpatterns(const char *pattern);
     int  count_char(const char *str, char ch);
     int  parser_utf_code(vector<vector<unsigned char> > &vvch, string &s);
+    int  parser_utf_code(vector<vector<unsigned char> > &vvch, const char *str);
+    int  parser_utf_code(list<vector<unsigned char> > &lvch, string &s);
+    int  parser_utf_code(list<vector<unsigned char> > &lvch, const char *str);
+    void mfilter(vector<vector<unsigned char> > &vvch, unsigned char tag);
+    void mfilter(vector<vector<unsigned char> > &vvch, const char *tag);
+    void mfilter(vector<vector<unsigned char> > &vvch, vector<unsigned char> &tag);
+    void mfilter(vector<vector<unsigned char> > &vvch, vector<vector<unsigned char> > &tag);
 private:
     string              m_str;
     string              m_pattern;

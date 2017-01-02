@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2016-12-29 12:51:49
+ * Last modified: 2017-01-02 20:20:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -84,12 +84,17 @@ int formatPrint(string fname,string line)
 /*format parsing for xinhuazidian*/
 void formatTool::formatParsing_xhzd(string &s)
 {
+#if 0
+    /* 
+     * Only For debug
+     * */
     auto print_units = [](vector<string> &us){
         cout << "us.size() : " << us.size() << endl;
         for(auto &u : us){
             cout << "us : " << u << endl;
         }
     };
+#endif
 
 
     /* get wc.word */
@@ -214,7 +219,7 @@ void formatTool::formatParsing_xdhycd(string &s)
 
     /* get wc.attr */
     {
-        size_t size = this->m_wc.word.size();
+        //size_t size = this->m_wc.word.size();
 
         vector<string> units;
 
@@ -223,7 +228,7 @@ void formatTool::formatParsing_xdhycd(string &s)
         //regex_common_c0x("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮].+?[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]", s, units);
         //cout << "regex : [①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮].+?[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]" << endl;
 
-#if 1
+#if 0
         stringTools st(s);
         st.match("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]", units);
         #if 0
@@ -235,10 +240,17 @@ void formatTool::formatParsing_xdhycd(string &s)
         #endif
         this->m_wc.attr = units;
 #else
+# if 0
         stringTools st(s);
         vector<string> result;
         st.split_utf_code(result);
         for(auto &word : result) cout << "word : " << word << endl;
+# else
+        stringTools st(s);
+        //st.filter("1dioji, [djoi1<>], [123]-[123], [<]-[>]", s);
+        st.filter("[<], [<]-[>]", s);
+        //st.filter("[<]-[>]", s);
+# endif
 #endif
     }
 

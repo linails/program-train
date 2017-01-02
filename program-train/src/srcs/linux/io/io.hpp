@@ -1,7 +1,7 @@
 /*
  * Progarm Name: io.hpp
  * Created Time: 2016-12-10 21:38:25
- * Last modified: 2016-12-11 08:59:52
+ * Last modified: 2016-12-31 21:17:08
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -18,6 +18,8 @@ private:
     int  io_multiplexing_select(void);
     int  io_multiplexing_poll(void);
     int  io_multiplexing_epoll(void);
+    int  io_send_recv(void);
+    int  io_readv_writev(void);
 };
 
 #endif //_IO_HPP_

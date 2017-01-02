@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2016-12-29 21:20:47
+ * Last modified: 2017-01-02 21:42:51
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,17 +10,16 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
+#include <cstdlib>
 #include <algorithm>
+#include <cassert>
+#include <list>
 
 using std::cout;
 using std::endl;
+using std::list;
 
 stringTools::stringTools(std::string str)
-    :m_str(str)
-{
-}
-
-stringTools::stringTools(const char *str)
     :m_str(str)
 {
 }
@@ -29,36 +28,241 @@ stringTools::~stringTools()
 {
 }
 
-/*filter success return 0
- *  pattern 2: {'1', '[1-9]', '[1-9]'}
+/*
+ * filter success return 0
+ *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"}
+ * */
+int  stringTools::filter(const char *pattern2)
+{
+    return this->filter(pattern2, this->m_str);
+}
+
+/*
+ * filter success return 0
+ *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"}
  * */
 int stringTools::filter(const char *pattern2, std::string &unit)
 {
+    int ret = 0;
+
+    auto fp = [](vector<vector<unsigned char> > &vvch){
+        cout << "vvch : ";
+        for(auto &vch : vvch){
+            string s;
+            for(auto ch : vch) s += ch;
+            cout << s ;
+        }
+        cout << endl;
+    };
+
     this->get_subpatterns(pattern2);
+
+    auto filter_01 = [&](string pat, string &unit){
+        int ret = 0;
+
+        if(0 == this->count_char(pat.c_str(), '[')){
+            vector<vector<unsigned char> > vvch_u;
+            vector<vector<unsigned char> > vvch_p;
+
+            ret = this->parser_utf_code(vvch_u, unit); assert(-1 != ret);
+            ret = this->parser_utf_code(vvch_p, pat);  assert(-1 != ret);
+
+            this->mfilter(vvch_u, vvch_p);
+
+        }else{
+            vector<vector<unsigned char> > vvch_u;
+            vector<vector<unsigned char> > vvch_p;
+
+            ret = this->parser_utf_code(vvch_u, unit); assert(-1 != ret);
+            ret = this->parser_utf_code(vvch_p, pat);  assert(-1 != ret);
+
+            //fp(vvch_p);
+            this->mfilter(vvch_p, '[');
+            this->mfilter(vvch_p, ']');
+            //fp(vvch_p);
+
+            fp(vvch_u);
+            this->mfilter(vvch_u, vvch_p);
+            fp(vvch_u);
+        }
+
+        return ret;
+    };
+
+    auto filter_2 = [&](string pat, string &unit){
+        int ret = 0;
+        unsigned char tag = '-';
+
+        list<vector<unsigned char> > lvch_u;
+        vector<vector<unsigned char> > vvch_p;
+
+        ret = this->parser_utf_code(lvch_u, unit); assert(-1 != ret);
+        ret = this->parser_utf_code(vvch_p, pat);  assert(-1 != ret); // [<]-[>]
+
+        auto check = [&tag](vector<unsigned char> &uv){
+            if(1 == uv.size() && uv[0] == tag)  return 1;
+            else                                return 0;
+        };
+
+        auto iter = find_if(vvch_p.begin(), vvch_p.end(), check);
+        if(iter != vvch_p.end()){
+            vector<vector<unsigned char> > vvch_pf(vvch_p.begin(), iter);
+            vector<vector<unsigned char> > vvch_pl(iter+1, vvch_p.end());
+            fp(vvch_pf);
+            fp(vvch_pl);
+
+            this->mfilter(vvch_pf, "[]");
+            this->mfilter(vvch_pl, "[]");
+            fp(vvch_pf);
+            fp(vvch_pl);
+
+            for(auto iter = lvch_u.begin(); iter!= lvch_u.end(); ){
+                #if 0
+                if(0 != check(*iter)) {
+                    string s;
+                    for(auto ch : *iter) s+=ch;
+                    iter = lvch_u.erase(iter);
+                }else
+                    iter++;
+                #endif
+                break;
+            }
+
+
+        }else
+            ret = -1;
+
+        return ret;
+    };
 
     for(auto iter = this->m_subpatterns.begin();
              iter!= this->m_subpatterns.end(); iter++){
+        cout << "subpattern : " << *iter << endl;
+
+        /*
+         * 0 ... 1 : 1hu, [123au], 
+         * 2 :       [123]-[123], [<]-[>]
+         * */
+        switch(this->count_char((*iter).c_str(), '[')){
+            case 0 ... 1:
+                cout << "[ : 0 ... 1" << endl;
+                ret = filter_01(*iter, unit);
+                break;
+            case 2:
+                cout << "[ : " << 2 << endl;
+                ret = filter_2(*iter, unit);
+                break;
+        }
+
     }
 
-    return 0;
+    return ret;
 }
 
-/*filter success return 0
- *  pattern 2: {'1', '[1-9]', '[1-9]'}
+/*
+ * filter success return 0
+ *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"}
  * */
 int stringTools::filter(const char *pattern2, char *unit)
 {
     int     ret = 0;
-    string  sunit;
+    string  sunit(unit);
+
+    memset(unit, '\0', sunit.size());
     
-    if(0 == (ret = this->filter(pattern2,sunit))){
+    if(0 == (ret = this->filter(pattern2, sunit))){
+        #if 1
         for(auto iter = sunit.begin();
                  iter!= sunit.end(); iter++){
             *unit++ = *iter;
         }
+        #else
+        memcpy(unit, sunit.c_str(), sunit.size());
+        #endif
     }
 
     return ret;
+}
+
+void stringTools::mfilter(vector<vector<unsigned char> > &vvch, unsigned char tag)
+{
+    auto check = [&tag](vector<unsigned char> &uv){
+        if(1 == uv.size() && uv[0] == tag)  return 1;
+        else                                return 0;
+    };
+
+    #if 0
+    auto iter = find_if(vvch.begin(), vvch.end(), check);
+    if(iter != vvch.end()){
+        vvch.erase(iter);
+    }
+    #else
+    list<vector<unsigned char> > lvch;
+    auto assign_l = [&lvch](vector<unsigned char> &vc){ lvch.push_back(vc);};
+    auto assign_v = [&vvch](vector<unsigned char> &vc){ vvch.push_back(vc);};
+
+    for_each(vvch.begin(), vvch.end(), assign_l);
+
+    for(auto iter = lvch.begin(); iter!= lvch.end(); ){
+        if(0 != check(*iter)) {
+            string s;
+            for(auto ch : *iter) s+=ch;
+            iter = lvch.erase(iter);
+        }else
+            iter++;
+    }
+
+    vvch.clear();
+    for_each(lvch.begin(), lvch.end(), assign_v);
+    #endif
+}
+
+void stringTools::mfilter(vector<vector<unsigned char> > &vvch, vector<unsigned char> &tag)
+{
+    auto check = [&tag](vector<unsigned char> &uv){
+        if(tag == uv)   return 1;
+        else            return 0;
+    };
+
+    #if 0
+    auto iter = find_if(vvch.begin(), vvch.end(), check);
+    if(iter != vvch.end()){
+        vvch.erase(iter);
+    }
+    #else
+
+    list<vector<unsigned char> > lvch;
+    auto assign_l = [&lvch](vector<unsigned char> &vc){ lvch.push_back(vc);};
+    auto assign_v = [&vvch](vector<unsigned char> &vc){ vvch.push_back(vc);};
+
+    for_each(vvch.begin(), vvch.end(), assign_l);
+
+    for(auto iter = lvch.begin(); iter!= lvch.end(); ){
+        if(0 != check(*iter)) {
+            string s;
+            for(auto ch : *iter) s+=ch;
+            iter = lvch.erase(iter);
+        }else
+            iter++;
+    }
+
+    vvch.clear();
+    for_each(lvch.begin(), lvch.end(), assign_v);
+
+    #endif
+}
+
+void stringTools::mfilter(vector<vector<unsigned char> > &vvch, vector<vector<unsigned char> > &tag)
+{
+    for(auto &vch : tag) this->mfilter(vvch, vch);
+}
+
+void stringTools::mfilter(vector<vector<unsigned char> > &vvch, const char *tag)
+{
+    vector<vector<unsigned char> > vtag;
+    this->parser_utf_code(vtag, tag);
+
+    this->mfilter(vvch, vtag);
 }
 
 int stringTools::match(const char *pattern, string &unit, int index)
@@ -275,10 +479,35 @@ int stringTools::get_pattern_mode(const char *pattern)
     return ret;
 }
 
-/*get sub patterns success return 0*/
+/*
+ * get sub patterns success return 0
+ *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"}
+ * */
 int stringTools::get_subpatterns(const char *pattern)
 {
     int ret = 0;
+
+    const char *ptr = pattern;
+    string subpattern;
+
+    this->m_subpatterns.clear();
+
+    while(*ptr != '\0'){
+        if(',' == *ptr){
+            this->m_subpatterns.push_back(subpattern);
+
+            if(' ' == *++ptr) ptr++;
+
+            subpattern.clear();
+        }else{
+            char ch = *ptr++;
+            subpattern += ch;
+        }
+    }
+    /* 
+     * push_back last subpattern
+     * */
+    this->m_subpatterns.push_back(subpattern);
 
     return ret;
 }
@@ -366,4 +595,56 @@ int  stringTools::parser_utf_code(vector<vector<unsigned char> > &vvch, string &
 
     return ret;
 }
+
+int  stringTools::parser_utf_code(vector<vector<unsigned char> > &vvch, const char *str)
+{
+    string s(str);
+    return this->parser_utf_code(vvch, s);
+}
+
+int  stringTools::parser_utf_code(list<vector<unsigned char> > &lvch, string &s)
+{
+    int ret = 0;
+
+    vector<unsigned char> vch;
+
+    for(auto ch : s){
+
+        unsigned char c = ch;
+        /* 
+         *    1 byte : 0xxxxxxx
+         *    2 byte : 110xxxxx 10xxxxxx
+         * */
+
+        if(0 == (c & 0x80)){            // ascii
+
+            if(true != vch.empty()) lvch.push_back(vch);
+
+            vch.clear();
+            vch.push_back(c);
+
+        }else if(0xc0 == (c & 0xc0)){   // first byte of 2-6 bytes
+
+            if(true != vch.empty()) lvch.push_back(vch);
+
+            vch.clear();
+            vch.push_back(c);
+
+        }else{
+            vch.push_back(c);
+        }
+
+    }
+
+    lvch.push_back(vch);
+
+    return ret;
+}
+
+int  stringTools::parser_utf_code(list<vector<unsigned char> > &lvch, const char *str)
+{
+    string s(str);
+    return this->parser_utf_code(lvch, s);
+}
+
 
