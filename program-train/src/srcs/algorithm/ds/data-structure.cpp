@@ -1,7 +1,7 @@
 /*
  * Progarm Name: data-structure.cpp
  * Created Time: 2016-12-30 09:12:14
- * Last modified: 2016-12-30 13:20:09
+ * Last modified: 2017-01-03 14:47:57
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,7 +10,6 @@
 #include <cassert>
 
 #include "linear-list.hpp"
-#include "seq-list.hpp"
 
 using std::cout;
 using std::endl;
@@ -45,14 +44,6 @@ int  DataStructure::linearlist(int argc, char **argv)
         assert(-1 != ret);
         tLinearList tll;
         ret = tll.linearlist_main(argc, argv);
-#endif
-    }
-    cout << "--------------------------------------" << endl;
-    {
-#if 1
-        assert(-1 != ret);
-        tSeqList tsl;
-        ret = tsl.tseqlist_main(argc, argv);
 #endif
     }
 

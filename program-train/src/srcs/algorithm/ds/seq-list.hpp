@@ -1,7 +1,7 @@
 /*
  * Progarm Name: seq-list.hpp
  * Created Time: 2016-12-30 12:18:52
- * Last modified: 2016-12-30 22:10:01
+ * Last modified: 2017-01-03 14:37:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,6 +9,7 @@
 #define _SEQ_LIST_HPP_
 
 #include <string>
+#include "seq-list-def.hpp"
 
 using std::string;
 
@@ -34,6 +35,9 @@ public:
     int  tseqlist_main(int argc, char **argv);
 private:
     int  seqlist(void);
+    int  seqlist_union(SeqList<int> &la, SeqList<int> &lb);
+    int  seqlist_intersection(SeqList<int> &la, SeqList<int> &lb);
+    int  singlelist(void);
 };
 
 #endif //_SEQ_LIST_HPP_

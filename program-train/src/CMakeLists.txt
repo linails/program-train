@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-02 19:14:34
+# Last modified: 2017-01-03 14:35:55
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -81,8 +81,8 @@ set(SRC_LIST
 #   srcs/linux/process/process.cpp
 #   srcs/linux/process/ipc_msgq.c
 #   srcs/linux/threads/cthread.cpp
-   srcs/stl/container.cpp
-   srcs/stl/container-test.cpp
+#   srcs/stl/container.cpp
+#   srcs/stl/container-test.cpp
    srcs/db/db-caller.cpp
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp

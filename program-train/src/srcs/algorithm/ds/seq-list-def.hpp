@@ -2,7 +2,7 @@
  * Progarm Name: seq-list-def.hpp
  * Reference : <<数据结构：用面向对象方法与C++语言描述>>
  * Created Time: 2016-08-27 08:44:20
- * Last modified: 2016-12-30 21:59:22
+ * Last modified: 2017-01-03 13:33:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -21,7 +21,11 @@ using std::string;
 using std::vector;
 
 /*
- * 用顺序存储方式实现的线性表称为顺序表(sequential list)，是用数组作为表的存储结构的
+ * Note : 
+ *  用顺序存储方式实现的线性表称为顺序表(sequential list)，是用数组作为表的存储结构的
+ *
+ *  顺序表所有操作的实现中，最复杂、最耗时的就是搜索、插入和删除运算的实现代码，分析顺序表的性能，主要
+ *  就是分析这3个操作的实现代码的时间复杂性
  * */
 
 template <typename T>
@@ -32,8 +36,8 @@ public:
     ~SeqList(){ delete [] this->data; }
     int  size(void) const { return this->max_size; }
     int  length(void) const { return this->last + 1; }
-    int  search(T &x) const ;
-    T   *get_data(int i) const { return (i >= 0 && i < this->last ) ? &this->data[i] : NULL; } 
+    int  search(T &x) const;
+    T   *get_data(int i) const;
     void set_data(int i, T &x){ if(i > 0 && i <= this->last + 1) this->data[i-1] = x; }
     int  insert(int i, T &x);
     int  remove(int i, T &x);
@@ -84,6 +88,12 @@ SeqList<T>::SeqList(SeqList<T> &L)
     for(int i=0; i<L.length(); i++){
         this->data[i] = L.get_data(i);
     }
+}
+
+template <typename T>
+T   *SeqList<T>::get_data(int i) const 
+{
+    return (i >= 0 && i <= this->last ) ? &this->data[i] : NULL;
 }
 
 template <typename T>

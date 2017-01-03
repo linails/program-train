@@ -2,12 +2,12 @@
  * Progarm Name: linear-list-def.hpp
  * Reference : <<数据结构：用面向对象方法与C++语言描述>>
  * Created Time: 2016-08-27 08:41:39
- * Last modified: 2016-12-30 21:56:08
+ * Last modified: 2017-01-03 14:59:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #ifndef _LINEAR_LIST_DEF_HPP_
-#define _LINEAR_LIST_DEF_HPP__
+#define _LINEAR_LIST_DEF_HPP_
 
 /*
  * 线性表的存储表示有两种，顺序存储方式和链表存储方式

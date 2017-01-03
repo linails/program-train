@@ -1,7 +1,7 @@
 /*
  * Progarm Name: seq-list.cpp
  * Created Time: 2016-08-27 08:43:55
- * Last modified: 2016-12-30 22:01:24
+ * Last modified: 2017-01-03 17:01:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <cassert>
+#include "single-list-def.hpp"
 
 using std::cout;
 using std::endl;
@@ -33,6 +34,9 @@ int  tSeqList::tseqlist_main(int argc, char **argv)
 
     assert(-1 != ret);
     ret = this->seqlist();
+
+    assert(-1 != ret);
+    ret = this->singlelist();
 
     return ret;
 }
@@ -67,6 +71,113 @@ int  tSeqList::seqlist(void)
         string name;
         sd.get_name(name);
         cout << "sd.get_name() : " << name << endl;
+    }
+    cout << "--------------------------------------" << endl;
+    {
+        SeqList<int> la, lb;
+
+        la.input(10);
+        la.input(20);
+        la.input(30);
+        la.input(40);
+        la.output();
+
+        lb.input(11);
+        lb.input(21);
+        lb.input(31);
+        lb.output();
+
+        cout << "seqlist union(la, lb) : " << endl;
+        ret = this->seqlist_union(la, lb);
+        la.output(); cout << endl;
+        
+
+        lb.input(12);
+        lb.input(22);
+        lb.input(32);
+        lb.output();
+        cout << "seqlist ntersection(la, lb) : " << endl;
+        ret = this->seqlist_intersection(la, lb);
+        la.output();
+    }
+
+    return ret;
+}
+
+int  tSeqList::seqlist_union(SeqList<int> &la, SeqList<int> &lb)
+{
+    /* 
+     *  合并顺序表 la 和 lb, 结果存在与 la 中，重复元素只留一个
+     * */
+
+    int ret = 0;
+
+    int remain = la.size() - la.length();
+
+    cout << "remain : " << remain << endl;
+
+    if(remain >= lb.length()){
+        int len_b = lb.length();
+
+        for(int i=0; i<len_b; i++){
+            int *data = lb.get_data(i);
+
+            if(NULL != data){
+                if(-1 == la.search(*data)){
+                    la.insert(la.length(), *data);
+                }
+            }else{
+                cout << "lb.get_data error !" << endl;
+            }
+        }
+    }else{
+        ret = -1;
+        cout << "la have no other space to union lb unit" << endl;
+    }
+
+    return ret;
+}
+
+int  tSeqList::seqlist_intersection(SeqList<int> &la, SeqList<int> &lb)
+{
+    /* 
+     * 求取顺序表中的 la 和 lb 的共有元素，结果存于 la 中
+     * */
+    int ret = 0;
+
+    int i = 0;
+    int cn = la.length();
+
+    while(i < cn){
+        int *data = la.get_data(i);
+        if(NULL != data){
+            if(-1 == lb.search(*data)){
+                int t = 0;
+                la.remove(i, t);
+                cn--;
+            }else{
+                i++;
+            }
+        }
+    }
+
+    return ret;
+}
+
+int  tSeqList::singlelist(void)
+{
+    int ret = 0;
+
+    cout << "--------------------------------------" << endl;
+    {
+        cout << " ... singlelist ... " << endl;
+
+        SingleList<int> sl;
+    }
+    cout << "--------------------------------------" << endl;
+    {
+        int a = 10;
+        SingleList<int> sl(a);
     }
 
     return ret;
