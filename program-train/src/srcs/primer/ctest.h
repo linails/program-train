@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ctest.h
  * Created Time: 2016-05-14 19:56:56
- * Last modified: 2016-12-10 00:01:01
+ * Last modified: 2017-01-03 22:02:56
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 /*ctest*/
-extern void other_test(void);
+extern void cother_test(void);
 
 typedef struct{
     int a;

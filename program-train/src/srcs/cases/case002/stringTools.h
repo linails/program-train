@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2017-01-02 21:42:33
+ * Last modified: 2017-01-04 22:22:32
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,11 +16,6 @@ using std::string;
 using std::vector;
 using std::list;
 
-/*
- * stringTools 
- *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"}
- *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'}
- * */
 class stringTools{
 public:
     stringTools(string str = "");
@@ -28,8 +23,10 @@ public:
 
     /*
      * filter/match success return 0
-     *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"}
-     *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'}
+     *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"} : filter
+     *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'} : match
+     *  pattern 4: {"[a),b),c)]-[a),b),c)]"} : match, 多字符间隔
+     *  pattern 5: {"[", string, "]"} : 过滤 [string] 这种结构内容, 完全匹配
      * */
     int  filter(const char *pattern2);
     int  filter(const char *pattern2, string &unit);
@@ -44,10 +41,12 @@ private:
     int  get_pattern_mode(const char *pattern);
     int  get_subpatterns(const char *pattern);
     int  count_char(const char *str, char ch);
-    int  parser_utf_code(vector<vector<unsigned char> > &vvch, string &s);
-    int  parser_utf_code(vector<vector<unsigned char> > &vvch, const char *str);
-    int  parser_utf_code(list<vector<unsigned char> > &lvch, string &s);
-    int  parser_utf_code(list<vector<unsigned char> > &lvch, const char *str);
+    int  utf_string2code(vector<vector<unsigned char> > &vvch, string &s);
+    int  utf_string2code(vector<vector<unsigned char> > &vvch, const char *str);
+    int  utf_string2code(list<vector<unsigned char> > &lvch, string &s);
+    int  utf_string2code(list<vector<unsigned char> > &lvch, const char *str);
+    int  utf_code2string(string &s, const list<vector<unsigned char> > &lvch);
+    int  utf_code2string(string &s, const vector<vector<unsigned char> > &vvch);
     void mfilter(vector<vector<unsigned char> > &vvch, unsigned char tag);
     void mfilter(vector<vector<unsigned char> > &vvch, const char *tag);
     void mfilter(vector<vector<unsigned char> > &vvch, vector<unsigned char> &tag);

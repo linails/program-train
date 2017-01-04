@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2016-12-29 21:06:55
+ * Last modified: 2017-01-04 22:01:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,8 @@
 #include "timer.h"
 #include <string>
 #include <algorithm>
+#include "stringTools.h"
+#include <cassert>
 
 using std::cout;
 using std::endl;
@@ -30,9 +32,15 @@ int  DicParser::dicparser_main(int argc, char **argv)
 {
     int ret = 0;
 
-    //ret = this->parser_xhzd(argc, argv);
+    //ret = this->parser_xhzd(argc, argv); assert(-1 != ret);
 
-    ret = this->parser_xdhycd(argc, argv);
+    ret = this->parser_xdhycd(argc, argv); assert(-1 != ret);
+
+    //ret = this->parser_cycd(argc, argv); assert(-1 != ret);
+
+    //ret = this->parser_hycddq(argc, argv); assert(-1 != ret);
+
+    //ret = this->parser_hytycfyccd(argc, argv); assert(-1 != ret);
 
     return ret;
 }
@@ -230,6 +238,81 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
         //cout << "line : " << line << endl;
         cout << "wc.word : " << wc.word << endl;
         for(auto &u : wc.attr){
+            stringTools st;
+            st.filter("[<]-[>]", u);
+            cout << "wc.attr : " << u << endl;
+        }
+
+        int index = 0;
+        for(auto &uv : wc.contents){
+            index++;
+            for(auto &u : uv){
+                printf("[%d]cout : %s\n", index, u.c_str());
+            }
+        }
+        cout << endl;
+    };
+
+
+#if 1
+    timer.timing();
+    ret = fo.read_index_line(41779, dline, parser);
+    timer.timing();
+
+    timer.timing();
+    ret = fo.read_index_line(26347, dline, parser);
+    timer.timing();
+
+    timer.timing();
+    ret = fo.read_index_line(17078, dline, parser);
+    timer.timing();
+#else
+
+    timer.timing();
+    ret = fo.read_linebyline(parser);
+    timer.timing();
+#endif
+
+    return ret;
+}
+
+int  DicParser::parser_cycd(int argc, char **argv)
+{
+    cout << "parser_cycd ..." << endl;
+
+    int ret = 0;
+
+    string fn = "/home/minphone/space_sdc/workspace/"
+                "dic_parse/dicparse/src/dic/cycd.txt";
+
+    string dline;
+
+    if(1 != argc){
+        fn = string(argv[1]);
+    }
+    cout << "fn : " << fn << endl;
+
+
+    Timer timer;
+    timer.timing();
+    rFileOprt fo(fn);
+    timer.timing();
+
+    /* 
+     *
+     * */
+    auto parser = [](string line) -> void{
+
+        WordCell_t wc;
+        string fn = "/home/minphone/space_sdc/workspace/"
+                    "dic_parse/dicparse/src/dic/cycd.txt";
+
+        formatTool ftool(fn,line);
+
+        ftool.get_wordcell(wc);
+
+        cout << "wc.word : " << wc.word << " - size : " << wc.word.size() << endl;
+        for(auto &u : wc.attr){
             cout << "wc.attr : " << u << endl;
         }
 
@@ -245,16 +328,18 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
 
 
     timer.timing();
-    ret = fo.read_index_line(41779, dline, parser);
+    ret = fo.read_index_line(1779, dline, parser);
+    timer.timing();
+
+#if 0
+    timer.timing();
+    ret = fo.read_index_line(6347, dline, parser);
     timer.timing();
 
     timer.timing();
-    ret = fo.read_index_line(26347, dline, parser);
+    ret = fo.read_index_line(7078, dline, parser);
     timer.timing();
-
-    timer.timing();
-    ret = fo.read_index_line(17078, dline, parser);
-    timer.timing();
+#endif
 
     timer.timing();
     //ret = fo.read_linebyline(parser);
@@ -263,4 +348,17 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     return ret;
 }
 
+int  DicParser::parser_hycddq(int argc, char **argv)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+int  DicParser::parser_hytycfyccd(int argc, char **argv)
+{
+    int ret = 0;
+
+    return ret;
+}
 

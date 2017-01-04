@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2016-12-23 16:26:38
+ * Last modified: 2017-01-03 22:06:38
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -22,7 +22,7 @@ int  cprimer_main(void *cthis, int argc, char **argv)
 
     if(NULL != cthis){
 
-        //((cPrimer_t *)cthis)->other_test();
+        ret = ((cPrimer_t *)cthis)->other_test();
 
         ret = ((cPrimer_t *)cthis)->process_token();
 
@@ -54,6 +54,12 @@ int  cprimer_main(void *cthis, int argc, char **argv)
         printf("[Warning] cthis is NULL !\n");
     }
     return ret;
+}
+
+static
+int  other_test(void)
+{
+    return 0;
 }
 
 static
@@ -260,7 +266,7 @@ cPrimer_t *cprimer_constructor(void)
          * Loading all functions here !
          * */
 
-        //cprimer->other_test = other_test;
+        cprimer->other_test = other_test;
 
         cprimer->destructor = destructor;
 
@@ -294,7 +300,7 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
              * Loading all functions here !
              * */
 
-            //cprimer->other_test = other_test;
+            (*pobj)->other_test = other_test;
 
             (*pobj)->destructor = destructor;
 

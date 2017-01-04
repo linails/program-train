@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-01-02 20:20:21
+ * Last modified: 2017-01-04 21:50:01
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -84,7 +84,7 @@ int formatPrint(string fname,string line)
 /*format parsing for xinhuazidian*/
 void formatTool::formatParsing_xhzd(string &s)
 {
-#if 0
+    #if 0
     /* 
      * Only For debug
      * */
@@ -94,7 +94,7 @@ void formatTool::formatParsing_xhzd(string &s)
             cout << "us : " << u << endl;
         }
     };
-#endif
+    #endif
 
 
     /* get wc.word */
@@ -117,15 +117,15 @@ void formatTool::formatParsing_xhzd(string &s)
         vector<string> units;
         //regex_common_c0x("(\\(\\d\\)){1}.+?(?=>\\(\\d\\))|\\(\\d\\).*", s, units);
 
-#if 0
+        #if 0
         stringTools st(s);
 
         st.match("([1-9])-[([1-9])|$]", units);
-#else
+        #else
         this->regex_split(s, units);
-#endif
+        #endif
 
-    //    print_units(units);
+        //print_units(units);
 
         vector<string> subunits;
         for(auto iter = units.begin();
@@ -228,30 +228,26 @@ void formatTool::formatParsing_xdhycd(string &s)
         //regex_common_c0x("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮].+?[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]", s, units);
         //cout << "regex : [①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮].+?[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]" << endl;
 
-#if 0
+        #if 1
+
         stringTools st(s);
         st.match("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]", units);
-        #if 0
-        cout << "units.size() : " << units.size() << endl;
-
-        for(auto &u : units){
-            cout << "u : " << u << endl << endl;
-        }
-        #endif
+        for(auto &u : units) st.filter("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○1234567890]", u);
         this->m_wc.attr = units;
-#else
-# if 0
+
+        #else
+        # if 0
         stringTools st(s);
         vector<string> result;
         st.split_utf_code(result);
         for(auto &word : result) cout << "word : " << word << endl;
-# else
+        # else
         stringTools st(s);
         //st.filter("1dioji, [djoi1<>], [123]-[123], [<]-[>]", s);
-        st.filter("[<], [<]-[>]", s);
+        st.filter("[<]-[>]", s);
         //st.filter("[<]-[>]", s);
-# endif
-#endif
+        # endif
+        #endif
     }
 
 }
@@ -302,6 +298,16 @@ void formatTool::formatParsing_xdhycd(string &s)
 /*format parsing for chengyucidian*/
 void formatTool::formatParsing_cycd(string &s)
 {
+    /* get wc.word */
+    {
+        regex_common_c0x("^[\\w\\W][^<\\s]+", s, this->m_wc.word);
+        stringTools st;
+        st.filter("\"", this->m_wc.word);
+    }
+
+    /* get wc.attr */
+    {
+    }
 }
 
 /*format parsing for chengyucidiandaquan*/

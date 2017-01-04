@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ctest.c
  * Created Time: 2016-05-14 19:56:38
- * Last modified: 2016-12-09 23:58:07
+ * Last modified: 2017-01-03 22:03:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void other_test(void)
+void cother_test(void)
 {
     printf("-------------------- ctest other_test -----------------------\n");
     {

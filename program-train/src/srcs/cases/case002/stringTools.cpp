@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2017-01-02 21:42:51
+ * Last modified: 2017-01-04 21:34:47
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -45,6 +45,10 @@ int stringTools::filter(const char *pattern2, std::string &unit)
 {
     int ret = 0;
 
+    /* 
+     * For debug print
+     * */
+    #if 0
     auto fp = [](vector<vector<unsigned char> > &vvch){
         cout << "vvch : ";
         for(auto &vch : vvch){
@@ -55,36 +59,45 @@ int stringTools::filter(const char *pattern2, std::string &unit)
         cout << endl;
     };
 
+    auto fpl = [](list<vector<unsigned char> > &lvch){
+        cout << "lvch : ";
+        for(auto &vch : lvch){
+            string s;
+            for(auto ch : vch) s += ch;
+            cout << s ;
+        }
+        cout << endl;
+    };
+    #endif
+
     this->get_subpatterns(pattern2);
 
     auto filter_01 = [&](string pat, string &unit){
         int ret = 0;
+        vector<vector<unsigned char> > vvch_u;
+        vector<vector<unsigned char> > vvch_p;
 
         if(0 == this->count_char(pat.c_str(), '[')){
-            vector<vector<unsigned char> > vvch_u;
-            vector<vector<unsigned char> > vvch_p;
-
-            ret = this->parser_utf_code(vvch_u, unit); assert(-1 != ret);
-            ret = this->parser_utf_code(vvch_p, pat);  assert(-1 != ret);
+            ret = this->utf_string2code(vvch_u, unit); assert(-1 != ret);
+            ret = this->utf_string2code(vvch_p, pat);  assert(-1 != ret);
 
             this->mfilter(vvch_u, vvch_p);
 
         }else{
-            vector<vector<unsigned char> > vvch_u;
-            vector<vector<unsigned char> > vvch_p;
-
-            ret = this->parser_utf_code(vvch_u, unit); assert(-1 != ret);
-            ret = this->parser_utf_code(vvch_p, pat);  assert(-1 != ret);
+            ret = this->utf_string2code(vvch_u, unit); assert(-1 != ret);
+            ret = this->utf_string2code(vvch_p, pat);  assert(-1 != ret);
 
             //fp(vvch_p);
             this->mfilter(vvch_p, '[');
             this->mfilter(vvch_p, ']');
             //fp(vvch_p);
 
-            fp(vvch_u);
+            //fp(vvch_u);
             this->mfilter(vvch_u, vvch_p);
-            fp(vvch_u);
+            //fp(vvch_u);
         }
+
+        this->utf_code2string(unit, vvch_u);
 
         return ret;
     };
@@ -96,8 +109,8 @@ int stringTools::filter(const char *pattern2, std::string &unit)
         list<vector<unsigned char> > lvch_u;
         vector<vector<unsigned char> > vvch_p;
 
-        ret = this->parser_utf_code(lvch_u, unit); assert(-1 != ret);
-        ret = this->parser_utf_code(vvch_p, pat);  assert(-1 != ret); // [<]-[>]
+        ret = this->utf_string2code(lvch_u, unit); assert(-1 != ret);
+        ret = this->utf_string2code(vvch_p, pat);  assert(-1 != ret); // [<]-[>]
 
         auto check = [&tag](vector<unsigned char> &uv){
             if(1 == uv.size() && uv[0] == tag)  return 1;
@@ -105,29 +118,69 @@ int stringTools::filter(const char *pattern2, std::string &unit)
         };
 
         auto iter = find_if(vvch_p.begin(), vvch_p.end(), check);
+        /* 
+         * exist '-'
+         * */
         if(iter != vvch_p.end()){
             vector<vector<unsigned char> > vvch_pf(vvch_p.begin(), iter);
             vector<vector<unsigned char> > vvch_pl(iter+1, vvch_p.end());
-            fp(vvch_pf);
-            fp(vvch_pl);
+            //fp(vvch_pf);
+            //fp(vvch_pl);
 
             this->mfilter(vvch_pf, "[]");
             this->mfilter(vvch_pl, "[]");
-            fp(vvch_pf);
-            fp(vvch_pl);
+            //fp(vvch_pf);
+            //fp(vvch_pl);
+
+            int flag = -1;
 
             for(auto iter = lvch_u.begin(); iter!= lvch_u.end(); ){
-                #if 0
-                if(0 != check(*iter)) {
-                    string s;
-                    for(auto ch : *iter) s+=ch;
+
+                /* 
+                 * find first/last : '<'-'>'
+                 * */
+                auto find_fl = [&](vector<vector<unsigned char> > &vvch_){
+                    int ret = 0;
+
+                    auto incheck = [&](vector<unsigned char> &uv){
+                        if(*iter == uv)  return 1;
+                        else             return 0;
+                    };
+
+                    auto iiter = find_if(vvch_.begin(), vvch_.end(), incheck);
+                    if(iiter == vvch_.end()) ret = -1;
+
+                    return ret;
+                };
+
+                /* 
+                 * flag
+                 *  -1 : To find first
+                 *   0 :
+                 *   1 : To find last 
+                 * */
+                if(-1 == flag){
+                    if(0 == (flag = find_fl(vvch_pf))){
+                        iter = lvch_u.erase(iter);
+                    }else
+                        iter++;
+                }else if(0 == flag){
                     iter = lvch_u.erase(iter);
-                }else
+                    flag = 1;
+                }else if(1 == flag){
+                    if(0 == find_fl(vvch_pl)){
+                        iter = lvch_u.erase(iter);
+                        flag = -1;
+                    }else
+                        iter = lvch_u.erase(iter);
+                }else{
                     iter++;
-                #endif
-                break;
+                }
             }
 
+            //fpl(lvch_u);
+
+            this->utf_code2string(unit, lvch_u);
 
         }else
             ret = -1;
@@ -137,7 +190,7 @@ int stringTools::filter(const char *pattern2, std::string &unit)
 
     for(auto iter = this->m_subpatterns.begin();
              iter!= this->m_subpatterns.end(); iter++){
-        cout << "subpattern : " << *iter << endl;
+        //cout << "subpattern : " << *iter << endl;
 
         /*
          * 0 ... 1 : 1hu, [123au], 
@@ -145,11 +198,11 @@ int stringTools::filter(const char *pattern2, std::string &unit)
          * */
         switch(this->count_char((*iter).c_str(), '[')){
             case 0 ... 1:
-                cout << "[ : 0 ... 1" << endl;
+                //cout << "[ : 0 ... 1" << endl;
                 ret = filter_01(*iter, unit);
                 break;
             case 2:
-                cout << "[ : " << 2 << endl;
+                //cout << "[ : " << 2 << endl;
                 ret = filter_2(*iter, unit);
                 break;
         }
@@ -260,7 +313,7 @@ void stringTools::mfilter(vector<vector<unsigned char> > &vvch, vector<vector<un
 void stringTools::mfilter(vector<vector<unsigned char> > &vvch, const char *tag)
 {
     vector<vector<unsigned char> > vtag;
-    this->parser_utf_code(vtag, tag);
+    this->utf_string2code(vtag, tag);
 
     this->mfilter(vvch, vtag);
 }
@@ -405,7 +458,7 @@ int  stringTools::print_utf_code(string &s, int mode)
 
     vector<vector<unsigned char> > vvch;
 
-    ret = this->parser_utf_code(vvch, s);
+    ret = this->utf_string2code(vvch, s);
 
     for(auto &u : vvch) print_utf_v(u, mode);
 
@@ -429,9 +482,9 @@ int  stringTools::split_utf_code(vector<string> &result, string s)
     vector<vector<unsigned char> > vvch;
 
     if(true == s.empty()){
-        ret = this->parser_utf_code(vvch, this->m_str);
+        ret = this->utf_string2code(vvch, this->m_str);
     }else{
-        ret = this->parser_utf_code(vvch, s);
+        ret = this->utf_string2code(vvch, s);
     }
 
     string st;
@@ -534,7 +587,7 @@ int  stringTools::count_char(const char *str, char ch)
     return ret;
 }
 
-int  stringTools::parser_utf_code(vector<vector<unsigned char> > &vvch, string &s)
+int  stringTools::utf_string2code(vector<vector<unsigned char> > &vvch, string &s)
 {
     int ret = 0;
 
@@ -596,13 +649,13 @@ int  stringTools::parser_utf_code(vector<vector<unsigned char> > &vvch, string &
     return ret;
 }
 
-int  stringTools::parser_utf_code(vector<vector<unsigned char> > &vvch, const char *str)
+int  stringTools::utf_string2code(vector<vector<unsigned char> > &vvch, const char *str)
 {
     string s(str);
-    return this->parser_utf_code(vvch, s);
+    return this->utf_string2code(vvch, s);
 }
 
-int  stringTools::parser_utf_code(list<vector<unsigned char> > &lvch, string &s)
+int  stringTools::utf_string2code(list<vector<unsigned char> > &lvch, string &s)
 {
     int ret = 0;
 
@@ -641,10 +694,35 @@ int  stringTools::parser_utf_code(list<vector<unsigned char> > &lvch, string &s)
     return ret;
 }
 
-int  stringTools::parser_utf_code(list<vector<unsigned char> > &lvch, const char *str)
+int  stringTools::utf_string2code(list<vector<unsigned char> > &lvch, const char *str)
 {
     string s(str);
-    return this->parser_utf_code(lvch, s);
+    return this->utf_string2code(lvch, s);
 }
 
+int  stringTools::utf_code2string(string &s, const list<vector<unsigned char> > &lvch)
+{
+    s.clear();
+
+    for(auto &vch : lvch){
+        string result;
+        for(auto ch : vch) result += ch;
+        s += result;
+    }
+
+    return 0;
+}
+
+int  stringTools::utf_code2string(string &s, const vector<vector<unsigned char> > &vvch)
+{
+    s.clear();
+
+    for(auto &vch : vvch){
+        string result;
+        for(auto ch : vch) result += ch;
+        s += result;
+    }
+
+    return 0;
+}
 
