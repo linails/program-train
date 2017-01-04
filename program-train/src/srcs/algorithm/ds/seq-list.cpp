@@ -1,7 +1,7 @@
 /*
  * Progarm Name: seq-list.cpp
  * Created Time: 2016-08-27 08:43:55
- * Last modified: 2017-01-03 17:01:06
+ * Last modified: 2017-01-04 17:25:46
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include <vector>
 #include <cassert>
 #include "single-list-def.hpp"
+#include "circle-list-def.hpp"
 
 using std::cout;
 using std::endl;
@@ -32,11 +33,11 @@ int  tSeqList::tseqlist_main(int argc, char **argv)
 
     cout << "tseqlist_main ..." << endl;
 
-    assert(-1 != ret);
-    ret = this->seqlist();
+    //ret = this->seqlist(); assert(-1 != ret);
 
-    assert(-1 != ret);
-    ret = this->singlelist();
+    //ret = this->singlelist(); assert(-1 != ret);
+
+    ret = this->circlelist(); assert(-1 != ret);
 
     return ret;
 }
@@ -173,12 +174,70 @@ int  tSeqList::singlelist(void)
         cout << " ... singlelist ... " << endl;
 
         SingleList<int> sl;
+        sl.input(1);
+        sl.input(2);
+        sl.input(3);
+
+        sl.output();
     }
     cout << "--------------------------------------" << endl;
     {
         int a = 10;
         SingleList<int> sl(a);
+
+        sl.input(3);
+        sl.input(4);
+        sl.input(5);
+        sl.input(6);
+        sl.input(7);
+        sl.output();
+
+        sl.remove(3, a);
+        sl.output();
+
+        sl.remove(1, a);
+        sl.output();
     }
+    cout << "--------------------------------------" << endl;
+    {
+        SingleList<int> sla;
+        SingleList<int> slb;
+
+        for(int i=0; i<10; i++) sla.input(i*1);
+        for(int i=0; i<10; i++) slb.input(i*2);
+
+        sla.output();
+        slb.output();
+
+        //SingleList<int> slc(sla);
+
+        SingleList<int> slc;
+        slc = sla;
+        slc.output();
+
+        SingleList<int> sld(slb);
+        sld.output();
+
+    }
+
+    return ret;
+}
+
+int  tSeqList::circlelist(void)
+{
+    int ret = 0;
+
+    cout << "--------------------------------------" << endl;
+    {
+        CircList<int> cl;
+    }
+
+    return ret;
+}
+
+int  tSeqList::josephus(void)
+{
+    int ret = 0;
 
     return ret;
 }

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: single-list-def.hpp
  * Created Time: 2017-01-03 14:13:51
- * Last modified: 2017-01-03 16:57:58
+ * Last modified: 2017-01-04 16:41:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -37,6 +37,7 @@
 #include <vector>
 #include <iostream>
 #include <cassert>
+#include <typeinfo>
 
 using std::string;
 using std::vector;
@@ -45,8 +46,9 @@ using std::endl;
 
 template <typename T>
 struct LinkNode{
-    LinkNode(LinkNode<T> *ptr = NULL):m_link(ptr){}
+    LinkNode(LinkNode<T> *ptr = NULL):m_link(ptr){m_data = (m_link == NULL ? 0 : ptr->m_data);}
     LinkNode(const T &data, LinkNode<T> *ptr = NULL):m_data(data), m_link(ptr){}
+    LinkNode(LinkNode<T> &node){ this->m_data = node.m_data; this->m_link = node.m_link;}
     T            m_data;
     LinkNode<T> *m_link;
 };
@@ -56,24 +58,25 @@ class SingleList{
 public:
     SingleList();
     SingleList(const T &data);
-    ~SingleList();
-    int  length(void) const;
-    int  make_empty(void);
-    LinkNode<T> *get_head(void) const;
-    int  set_head(LinkNode<T> *p);
-    int  search(T& x) const;
-    T   *get_data(int i) const;
-    void set_data(int i, T& x);
-    int  insert(int i, T& x);
-    int  remove(int i, T& x);
-    int  isempty(void) const;
-    int  isfull(void) const;
-    int  sort(void);
-    int  input(T x);
-    void output(void);
-    SingleList<T> &operator=(SingleList<T> &sl);
+    SingleList(SingleList<T> &list);
+    virtual ~SingleList();
+    virtual int  length(void) const;
+    virtual int  make_empty(void);
+    virtual LinkNode<T> *get_head(void) const;
+    virtual int  set_head(LinkNode<T> *p);
+    virtual LinkNode<T> *search(T& x) const;
+    virtual LinkNode<T> *locate(int index) const;
+    virtual T   *get_data(int i) const;
+    virtual int  set_data(int i, T& x);
+    virtual int  insert(int i, T& x);
+    virtual int  remove(int i, T& x);
+    virtual int  sort(void);
+    virtual int  input(T x);
+    virtual void output(void);
+    virtual SingleList<T> &operator=(SingleList<T> &sl);
 protected:
     LinkNode<T> *m_first;
+    int  m_flag_first;
 };
 
 //-----------------------------------------------------------------------------
@@ -83,8 +86,13 @@ SingleList<T>::SingleList()
 {
     this->m_first = new LinkNode<T>;
     if(NULL == this->m_first){
-        cout << "LinkNode<T> new failed !" << endl;
+        cout << "[Error] : LinkNode<T> new failed !" << endl;
     }
+
+    /* 
+     * m_first->m_data 赋值标记
+     * */
+    this->m_flag_first = -1;
 }
 
 template<typename T>
@@ -92,78 +100,179 @@ SingleList<T>::SingleList(const T &data)
 {
     this->m_first = new LinkNode<T>(data);
     if(NULL == this->m_first){
-        cout << "LinkNode<T> new failed !" << endl;
+        cout << "[Error] : LinkNode<T> new failed !" << endl;
     }
+
+    this->m_flag_first = 0;
+}
+
+template<typename T>
+SingleList<T>::SingleList(SingleList<T> &list)
+{
+    LinkNode<T> *sptr = list.get_head();
+    LinkNode<T> *dptr = new LinkNode<T>(sptr);
+    if(NULL != dptr){
+        dptr->m_link = NULL;
+        this->m_first = dptr;
+
+        while(NULL != sptr->m_link){
+            T data;
+            data = sptr->m_link->m_data;
+            dptr->m_link = new LinkNode<T>(data);
+            if(NULL != dptr->m_link){
+                dptr = dptr->m_link;
+                sptr = sptr->m_link;
+            }else
+                cout << "[Error] : LinkNode<T> new failed !" << endl;
+        }
+    }else
+        cout << "[Error] : LinkNode<T> new failed !" << endl;
 }
 
 template<typename T>
 SingleList<T>::~SingleList()
 {
+    cout << "~SingleList ..." << endl;
+    if(0 != this->make_empty()){
+        cout << "[Error] : SingleList makeempty failed !" << endl;
+    }
 }
 
 template<typename T>
 int  SingleList<T>::length(void) const
 {
-    return 0;
+    int ret = 1;
+
+    if(NULL != this->m_first->m_link){
+        LinkNode<T> *p = this->m_first->m_link;
+        while(NULL != p){
+            p = p->m_link;
+            ret++;
+        }
+    }
+
+    return ret;
 }
 
 template<typename T>
 int  SingleList<T>::make_empty(void)
 {
+    while(NULL != this->m_first->m_link){
+        LinkNode<T> *p = NULL;
+
+        p = this->m_first->m_link;
+        this->m_first->m_link = p->m_link;
+
+        delete p;
+    }
+
+    delete this->m_first;
+
     return 0;
 }
 
 template<typename T>
 LinkNode<T> *SingleList<T>::get_head(void) const
 {
-    return &this->m_first;
+    return (LinkNode<T> *)this->m_first;
 }
 
 template<typename T>
 int  SingleList<T>::set_head(LinkNode<T> *p)
 {
+    this->m_first = p;
     return 0;
 }
 
 template<typename T>
-int  SingleList<T>::search(T& x) const
+LinkNode<T> *SingleList<T>::search(T& x) const
 {
-    return 0;
+    LinkNode<T> *p = this->m_first;
+    while(NULL != p){
+        if(x == p->m_data) break;
+        else    p = p->m_link;
+    }
+
+    return p;
+}
+
+template<typename T>
+LinkNode<T> *SingleList<T>::locate(int index) const
+{
+    LinkNode<T> *p = NULL;
+
+    if(0 <= index){
+        p = this->m_first;
+
+        while(index > 0){
+            if(NULL == (p = p->m_link)) break;
+            index--;
+        }
+    }
+
+    return p;
 }
 
 template<typename T>
 T   *SingleList<T>::get_data(int i) const
 {
-    return this->m_first.m_data;
+    LinkNode<T> *p = this->locate(i);
+    if(NULL != p){
+        return &p->m_data;
+    }else
+        return NULL;
 }
 
 template<typename T>
-void SingleList<T>::set_data(int i, T& x)
+int  SingleList<T>::set_data(int i, T& x)
 {
+    int ret = 0;
+    LinkNode<T> *p = NULL;
+
+    if(NULL != (p = this->locate(i))){
+        p->m_data = x;
+    }else
+        ret = -1;
+
+    return ret;
 }
 
 template<typename T>
 int  SingleList<T>::insert(int i, T& x)
 {
-    return 0;
+    int ret = 0;
+    LinkNode<T> *p = NULL;
+
+    if(NULL != (p = this->locate(i))){
+        LinkNode<T> *np = new LinkNode<T>(x);
+        if(NULL != np){
+            np->m_link = p->m_link;
+            p->m_link  = np;
+        }else
+            cout << "[Error] : LinkNode<T> new failed !" << endl;
+    }else
+        ret = -1;
+
+    return ret;
 }
 
 template<typename T>
 int  SingleList<T>::remove(int i, T& x)
 {
-    return 0;
-}
+    int ret = 0;
+    LinkNode<T> *p = NULL;
 
-template<typename T>
-int  SingleList<T>::isempty(void) const
-{
-    return 0;
-}
+    if(NULL != (p = this->locate(i-1))){
+        x = p->m_link->m_data;
 
-template<typename T>
-int  SingleList<T>::isfull(void) const
-{
-    return 0;
+        LinkNode<T> *dp = p->m_link;
+        p->m_link = p->m_link->m_link;
+
+        delete dp;
+    }else
+        ret = -1;
+
+    return ret;
 }
 
 template<typename T>
@@ -175,18 +284,75 @@ int  SingleList<T>::sort(void)
 template<typename T>
 int  SingleList<T>::input(T x)
 {
-    return 0;
+    int ret = 0;
+
+    if(0 == this->m_flag_first){
+        LinkNode<T> *p = this->m_first;
+
+        while(NULL != p->m_link) p = p->m_link;
+
+        p->m_link = new LinkNode<T>(x);
+        if(NULL == p->m_link){
+            ret = -1;
+        }
+    }else{
+        this->m_flag_first = 0;
+        this->m_first->m_data = x;
+    }
+    return ret;
 }
 
 template<typename T>
 void SingleList<T>::output(void)
 {
+    cout << "SingleList<" << typeid(T).name() << "> : " ;
+    
+    LinkNode<T> *p = this->m_first;
+
+    while(NULL != p){
+        cout << p->m_data << " ";
+        p = p->m_link;
+    }
+
+    cout << endl;
 }
 
 template<typename T>
 SingleList<T> &SingleList<T>::operator=(SingleList<T> &sl)
 {
-    return sl;
+    /* 
+     *  1. 检查自赋值
+     *  2. 释放原有的内存资源
+     *  3. 分配新的内存资源，并复制内容
+     *  4. 返回本对象的引用
+     * */
+
+    if(this == &sl){
+        cout << "[Error] : this = &sl" << endl;
+        return *this;
+    }
+
+    this->make_empty();
+
+
+    LinkNode<T> *sptr = sl.get_head();
+
+    this->m_first = new LinkNode<T>(sptr->m_data);
+    LinkNode<T> *cptr = this->m_first;
+
+    this->m_first->m_data = sptr->m_data;
+
+    while(NULL != sptr->m_link){
+
+        LinkNode<T> *p = new LinkNode<T>(sptr->m_link->m_data);
+        if(NULL == p) cout << "[Error] : new failed ..." << endl;
+
+        cptr->m_link = p;
+        cptr = p;
+        sptr = sptr->m_link;
+    }
+
+    return *this;
 }
 
 #endif //_SINGLE_LIST_DEF_HPP_

@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-03 17:15:34
+# Last modified: 2017-01-04 22:31:17
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -8,6 +8,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/libs
     ${PROJECT_SOURCE_DIR}/src/libs/rapidjson
+    ${PROJECT_SOURCE_DIR}/src/libs/cppjieba
+    ${PROJECT_SOURCE_DIR}/src/libs/cppjieba/limonp
     ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
@@ -115,6 +117,7 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case002/dic-parser.cpp
    srcs/cases/case002/formatParsing.cpp
+   srcs/cases/case002/format-parser.cpp
    srcs/cases/case002/regex_common.cpp
    srcs/cases/case002/rfileoprt.cpp
    srcs/cases/case002/rwfileoprt.cpp
@@ -122,6 +125,7 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
+#   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
 )
 
 add_executable(program-train ${SRC_LIST})

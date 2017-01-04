@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-01-04 22:01:21
+ * Last modified: 2017-01-04 22:32:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,7 @@
 #include <algorithm>
 #include "stringTools.h"
 #include <cassert>
+#include "format-parser.hpp"
 
 using std::cout;
 using std::endl;
@@ -344,6 +345,8 @@ int  DicParser::parser_cycd(int argc, char **argv)
     timer.timing();
     //ret = fo.read_linebyline(parser);
     timer.timing();
+
+    FormatParser fp;
 
     return ret;
 }

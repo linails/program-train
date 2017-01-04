@@ -2,7 +2,7 @@
  * Progarm Name: seq-list-def.hpp
  * Reference : <<数据结构：用面向对象方法与C++语言描述>>
  * Created Time: 2016-08-27 08:44:20
- * Last modified: 2017-01-03 13:33:23
+ * Last modified: 2017-01-04 15:00:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,9 @@
 #include <string>
 #include <vector>
 #include <typeinfo>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 
 using std::cout;
 using std::endl;
@@ -69,6 +72,37 @@ SeqList<T>::SeqList(int sz)
         if(NULL == this->data){
             cout << "new T[max_size] err!" << endl;
             exit(1);
+        }else{
+
+            int nid = 0;
+
+            string un[] = {
+                string(typeid(char).name()),
+                string(typeid(unsigned char).name()),
+                string(typeid(int).name()),
+                string(typeid(unsigned int).name()),
+                string(typeid(short).name()),
+                string(typeid(unsigned short).name()),
+                string(typeid(long).name()),
+                string(typeid(unsigned long).name()),
+                string(typeid(float).name()),
+                string(typeid(double).name())
+            };
+
+            string tname = typeid(T).name();
+            for(size_t i=0; i<sizeof(un)/sizeof(un[0]); i++){
+                if(tname == un[i]){
+                    nid = 1;
+                    cout << "nid = 1" << endl;
+                    break;
+                }
+            }
+
+            switch(nid){
+                case 1:
+                    break;
+                default : break;
+            }
         }
     }
 }
@@ -83,6 +117,36 @@ SeqList<T>::SeqList(SeqList<T> &L)
     if(NULL == this->data){
         cout << "new T[max_size] err !" << endl;
         exit(1);
+    }else{
+            int nid = 0;
+
+            string un[] = {
+                string(typeid(char).name()),
+                string(typeid(unsigned char).name()),
+                string(typeid(int).name()),
+                string(typeid(unsigned int).name()),
+                string(typeid(short).name()),
+                string(typeid(unsigned short).name()),
+                string(typeid(long).name()),
+                string(typeid(unsigned long).name()),
+                string(typeid(float).name()),
+                string(typeid(double).name())
+            };
+
+            string tname = typeid(T).name();
+            for(size_t i=0; i<sizeof(un)/sizeof(un[0]); i++){
+                if(tname == un[i]){
+                    nid = 1;
+                    cout << "nid = 1" << endl;
+                    break;
+                }
+            }
+
+            switch(nid){
+                case 1:
+                    break;
+                default : break;
+            }
     }
 
     for(int i=0; i<L.length(); i++){

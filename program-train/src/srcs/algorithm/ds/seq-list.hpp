@@ -1,7 +1,7 @@
 /*
  * Progarm Name: seq-list.hpp
  * Created Time: 2016-12-30 12:18:52
- * Last modified: 2017-01-03 14:37:23
+ * Last modified: 2017-01-04 17:25:19
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -38,6 +38,8 @@ private:
     int  seqlist_union(SeqList<int> &la, SeqList<int> &lb);
     int  seqlist_intersection(SeqList<int> &la, SeqList<int> &lb);
     int  singlelist(void);
+    int  circlelist(void);
+    int  josephus(void);
 };
 
 #endif //_SEQ_LIST_HPP_
