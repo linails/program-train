@@ -1,7 +1,7 @@
 /*
  * Progarm Name: seq-list.cpp
  * Created Time: 2016-08-27 08:43:55
- * Last modified: 2017-01-03 17:01:06
+ * Last modified: 2017-01-04 15:38:58
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -173,11 +173,50 @@ int  tSeqList::singlelist(void)
         cout << " ... singlelist ... " << endl;
 
         SingleList<int> sl;
+        sl.input(1);
+        sl.input(2);
+        sl.input(3);
+
+        sl.output();
     }
     cout << "--------------------------------------" << endl;
     {
         int a = 10;
         SingleList<int> sl(a);
+
+        sl.input(3);
+        sl.input(4);
+        sl.input(5);
+        sl.input(6);
+        sl.input(7);
+        sl.output();
+
+        sl.remove(3, a);
+        sl.output();
+
+        sl.remove(1, a);
+        sl.output();
+    }
+    cout << "--------------------------------------" << endl;
+    {
+        SingleList<int> sla;
+        SingleList<int> slb;
+
+        for(int i=0; i<10; i++) sla.input(i*1);
+        for(int i=0; i<10; i++) slb.input(i*2);
+
+        sla.output();
+        slb.output();
+
+        //SingleList<int> slc(sla);
+
+        SingleList<int> slc;
+        slc = sla;
+        slc.output();
+
+        SingleList<int> sld(slb);
+        sld.output();
+
     }
 
     return ret;

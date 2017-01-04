@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-03 23:11:14
+# Last modified: 2017-01-04 13:54:40
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -125,6 +125,7 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
+#   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
 )
 
 add_executable(program-train ${SRC_LIST})
