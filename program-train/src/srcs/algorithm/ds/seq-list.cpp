@@ -1,7 +1,7 @@
 /*
  * Progarm Name: seq-list.cpp
  * Created Time: 2016-08-27 08:43:55
- * Last modified: 2017-01-04 15:38:58
+ * Last modified: 2017-01-04 17:25:46
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include <vector>
 #include <cassert>
 #include "single-list-def.hpp"
+#include "circle-list-def.hpp"
 
 using std::cout;
 using std::endl;
@@ -32,11 +33,11 @@ int  tSeqList::tseqlist_main(int argc, char **argv)
 
     cout << "tseqlist_main ..." << endl;
 
-    assert(-1 != ret);
-    ret = this->seqlist();
+    //ret = this->seqlist(); assert(-1 != ret);
 
-    assert(-1 != ret);
-    ret = this->singlelist();
+    //ret = this->singlelist(); assert(-1 != ret);
+
+    ret = this->circlelist(); assert(-1 != ret);
 
     return ret;
 }
@@ -218,6 +219,25 @@ int  tSeqList::singlelist(void)
         sld.output();
 
     }
+
+    return ret;
+}
+
+int  tSeqList::circlelist(void)
+{
+    int ret = 0;
+
+    cout << "--------------------------------------" << endl;
+    {
+        CircList<int> cl;
+    }
+
+    return ret;
+}
+
+int  tSeqList::josephus(void)
+{
+    int ret = 0;
 
     return ret;
 }

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: single-list-def.hpp
  * Created Time: 2017-01-03 14:13:51
- * Last modified: 2017-01-04 15:42:07
+ * Last modified: 2017-01-04 16:41:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -59,21 +59,21 @@ public:
     SingleList();
     SingleList(const T &data);
     SingleList(SingleList<T> &list);
-    ~SingleList();
-    int  length(void) const;
-    int  make_empty(void);
-    LinkNode<T> *get_head(void) const;
-    int  set_head(LinkNode<T> *p);
-    LinkNode<T> *search(T& x) const;
-    LinkNode<T> *locate(int index) const;
-    T   *get_data(int i) const;
-    int  set_data(int i, T& x);
-    int  insert(int i, T& x);
-    int  remove(int i, T& x);
-    int  sort(void);
-    int  input(T x);
-    void output(void);
-    SingleList<T> &operator=(SingleList<T> &sl);
+    virtual ~SingleList();
+    virtual int  length(void) const;
+    virtual int  make_empty(void);
+    virtual LinkNode<T> *get_head(void) const;
+    virtual int  set_head(LinkNode<T> *p);
+    virtual LinkNode<T> *search(T& x) const;
+    virtual LinkNode<T> *locate(int index) const;
+    virtual T   *get_data(int i) const;
+    virtual int  set_data(int i, T& x);
+    virtual int  insert(int i, T& x);
+    virtual int  remove(int i, T& x);
+    virtual int  sort(void);
+    virtual int  input(T x);
+    virtual void output(void);
+    virtual SingleList<T> &operator=(SingleList<T> &sl);
 protected:
     LinkNode<T> *m_first;
     int  m_flag_first;
@@ -132,6 +132,7 @@ SingleList<T>::SingleList(SingleList<T> &list)
 template<typename T>
 SingleList<T>::~SingleList()
 {
+    cout << "~SingleList ..." << endl;
     if(0 != this->make_empty()){
         cout << "[Error] : SingleList makeempty failed !" << endl;
     }
