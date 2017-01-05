@@ -1,7 +1,7 @@
 /*
  * Progarm Name: single-list-def.hpp
  * Created Time: 2017-01-03 14:13:51
- * Last modified: 2017-01-04 16:41:12
+ * Last modified: 2017-01-05 17:02:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -73,7 +73,7 @@ public:
     virtual int  sort(void);
     virtual int  input(T x);
     virtual void output(void);
-    virtual SingleList<T> &operator=(SingleList<T> &sl);
+    SingleList<T> &operator=(SingleList<T> &sl);
 protected:
     LinkNode<T> *m_first;
     int  m_flag_first;
@@ -132,7 +132,6 @@ SingleList<T>::SingleList(SingleList<T> &list)
 template<typename T>
 SingleList<T>::~SingleList()
 {
-    cout << "~SingleList ..." << endl;
     if(0 != this->make_empty()){
         cout << "[Error] : SingleList makeempty failed !" << endl;
     }
@@ -141,13 +140,17 @@ SingleList<T>::~SingleList()
 template<typename T>
 int  SingleList<T>::length(void) const
 {
-    int ret = 1;
+    int ret = 0;
 
-    if(NULL != this->m_first->m_link){
-        LinkNode<T> *p = this->m_first->m_link;
-        while(NULL != p){
-            p = p->m_link;
-            ret++;
+    if(0 == this->m_flag_first){
+        ret = 1;
+
+        if(NULL != this->m_first->m_link){
+            LinkNode<T> *p = this->m_first->m_link;
+            while(NULL != p){
+                p = p->m_link;
+                ret++;
+            }
         }
     }
 
@@ -163,10 +166,12 @@ int  SingleList<T>::make_empty(void)
         p = this->m_first->m_link;
         this->m_first->m_link = p->m_link;
 
-        delete p;
+        if(NULL != p) delete p;
     }
 
-    delete this->m_first;
+    if(NULL != this->m_first) delete this->m_first;
+
+    this->m_first = NULL;
 
     return 0;
 }
@@ -180,8 +185,18 @@ LinkNode<T> *SingleList<T>::get_head(void) const
 template<typename T>
 int  SingleList<T>::set_head(LinkNode<T> *p)
 {
-    this->m_first = p;
-    return 0;
+    int ret = 0;
+
+    if(NULL != this->m_first){
+        p->m_link = this->m_first->m_link;
+
+        delete this->m_first;
+
+        this->m_first = p;
+    }else
+        ret = -1;
+
+    return ret;
 }
 
 template<typename T>
@@ -209,6 +224,8 @@ LinkNode<T> *SingleList<T>::locate(int index) const
             index--;
         }
     }
+
+    //cout << "p->m_data : " << p->m_data << " - index = " << index << endl;
 
     return p;
 }
@@ -263,12 +280,26 @@ int  SingleList<T>::remove(int i, T& x)
     LinkNode<T> *p = NULL;
 
     if(NULL != (p = this->locate(i-1))){
-        x = p->m_link->m_data;
+        if(NULL != p->m_link){
+            x = p->m_link->m_data;
 
-        LinkNode<T> *dp = p->m_link;
-        p->m_link = p->m_link->m_link;
+            if(NULL != p->m_link){
+                LinkNode<T> *dp = p->m_link;
+                p->m_link = p->m_link->m_link;
 
-        delete dp;
+                if(NULL != dp){
+                    if(dp != this->m_first) delete dp;
+                    else{
+                        this->m_flag_first    = -1;
+                        this->m_first->m_data = 0;
+                    }
+                }
+                else    ret = -1;
+            }
+        }else{
+            x = this->m_first->m_data;
+            this->m_flag_first = -1;
+        }
     }else
         ret = -1;
 
@@ -309,10 +340,13 @@ void SingleList<T>::output(void)
     
     LinkNode<T> *p = this->m_first;
 
-    while(NULL != p){
-        cout << p->m_data << " ";
-        p = p->m_link;
-    }
+    if(0 == this->m_flag_first){
+        while(NULL != p){
+            cout << p->m_data << " ";
+            p = p->m_link;
+        }
+    }else
+        cout << " ";
 
     cout << endl;
 }

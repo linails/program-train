@@ -1,7 +1,7 @@
 /*
  * Progarm Name: circle-list-def.hpp
  * Created Time: 2017-01-04 15:50:44
- * Last modified: 2017-01-04 17:23:05
+ * Last modified: 2017-01-05 17:09:40
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -35,7 +35,6 @@ public:
     CircList(CircList<T> &list);
     ~CircList();
     int  length(void) const;
-    LinkNode<T> *get_head(void) const;
     int  set_head(LinkNode<T> *p);
     LinkNode<T> *search(T& x) const;
     LinkNode<T> *locate(int index) const;
@@ -54,81 +53,198 @@ protected:
 template <typename T>
 CircList<T>::CircList()
 {
-    cout << "CircList ..." << endl;
+    this->m_last = this->m_first;
+
+    this->m_first->m_link = this->m_last;
 }
 
 template <typename T>
 CircList<T>::CircList(const T &data)
     :SingleList<T>(data)
 {
+    this->m_last = this->m_first;
+
+    this->m_first->m_link = this->m_last;
 }
 
 template <typename T>
 CircList<T>::CircList(CircList<T> &list)
     :SingleList<T>(list)
 {
+    this->m_last = this->m_first;
+
+    while(NULL != this->m_last->m_link) this->m_last = this->m_last->m_link;
+
+    this->m_last->m_link = this->m_first;
 }
 
 template <typename T>
 CircList<T>::~CircList()
 {
-    cout << "~CircList ... " << endl;
+    /* 
+     * 由于先执行派生类的析构函数，因此将 this->m_last->m_link = NULL
+     *
+     * 这个时候就可以在调用 ~SingleList<T>::SingleList() 的时候进行析构释放空间
+     * */
+    this->m_last->m_link = NULL;
 }
 
 template <typename T>
 int  CircList<T>::length(void) const
 {
-    return 0;
-}
+    int ret = 0;
 
-template <typename T>
-LinkNode<T> *CircList<T>::get_head(void) const
-{
+    this->m_last->m_link = NULL;
+
+    ret = SingleList<T>::length();
+
+    this->m_last->m_link = this->m_first;
+
+    return ret;
 }
 
 template <typename T>
 int  CircList<T>::set_head(LinkNode<T> *p)
 {
+    int ret = 0;
+
+    if(0 == (ret = SingleList<T>::set_head(p)))
+        this->m_last->m_link = this->m_first;
+    else
+        ret = -1;
+
+    return ret;
 }
 
 template <typename T>
 LinkNode<T> *CircList<T>::search(T& x) const
 {
+    this->m_last->m_link = NULL;
+
+    LinkNode<T> *p = SingleList<T>::search(x);
+
+    this->m_last->m_link = this->m_first;
+
+    return p;
 }
 
 template <typename T>
 LinkNode<T> *CircList<T>::locate(int index) const
 {
+    LinkNode<T> *p = NULL;
+
+    if(0 < this->length()){
+        int real_index = index % this->length();
+        cout << "length() : " << this->length() << " - real_index : " << real_index << " - index : " << index << endl;
+
+        this->m_last->m_link = NULL;
+
+        p = SingleList<T>::locate(real_index);
+
+        this->m_last->m_link = this->m_first;
+    }
+
+    return p;
 }
 
 template <typename T>
 T   *CircList<T>::get_data(int i) const
 {
+    LinkNode<T> *p = this->locate(i);
+
+    if(NULL != p){
+        return &p->m_data;
+    }else
+        return NULL;
 }
 
 template <typename T>
 int  CircList<T>::set_data(int i, T& x)
 {
+    int ret = 0;
+    LinkNode<T> *p = NULL;
+
+    if(NULL != (p = this->locate(i))){
+        p->m_data = x;
+    }else
+        ret = -1;
+
+    return ret;
 }
 
 template <typename T>
 int  CircList<T>::insert(int i, T& x)
 {
+    int ret = 0;
+    LinkNode<T> *p = NULL;
+
+    if(NULL != (p = this->locate(i))){
+        LinkNode<T> *np = new LinkNode<T>(x);
+        if(NULL != np){
+
+            if(1 >= this->length()){
+                this->m_last = np;
+                this->m_last->m_link  = this->m_first;
+                this->m_first->m_link = np;
+            }else{
+                np->m_link = p->m_link;
+                p->m_link  = np;
+            }
+
+        }else
+            cout << "[Error] : LinkNode<T> new failed !" << endl;
+    }else
+        ret = -1;
+
+    return ret;
 }
 
 template <typename T>
 int  CircList<T>::remove(int i, T& x)
 {
+    int ret = 0;
+
+    cout << "this->length() : " << this->length() << endl;
+
+    if(2 != this->length()){
+        this->m_last->m_link = NULL;
+        ret = SingleList<T>::remove(i, x);
+        //assert(-1 != ret);
+        this->m_last->m_link = this->m_first;
+        cout << " ->length() : " << this->length() << endl;
+    }else{
+        this->m_last->m_link = NULL;
+        ret = SingleList<T>::remove(i, x);
+        //assert(-1 != ret);
+        this->m_last = this->m_first;
+        this->m_last->m_link = this->m_first;
+    }
+
+    return ret;
 }
 
 template <typename T>
 int  CircList<T>::input(T x)
 {
+    int ret = 0;
+
+    if(-1 == (ret = this->insert(this->length(), x))){
+        cout << "[Error] : insert failed !" << endl;
+    }
+
+    return ret;
 }
 
 template <typename T>
 void CircList<T>::output(void)
 {
+    cout << "CircList<" << typeid(T).name() << "> : " ;
+
+    this->m_last->m_link = NULL;
+
+    SingleList<T>::output();
+
+    this->m_last->m_link = this->m_first;
 }
 
 #endif //_CIRCLE_LIST_DEF_HPP_

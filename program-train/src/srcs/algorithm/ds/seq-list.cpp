@@ -1,7 +1,7 @@
 /*
  * Progarm Name: seq-list.cpp
  * Created Time: 2016-08-27 08:43:55
- * Last modified: 2017-01-04 17:25:46
+ * Last modified: 2017-01-05 17:07:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -35,7 +35,7 @@ int  tSeqList::tseqlist_main(int argc, char **argv)
 
     //ret = this->seqlist(); assert(-1 != ret);
 
-    //ret = this->singlelist(); assert(-1 != ret);
+    ret = this->singlelist(); assert(-1 != ret);
 
     ret = this->circlelist(); assert(-1 != ret);
 
@@ -174,6 +174,9 @@ int  tSeqList::singlelist(void)
         cout << " ... singlelist ... " << endl;
 
         SingleList<int> sl;
+
+        //cout << "sl.leng() : " << sl.length() << endl;
+
         sl.input(1);
         sl.input(2);
         sl.input(3);
@@ -184,6 +187,8 @@ int  tSeqList::singlelist(void)
     {
         int a = 10;
         SingleList<int> sl(a);
+
+        cout << "sl.leng() : " << sl.length() << endl;
 
         sl.input(3);
         sl.input(4);
@@ -196,6 +201,19 @@ int  tSeqList::singlelist(void)
         sl.output();
 
         sl.remove(1, a);
+        sl.output();
+        sl.remove(1, a);
+        sl.output();
+        sl.remove(1, a);
+        sl.output();
+        sl.remove(1, a);
+        sl.output();
+        sl.remove(1, a);
+        sl.output();
+        sl.remove(1, a);
+        sl.output();
+
+        sl.input(3);
         sl.output();
     }
     cout << "--------------------------------------" << endl;
@@ -229,7 +247,49 @@ int  tSeqList::circlelist(void)
 
     cout << "--------------------------------------" << endl;
     {
-        CircList<int> cl;
+        CircList<int> cl(1);
+        cout << "cl.length() : " << cl.length() << endl;
+        cl.output();
+
+        cl.input(20);
+        cout << "cl.length() : " << cl.length() << endl;
+        cl.output();
+
+        cl.input(30);
+        cout << "cl.length() : " << cl.length() << endl;
+        cl.output();
+
+        cl.input(40);
+        cl.input(41);
+        cl.input(42);
+        cl.input(43);
+        cl.input(44);
+        cl.output();
+
+        int a;
+        cl.remove(2, a);
+        cl.output();
+
+        cl.remove(1, a);
+        cl.output();
+
+        cl.remove(1, a);
+        cl.remove(1, a);
+        cl.remove(1, a);
+        cl.remove(1, a);
+        cl.output();
+
+        cl.remove(1, a);
+        cout << "1-a = " << a << endl;
+        cl.output();
+
+        cl.remove(1, a); 
+        cout << "1-a = " << a << endl;
+        cl.output();
+
+        //cl.remove(1, a); 
+        //cout << "1-a = " << a << endl;
+        //cl.output();
     }
 
     return ret;

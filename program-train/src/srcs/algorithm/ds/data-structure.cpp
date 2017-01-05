@@ -1,7 +1,7 @@
 /*
  * Progarm Name: data-structure.cpp
  * Created Time: 2016-12-30 09:12:14
- * Last modified: 2017-01-03 17:16:19
+ * Last modified: 2017-01-05 10:08:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -40,7 +40,7 @@ int  DataStructure::linearlist(int argc, char **argv)
 
     cout << "--------------------------------------" << endl;
     {
-#if 0
+#if 1
         assert(-1 != ret);
         tLinearList tll;
         ret = tll.linearlist_main(argc, argv);

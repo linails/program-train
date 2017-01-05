@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-04 22:31:17
+# Last modified: 2017-01-05 10:09:44
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -64,6 +64,7 @@ set(SRC_LIST
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
 #   srcs/primer/class_test.cpp
+   srcs/primer/class-enhenced.cpp
 #   srcs/primer/chrono_test.cpp
 #   srcs/primer/exception_test.cpp
 #   srcs/primer/lambda.cpp
@@ -95,8 +96,8 @@ set(SRC_LIST
 #   srcs/algorithm/stl/sorting-algo.cpp
    srcs/algorithm/ds/data-structure.cpp
    srcs/algorithm/ds/data-structure.c
-#   srcs/algorithm/ds/linear-list.cpp
-#   srcs/algorithm/ds/seq-list.cpp
+   srcs/algorithm/ds/linear-list.cpp
+   srcs/algorithm/ds/seq-list.cpp
 #   srcs/algorithm/ds/graph.cpp
 #   srcs/algorithm/ds/search.cpp
 #   srcs/algorithm/ds/sort.cpp
