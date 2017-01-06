@@ -1,7 +1,7 @@
 /*
  * Progarm Name: circle-list-def.hpp
  * Created Time: 2017-01-04 15:50:44
- * Last modified: 2017-01-05 17:09:40
+ * Last modified: 2017-01-06 14:24:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -32,7 +32,7 @@ class CircList : public SingleList<T>{
 public:
     CircList();
     CircList(const T &data);
-    CircList(CircList<T> &list);
+    CircList(const CircList<T> &list);
     ~CircList();
     int  length(void) const;
     int  set_head(LinkNode<T> *p);
@@ -68,7 +68,7 @@ CircList<T>::CircList(const T &data)
 }
 
 template <typename T>
-CircList<T>::CircList(CircList<T> &list)
+CircList<T>::CircList(const CircList<T> &list)
     :SingleList<T>(list)
 {
     this->m_last = this->m_first;
@@ -178,23 +178,28 @@ int  CircList<T>::insert(int i, T& x)
     int ret = 0;
     LinkNode<T> *p = NULL;
 
-    if(NULL != (p = this->locate(i))){
-        LinkNode<T> *np = new LinkNode<T>(x);
-        if(NULL != np){
+    if(0 == this->m_flag_first){
+        if(NULL != (p = this->locate(i))){
+            LinkNode<T> *np = new LinkNode<T>(x);
+            if(NULL != np){
 
-            if(1 >= this->length()){
-                this->m_last = np;
-                this->m_last->m_link  = this->m_first;
-                this->m_first->m_link = np;
-            }else{
-                np->m_link = p->m_link;
-                p->m_link  = np;
-            }
+                if(1 >= this->length()){
+                    this->m_last = np;
+                    this->m_last->m_link  = this->m_first;
+                    this->m_first->m_link = np;
+                }else{
+                    np->m_link = p->m_link;
+                    p->m_link  = np;
+                }
 
+            }else
+                cout << "[Error] : LinkNode<T> new failed !" << endl;
         }else
-            cout << "[Error] : LinkNode<T> new failed !" << endl;
-    }else
-        ret = -1;
+            ret = -1;
+    }else{
+        this->m_first->m_data = x;
+        this->m_flag_first = 0;
+    }
 
     return ret;
 }

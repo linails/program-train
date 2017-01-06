@@ -1,8 +1,7 @@
 /*
  * Progarm Name: seq-list-def.hpp
- * Reference : <<数据结构：用面向对象方法与C++语言描述>>
  * Created Time: 2016-08-27 08:44:20
- * Last modified: 2017-01-04 15:00:21
+ * Last modified: 2017-01-06 11:25:31
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -50,7 +49,6 @@ public:
     int  input(T x);
     void output(void);
     SeqList<T> &operator=(const SeqList<T> &L);
-    SeqList<T> &operator=(const LinearList<T> &L);
 protected:
     int  resize(int size);
 protected:
@@ -93,7 +91,7 @@ SeqList<T>::SeqList(int sz)
             for(size_t i=0; i<sizeof(un)/sizeof(un[0]); i++){
                 if(tname == un[i]){
                     nid = 1;
-                    cout << "nid = 1" << endl;
+                    cout << "SeqList<T> :: nid = 1" << endl;
                     break;
                 }
             }
@@ -137,7 +135,7 @@ SeqList<T>::SeqList(SeqList<T> &L)
             for(size_t i=0; i<sizeof(un)/sizeof(un[0]); i++){
                 if(tname == un[i]){
                     nid = 1;
-                    cout << "nid = 1" << endl;
+                    cout << "SeqList<T> :: nid = 1" << endl;
                     break;
                 }
             }

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: linear-list.cpp
  * Created Time: 2016-12-30 10:59:03
- * Last modified: 2017-01-03 14:50:44
+ * Last modified: 2017-01-06 09:38:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 #include <cassert>
+#include "dbl-list-def.hpp"
+#include "static-list-def.hpp"
 
 using std::cout;
 using std::endl;
