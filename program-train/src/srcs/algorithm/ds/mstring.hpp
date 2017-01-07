@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mstring.hpp
  * Created Time: 2017-01-07 09:32:37
- * Last modified: 2017-01-07 14:43:44
+ * Last modified: 2017-01-07 17:57:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,18 +29,21 @@ public:
     mString operator()(size_t pos, size_t len);
     mString &operator=(const mString &s);
     mString &operator+=(const mString &s);
+    mString &operator+=(const char *str);
+    mString &operator+=(const string &s);
     int  operator==(const mString &s) const;
     int  operator!=(const mString &s) const;
     int  operator!(void) const;
     char operator[](size_t pos);
-    int  find(const char *pat, int mode = 1) const;
-    int  find(const string &pat, int mode = 1) const;
+    size_t find(const char *pat, int mode = 1) const;
+    size_t find(const string &pat, int mode = 1) const;
     size_t length(void) const;
     char *c_str(void) const;
 private:
     int  resize(void);
-    int  find_simple(const char *pat);
-    int  find_kmp(const char *pat);
+    size_t find_simple(const char *pat) const;
+    size_t find_kmp(const char *pat) const;
+    int  kmp_getnext(const char *pat, int *next) const;
 private:
     size_t  m_size;
     size_t  m_len;
@@ -49,8 +52,8 @@ private:
 
 mString::mString(size_t size)
     :m_size(size)
-    ,m_buf(NULL)
     ,m_len(0)
+    ,m_buf(NULL)
 {
     this->resize();
 }
@@ -141,22 +144,85 @@ mString &mString::operator=(const mString &s)
 
 mString &mString::operator+=(const mString &s)
 {
+    if((this->m_size - this->m_len) > s.length()){
+        memcpy(&this->m_buf[this->m_len], s.c_str(), s.length());
+    }else{
+        this->resize();
+        memcpy(&this->m_buf[this->m_len], s.c_str(), s.length());
+    }
+
+    this->m_len = this->m_len + s.length();
+    return *this;
+}
+
+mString &mString::operator+=(const string &s)
+{
+    if((this->m_size - this->m_len) > s.length()){
+        memcpy(&this->m_buf[this->m_len], s.c_str(), s.length());
+    }else{
+        this->resize();
+        memcpy(&this->m_buf[this->m_len], s.c_str(), s.length());
+    }
+
+    this->m_len = this->m_len + s.length();
+    return *this;
+}
+
+mString &mString::operator+=(const char *str)
+{
+    size_t len = strlen(str);
+    if((this->m_size - this->m_len) > len){
+        memcpy(&this->m_buf[this->m_len], str, len);
+    }else{
+        this->resize();
+        memcpy(&this->m_buf[this->m_len], str, len);
+    }
+
+    this->m_len = this->m_len + len;
     return *this;
 }
 
 int  mString::operator==(const mString &s) const
 {
-    return 0;
+    bool ret = true;
+
+    if(this->m_len == s.length()){
+        for(size_t i=0; i<this->m_len; i++){
+            if(this->m_buf[i] != s.m_buf[i]){
+                ret = false;
+                break;
+            }
+        }
+    }else
+        ret = false;
+
+    return ret;
 }
 
 int  mString::operator!=(const mString &s) const
 {
-    return 0;
+    bool ret = false;
+
+    if(this->m_len == s.length()){
+        for(size_t i=0; i<this->m_len; i++){
+            if(this->m_buf[i] != s.m_buf[i]){
+                ret = true;
+                break;
+            }
+        }
+    }else
+        ret = true;
+
+    return ret;
 }
 
 int  mString::operator!(void) const
 {
-    return 0;
+    bool ret = true;
+
+    if(0 != this->m_len) ret = false;
+
+    return ret;
 }
 
 size_t mString::length(void) const
@@ -176,27 +242,63 @@ char mString::operator[](size_t pos)
 /* 
  * mode = 0 : simple default
  * mode = 1 : KMP
+ *
+ * return   : index , faile = -1
  * */
-int  mString::find(const char *pat, int mode) const
+size_t mString::find(const char *pat, int mode) const
 {
-    int ret = 0;
+    size_t ret = -1;
 
     switch(mode){
-        case 0 : ret = this->find_simple(pat);    break;
-        case 1 : ret = this->find_kmp(pat);       break;
-        default : ret = -1; break;
+        case 0 : ret = this->find_simple(pat);  break;
+        case 1 : ret = this->find_kmp(pat);     break;
+        default: ret = -1;                      break;
     }
 
     return ret;
 }
 
-int  mString::find(const string &pat, int mode = 1) const
+size_t mString::find(const string &pat, int mode) const
 {
     return this->find(pat.c_str(), mode);
 }
 
-int  mString::find_simple(const char *pat)
+size_t mString::find_simple(const char *pat) const
 {
+    size_t ret = -1;
+    size_t len = strlen(pat);
+
+    for(size_t i=0, j=0; i<this->m_len; i++){
+        for(; j<len; j++){
+            if(this->m_buf[i + j] != pat[j]) break;
+        }
+        if(j-1 == len){
+            ret = i;
+            break;
+        }
+    }
+
+    return ret;
+}
+
+/* 
+ * KMP
+ * */
+size_t mString::find_kmp(const char *pat) const
+{
+    int next[128] = {0, };
+
+    this->kmp_getnext(pat, next);
+
+    size_t len = strlen(pat);
+
+    cout << "next : ";
+    for(size_t i=0; i<len; i++){
+        cout << next[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
 }
 
 /*
@@ -209,9 +311,35 @@ int  mString::find_simple(const char *pat)
  *
  *  2> j = next[j]; 这句语句是子串回溯时跳转的动作，子串从位置 j 回溯到位置 next[j]
  *
+ *              / -1    , 当 j = 0
+ *  3> next(j) =  k+1   , 当 0 <= k < j-1 且使得 P0P1 ... Pk = Pj-k-1Pj-k...Pj-1 的最大整数
+ *              \  0    , 其他情况
+ *
+ *      j   |    0    1    2    3    4    5    6    7
+ *  --------+---------------------------------------------
+ *      P   |    a    b    a    a    b    c    a    c
+ *   next(j)|   -1    0    0    1    1    2    0    1
+ *
  * */
-int  mString::find_kmp(const char *pat)
+int  mString::kmp_getnext(const char *pat, int *next) const
 {
+    int k = -1;
+
+    size_t j = 0;
+    size_t pat_len = strlen(pat);
+
+    next[0] = -1;
+
+    while(j < pat_len){
+        if(-1 == k || pat[j] == pat[k]){
+            j++;
+            k++;
+            next[j] = k;
+        }else
+            k = next[k];
+    }
+
+    return 0;
 }
 
 char *mString::c_str(void) const
@@ -238,6 +366,8 @@ int  mString::resize(void)
         this->m_buf  = buf;
         this->m_size = this->m_size * 2;
     }
+
+    return 0;
 }
 
 #endif //_MSTRING_HPP_
