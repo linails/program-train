@@ -1,7 +1,7 @@
 /*
  * Progarm Name: single-list-def.hpp
  * Created Time: 2017-01-03 14:13:51
- * Last modified: 2017-01-06 14:34:35
+ * Last modified: 2017-01-07 10:44:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -115,7 +115,7 @@ SingleList<T>::SingleList(const SingleList<T> &list)
         dptr->m_link = NULL;
         this->m_first = dptr;
 
-        while(NULL != sptr->m_link){
+        while(NULL != sptr->m_link && list.get_head() != sptr->m_link){
             T data;
             data = sptr->m_link->m_data;
             dptr->m_link = new LinkNode<T>(data);
