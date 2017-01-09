@@ -1,7 +1,7 @@
 /*
  * Progarm Name: data-structure.cpp
  * Created Time: 2016-12-30 09:12:14
- * Last modified: 2017-01-07 17:54:15
+ * Last modified: 2017-01-09 13:25:27
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -122,7 +122,8 @@ int  DataStructure::mstring(int argc, char **argv)
         int index = s1.find("wold", 0);
         cout << "index : " << index << endl;
 
-        s1.find("abaabcac");
+        int ret = s1.find("wor");
+        cout << "ret = " << ret << endl;
     }
     cout << "--------------------------------------" << endl;
     {

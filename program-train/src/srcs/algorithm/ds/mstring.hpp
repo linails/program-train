@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mstring.hpp
  * Created Time: 2017-01-07 09:32:37
- * Last modified: 2017-01-07 17:57:53
+ * Last modified: 2017-01-09 13:39:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -35,14 +35,15 @@ public:
     int  operator!=(const mString &s) const;
     int  operator!(void) const;
     char operator[](size_t pos);
-    size_t find(const char *pat, int mode = 1) const;
-    size_t find(const string &pat, int mode = 1) const;
+    int  find(const char *pat, int mode = 1) const;
+    int  find(const string &pat, int mode = 1) const;
+    int  find(const mString &pat, int mode = 1) const;
     size_t length(void) const;
     char *c_str(void) const;
 private:
     int  resize(void);
-    size_t find_simple(const char *pat) const;
-    size_t find_kmp(const char *pat) const;
+    int  find_simple(const char *pat) const;
+    int  find_kmp(const char *pat) const;
     int  kmp_getnext(const char *pat, int *next) const;
 private:
     size_t  m_size;
@@ -245,9 +246,9 @@ char mString::operator[](size_t pos)
  *
  * return   : index , faile = -1
  * */
-size_t mString::find(const char *pat, int mode) const
+int  mString::find(const char *pat, int mode) const
 {
-    size_t ret = -1;
+    int ret = -1;
 
     switch(mode){
         case 0 : ret = this->find_simple(pat);  break;
@@ -258,14 +259,19 @@ size_t mString::find(const char *pat, int mode) const
     return ret;
 }
 
-size_t mString::find(const string &pat, int mode) const
+int  mString::find(const string &pat, int mode) const
 {
     return this->find(pat.c_str(), mode);
 }
 
-size_t mString::find_simple(const char *pat) const
+int  mString::find(const mString &pat, int mode) const
 {
-    size_t ret = -1;
+    return this->find(pat.c_str(), mode);
+}
+
+int  mString::find_simple(const char *pat) const
+{
+    int  ret = -1;
     size_t len = strlen(pat);
 
     for(size_t i=0, j=0; i<this->m_len; i++){
@@ -283,22 +289,57 @@ size_t mString::find_simple(const char *pat) const
 
 /* 
  * KMP
+ *  
+ *  一般地，若设在进行某一趟匹配比较时在模式P的第 j 位失配，
+ *  1> 如果 j>0，那么在下一趟比较时模式串P的起始比较位置是 Pnext(j)，目标串T的指针不回溯，
+ *     仍指向上一趟失配的字符
+ *  2> 如果 j=0，则目标串指针T进一，模式串指针 P 回到 P0，继续进行下一趟匹配比较
  * */
-size_t mString::find_kmp(const char *pat) const
+int  mString::find_kmp(const char *pat) const
 {
-    int next[128] = {0, };
+    auto print_next = [](int pat_len, int *next){
+        cout << "kmp next : ";
+        for(int i=0; i<pat_len; i++){
+            cout << next[i] << " ";
+        }
+        cout << endl;
+    };
 
-    this->kmp_getnext(pat, next);
+    /*
+     * init 
+     * */
+    int pat_len = strlen(pat);
+    int ret = -1;
 
-    size_t len = strlen(pat);
+    int *next = new int[pat_len]();
 
-    cout << "next : ";
-    for(size_t i=0; i<len; i++){
-        cout << next[i] << " ";
+    /* Do ... */
+    {
+
+        this->kmp_getnext(pat, next);  print_next(pat_len, next);
+
+        int    pos_pat = 0;
+        size_t pos_str = 0;
+
+        while((pos_pat < pat_len) && (pos_str < this->m_len)){
+            if(-1 == pos_pat || pat[pos_pat] == this->m_buf[pos_str]){
+                pos_pat++;
+                pos_str++;
+            }else
+                pos_pat = next[pos_pat];
+        }
+
+        if(pos_pat < pat_len) ret = -1;
+        else ret = pos_str - (size_t)pat_len;
+
     }
-    cout << endl;
 
-    return 0;
+    /* 
+     * release
+     * */
+    delete [] next;
+
+    return ret;
 }
 
 /*
@@ -330,6 +371,32 @@ int  mString::kmp_getnext(const char *pat, int *next) const
 
     next[0] = -1;
 
+    /* 
+     * Note : 
+     *
+     * 如何正确地计算出特征函数 next(j) ，是实现无回溯匹配算法的关键
+     *
+     * # 从 next(j) 定义出发，计算 next(j) ，就是要在串 P0P1P2...Pj-1 中找出最长的相等的前缀
+     *   子串 P0P1...Pk 和后缀子串 Pj-k-1Pj-k...Pj-1
+     *   这个查找过程实质上仍是一个模式匹配的过程，只是目标串和模式串现在 is 同一个串 P !!!
+     *
+     * # 可以用递推的方法求 next(j) 的值
+     *   1> 设已有 next(j) = k，则有
+     *      0 <= k < j-1 且 P0P1...Pk = Pj-k-1Pj-kPj-k...Pj-1
+     *   2> 若设 next(j+1) = max{k+1 | 0 <= k+1 < j}，使得 P0P1...Pk = Pj-k-1Pj-kPj-k...Pj-1 成立
+     *   3> 若 Pk+1 = Pj，则由 2> 可知，next(j+1) = (k+1)+1 = next(j) + 1
+     *   4> 若 Pk+1 != Pj，可以从 1> 出发，在 P0P1...Pk 中寻找使得 P0P1...Ph = Pk-hPk-h+1...Pk 
+     *      的 h，这时存在两种情况
+     *      1) 找到 h，则由 next(k) 的定义知：next(k) = h。综合 4> 和 1> ，有
+     *         P0P1...Ph = Pk-hPk-h+1...Pk = Pj-h-1Pj-h...Pj-1
+     *         即在 P0P1...Pj-1 中找到了长度为 h+1 的相等的前缀子串和后缀子串
+     *         * 这时若 Ph+1 = Pj，则由 next(j+1) 的定义
+     *           next(j+1) = h+1 = next(k) + 1 = next(next(j)) + 1
+     *         * 这时若 Ph+1 != Pj，则在 P0P1...Ph 中寻找更小的 next(h) = 1。如此递推，有可能还需要
+     *           以同样的方式再缩小寻找范围，直到 next(t) = -1 才算是失败
+     *      2) 找不到 h, 这时 next(k) = -1
+     *
+     * */
     while(j < pat_len){
         if(-1 == k || pat[j] == pat[k]){
             j++;
