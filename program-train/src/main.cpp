@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2017-01-07 13:27:01
+ * Last modified: 2017-01-09 17:46:34
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,7 @@
 #include <cassert>
 #include "container.hpp"
 #include "mlinux.hpp"
+#include "advanced.hpp"
 
 using namespace std;
 
@@ -23,7 +24,14 @@ int main(int argc, char **argv)
     {
         Primer  primer;
 
-        ret = primer.primer_main(argc, argv);
+        ret = primer.primer_main(argc, argv); assert(-1 != ret);
+    }
+    {
+#if 0
+        Advanced advanced;
+
+        ret = advanced.advanced_main(argc, argv); assert(-1 != ret);
+#endif
     }
     {
 #if 0

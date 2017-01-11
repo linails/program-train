@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-06 16:49:43
+# Last modified: 2017-01-09 17:44:10
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -9,10 +9,12 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/libs
     ${PROJECT_SOURCE_DIR}/src/libs/rapidjson
     ${PROJECT_SOURCE_DIR}/src/libs/cppjieba
+    ${PROJECT_SOURCE_DIR}/src/libs/jsoncpp/src
     ${PROJECT_SOURCE_DIR}/src/libs/cppjieba/limonp
     ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
+    ${PROJECT_SOURCE_DIR}/src/srcs/advanced
     ${PROJECT_SOURCE_DIR}/src/srcs/complex
     ${PROJECT_SOURCE_DIR}/src/srcs/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/boost
@@ -72,6 +74,7 @@ set(SRC_LIST
 #   srcs/primer/overload.cpp
 #   srcs/primer/operator-overload.cpp
 #   srcs/primer/type-traits.cpp
+#   srcs/advanced/advanced.cpp
 #   srcs/complex/
 #   srcs/linux/mlinux.cpp
 #   srcs/linux/network/server-udp.c
@@ -100,10 +103,10 @@ set(SRC_LIST
    srcs/algorithm/ds/seq-list.cpp
    srcs/algorithm/ds/mstack.cpp
    srcs/algorithm/ds/mqueue.cpp
+   srcs/algorithm/ds/tree.cpp
 #   srcs/algorithm/ds/graph.cpp
 #   srcs/algorithm/ds/search.cpp
 #   srcs/algorithm/ds/sort.cpp
-#   srcs/algorithm/ds/tree.cpp
 #   srcs/sep/sep.cpp
 #####################################################################
    srcs/tools/timer.cpp
@@ -142,6 +145,7 @@ endif()
 
 set(link_lib
     ${libs_path}/libsqlite3.a
+    ${libs_path}/libjson.a
     ${libs_path}/lib/libssl.a
     ${libs_path}/lib/libcrypto.a
     pthread
