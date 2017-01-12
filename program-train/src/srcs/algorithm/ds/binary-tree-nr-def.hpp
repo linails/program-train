@@ -1,7 +1,7 @@
 /*
  * Progarm Name: binary-tree-nr-def.hpp
  * Created Time: 2017-01-10 15:11:10
- * Last modified: 2017-01-11 17:08:02
+ * Last modified: 2017-01-12 09:50:26
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,12 +11,13 @@
 #include "binary-tree-def.hpp"
 #include "linked-stack-def.hpp"
 
+enum lrtag{L, R};
+
 /* 
  * 后序遍历使用
  * */
 template <typename T>
 struct stkNode{
-    enum lrtag{L, R};
     btNode<T> *ptr;
     lrtag      tag;
     stkNode(btNode<T> *node = NULL):ptr(node), tag(L){}
@@ -123,8 +124,13 @@ int  sBinaryTree<T>::post_order(int (*visit)(btNode<T> *pos))
 
     btNode<T> *node = this->m_root;
 
-#if 0
+    /* 
+     * post-order ...
+     * */
     do{
+        /* 
+         * push all left child node and root
+         * */
         while(NULL != node){
             w.ptr = node;
             w.tag = L;
@@ -133,19 +139,25 @@ int  sBinaryTree<T>::post_order(int (*visit)(btNode<T> *pos))
             node = node->m_left;
         }
 
-        while(!stack.is_empty()){
+        /* 
+         * -> most important !!!
+         * */
+        bool branch_travl = false;
+        while(!branch_travl && !stack.is_empty()){
             stack.pop(w);
             node = w.ptr;
 
             if(L == w.tag){
                 w.tag = R;
                 stack.push(w);
+                branch_travl = true;
+                node = node->m_right;
             }else if(R == w.tag){
+                visit(node);
             }
         }
 
-    }while();
-#endif
+    }while(!stack.is_empty());
 
     return 0;
 }

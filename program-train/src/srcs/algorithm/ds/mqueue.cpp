@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mqueue.cpp
  * Created Time: 2017-01-03 15:01:53
- * Last modified: 2017-01-06 16:52:15
+ * Last modified: 2017-01-12 13:27:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -33,6 +33,12 @@ int  mQueue::mqueue_main(int argc, char **argv)
 
 int  mQueue::circ_queue(void)
 {
+    cout << "--------------------------------------" << endl;
+
+    CircQueue<int> iq(10);
+
+    iq.output();
+
     return 0;
 }
 
