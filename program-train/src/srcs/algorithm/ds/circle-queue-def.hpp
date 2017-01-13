@@ -1,7 +1,7 @@
 /*
  * Progarm Name: circle-queue-def.hpp
  * Created Time: 2017-01-06 16:51:43
- * Last modified: 2017-01-12 13:37:47
+ * Last modified: 2017-01-13 17:58:18
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -85,6 +85,14 @@ int  CircQueue<T>::en_queue(T x)
             this->m_data[this->m_rear] = x;
             this->m_rear++;
 
+            if(this->m_rear == this->m_size){
+                if(0 != this->m_front) this->m_rear = 0;
+                else{
+                    this->m_rear--;
+                    this->m_rear_used = 0;
+                }
+            }
+
             if(this->m_rear == this->m_front){
                 this->m_rear--;
                 this->m_rear_used = 0;
@@ -106,13 +114,24 @@ int  CircQueue<T>::de_queue(T &x)
     if(0 != this->is_empty()){
         if(this->m_rear > this->m_front){
             if(0 == this->m_rear_used){
+                x = this->m_data[this->m_front];
+                this->m_front++;
+
+                /* 
+                 * reset this->m_rear = 0;
+                 * */
+                this->m_rear_used = -1;
+                this->m_rear = 0;
             }else{
                 x = this->m_data[this->m_front];
                 this->m_front++;
             }
         }else{
-            if(0 == this->m_rear_used){
-            }else{
+            x = this->m_data[this->m_front];
+            this->m_front++;
+
+            if(this->m_size == this->m_front){
+                this->m_front = 0;
             }
         }
     }else{
@@ -159,7 +178,8 @@ int  CircQueue<T>::output(void) const
 {
     cout << "circle-queue<" << typeid(T).name() << "> : ";
     cout << "this->m_front = " << this->m_front << " - ";
-    cout << "this->m_rear = " << this->m_rear << endl;
+    cout << "this->m_rear = " << this->m_rear << " - ";
+    cout << "this->m_rear_used = " << this->m_rear_used << endl;
 
     cout << "size : " << this->m_size << " - [ ";
     for(int i=0; i<this->m_size; i++){
