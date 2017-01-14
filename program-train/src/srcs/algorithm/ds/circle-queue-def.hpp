@@ -1,7 +1,7 @@
 /*
  * Progarm Name: circle-queue-def.hpp
  * Created Time: 2017-01-06 16:51:43
- * Last modified: 2017-01-13 17:58:18
+ * Last modified: 2017-01-14 09:09:01
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -133,6 +133,8 @@ int  CircQueue<T>::de_queue(T &x)
             if(this->m_size == this->m_front){
                 this->m_front = 0;
             }
+
+            if(0 == this->m_rear_used) this->m_rear_used = -1;
         }
     }else{
         ret = -1;

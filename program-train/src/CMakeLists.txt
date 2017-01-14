@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-09 17:44:10
+# Last modified: 2017-01-14 15:55:54
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -128,7 +128,7 @@ set(SRC_LIST
    srcs/cases/case002/rwfileoprt.cpp
    srcs/cases/case002/stringTools.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/exlib-cases/case-json/mjson.cpp
+   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
 )
