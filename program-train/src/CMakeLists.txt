@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-14 15:55:54
+# Last modified: 2017-01-16 14:00:19
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -37,6 +37,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case002
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case003
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
@@ -97,13 +98,13 @@ set(SRC_LIST
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
-   srcs/algorithm/ds/data-structure.cpp
-   srcs/algorithm/ds/data-structure.c
-   srcs/algorithm/ds/linear-list.cpp
-   srcs/algorithm/ds/seq-list.cpp
-   srcs/algorithm/ds/mstack.cpp
-   srcs/algorithm/ds/mqueue.cpp
-   srcs/algorithm/ds/tree.cpp
+#   srcs/algorithm/ds/data-structure.cpp
+#   srcs/algorithm/ds/data-structure.c
+#   srcs/algorithm/ds/linear-list.cpp
+#   srcs/algorithm/ds/seq-list.cpp
+#   srcs/algorithm/ds/mstack.cpp
+#   srcs/algorithm/ds/mqueue.cpp
+#   srcs/algorithm/ds/tree.cpp
 #   srcs/algorithm/ds/graph.cpp
 #   srcs/algorithm/ds/search.cpp
 #   srcs/algorithm/ds/sort.cpp
@@ -120,13 +121,16 @@ set(SRC_LIST
 #   srcs/cases/case001/test/test_main.cpp
 #   srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case002/dic-parser.cpp
-   srcs/cases/case002/formatParsing.cpp
-   srcs/cases/case002/format-parser.cpp
-   srcs/cases/case002/regex_common.cpp
-   srcs/cases/case002/rfileoprt.cpp
-   srcs/cases/case002/rwfileoprt.cpp
-   srcs/cases/case002/stringTools.cpp
+#   srcs/cases/case002/dic-parser.cpp
+#   srcs/cases/case002/formatParsing.cpp
+#   srcs/cases/case002/format-parser.cpp
+#   srcs/cases/case002/regex_common.cpp
+#   srcs/cases/case002/rfileoprt.cpp
+#   srcs/cases/case002/rwfileoprt.cpp
+#   srcs/cases/case002/stringTools.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   srcs/cases/case003/key-bind-main.cpp
+   srcs/cases/case003/disk.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
@@ -148,8 +152,10 @@ set(link_lib
     ${libs_path}/libjson.a
     ${libs_path}/lib/libssl.a
     ${libs_path}/lib/libcrypto.a
+    ${libs_path}/lib/libpqxx.a
     pthread
     dl
+    pq
 )
 
 target_link_libraries(program-train ${link_lib})

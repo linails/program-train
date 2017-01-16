@@ -1,7 +1,7 @@
 /*
  * Progarm Name: malgorithm.cpp
  * Created Time: 2016-08-14 10:35:26
- * Last modified: 2016-12-30 09:16:12
+ * Last modified: 2017-01-16 11:12:27
  */
 
 #include "malgorithm.hpp"
@@ -37,6 +37,7 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
     }
     cout << "----------- data structure --------------" << endl;
     {
+#if 0
         /* 
          * version C
          * */
@@ -53,16 +54,18 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
                 }
             }
         }
+#endif
     }
     cout << "----------- data structure --------------" << endl;
     {
+#if 0
         /* 
          * version C++
          * */
         DataStructure ds;
 
-        assert(-1 != ret);
-        ret = ds.datastruct_main(argc, argv);
+        ret = ds.datastruct_main(argc, argv); assert(-1 != ret);
+#endif
     }
 
     return ret;
