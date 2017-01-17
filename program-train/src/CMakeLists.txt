@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-05 10:09:44
+# Last modified: 2017-01-05 21:46:54
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -64,7 +64,7 @@ set(SRC_LIST
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
 #   srcs/primer/class_test.cpp
-   srcs/primer/class-enhenced.cpp
+#   srcs/primer/class-enhenced.cpp
 #   srcs/primer/chrono_test.cpp
 #   srcs/primer/exception_test.cpp
 #   srcs/primer/lambda.cpp
@@ -90,14 +90,14 @@ set(SRC_LIST
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp
 #   srcs/db/sqlite/advanced.cpp
-   srcs/algorithm/malgorithm.cpp
+#   srcs/algorithm/malgorithm.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
-   srcs/algorithm/ds/data-structure.cpp
-   srcs/algorithm/ds/data-structure.c
-   srcs/algorithm/ds/linear-list.cpp
-   srcs/algorithm/ds/seq-list.cpp
+#   srcs/algorithm/ds/data-structure.cpp
+#   srcs/algorithm/ds/data-structure.c
+#   srcs/algorithm/ds/linear-list.cpp
+#   srcs/algorithm/ds/seq-list.cpp
 #   srcs/algorithm/ds/graph.cpp
 #   srcs/algorithm/ds/search.cpp
 #   srcs/algorithm/ds/sort.cpp
@@ -116,13 +116,13 @@ set(SRC_LIST
 #   srcs/cases/case001/test/test_main.cpp
 #   srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case002/dic-parser.cpp
-   srcs/cases/case002/formatParsing.cpp
-   srcs/cases/case002/format-parser.cpp
-   srcs/cases/case002/regex_common.cpp
-   srcs/cases/case002/rfileoprt.cpp
-   srcs/cases/case002/rwfileoprt.cpp
-   srcs/cases/case002/stringTools.cpp
+#   srcs/cases/case002/dic-parser.cpp
+#   srcs/cases/case002/formatParsing.cpp
+#   srcs/cases/case002/format-parser.cpp
+#   srcs/cases/case002/regex_common.cpp
+#   srcs/cases/case002/rfileoprt.cpp
+#   srcs/cases/case002/rwfileoprt.cpp
+#   srcs/cases/case002/stringTools.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp

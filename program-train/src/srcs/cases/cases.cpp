@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-01-01 18:21:42
+ * Last modified: 2017-01-05 21:47:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -32,7 +32,7 @@ int Cases::cases_main(int argc, char **argv)
         //test_main();
     }
     {
-#if 1
+#if 0
         DicParser dp;
 
         assert(-1 != ret);

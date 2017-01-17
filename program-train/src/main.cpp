@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2017-01-05 10:07:54
+ * Last modified: 2017-01-05 20:12:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 #endif
     }
     {
-#if 0
+#if 1
         dbCaller dbcaller;
 
         assert(-1 != ret);
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 #endif
     }
     {
-#if 1
+#if 0
         mAlgorithm  malgo;
 
         assert(-1 != ret);
