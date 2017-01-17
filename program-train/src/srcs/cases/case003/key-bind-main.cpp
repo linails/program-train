@@ -1,7 +1,7 @@
 /*
  * Progarm Name: key-bind-main.cpp
  * Created Time: 2017-01-13 17:05:35
- * Last modified: 2017-01-16 17:47:12
+ * Last modified: 2017-01-17 16:39:02
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -49,6 +49,14 @@ int  KeyBind::keybind_main(int argc, char **argv)
         }
     };
 
+    auto select_by_gw = [this](string gw){
+        vector<BindItem_t> vitems;
+
+        this->m_disk->select_bind_items(vitems, gw, 0);
+
+        cout << "select_by_gw size : " << vitems.size() << endl;
+    };
+
     db_print();
 
     ret = this->m_disk->update_bind_items(1, 1); assert(-1 != ret);
@@ -56,6 +64,13 @@ int  KeyBind::keybind_main(int argc, char **argv)
     db_print();
 
     ret = this->m_disk->update_bind_items(1, 0); assert(-1 != ret);
+
+    int maxid = 0;
+    ret = this->m_disk->select_bind_items(maxid);
+    cout << "maxid : " << maxid << endl;
+
+    select_by_gw("gateway ...");
+    select_by_gw("gateway 1...");
 
     return ret;
 }

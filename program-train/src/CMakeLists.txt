@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-16 14:00:19
+# Last modified: 2017-01-17 10:23:08
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -131,6 +131,7 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case003/key-bind-main.cpp
    srcs/cases/case003/disk.cpp
+   srcs/cases/case003/msg.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: key-bind-main.hpp
  * Created Time: 2017-01-13 17:05:40
- * Last modified: 2017-01-16 16:21:31
+ * Last modified: 2017-01-17 10:23:47
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,6 +9,7 @@
 #define _KEY_BIND_MAIN_HPP_
 
 #include "disk.hpp"
+#include "msg.hpp"
 
 class KeyBind{
 public:

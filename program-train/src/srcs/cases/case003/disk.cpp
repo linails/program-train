@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk.cpp
  * Created Time: 2017-01-16 11:12:58
- * Last modified: 2017-01-16 17:46:15
+ * Last modified: 2017-01-17 16:37:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -31,8 +31,10 @@ Disk::Disk()
             this->m_pqxx->prepare("insert-bind-items", "insert into bind_devices(id,name,devid,gateway,status) values($1,$2,$3,$4,$5)");
             this->m_pqxx->prepare("select-bind-items-by-id", "select name,devid,gateway,status from bind_devices where id=$1");
             this->m_pqxx->prepare("select-bind-items-by-name", "select id,devid,gateway,status from bind_devices where name=$1");
+            this->m_pqxx->prepare("select-bind-items-by-gw", "select name,id,devid,status from bind_devices where gateway=$1");
             this->m_pqxx->prepare("delete-bind-items-by-id", "delete from bind_devices where id=$1");
             this->m_pqxx->prepare("update-bind-items-by-id","update bind_devices set status=$1 where id=$2");
+            this->m_pqxx->prepare("select-bind-items-maxid", "select max(id) from bind_devices");
 
 
             /* 
@@ -94,7 +96,7 @@ int  Disk::insert_bind_items(void)
             int    id   = 1;
             string name = "key-bind";
             int devid   = 0x0102;
-            string gw   = "gateway ...";
+            string gw   = "gateway 1...";
             int status  = 0;
 
             w.prepared("insert-bind-items")(id)(name)(devid)(gw)(status).exec();
@@ -153,8 +155,8 @@ int  Disk::select_bind_items(vector<BindItem_t> &v_item, string &name)
         if(0 < r.size()){
             for(auto row = r.begin(); row != r.end(); row++){
                 BindItem_t item;
-                item.id     = row[0].as<int>();
                 item.name   = name;
+                item.id     = row[0].as<int>();
                 item.devid  = row[1].as<int>();
                 item.gateway= row[2].as<string>();
                 item.status = row[3].as<int>();
@@ -163,6 +165,63 @@ int  Disk::select_bind_items(vector<BindItem_t> &v_item, string &name)
             }
         }else{
             cout << "no bind-items where name = " << name << endl;
+        }
+
+    }catch (const std::exception &e){
+        cerr << e.what() << endl;
+        ret = -1;
+    }
+
+    w.commit();
+
+    return ret;
+}
+
+int  Disk::select_bind_items(vector<BindItem_t> &v_item, string &gw, int)
+{
+    int ret = 0;
+
+    pqxx::work w(*this->m_pqxx);
+
+    try{
+        pqxx::result r = w.prepared("select-bind-items-by-gw")(gw).exec();
+        if(0 < r.size()){
+            for(auto row = r.begin(); row != r.end(); row++){
+                BindItem_t item;
+                item.name   = row[0].as<string>();
+                item.id     = row[1].as<int>();
+                item.devid  = row[2].as<int>();
+                item.gateway= gw;
+                item.status = row[3].as<int>();
+
+                v_item.push_back(item);
+            }
+        }else{
+            cout << "no bind-items where gw = " << gw << endl;
+        }
+
+    }catch (const std::exception &e){
+        cerr << e.what() << endl;
+        ret = -1;
+    }
+
+    w.commit();
+
+    return ret;
+}
+
+int  Disk::select_bind_items(int &maxid)
+{
+    int ret = 0;
+
+    pqxx::work w(*this->m_pqxx);
+
+    try{
+        pqxx::result r = w.prepared("select-bind-items-maxid").exec();
+        if(0 < r.size()){
+            maxid = r[0][0].as<int>();
+        }else{
+            cout << "[Error] : no items where max(id)" << endl;
         }
 
     }catch (const std::exception &e){
