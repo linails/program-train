@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-05 21:46:54
+# Last modified: 2017-01-17 20:12:38
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -9,10 +9,12 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/libs
     ${PROJECT_SOURCE_DIR}/src/libs/rapidjson
     ${PROJECT_SOURCE_DIR}/src/libs/cppjieba
+    ${PROJECT_SOURCE_DIR}/src/libs/jsoncpp/src
     ${PROJECT_SOURCE_DIR}/src/libs/cppjieba/limonp
     ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
+    ${PROJECT_SOURCE_DIR}/src/srcs/advanced
     ${PROJECT_SOURCE_DIR}/src/srcs/complex
     ${PROJECT_SOURCE_DIR}/src/srcs/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/boost
@@ -35,6 +37,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case002
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case003
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
@@ -72,6 +75,7 @@ set(SRC_LIST
 #   srcs/primer/overload.cpp
 #   srcs/primer/operator-overload.cpp
 #   srcs/primer/type-traits.cpp
+#   srcs/advanced/advanced.cpp
 #   srcs/complex/
 #   srcs/linux/mlinux.cpp
 #   srcs/linux/network/server-udp.c
@@ -98,11 +102,12 @@ set(SRC_LIST
 #   srcs/algorithm/ds/data-structure.c
 #   srcs/algorithm/ds/linear-list.cpp
 #   srcs/algorithm/ds/seq-list.cpp
+#   srcs/algorithm/ds/mstack.cpp
+#   srcs/algorithm/ds/mqueue.cpp
+#   srcs/algorithm/ds/tree.cpp
 #   srcs/algorithm/ds/graph.cpp
 #   srcs/algorithm/ds/search.cpp
 #   srcs/algorithm/ds/sort.cpp
-#   srcs/algorithm/ds/tree.cpp
-#   srcs/algorithm/ds/mstack.cpp
 #   srcs/sep/sep.cpp
 #####################################################################
    srcs/tools/timer.cpp
@@ -124,7 +129,11 @@ set(SRC_LIST
 #   srcs/cases/case002/rwfileoprt.cpp
 #   srcs/cases/case002/stringTools.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/exlib-cases/case-json/mjson.cpp
+   srcs/cases/case003/key-bind-main.cpp
+   srcs/cases/case003/disk.cpp
+   srcs/cases/case003/msg.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
 )
@@ -141,10 +150,13 @@ endif()
 
 set(link_lib
     ${libs_path}/libsqlite3.a
+    ${libs_path}/libjson.a
     ${libs_path}/lib/libssl.a
     ${libs_path}/lib/libcrypto.a
+    ${libs_path}/lib/libpqxx.a
     pthread
     dl
+    pq
 )
 
 target_link_libraries(program-train ${link_lib})

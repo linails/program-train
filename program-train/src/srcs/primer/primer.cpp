@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2017-01-02 14:46:56
+ * Last modified: 2017-01-17 20:13:26
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -25,6 +25,7 @@
 #include "c-primer.h"
 #include "regex_cpp11.h"
 #include <cassert>
+#include "class-enhenced.hpp"
 
 using std::cout;
 using std::endl;
@@ -103,12 +104,12 @@ int  Primer::primer_main(int argc, char **argv)
 
         regex_cpp11 re;
 
-        assert(-1 != ret);
         if(0 == (ret = re.regex_base())){
             cout << "cpp 11 regex successed !" << endl;
         }else{
             cout << "cpp 11 regex failed !" << endl;
         }
+        assert(-1 != ret);
 
 #endif
     }
@@ -116,9 +117,14 @@ int  Primer::primer_main(int argc, char **argv)
 #if 0
         cout << "---------------------------------------------------------" << endl;
         mLambda mlambda;
-
-        assert(-1 != ret);
-        ret = mlambda.mlambda_main(argc, argv);
+        ret = mlambda.mlambda_main(argc, argv); assert(-1 != ret);
+#endif
+    }
+    {
+#if 0
+        cout << "---------------------------------------------------------" << endl;
+        ClassEnhenced ce;
+        ce.class_enhenced_main(argc, argv); assert(-1 != ret);
 #endif
     }
 

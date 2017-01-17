@@ -1,7 +1,7 @@
 /*
  * Progarm Name: single-list-def.hpp
  * Created Time: 2017-01-03 14:13:51
- * Last modified: 2017-01-05 17:02:14
+ * Last modified: 2017-01-07 10:44:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -46,7 +46,7 @@ using std::endl;
 
 template <typename T>
 struct LinkNode{
-    LinkNode(LinkNode<T> *ptr = NULL):m_link(ptr){m_data = (m_link == NULL ? 0 : ptr->m_data);}
+    LinkNode(LinkNode<T> *ptr = NULL):m_link(ptr){}
     LinkNode(const T &data, LinkNode<T> *ptr = NULL):m_data(data), m_link(ptr){}
     LinkNode(LinkNode<T> &node){ this->m_data = node.m_data; this->m_link = node.m_link;}
     T            m_data;
@@ -58,7 +58,7 @@ class SingleList{
 public:
     SingleList();
     SingleList(const T &data);
-    SingleList(SingleList<T> &list);
+    SingleList(const SingleList<T> &list);
     virtual ~SingleList();
     virtual int  length(void) const;
     virtual int  make_empty(void);
@@ -73,7 +73,7 @@ public:
     virtual int  sort(void);
     virtual int  input(T x);
     virtual void output(void);
-    SingleList<T> &operator=(SingleList<T> &sl);
+    SingleList<T> &operator=(const SingleList<T> &sl);
 protected:
     LinkNode<T> *m_first;
     int  m_flag_first;
@@ -107,7 +107,7 @@ SingleList<T>::SingleList(const T &data)
 }
 
 template<typename T>
-SingleList<T>::SingleList(SingleList<T> &list)
+SingleList<T>::SingleList(const SingleList<T> &list)
 {
     LinkNode<T> *sptr = list.get_head();
     LinkNode<T> *dptr = new LinkNode<T>(sptr);
@@ -115,7 +115,7 @@ SingleList<T>::SingleList(SingleList<T> &list)
         dptr->m_link = NULL;
         this->m_first = dptr;
 
-        while(NULL != sptr->m_link){
+        while(NULL != sptr->m_link && list.get_head() != sptr->m_link){
             T data;
             data = sptr->m_link->m_data;
             dptr->m_link = new LinkNode<T>(data);
@@ -260,15 +260,21 @@ int  SingleList<T>::insert(int i, T& x)
     int ret = 0;
     LinkNode<T> *p = NULL;
 
-    if(NULL != (p = this->locate(i))){
-        LinkNode<T> *np = new LinkNode<T>(x);
-        if(NULL != np){
-            np->m_link = p->m_link;
-            p->m_link  = np;
-        }else
-            cout << "[Error] : LinkNode<T> new failed !" << endl;
-    }else
-        ret = -1;
+    if(0 == this->m_flag_first){
+        if(NULL != (p = this->locate(i))){
+            LinkNode<T> *np = new LinkNode<T>(x);
+            if(NULL != np){
+                np->m_link = p->m_link;
+                p->m_link  = np;
+            }else
+                cout << "[Error] : LinkNode<T> new failed !" << endl;
+        }else{
+            ret = -1;
+        }
+    }else{
+        this->m_first->m_data = x;
+        this->m_flag_first = 0;
+    }
 
     return ret;
 }
@@ -352,7 +358,7 @@ void SingleList<T>::output(void)
 }
 
 template<typename T>
-SingleList<T> &SingleList<T>::operator=(SingleList<T> &sl)
+SingleList<T> &SingleList<T>::operator=(const SingleList<T> &sl)
 {
     /* 
      *  1. 检查自赋值

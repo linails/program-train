@@ -1,13 +1,14 @@
 /*
  * Progarm Name: class-enhenced.cpp
  * Created Time: 2017-01-05 09:00:05
- * Last modified: 2017-01-05 10:04:48
+ * Last modified: 2017-01-07 13:23:29
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "class-enhenced.hpp"
 #include <iostream>
 #include <cassert>
+#include "class-def.hpp"
 
 using std::cout;
 using std::endl;
@@ -25,6 +26,8 @@ int  ClassEnhenced::class_enhenced_main(int argc, char **argv)
     int ret = 0;
 
     ret = this->copy_ctrl(); assert(-1 != ret);
+
+    ret = this->private_mem_use(); assert(-1 != ret);
 
     return ret;
 }
@@ -78,6 +81,22 @@ int  ClassEnhenced::copy_ctrl(void)
      *  2> 在基类的构造函数中运行的虚函数，则是基类自身定义的虚函数     !!!
      * */
     int ret = 0;
+
+    return ret;
+}
+
+int  ClassEnhenced::private_mem_use(void)
+{
+    cout << "---------------------------------------------------------" << endl;
+    int ret = 0;
+
+    cout << "private_mem_use ..." << endl;
+
+    PrivateMemUse pmu(100);
+    cout << "pmu.get_data() : " << pmu.get_data() << endl;
+
+    OnlyHpp oh(200);
+    cout << "oh.get_data() : " << oh.get_data() << endl;
 
     return ret;
 }

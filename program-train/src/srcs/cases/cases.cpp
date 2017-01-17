@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-01-05 21:47:12
+ * Last modified: 2017-01-17 20:11:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,6 +11,7 @@
 #include "dic-parser.hpp"
 #include "exlibCases.hpp"
 #include <cassert>
+#include "key-bind-main.hpp"
 
 using std::cout;
 using std::endl;
@@ -35,15 +36,20 @@ int Cases::cases_main(int argc, char **argv)
 #if 0
         DicParser dp;
 
-        assert(-1 != ret);
-        ret = dp.dicparser_main(argc, argv);
+        ret = dp.dicparser_main(argc, argv); assert(-1 != ret);
 #endif
     }
     {
         exlibCases exlibcases;
 
-        assert(-1 != ret);
-        ret = exlibcases.exlibcases_main(argc, argv);
+        ret = exlibcases.exlibcases_main(argc, argv); assert(-1 != ret);
+    }
+    {
+#if 1
+        KeyBind kbind;
+
+        ret = kbind.keybind_main(argc, argv); assert(-1 != ret);
+#endif
     }
 
     return ret;

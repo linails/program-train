@@ -1,7 +1,7 @@
 /*
  * Progarm Name: seq-list.cpp
  * Created Time: 2016-08-27 08:43:55
- * Last modified: 2017-01-05 17:07:59
+ * Last modified: 2017-01-06 14:16:57
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -200,6 +200,9 @@ int  tSeqList::singlelist(void)
         sl.remove(3, a);
         sl.output();
 
+        sl.remove(4, a);
+        sl.output();
+
         sl.remove(1, a);
         sl.output();
         sl.remove(1, a);
@@ -247,7 +250,7 @@ int  tSeqList::circlelist(void)
 
     cout << "--------------------------------------" << endl;
     {
-        CircList<int> cl(1);
+        CircList<int> cl;
         cout << "cl.length() : " << cl.length() << endl;
         cl.output();
 

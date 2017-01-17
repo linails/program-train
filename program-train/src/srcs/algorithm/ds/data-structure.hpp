@@ -1,7 +1,7 @@
 /*
  * Progarm Name: data-structure.hpp
  * Created Time: 2016-12-30 09:11:35
- * Last modified: 2016-12-30 13:20:07
+ * Last modified: 2017-01-09 14:40:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,10 @@ public:
     int  datastruct_main(int argc, char **argv);
 private:
     int  linearlist(int argc, char **argv);
+    int  stack(void);
+    int  queue(int argc, char **argv);
+    int  mstring(int argc, char **argv);
+    int  tree(int argc, char **argv);
 private:
 };
 
