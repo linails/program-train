@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mjson.cpp
  * Created Time: 2016-12-22 09:00:56
- * Last modified: 2017-01-17 22:02:02
+ * Last modified: 2017-01-18 18:13:40
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,15 +10,27 @@
 #include <cstdio>
 #include <string>
 #include <cassert>
+#include <map>
+#include <tuple>
+#include <vector>
+#include <unordered_map>
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
 
+using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
+using std::map;
+using std::pair;
+using std::tuple;
+using std::make_pair;
+using std::make_tuple;
+using std::vector;
+using std::unordered_map;
 
 using namespace rapidjson;
 
@@ -399,11 +411,24 @@ int  mJson::rapidjson_write(void)
             {"ts",            "2017-1-7"}
         };
 
+        string gw     = "11233332";
+        string name   = "hello--";
+        string status = "online";
+        string method = "0304";
+
+#if 0
+        string input;
+
+        cin >> input;
+
+        gw += input;
+#endif
+
         const char *objs_body[][2] = {
-            {"gateway",       "11233332"},
-            {"name",          "hello--" },
-            {"status",        "online"  },
-            {"method",        "0304"    }
+            {"gateway",       gw.c_str()    },
+            {"name",          name.c_str()  },
+            {"status",        status.c_str()},
+            {"method",        method.c_str()}
         };
 
         cout << "sizeof(objs_head) : " << sizeof(objs_head) << endl;
@@ -435,6 +460,160 @@ int  mJson::rapidjson_write(void)
                         }
                     } writer.EndArray();
                 } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        char buf[20] = {0, };
+
+        sprintf(buf, "%d", 1);
+
+        writer.StartObject();{
+            writer.String("status");
+            writer.String(buf);
+            writer.String("status");
+            writer.Int(1);
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        vector<devUnit_t> vdev_unit;
+        /*                        tuple< 0    1     2         3      > > */
+        typedef map<const char *, tuple<int, int, string, vector<devUnit_t> *> > BodyUnit_t;
+        vector<BodyUnit_t> objs_body;
+
+        unordered_map<int, vector<devUnit_t> > map_vdevunit;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+                dev_unit.insert(make_pair("type",     make_tuple(1, 105 + i, "")));
+                dev_unit.insert(make_pair("zonetype", make_tuple(1, 444 + i, "")));
+                dev_unit.insert(make_pair("clusterid",make_tuple(2, 0, "clusterid json ...")));
+
+                vdev_unit.push_back(dev_unit);
+            }
+
+            map_vdevunit.insert(make_pair(1, vdev_unit));
+
+            BodyUnit_t body_unit;
+
+            body_unit.insert(make_pair("id",      make_tuple(1, 200, "", nullptr)));
+            body_unit.insert(make_pair("name",    make_tuple(2, 0, "group1", nullptr)));
+            body_unit.insert(make_pair("status",  make_tuple(1, 1, "", nullptr)));
+            body_unit.insert(make_pair("devices", make_tuple(3, 0, "", &map_vdevunit[1])));
+
+            objs_body.push_back(body_unit);
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("binds");
+                writer.StartArray();{   // StartArray ---- 1
+                    for(auto &body_unit : objs_body){
+                        writer.StartObject();{
+                            for(auto &unit : body_unit){
+                                writer.String(unit.first);
+                                switch(std::get<0>(unit.second)){
+                                case 1: writer.Int(std::get<1>(unit.second));              break;
+                                case 2: writer.String(std::get<2>(unit.second).c_str());   break;
+                                case 3:
+                                    writer.StartArray();{   // StartArray ---- 2
+                                    for(auto &dev : *std::get<3>(unit.second)){
+                                    writer.StartObject();{
+                                        for(auto &u : dev){
+                                            writer.String(u.first);
+                                            switch(std::get<0>(u.second)){
+                                            case 1: writer.Int(std::get<1>(u.second));            break;
+                                            case 2: writer.String(std::get<2>(u.second).c_str()); break;
+                                            }
+                                        }
+                                    } writer.EndObject();
+                                    }
+                                    } writer.EndArray();    // EndArray ---- 2
+                                    break;
+                                }
+                            }
+                        } writer.EndObject();
+                    }
+                } writer.EndArray(); // EndArray ---- 1
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        #if 0
+        for(auto &u_map : objs_body){
+            writer.String(u_map.first);
+            switch(std::get<0>(u_map.second)){
+                case 1: writer.Int(std::get<1>(u_map.second));              break;
+                case 2: writer.String(std::get<2>(u_map.second).c_str());   break;
+            }
+        }
+        #endif
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+
+    }
+    cout << "---------------------------" << endl;
+    {
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        vector<devUnit_t> objs_body;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+                dev_unit.insert(make_pair("type",     make_tuple(1, 105 + i, "")));
+                dev_unit.insert(make_pair("zonetype", make_tuple(1, 444 + i, "")));
+                dev_unit.insert(make_pair("clusterid",make_tuple(2, 0, "clusterid json ...")));
+
+                objs_body.push_back(dev_unit);
+            }
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("devices");
+                writer.StartArray();{   // StartArray ---- 1
+                    for(auto &body_unit : objs_body){
+                        writer.StartObject();{
+                            for(auto &u : body_unit){
+                                writer.String(u.first);
+                                switch(std::get<0>(u.second)){
+                                case 1: writer.Int(std::get<1>(u.second));            break;
+                                case 2: writer.String(std::get<2>(u.second).c_str()); break;
+                                }
+                            }
+                        } writer.EndObject();
+                    }
+                } writer.EndArray(); // EndArray ---- 1
+            } writer.EndObject();
             }
         }writer.EndObject();
 

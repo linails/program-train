@@ -1,7 +1,7 @@
 /*
  * Progarm Name: msg.hpp
  * Created Time: 2017-01-17 10:22:52
- * Last modified: 2017-01-17 14:39:46
+ * Last modified: 2017-01-18 10:30:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -17,6 +18,7 @@
 
 using std::string;
 using std::vector;
+using std::map;
 using namespace rapidjson;
 
 struct JsonMsg{
@@ -40,7 +42,14 @@ public:
  * bind-devices : 3060 - 3065
  * */
 struct MsgBindDevices{
-    MsgBindDevices(JsonMsg* msg) :msg(msg){}
+    MsgBindDevices(JsonMsg* msg) :msg(msg){
+        m_objs_head.insert(map<const char *, string &>::value_type("method",        msg->m_method));
+        m_objs_head.insert(map<const char *, string &>::value_type("ts",            msg->m_ts));
+        m_objs_head.insert(map<const char *, string &>::value_type("ukey",          msg->m_ukey));
+        m_objs_head.insert(map<const char *, string &>::value_type("platform",      msg->m_platform));
+        m_objs_head.insert(map<const char *, string &>::value_type("proto_version", msg->m_proto_version));
+        m_objs_head.insert(map<const char *, string &>::value_type("session",       msg->m_session));
+    }
     ~MsgBindDevices(){}
     int    format_json_3060(void);
     int    format_json_3061(void);
@@ -55,7 +64,8 @@ struct MsgBindDevices{
     string to_json_3064(void);
     string to_json_3065(void);
 public:
-    JsonMsg* msg = NULL;
+    JsonMsg*                    msg = NULL;
+    map<const char *, string &> m_objs_head;
 };
 
 class Msg{

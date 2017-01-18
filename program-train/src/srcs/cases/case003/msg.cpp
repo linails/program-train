@@ -1,7 +1,7 @@
 /*
  * Progarm Name: msg.cpp
  * Created Time: 2017-01-17 10:22:47
- * Last modified: 2017-01-17 22:05:07
+ * Last modified: 2017-01-18 10:37:07
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -92,46 +92,68 @@ int    MsgBindDevices::format_json_3060(void)
 
 int    MsgBindDevices::format_json_3061(void)
 {
+    int ret = 0;
+    return ret;
 }
 
 int    MsgBindDevices::format_json_3062(void)
 {
+    int ret = 0;
+    return ret;
 }
 
 int    MsgBindDevices::format_json_3063(void)
 {
+    int ret = 0;
+    return ret;
 }
 
 int    MsgBindDevices::format_json_3064(void)
 {
+    int ret = 0;
+    return ret;
 }
 
 int    MsgBindDevices::format_json_3065(void)
 {
+    int ret = 0;
+    return ret;
 }
 
 string MsgBindDevices::to_json_3060(void)
 {
+    string ret;
+    return ret;
 }
 
 string MsgBindDevices::to_json_3061(void)
 {
+    string ret;
+    return ret;
 }
 
 string MsgBindDevices::to_json_3062(void)
 {
+    string ret;
+    return ret;
 }
 
 string MsgBindDevices::to_json_3063(void)
 {
+    string ret;
+    return ret;
 }
 
 string MsgBindDevices::to_json_3064(void)
 {
+    string ret;
+    return ret;
 }
 
 string MsgBindDevices::to_json_3065(void)
 {
+    string ret;
+    return ret;
 }
 
 Msg::Msg()
@@ -144,26 +166,63 @@ Msg::~Msg()
 
 int  Msg::process_3060_msg_v2(JsonMsg *msg) // - bind-devices
 {
+    int ret_code = 0;
+
+    /* 
+     * In msg
+     * */
+    MsgBindDevices *msg_bind_devices = new MsgBindDevices(msg);
+
+    if (0 != (ret_code = msg_bind_devices->format_json_3060())){
+        msg_bind_devices->msg->m_status = ret_code;
+        return ret_code;
+    }
+
+    /* 
+     * Get bind-devices-items
+     * */
+    string session = msg_bind_devices->msg->m_session;
+    {
+    }
+
+    /* 
+     * Out msg
+     * */
+    string ret_msg = msg_bind_devices->to_json_3060();
+
+    cout << "3060 bind-devices : " << session << ":" << ret_msg << endl;
+
+    return ret_code;
 }
 
 int  Msg::process_3061_msg_v2(JsonMsg *msg) // - bind-devices
 {
+    int ret_code = 0;
+    return ret_code;
 }
 
 int  Msg::process_3062_msg_v2(JsonMsg *msg) // - bind-devices
 {
+    int ret_code = 0;
+    return ret_code;
 }
 
 int  Msg::process_3063_msg_v2(JsonMsg *msg) // - bind-devices
 {
+    int ret_code = 0;
+    return ret_code;
 }
 
 int  Msg::process_3064_msg_v2(JsonMsg *msg) // - bind-devices
 {
+    int ret_code = 0;
+    return ret_code;
 }
 
 int  Msg::process_3065_msg_v2(JsonMsg *msg) // - bind-devices
 {
+    int ret_code = 0;
+    return ret_code;
 }
 
 
