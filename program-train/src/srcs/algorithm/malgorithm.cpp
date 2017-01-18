@@ -1,7 +1,7 @@
 /*
  * Progarm Name: malgorithm.cpp
  * Created Time: 2016-08-14 10:35:26
- * Last modified: 2017-01-16 11:12:27
+ * Last modified: 2017-01-18 22:38:57
  */
 
 #include "malgorithm.hpp"
@@ -29,7 +29,7 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
 
     cout << "----------- algorithm_main -----------" << endl;
     {
-        //non_mutating_algo();
+        non_mutating_algo();
 
         //mutating_algo();
 
