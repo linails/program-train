@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2017-01-04 22:22:32
+ * Last modified: 2017-01-19 23:29:47
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -27,16 +27,21 @@ public:
      *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'} : match
      *  pattern 4: {"[a),b),c)]-[a),b),c)]"} : match, 多字符间隔
      *  pattern 5: {"[", string, "]"} : 过滤 [string] 这种结构内容, 完全匹配
+     *  pattern 6: {"[<]-[>], [[]-[]$]"} : match
      * */
     int  filter(const char *pattern2);
     int  filter(const char *pattern2, string &unit);
     int  filter(const char *pattern2, char *unit);
+    int  filter(const char *pattern, string &unit, int mode); // default mode = 0 ; = 1 complete
     int  match(const char *pattern, string &unit, int index=0);
     int  match(const char *pattern, char *unit, int index=0);
     int  match(const char *pattern, vector<string> &units);
+    int  find(const char *pattern, string &unit, size_t &begin, size_t &end); // default mode = 0 ; = 1 complete
     int  print_utf_code(string &s, int mode = 0);   // mode : [0/bin | 1/hex]
     int  print_utf_code(const char *str, int mode = 0);
     int  split_utf_code(vector<string> &result, string s = "");
+    int  utf_count(string &s);
+    int  utf_count(const char *str);
 private:
     int  get_pattern_mode(const char *pattern);
     int  get_subpatterns(const char *pattern);

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-01-04 22:32:14
+ * Last modified: 2017-01-17 22:26:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -238,9 +238,17 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
 
         //cout << "line : " << line << endl;
         cout << "wc.word : " << wc.word << endl;
+        cout << "wc.spel : " << wc.spell << " - " << wc.spell.length();
+
+#if 0
+        for(int i=0; i<wc.spell.length(); i++){
+            unsigned char c = wc.spell[i];
+            printf("%d-%c ", c, c);
+        }
+#endif
+        cout << endl;
+
         for(auto &u : wc.attr){
-            stringTools st;
-            st.filter("[<]-[>]", u);
             cout << "wc.attr : " << u << endl;
         }
 
@@ -256,6 +264,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
 
 
 #if 1
+    #if 0
     timer.timing();
     ret = fo.read_index_line(41779, dline, parser);
     timer.timing();
@@ -267,6 +276,15 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     timer.timing();
     ret = fo.read_index_line(17078, dline, parser);
     timer.timing();
+    #else
+
+    int index = 18000;
+    for(int i=0 + index; i<10 + index; i++){
+        timer.timing();
+        ret = fo.read_index_line(i, dline, parser);
+        timer.timing();
+    }
+    #endif
 #else
 
     timer.timing();

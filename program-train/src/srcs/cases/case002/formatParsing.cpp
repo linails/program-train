@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-01-04 21:50:01
+ * Last modified: 2017-01-17 22:30:10
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,8 @@
 #include "stringTools.h"
 #include <cstring>
 #include <cassert>
+#include "cppjieba/Jieba.hpp"
+#include "cppjieba/KeywordExtractor.hpp"
 
 using std::map;
 using std::cout;
@@ -212,42 +214,42 @@ void formatTool::formatParsing_xhzd(string &s)
 /*format parsing for xiandaihanyucidian*/
 void formatTool::formatParsing_xdhycd(string &s)
 {
+    stringTools st;
+    st.filter("[<]-[>]", s);
 
     /* get wc.word 
      * 1> "^.[^*<\\s]+" */
     regex_common_c0x("^.[^*<\\s]+", s, this->m_wc.word);
 
+    char   buf[512] = {0, };
+    string bref(s, 0, s.find("①"));
+
+    sprintf(buf, "[ *1234567890·%s]", this->m_wc.word.c_str());
+    st.filter(buf, bref);
+    this->m_wc.spell = bref;
+
+    if(1 < st.utf_count(this->m_wc.word)){
+        this->m_wc.spell = string(bref, bref.find("]") + 1, string::npos);
+
+        vector<string> words;
+        jieba.Cut(this->m_wc.spell, words, true);
+        cout << "words : "; for(auto &s : words) cout << s << " / "; cout << endl;
+    }
+
     /* get wc.attr */
     {
-        //size_t size = this->m_wc.word.size();
-
         vector<string> units;
-
-        //regex_common_c0x(">.+?<|>.+?$", s, units);
-        //regex_common_c0x(">.+?<", s, units);
-        //regex_common_c0x("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮].+?[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]", s, units);
-        //cout << "regex : [①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮].+?[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]" << endl;
-
-        #if 1
 
         stringTools st(s);
         st.match("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]", units);
         for(auto &u : units) st.filter("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○1234567890]", u);
         this->m_wc.attr = units;
 
-        #else
-        # if 0
-        stringTools st(s);
-        vector<string> result;
-        st.split_utf_code(result);
-        for(auto &word : result) cout << "word : " << word << endl;
-        # else
-        stringTools st(s);
-        //st.filter("1dioji, [djoi1<>], [123]-[123], [<]-[>]", s);
-        st.filter("[<]-[>]", s);
-        //st.filter("[<]-[>]", s);
-        # endif
-        #endif
+        for(auto &us : units){
+            vector<string> words;
+            jieba.Cut(us, words, true);
+            cout << "word- : "; for(auto &s : words) cout << s << " / "; cout << endl;
+        }
     }
 
 }
@@ -337,6 +339,17 @@ void (formatTool::* formatTool::formatParsingList[])(string &) = {
     &formatTool::formatParsing_xdhycd,
     &formatTool::formatParsing_xhzd
 };
+
+/* 
+ * For jieba dics
+ * */
+const char* const formatTool::DICT_PATH      = "../src/libs/cppjieba/dict/jieba.dict.utf8";
+const char* const formatTool::HMM_PATH       = "../src/libs/cppjieba/dict/hmm_model.utf8";
+const char* const formatTool::USER_DICT_PATH = "../src/libs/cppjieba/dict/user.dict.utf8";
+const char* const formatTool::IDF_PATH       = "../src/libs/cppjieba/dict/idf.utf8";
+const char* const formatTool::STOP_WORD_PATH = "../src/libs/cppjieba/dict/stop_words.utf8";
+
+Jieba formatTool::jieba(formatTool::DICT_PATH, formatTool::HMM_PATH, formatTool::USER_DICT_PATH);
 
 formatTool::formatTool(std::string fname,std::string line)
     :m_fname(&fname[fname.rfind('/') + 1])

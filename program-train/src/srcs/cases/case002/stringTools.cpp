@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2017-01-04 21:34:47
+ * Last modified: 2017-01-19 23:30:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <cassert>
 #include <list>
+#include "mstring.hpp"
 
 using std::cout;
 using std::endl;
@@ -207,6 +208,21 @@ int stringTools::filter(const char *pattern2, std::string &unit)
                 break;
         }
 
+    }
+
+    return ret;
+}
+
+/* 
+ *  
+ * */
+int  stringTools::filter(const char *pattern, string &unit, int mode) // default mode = 0 ; = 1 complete
+{
+    int ret = 0;
+
+    if(0 == mode){ // pattern2
+        ret = this->filter(pattern, unit);
+    }else{         // pattern 5: {"[", string, "]"} : 过滤 [string] 这种结构内容, 完全匹配
     }
 
     return ret;
@@ -410,19 +426,32 @@ int stringTools::match(const char *pattern, vector<string> &units)
     };
 
     switch(mode){
-        case 1:
+        case 1 :
             cout << "mode : " << mode << endl;
             break;
-        case 2:
+        case 2 :
             cout << "mode : " << mode << endl;
             break;
-        case 3 :
+        case 3 : //pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'} : match
             match_mode3(pattern, units);
+            break;
+        case 4 : //pattern 4: {"[a),b),c)]-[a),b),c)]"} : match, 多字符间隔
+            cout << "mode : " << mode << endl;
+            break;
+        case 6 : //pattern 6: {"[<]-[>], [[]-[]$]"} : match
+            cout << "mode : " << mode << endl;
             break;
         default:
             cout << "mode : " << mode << endl;
             break;
     }
+
+    return ret;
+}
+
+int  stringTools::find(const char *pattern, string &unit, size_t &begin, size_t &end) // default mode = 0 ; = 1 complete
+{
+    int ret = 0;
 
     return ret;
 }
@@ -495,6 +524,21 @@ int  stringTools::split_utf_code(vector<string> &result, string s)
     }
 
     return ret;
+}
+
+int  stringTools::utf_count(string &s)
+{
+    vector<string> result;
+
+    this->split_utf_code(result, s);
+
+    return result.size();
+}
+
+int  stringTools::utf_count(const char *str)
+{
+    string s(str);
+    return this->utf_count(s);
 }
 
 /*success return pattern mode >= 0

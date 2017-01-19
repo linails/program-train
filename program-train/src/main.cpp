@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2017-01-07 13:27:01
+ * Last modified: 2017-01-11 10:33:32
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 #endif
     }
     {
-#if 0
+#if 1
         Cases cases;
 
         assert(-1 != ret);
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 #endif
     }
     {
-#if 1
+#if 0
         mAlgorithm  malgo;
 
         assert(-1 != ret);

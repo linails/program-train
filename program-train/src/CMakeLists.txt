@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-01-06 16:49:43
+# Last modified: 2017-01-11 10:34:39
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -90,16 +90,16 @@ set(SRC_LIST
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp
 #   srcs/db/sqlite/advanced.cpp
-   srcs/algorithm/malgorithm.cpp
+#   srcs/algorithm/malgorithm.cpp
 #   srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
-   srcs/algorithm/ds/data-structure.cpp
-   srcs/algorithm/ds/data-structure.c
-   srcs/algorithm/ds/linear-list.cpp
-   srcs/algorithm/ds/seq-list.cpp
-   srcs/algorithm/ds/mstack.cpp
-   srcs/algorithm/ds/mqueue.cpp
+#   srcs/algorithm/ds/data-structure.cpp
+#   srcs/algorithm/ds/data-structure.c
+#   srcs/algorithm/ds/linear-list.cpp
+#   srcs/algorithm/ds/seq-list.cpp
+#   srcs/algorithm/ds/mstack.cpp
+#   srcs/algorithm/ds/mqueue.cpp
 #   srcs/algorithm/ds/graph.cpp
 #   srcs/algorithm/ds/search.cpp
 #   srcs/algorithm/ds/sort.cpp
