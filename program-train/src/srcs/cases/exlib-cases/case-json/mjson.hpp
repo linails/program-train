@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mjson.hpp
  * Created Time: 2016-12-22 09:01:01
- * Last modified: 2017-01-14 17:35:35
+ * Last modified: 2017-01-19 20:26:02
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -18,6 +18,7 @@ private:
     int  json_cppjson(void);
     int  rapidjson_read(void);
     int  rapidjson_write(void);
+    int  rapidjson_advanced(void);
 };
 
 #endif //_MJSON_HPP_

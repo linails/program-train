@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mjson.cpp
  * Created Time: 2016-12-22 09:00:56
- * Last modified: 2017-01-19 17:24:45
+ * Last modified: 2017-01-19 22:02:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -238,6 +238,8 @@ int  mJson::json_rapidjson(void)
     ret = this->rapidjson_read(); assert(-1 != ret);
 
     ret = this->rapidjson_write(); assert(-1 != ret);
+
+    ret = this->rapidjson_advanced(); assert(-1 != ret);
 
     return ret;
 }
@@ -814,7 +816,7 @@ int  mJson::rapidjson_write(void)
 
                 dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
                 dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
-                dev_unit.insert(make_pair("command",  make_tuple(2, 0, "on"))); // 错误写法
+                dev_unit.insert(make_pair("command",  make_tuple(2, 0, "on")));
 
                 objs_body = dev_unit;
             }
@@ -854,6 +856,67 @@ int  mJson::rapidjson_write(void)
         }writer.EndObject();
 
         cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+
+    return ret;
+}
+
+int  mJson::rapidjson_advanced(void)
+{
+    int ret = 0;
+    {
+        #define     INT     1
+        #define     STR     2
+        #define     OBJ     3
+
+        /* 
+         * { int / string / obj }union
+         * */
+        typedef union{
+            int         data_i;
+            char       *data_c;
+            const char *data_cc;
+            void       *data_o;
+        }iso_u;
+
+        typedef struct{
+            int     type;
+            iso_u   data;
+            //void   *pd;
+        }Second_t;
+
+        typedef map<string, tuple<int, iso_u> > devUnit_t;
+
+        cout << "sizeof(iso_u) : " << sizeof(iso_u) << endl;
+
+        iso_u iso = {10};
+        cout << "iso.data_i : " << iso.data_i << endl;
+
+
+        //Second_t s = {10, .data = {.data_i = 10}};
+
+        map<int, iso_u> mii;
+
+        iso = {.data_i = 10}; mii.insert(make_pair(1, iso));
+
+        vector<devUnit_t> objs_body;
+        {
+            for(int i=0; i<5; i++){
+#if 1
+                iso_u iso;
+                devUnit_t dev_unit;
+
+                iso.data_i  = 10 + i ;              dev_unit.insert(make_pair("id",       make_tuple(INT, iso)));
+                iso.data_cc = "gateway ...";        dev_unit.insert(make_pair("gateway",  make_tuple(STR, iso)));
+                iso.data_i  = 105 + i;              dev_unit.insert(make_pair("type",     make_tuple(INT, iso)));
+                iso.data_i  = 444 + i;              dev_unit.insert(make_pair("zonetype", make_tuple(INT, iso)));
+                iso.data_cc = "clusterid json ..."; dev_unit.insert(make_pair("clusterid",make_tuple(STR, iso)));
+
+                objs_body.push_back(dev_unit);
+#endif
+            }
+        }
     }
     cout << "---------------------------" << endl;
 

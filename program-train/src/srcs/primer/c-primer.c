@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-01-03 22:06:38
+ * Last modified: 2017-01-19 21:32:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -59,6 +59,23 @@ int  cprimer_main(void *cthis, int argc, char **argv)
 static
 int  other_test(void)
 {
+    printf(" --- other-test ---\n");
+
+    typedef union {
+        int     a;
+        char    b[5];
+    }iso_u;
+
+    printf("sizeof(iso_u) : %d\n", (int)sizeof(iso_u));
+
+    /* 
+     * Note : union 虽然不常直接定义变量，不过直接定义变量的时候，初始化只能初始化第一个成员的类型
+     * */
+    iso_u iso = {8};
+
+    printf("iso.a = %d\n", iso.a);
+
+    printf("\n");
     return 0;
 }
 
