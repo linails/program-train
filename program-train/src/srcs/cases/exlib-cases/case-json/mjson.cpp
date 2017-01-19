@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mjson.cpp
  * Created Time: 2016-12-22 09:00:56
- * Last modified: 2017-01-18 18:13:40
+ * Last modified: 2017-01-19 17:24:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,7 @@
 #include <tuple>
 #include <vector>
 #include <unordered_map>
+#include <list>
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -31,6 +32,7 @@ using std::make_pair;
 using std::make_tuple;
 using std::vector;
 using std::unordered_map;
+using std::list;
 
 using namespace rapidjson;
 
@@ -613,6 +615,240 @@ int  mJson::rapidjson_write(void)
                         } writer.EndObject();
                     }
                 } writer.EndArray(); // EndArray ---- 1
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        vector<devUnit_t> objs_body;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+
+                objs_body.push_back(dev_unit);
+            }
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("name");
+                writer.String("bind-group - 01");
+                writer.String("devices");
+                writer.StartArray();{   // StartArray ---- 1
+                    for(auto &body_unit : objs_body){
+                        writer.StartObject();{
+                            for(auto &u : body_unit){
+                                writer.String(u.first);
+                                switch(std::get<0>(u.second)){
+                                case 1: writer.Int(std::get<1>(u.second));            break;
+                                case 2: writer.String(std::get<2>(u.second).c_str()); break;
+                                }
+                            }
+                        } writer.EndObject();
+                    }
+                } writer.EndArray(); // EndArray ---- 1
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+
+        const char *json = buffer.GetString();
+        cout << " ---------- parser ----------" << endl;
+        {
+            typedef map<string , list<tuple<int, string> > > BindDeviceSet_t;
+
+            BindDeviceSet_t     binddev_set;
+
+            Document doc;
+            doc.Parse(json);
+
+            cout << "json : " << json << endl;
+
+            if(doc.HasMember("body") && doc["body"].IsObject()){ // if - 1
+                string name;
+                list<tuple<int, string> > binddev_list;
+
+                Value &body = doc["body"];
+
+                if(body.HasMember("name") && body["name"].IsString()){
+                    name = body["name"].GetString();
+                    cout << "name : " << name << endl;
+
+                    if(body.HasMember("devices") && body["devices"].IsArray()){
+                        Value &devices = body["devices"];
+                        for(auto &dev : devices.GetArray()){
+                            if(dev.HasMember("id") && dev["id"].IsInt() &&
+                               dev.HasMember("gateway") && dev["gateway"].IsString()){
+                                binddev_list.push_back(make_tuple(dev["id"].GetInt(), 
+                                                                  dev["gateway"].GetString()));
+                            }
+                        }
+                    }
+                }
+
+                cout << "binddev_list.size() : " << binddev_list.size() << endl;
+
+                binddev_set[name] = binddev_list;
+
+                cout << "binddev_set.size() : " << binddev_set.size() << endl;
+            } // end if - 1
+
+            //-------------------------
+
+            cout << "binddev_set.size() : " << binddev_set.size() << endl;
+
+            string bind_name;
+            for(auto itr = binddev_set.begin();
+                     itr!= binddev_set.end(); itr++){
+                bind_name = itr->first;
+                cout << "itr->first : " << itr->first << endl;
+                cout << "itr->second.size() : " << itr->second.size() << endl;
+
+                for(auto &dev : itr->second){
+                    cout << "gateway - id : " << std::get<0>(dev) << " - " << std::get<1>(dev) << endl;
+                }
+            }
+            cout << endl;
+
+            cout << "bind_name : " << bind_name << endl;
+
+            const char *pn = "bind-group - 01";
+            list<tuple<int, string> > &devices = binddev_set[pn];
+            cout << "binddev_set[bind_name.c_str()].size() : " << devices.size() << endl;
+            cout << "binddev_set[bind_name].size() : " << binddev_set[bind_name].size() << endl;
+        }
+    }
+    cout << "---------------------------" << endl;
+    {
+        //"command":{"onoff":1}
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        devUnit_t objs_body;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+
+                objs_body = dev_unit;
+            }
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("device");
+                writer.StartObject();{
+                    for(auto &u : objs_body){
+                        writer.String(u.first);
+                        switch(std::get<0>(u.second)){
+                        case 1: writer.Int(std::get<1>(u.second));            break;
+                        case 2: writer.String(std::get<2>(u.second).c_str()); break;
+                        }
+                    }
+                } writer.EndObject();
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        map<const char *, int> mi;
+
+        mi.insert(make_pair("cmd", 1));
+        mi.insert(make_pair("hello", 2));
+
+        cout << "mi : " << endl;
+        for(auto &u : mi){
+            cout << "u : " << u.first << " - " << u.second << endl;
+        }
+        cout << endl;
+
+        cout << "mi[cmd] : " << mi["cmd"] << endl;
+
+        map<const char *, tuple<int, string> > mii;
+        mii.insert(make_pair("cmd", make_tuple(1, "nice")));
+        mii.insert(make_pair("hello", make_tuple(2, "go")));
+
+        cout << "mii.size() : " << mii.size() << endl;
+        for(auto &u : mii){
+            cout << "u : " << u.first << " - " << std::get<0>(u.second) << " - " << std::get<1>(u.second) << endl;
+        }
+        cout << endl;
+
+        cout << "get<0>(mii[cmd]) : " << std::get<0>(mii["cmd"]) << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        //"command":{"onoff":1}
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        devUnit_t objs_body;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+                dev_unit.insert(make_pair("command",  make_tuple(2, 0, "on"))); // 错误写法
+
+                objs_body = dev_unit;
+            }
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("device");
+                writer.StartObject();{
+                    for(auto &u : objs_body){
+                        writer.String(u.first);
+                        switch(std::get<0>(u.second)){
+                        case 1: writer.Int(std::get<1>(u.second));            break;
+                        case 2: 
+                            if(string(u.first) != "command"){
+                                writer.String(std::get<2>(u.second).c_str()); 
+                            }else{
+                                writer.StartObject();{
+                                    writer.String("onoff");
+                                    if(std::get<2>(u.second) == "on")
+                                        writer.Int(1);
+                                    else
+                                        writer.Int(0);
+                                } writer.EndObject();
+                            }
+                            break;
+                        }
+                    }
+                } writer.EndObject();
             } writer.EndObject();
             }
         }writer.EndObject();
