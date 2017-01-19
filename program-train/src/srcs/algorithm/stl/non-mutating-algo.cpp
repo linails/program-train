@@ -1,7 +1,7 @@
 /*
  * Progarm Name: non-mutating-algo.cpp
  * Created Time: 2016-08-14 10:33:17
- * Last modified: 2016-12-18 21:43:46
+ * Last modified: 2017-01-18 22:47:00
  */
 
 #include "non-mutating-algo.h"
@@ -122,6 +122,40 @@ void non_mutating_algo(void)
             cout << "find : " << iter->id << " - " << iter->s << endl;
         }
 
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        int index[] = {0, 1, 2, 3, 4, 5, 6, 7};
+        vector<int> v;
+        v.push_back(1);
+        v.push_back(3);
+        v.push_back(5);
+        v.push_back(2);
+        v.push_back(7);
+
+        for(auto id : index){
+            cout << "id : " << id << endl;
+
+            /* 
+             * find_i 定义在内部，对 id 进行引用捕获
+             * */
+            auto find_i = [&id](int i){
+                if(id == i){
+                    return 1; // find it
+                }else{
+                    return 0;
+                }
+            };
+
+            auto iter = find_if(v.begin(), v.end(), find_i);
+
+            if(iter == v.end()){
+                cout << "find nothing !" << endl;
+            }else{
+                cout << "find : " << *iter << endl;
+            }
+
+        }
     }
     cout << "-----------------------------------------" << endl;
     {

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: data-structure.cpp
  * Created Time: 2016-12-30 09:12:14
- * Last modified: 2017-01-09 13:25:27
+ * Last modified: 2017-01-09 14:39:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,7 @@
 #include "mstack.hpp"
 #include "mqueue.hpp"
 #include "mstring.hpp"
+#include "tree.hpp"
 
 using std::cout;
 using std::endl;
@@ -36,6 +37,8 @@ int  DataStructure::datastruct_main(int argc, char **argv)
     ret = this->queue(argc, argv); assert(-1 != ret);
 
     ret = this->mstring(argc, argv); assert(-1 != ret);
+
+    ret = this->tree(argc, argv); assert(-1 != ret);
 
     return ret;
 }
@@ -144,6 +147,20 @@ int  DataStructure::mstring(int argc, char **argv)
         cout << "sizeof(long)   : " << sizeof(long) << endl;
         cout << "sizeof(long long) : " << sizeof(long long) << endl;
    }
+
+    return ret;
+}
+
+int  DataStructure::tree(int argc, char **argv)
+{
+    int ret = 0;
+
+    cout << "--------------------------------------" << endl;
+    {
+        tTree tt;
+
+        ret = tt.tree_main(argc, argv); assert(-1 != ret);
+    }
 
     return ret;
 }

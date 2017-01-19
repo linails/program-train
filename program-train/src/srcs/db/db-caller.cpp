@@ -1,7 +1,7 @@
 /*
  * Progarm Name: db-caller.cpp
  * Created Time: 2016-12-20 17:32:32
- * Last modified: 2016-12-20 17:42:09
+ * Last modified: 2017-01-05 22:30:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -53,15 +53,19 @@ int  dbCaller::sqlite_normal(int argc, char **argv)
     cout << "path : " << path << endl;
 
     NormalDB ndb(path, "first.db");
-    ndb.generic_insert();
+    //ndb.generic_insert();
 
-    ndb.bulk_insert();
+    //ndb.bulk_insert();
 
-    ndb.get_schema();
+    //ndb.get_schema();
 
+#if 0
     if(-1 == ndb.query()){
         cout << "ndb.query() failed " << endl;
     }
+#endif
+
+    ndb.query(0);
 
     return ret;
 }

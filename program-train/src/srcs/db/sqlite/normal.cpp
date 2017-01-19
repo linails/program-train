@@ -1,7 +1,7 @@
 /*
  * Progarm Name: normal.cpp
  * Created Time: 2016-11-23 21:53:09
- * Last modified: 2016-11-28 21:07:06
+ * Last modified: 2017-01-05 22:34:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -92,7 +92,7 @@ int NormalDB::generic_insert(void)
 {
     /*5.构建插入数据的sqlite3_stmt对象*/
     int insertCount = 10;
-    char sql[1024];
+    char sql[1024] = {0, };
     string insertSQL = "insert into testtable values(%d,%f,'%s')";
     string testString = "this is a test.";
     sqlite3_stmt *stmt2 = NULL;
@@ -111,8 +111,13 @@ int NormalDB::generic_insert(void)
             return -1;
         }
         cout << "Insert success" << endl;
+
+        /* 
+         * release each time
+         * */
+        sqlite3_finalize(stmt2);
+        stmt2 = NULL;
     }
-    sqlite3_finalize(stmt2);
 
     return 0;
 }
@@ -332,6 +337,72 @@ int NormalDB::query(void)
     sqlite3_finalize(stmt3);
 
     return 0;
+}
+
+int NormalDB::query(int)
+{
+    int ret = 0;
+
+    cout << "5. .." << endl;
+    sqlite3_stmt *stmt2 = NULL;
+    string insertSQL    = "insert into testtable values(20,21.0,'this is a test.')";
+
+    if(sqlite3_prepare_v2(this->m_conn, insertSQL.c_str(), insertSQL.size(), &stmt2, NULL) != SQLITE_OK){
+        if(NULL != stmt2)
+            sqlite3_finalize(stmt2);
+        sqlite3_close(this->m_conn);
+        return -1;
+    }
+
+    if(sqlite3_step(stmt2) != SQLITE_DONE){
+        sqlite3_finalize(stmt2);
+        sqlite3_close(this->m_conn);
+        return -1;
+    }
+
+    cout << "success to insert test data." << endl;
+    sqlite3_finalize(stmt2);
+
+
+    cout << "6 ..." << endl;
+    const char *sql_query = "select * from testtable";
+    sqlite3_stmt *stmt3   = NULL;
+
+    if(SQLITE_OK != sqlite3_prepare_v2(this->m_conn, sql_query, strlen(sql_query), &stmt3, NULL)){
+        sqlite3_finalize(stmt3);
+        sqlite3_close(this->m_conn);
+        return -1;
+    }
+
+    int col_cnt = sqlite3_column_count(stmt3); cout << "col_cnt : " << col_cnt << endl;
+    while(1){
+        int r = sqlite3_step(stmt3);
+
+        if(SQLITE_DONE == r) break;
+        if(SQLITE_ROW != r)  break;
+
+        for(int i=0; i<col_cnt; i++){
+            int col_type = sqlite3_column_type(stmt3, i); cout << "col_type : " << col_type << endl;
+            switch(col_type){
+                case SQLITE_INTEGER:
+                    cout << "int value" << endl;
+                    break;
+                case SQLITE_FLOAT:
+                    cout << "float value " << endl;
+                    break;
+                case SQLITE_TEXT:
+                    cout << "text value" << endl;
+                    break;
+                case SQLITE_NULL:
+                    cout << "null value" << endl;
+                    break;
+            }
+        }
+    }
+
+    sqlite3_finalize(stmt3);
+
+    return ret;
 }
 
 /*strlwr --> for linux*/

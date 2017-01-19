@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mjson.cpp
  * Created Time: 2016-12-22 09:00:56
- * Last modified: 2016-12-22 14:33:03
+ * Last modified: 2017-01-19 17:24:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,15 +9,30 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
+#include <cassert>
+#include <map>
+#include <tuple>
+#include <vector>
+#include <unordered_map>
+#include <list>
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
 
+using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
+using std::map;
+using std::pair;
+using std::tuple;
+using std::make_pair;
+using std::make_tuple;
+using std::vector;
+using std::unordered_map;
+using std::list;
 
 using namespace rapidjson;
 
@@ -40,6 +55,9 @@ int  mJson::mjson_main(int argc, char **argv)
     return ret;
 }
 
+/* 
+ * rapidjson.org/zh-ch/md_doc_tutorial_8zh-cn.html
+ * */
 int  mJson::json_rapidjson(void)
 {
     int ret = 0;
@@ -217,12 +235,627 @@ int  mJson::json_rapidjson(void)
         cout << s << endl;
     }
 
+    ret = this->rapidjson_read(); assert(-1 != ret);
+
+    ret = this->rapidjson_write(); assert(-1 != ret);
+
     return ret;
 }
 
 int  mJson::json_cppjson(void)
 {
     int ret = 0;
+
+    return ret;
+}
+
+int  mJson::rapidjson_read(void)
+{
+    int ret = 0;
+
+    cout << "---------------------------" << endl;
+    {
+        const char *json = "{\"hello\":\"world\","
+                           "\"t\": true,"
+                           "\"f\": false,"
+                           "\"n\": null,"
+                           "\"i\": 123,"
+                           "\"pi\": 3.1455,"
+                           "\"a\":[1,2,3,4]}";
+
+        Document doc;
+        doc.Parse(json);
+
+        cout << "json : " << json << endl << endl;
+
+        if(true == doc.IsObject()) cout << "doc.isObject() : true" << endl;
+        else                       cout << "doc.isObject() : false" << endl;
+
+        if(true == doc.HasMember("hello")) cout << "doc.HasMember() : true" << endl;
+        else                               cout << "doc.HasMember() : false" << endl;
+
+        if(true == doc["hello"].IsString()){
+            cout << "doc[hello].IsString() : true" << endl;
+            cout << "doc[hello].GetString() : " << doc["hello"].GetString() << endl;
+        }else                                cout << "doc[hello].IsString() : false" << endl;
+
+        cout << "----------" << endl;
+
+        if(true == doc["t"].IsBool()){
+            cout << "doc[t].IsBool() : true" << endl;
+            cout << "doc[t] = " << doc["t"].GetBool() << endl;
+        }else
+            cout << "doc[t].IsBool() : false" << endl;
+
+        cout << "----------" << endl;
+
+        if(true == doc["n"].IsNull())   cout << "doc[n].IsNull() : true" << endl;
+        else                            cout << "doc[n].IsNull() : false" << endl;
+
+        cout << "----------" << endl;
+
+        if(true == doc["i"].IsNumber()){
+            cout << "doc[i].IsNumber() : true" << endl;
+            cout << "doc[i].GetInt() : " << doc["i"].GetInt() << endl;
+        }else
+            cout << "doc[i].IsNumber() : false" << endl;
+
+        cout << "----------" << endl;
+
+        if(true == doc["pi"].IsDouble()){
+            cout << "doc[pi].IsDouble() : true" << endl;
+            cout << "doc[pi].GetDouble() : " << doc["pi"].GetDouble() << endl;
+        }else
+            cout << "doc[pi].IsDouble() : false" << endl;
+
+        cout << "----------" << endl;
+
+        /*
+         * rapidjson 的 Array 是与 vector 类似，可以使用索引，也可以使用迭代器
+         * */
+        const Value &a = doc["a"];
+        if(true == doc["a"].IsArray()){
+            cout << "doc[a].IsArray() : true" << endl;
+
+            /* 
+             * SizeType 在缺省情况下是 unsigned
+             * */
+            for(SizeType i=0; i<a.Size(); i++){
+                printf("a[%d] = %d\n", i, a[i].GetInt());
+            }
+
+            for(auto &v : a.GetArray()){
+                printf("a[] = %d\n", v.GetInt());
+            }
+
+            /*
+             * using iterator
+             * */
+            for(auto itr = a.Begin();
+                     itr!= a.End(); itr++){
+                cout << "itr = " << itr->GetInt() << endl;
+            }
+        }else
+            cout << "doc[a].IsArray() : false" << endl;
+
+        cout << "----------" << endl;
+
+        /*
+         * 和 Array 相似，可以使用迭代器进行访问所有的 Object 成员
+         * */
+        const char *kTypeNames[] = {"Null", "False", "True", "Object", "Array", "String", "Number"};
+
+        cout << "kTypeNames[] : "; for(auto str : kTypeNames) cout << str << " "; cout << endl;
+
+        for(auto itr = doc.MemberBegin();
+                 itr!= doc.MemberEnd(); itr++){
+            cout << itr->name.GetString() << " - " << kTypeNames[itr->value.GetType()];
+            cout << " - itr->value.GetType() : " << itr->value.GetType() << endl;
+        }
+
+        cout << "----------" << endl;
+
+        /*
+         * 1. 在不确定一个成员是否存在时，则需要在调用 operator[](const cahr *) 前先调用 HasMember()
+         * 2. 在更优的情况下，是调用 FindMember() ，这样不需要进行两次查找
+         * */
+        auto itr = doc.FindMember("hello");
+        if(itr != doc.MemberEnd()) cout << "itr->value.GetString() : " << itr->value.GetString() << endl;
+
+    }
+
+    return ret;
+}
+
+int  mJson::rapidjson_write(void)
+{
+    int ret = 0;
+
+    /* 
+     * 有多种方法去创建值，当一个 DOM 树被创建或修改后，可以使用 Writer 再次存储为 JSON
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 当使用默认的构造函数创建一个 Value / Document，它的类型便会是 Null，要修改的时候，可以直接赋值，或使用
+     *  Setxxx() 进行操作
+     *
+     *  Document doc;   // NULL
+     *  doc.SetObject(); 
+     *
+     *  Value v; // NULL
+     *  v.SetInt(10); / v = 10;
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     * 几个类型都有重载构造函数 : 
+     *  Value b(true);  // Value(bool)
+     *  Value i(-123);  // Value(int)
+     *  Value u(123u);  // Value(unsigned)
+     *  Value d(1.2);   // Value(double)
+     *
+     * 要创建空的 Object/Array ,可以在默认构造函数后面直接使用 Value(Type) : 
+     *  Value o(kObjectType);
+     *  Value a(kArrayType);
+     * */
+    cout << "---------------------------" << endl;
+    {
+        cout << " write array ..." << endl;
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        const char *objs_head[][2] = {
+            {"proto_version", "v0.1"    },
+            {"status",        "1"       },
+            {"ukey",          "uonneoiu"},
+            {"session",       "JDOIJGOI"},
+            {"method",        "0102"    },
+            {"ts",            "2017-1-7"}
+        };
+
+        string gw     = "11233332";
+        string name   = "hello--";
+        string status = "online";
+        string method = "0304";
+
+#if 0
+        string input;
+
+        cin >> input;
+
+        gw += input;
+#endif
+
+        const char *objs_body[][2] = {
+            {"gateway",       gw.c_str()    },
+            {"name",          name.c_str()  },
+            {"status",        status.c_str()},
+            {"method",        method.c_str()}
+        };
+
+        cout << "sizeof(objs_head) : " << sizeof(objs_head) << endl;
+        cout << "sizeof(objs_head[0]) : " << sizeof(objs_head[0]) << endl;
+
+        writer.StartObject();{
+            /* head */
+            writer.String("head");{
+                writer.StartObject();{
+                    for(size_t i=0; i<sizeof(objs_head)/sizeof(objs_head[0]); i++){
+                        writer.String(objs_head[i][0]);
+                        writer.String(objs_head[i][1]);
+                    }
+                } writer.EndObject();
+            }
+            /* body */
+            writer.String("body");{
+                writer.StartObject();{
+                    writer.String("session"); writer.String("xxxxx");
+                    writer.String("gateways");
+                    writer.StartArray();{
+                        for(int i=0; i<4; i++){
+                            writer.StartObject();{
+                                for(size_t j=0; j<sizeof(objs_body)/sizeof(objs_body[0]); j++){
+                                    writer.String(objs_body[j][0]);
+                                    writer.String(objs_body[j][1]);
+                                }
+                            } writer.EndObject();
+                        }
+                    } writer.EndArray();
+                } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        char buf[20] = {0, };
+
+        sprintf(buf, "%d", 1);
+
+        writer.StartObject();{
+            writer.String("status");
+            writer.String(buf);
+            writer.String("status");
+            writer.Int(1);
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        vector<devUnit_t> vdev_unit;
+        /*                        tuple< 0    1     2         3      > > */
+        typedef map<const char *, tuple<int, int, string, vector<devUnit_t> *> > BodyUnit_t;
+        vector<BodyUnit_t> objs_body;
+
+        unordered_map<int, vector<devUnit_t> > map_vdevunit;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+                dev_unit.insert(make_pair("type",     make_tuple(1, 105 + i, "")));
+                dev_unit.insert(make_pair("zonetype", make_tuple(1, 444 + i, "")));
+                dev_unit.insert(make_pair("clusterid",make_tuple(2, 0, "clusterid json ...")));
+
+                vdev_unit.push_back(dev_unit);
+            }
+
+            map_vdevunit.insert(make_pair(1, vdev_unit));
+
+            BodyUnit_t body_unit;
+
+            body_unit.insert(make_pair("id",      make_tuple(1, 200, "", nullptr)));
+            body_unit.insert(make_pair("name",    make_tuple(2, 0, "group1", nullptr)));
+            body_unit.insert(make_pair("status",  make_tuple(1, 1, "", nullptr)));
+            body_unit.insert(make_pair("devices", make_tuple(3, 0, "", &map_vdevunit[1])));
+
+            objs_body.push_back(body_unit);
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("binds");
+                writer.StartArray();{   // StartArray ---- 1
+                    for(auto &body_unit : objs_body){
+                        writer.StartObject();{
+                            for(auto &unit : body_unit){
+                                writer.String(unit.first);
+                                switch(std::get<0>(unit.second)){
+                                case 1: writer.Int(std::get<1>(unit.second));              break;
+                                case 2: writer.String(std::get<2>(unit.second).c_str());   break;
+                                case 3:
+                                    writer.StartArray();{   // StartArray ---- 2
+                                    for(auto &dev : *std::get<3>(unit.second)){
+                                    writer.StartObject();{
+                                        for(auto &u : dev){
+                                            writer.String(u.first);
+                                            switch(std::get<0>(u.second)){
+                                            case 1: writer.Int(std::get<1>(u.second));            break;
+                                            case 2: writer.String(std::get<2>(u.second).c_str()); break;
+                                            }
+                                        }
+                                    } writer.EndObject();
+                                    }
+                                    } writer.EndArray();    // EndArray ---- 2
+                                    break;
+                                }
+                            }
+                        } writer.EndObject();
+                    }
+                } writer.EndArray(); // EndArray ---- 1
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        #if 0
+        for(auto &u_map : objs_body){
+            writer.String(u_map.first);
+            switch(std::get<0>(u_map.second)){
+                case 1: writer.Int(std::get<1>(u_map.second));              break;
+                case 2: writer.String(std::get<2>(u_map.second).c_str());   break;
+            }
+        }
+        #endif
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+
+    }
+    cout << "---------------------------" << endl;
+    {
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        vector<devUnit_t> objs_body;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+                dev_unit.insert(make_pair("type",     make_tuple(1, 105 + i, "")));
+                dev_unit.insert(make_pair("zonetype", make_tuple(1, 444 + i, "")));
+                dev_unit.insert(make_pair("clusterid",make_tuple(2, 0, "clusterid json ...")));
+
+                objs_body.push_back(dev_unit);
+            }
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("devices");
+                writer.StartArray();{   // StartArray ---- 1
+                    for(auto &body_unit : objs_body){
+                        writer.StartObject();{
+                            for(auto &u : body_unit){
+                                writer.String(u.first);
+                                switch(std::get<0>(u.second)){
+                                case 1: writer.Int(std::get<1>(u.second));            break;
+                                case 2: writer.String(std::get<2>(u.second).c_str()); break;
+                                }
+                            }
+                        } writer.EndObject();
+                    }
+                } writer.EndArray(); // EndArray ---- 1
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        vector<devUnit_t> objs_body;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+
+                objs_body.push_back(dev_unit);
+            }
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("name");
+                writer.String("bind-group - 01");
+                writer.String("devices");
+                writer.StartArray();{   // StartArray ---- 1
+                    for(auto &body_unit : objs_body){
+                        writer.StartObject();{
+                            for(auto &u : body_unit){
+                                writer.String(u.first);
+                                switch(std::get<0>(u.second)){
+                                case 1: writer.Int(std::get<1>(u.second));            break;
+                                case 2: writer.String(std::get<2>(u.second).c_str()); break;
+                                }
+                            }
+                        } writer.EndObject();
+                    }
+                } writer.EndArray(); // EndArray ---- 1
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+
+        const char *json = buffer.GetString();
+        cout << " ---------- parser ----------" << endl;
+        {
+            typedef map<string , list<tuple<int, string> > > BindDeviceSet_t;
+
+            BindDeviceSet_t     binddev_set;
+
+            Document doc;
+            doc.Parse(json);
+
+            cout << "json : " << json << endl;
+
+            if(doc.HasMember("body") && doc["body"].IsObject()){ // if - 1
+                string name;
+                list<tuple<int, string> > binddev_list;
+
+                Value &body = doc["body"];
+
+                if(body.HasMember("name") && body["name"].IsString()){
+                    name = body["name"].GetString();
+                    cout << "name : " << name << endl;
+
+                    if(body.HasMember("devices") && body["devices"].IsArray()){
+                        Value &devices = body["devices"];
+                        for(auto &dev : devices.GetArray()){
+                            if(dev.HasMember("id") && dev["id"].IsInt() &&
+                               dev.HasMember("gateway") && dev["gateway"].IsString()){
+                                binddev_list.push_back(make_tuple(dev["id"].GetInt(), 
+                                                                  dev["gateway"].GetString()));
+                            }
+                        }
+                    }
+                }
+
+                cout << "binddev_list.size() : " << binddev_list.size() << endl;
+
+                binddev_set[name] = binddev_list;
+
+                cout << "binddev_set.size() : " << binddev_set.size() << endl;
+            } // end if - 1
+
+            //-------------------------
+
+            cout << "binddev_set.size() : " << binddev_set.size() << endl;
+
+            string bind_name;
+            for(auto itr = binddev_set.begin();
+                     itr!= binddev_set.end(); itr++){
+                bind_name = itr->first;
+                cout << "itr->first : " << itr->first << endl;
+                cout << "itr->second.size() : " << itr->second.size() << endl;
+
+                for(auto &dev : itr->second){
+                    cout << "gateway - id : " << std::get<0>(dev) << " - " << std::get<1>(dev) << endl;
+                }
+            }
+            cout << endl;
+
+            cout << "bind_name : " << bind_name << endl;
+
+            const char *pn = "bind-group - 01";
+            list<tuple<int, string> > &devices = binddev_set[pn];
+            cout << "binddev_set[bind_name.c_str()].size() : " << devices.size() << endl;
+            cout << "binddev_set[bind_name].size() : " << binddev_set[bind_name].size() << endl;
+        }
+    }
+    cout << "---------------------------" << endl;
+    {
+        //"command":{"onoff":1}
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        devUnit_t objs_body;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+
+                objs_body = dev_unit;
+            }
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("device");
+                writer.StartObject();{
+                    for(auto &u : objs_body){
+                        writer.String(u.first);
+                        switch(std::get<0>(u.second)){
+                        case 1: writer.Int(std::get<1>(u.second));            break;
+                        case 2: writer.String(std::get<2>(u.second).c_str()); break;
+                        }
+                    }
+                } writer.EndObject();
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        map<const char *, int> mi;
+
+        mi.insert(make_pair("cmd", 1));
+        mi.insert(make_pair("hello", 2));
+
+        cout << "mi : " << endl;
+        for(auto &u : mi){
+            cout << "u : " << u.first << " - " << u.second << endl;
+        }
+        cout << endl;
+
+        cout << "mi[cmd] : " << mi["cmd"] << endl;
+
+        map<const char *, tuple<int, string> > mii;
+        mii.insert(make_pair("cmd", make_tuple(1, "nice")));
+        mii.insert(make_pair("hello", make_tuple(2, "go")));
+
+        cout << "mii.size() : " << mii.size() << endl;
+        for(auto &u : mii){
+            cout << "u : " << u.first << " - " << std::get<0>(u.second) << " - " << std::get<1>(u.second) << endl;
+        }
+        cout << endl;
+
+        cout << "get<0>(mii[cmd]) : " << std::get<0>(mii["cmd"]) << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        //"command":{"onoff":1}
+        /*                        tuple< 0    1     2   > > */
+        typedef map<const char *, tuple<int, int, string> > devUnit_t;
+        devUnit_t objs_body;
+
+        {
+            for(int i=0; i<5; i++){
+                devUnit_t dev_unit;
+
+                dev_unit.insert(make_pair("id",       make_tuple(1, 1 + i, "")));
+                dev_unit.insert(make_pair("gateway",  make_tuple(2, 0, "gateway ...")));
+                dev_unit.insert(make_pair("command",  make_tuple(2, 0, "on"))); // 错误写法
+
+                objs_body = dev_unit;
+            }
+        }
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("device");
+                writer.StartObject();{
+                    for(auto &u : objs_body){
+                        writer.String(u.first);
+                        switch(std::get<0>(u.second)){
+                        case 1: writer.Int(std::get<1>(u.second));            break;
+                        case 2: 
+                            if(string(u.first) != "command"){
+                                writer.String(std::get<2>(u.second).c_str()); 
+                            }else{
+                                writer.StartObject();{
+                                    writer.String("onoff");
+                                    if(std::get<2>(u.second) == "on")
+                                        writer.Int(1);
+                                    else
+                                        writer.Int(0);
+                                } writer.EndObject();
+                            }
+                            break;
+                        }
+                    }
+                } writer.EndObject();
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
 
     return ret;
 }

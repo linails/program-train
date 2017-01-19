@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2017-01-07 11:30:22
+ * Last modified: 2017-01-17 20:13:26
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -121,7 +121,7 @@ int  Primer::primer_main(int argc, char **argv)
 #endif
     }
     {
-#if 1
+#if 0
         cout << "---------------------------------------------------------" << endl;
         ClassEnhenced ce;
         ce.class_enhenced_main(argc, argv); assert(-1 != ret);
