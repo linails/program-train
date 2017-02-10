@@ -1,7 +1,7 @@
 /*
  * Progarm Name: db-caller.cpp
  * Created Time: 2016-12-20 17:32:32
- * Last modified: 2017-01-05 22:30:14
+ * Last modified: 2017-02-09 15:04:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -30,10 +30,13 @@ int  dbCaller::dbcaller_main(int argc, char **argv)
 {
     int ret = 0;
 
-    ret = this->sqlite_normal(argc, argv);
+    ret = this->sqlite_normal(argc, argv); assert(-1 != ret);
+    
+    ret = this->sqlite_advanced(argc, argv); assert(-1 != ret);
 
-    assert(-1 != ret);
-    //ret = this->sqlite_advanced(argc, argv);
+    ret = this->postgresql_normal(argc, argv); assert(-1 != ret);
+
+    ret = this->postgresql_advanced(argc, argv); assert(-1 != ret);
 
     return ret;
 }
@@ -71,6 +74,20 @@ int  dbCaller::sqlite_normal(int argc, char **argv)
 }
 
 int  dbCaller::sqlite_advanced(int argc, char **argv)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+int  dbCaller::postgresql_normal(int argc, char **argv)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+int  dbCaller::postgresql_advanced(int argc, char **argv)
 {
     int ret = 0;
 

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.hpp
  * Created Time: 2016-12-20 17:17:22
- * Last modified: 2017-01-02 19:15:51
+ * Last modified: 2017-02-08 13:10:19
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,6 +16,7 @@ public:
 private:
     int  vector_t(void);
     int  list_t(void);
+    int  map_t(void);
 private:
     int  container_test(void);
     void string_test(void);

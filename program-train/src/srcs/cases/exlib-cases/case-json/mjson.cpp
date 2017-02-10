@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mjson.cpp
  * Created Time: 2016-12-22 09:00:56
- * Last modified: 2017-01-19 22:02:52
+ * Last modified: 2017-02-09 11:03:32
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -851,6 +851,53 @@ int  mJson::rapidjson_write(void)
                         }
                     }
                 } writer.EndObject();
+            } writer.EndObject();
+            }
+        }writer.EndObject();
+
+        cout << "buffer.GetString() : " << buffer.GetString() << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        string Info = "{\"Info\":{\"url\":\"aaaa.ipa\",\"platform\":\"ios\",\"onoff\":1}}";
+
+        cout << "Info : " << Info << endl;
+
+        Document doc;
+        doc.Parse(Info.c_str());
+
+        if(doc.HasMember("Info") & doc["Info"].IsObject()) cout << " HasMember(Info) : true " << endl;
+
+        Value &info  = doc["Info"];
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        info.Accept(writer);
+        string info_obj = buffer.GetString();
+
+        cout << "info_obj : " << info_obj << endl;
+
+        string info_s = "{\"url\":\"aaaa.ipa\",\"platform\":\"ios\",\"onoff\":1}";
+        cout << "info_s : " << info_s << endl;
+
+        cout << "Line : " << __LINE__ << endl;
+    }
+    cout << "---------------------------" << endl;
+    {
+        int gid    = 1;
+        int status = 0;
+
+        StringBuffer buffer;
+        Writer<StringBuffer> writer(buffer);
+
+        writer.StartObject();{
+            /* body */
+            writer.String("body");{
+            writer.StartObject();{
+                writer.String("gid");
+                writer.Int(gid);
+                writer.String("status");
+                writer.Int(status);
             } writer.EndObject();
             }
         }writer.EndObject();

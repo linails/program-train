@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-01-02 19:53:57
+ * Last modified: 2017-02-08 13:19:03
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -31,6 +31,9 @@ using std::vector;
 using std::map;
 using std::unordered_map;
 using std::list;
+using std::tuple;
+using std::make_pair;
+using std::make_tuple;
 
 Container::Container()
 {
@@ -49,6 +52,8 @@ int  Container::container_main(int argc, char **argv)
     ret = this->vector_t(); assert(-1 != ret);
     
     ret = this->list_t(); assert(-1 != ret);
+
+    ret = this->map_t(); assert(-1 != ret); 
 
     return ret;
 }
@@ -148,6 +153,36 @@ int  Container::list_t(void)
         #endif
 
         fp(li);
+    }
+    cout << "-----------------------------------------" << endl;
+
+    return ret;
+}
+
+int  Container::map_t(void)
+{
+    int ret = 0;
+
+    {
+        typedef map<string, list<tuple<int, string> > > BindDeviceSet_t;
+
+        list<tuple<int, string> > li;
+        BindDeviceSet_t binddev_set;
+
+        li.push_back(make_tuple(1, "01"));
+        li.push_back(make_tuple(2, "02"));
+        li.push_back(make_tuple(3, "03"));
+
+        binddev_set.insert(make_pair("g1", li));
+
+        cout << "binddev_set.size() : " << binddev_set.size() << endl;
+
+        auto iter = binddev_set.begin();
+
+        for(auto &dev : iter->second){
+            cout << "std::get<0>(dev) : " << std::get<0>(dev) << endl;
+            cout << "std::get<1>(dev) : " << std::get<1>(dev) << endl;
+        }
     }
     cout << "-----------------------------------------" << endl;
 
