@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2017-02-08 13:29:14
+ * Last modified: 2017-02-10 16:30:47
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 #endif
     }
     {
-#if 0
+#if 1
         mLinux mlinux;
 
         assert(-1 != ret);

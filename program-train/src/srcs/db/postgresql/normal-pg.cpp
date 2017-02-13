@@ -1,7 +1,7 @@
 /*
  * Progarm Name: normal-pg.cpp
  * Created Time: 2017-01-17 20:31:13
- * Last modified: 2017-01-17 20:47:23
+ * Last modified: 2017-02-10 14:54:46
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -44,6 +44,4 @@ int  NormalPg::normalpg_main(int argc, char **argv)
 
     return ret;
 }
-
-
 

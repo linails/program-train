@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mlinux.cpp
  * Created Time: 2016-12-21 09:39:00
- * Last modified: 2016-12-21 09:41:29
+ * Last modified: 2017-02-10 16:29:27
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,8 @@
 #include "process.hpp"
 #include "cthread.hpp"
 #include "io.hpp"
+#include "server.hpp"
+#include <cassert>
 
 using std::cout;
 using std::endl;
@@ -94,13 +96,30 @@ int  mLinux::mlinux_main(int argc, char **argv)
 #endif
     }
     cout << "---------------------------" << endl;
-#if 1
+#if 0
     {
         Io io;
 
         ret = io.io_main(argc, argv);
     }
 #endif
+    cout << "---------------------------" << endl;
+    {
+#if 1
+        ret = this->server(argc, argv); assert(-1 != ret);
+#endif
+    }
+
+    return ret;
+}
+
+int  mLinux::server(int argc, char **argv)
+{
+    int ret = 0;
+
+    Server  server;
+
+    ret = server.server_main(argc, argv); assert(-1 != ret);
 
     return ret;
 }

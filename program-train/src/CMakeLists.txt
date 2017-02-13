@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-02-08 13:29:04
+# Last modified: 2017-02-10 16:55:28
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -26,6 +26,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/process
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/threads
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/io
+    ${PROJECT_SOURCE_DIR}/src/srcs/linux/server
     ${PROJECT_SOURCE_DIR}/src/srcs/sep/
     ${PROJECT_SOURCE_DIR}/src/srcs/db
     ${PROJECT_SOURCE_DIR}/src/srcs/db/sqlite
@@ -56,6 +57,7 @@ include_directories(
 
 set(SRC_LIST
    main.cpp 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/primer/primer.cpp
 #   srcs/primer/regex_test.cpp
 #   srcs/primer/regex_cpp11.cpp
@@ -75,9 +77,12 @@ set(SRC_LIST
 #   srcs/primer/overload.cpp
 #   srcs/primer/operator-overload.cpp
 #   srcs/primer/type-traits.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/advanced/advanced.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/complex/
-#   srcs/linux/mlinux.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   srcs/linux/mlinux.cpp
 #   srcs/linux/network/server-udp.c
 #   srcs/linux/network/server-tcp.c
 #   srcs/linux/network/fd-test.c
@@ -88,12 +93,18 @@ set(SRC_LIST
 #   srcs/linux/process/process.cpp
 #   srcs/linux/process/ipc_msgq.c
 #   srcs/linux/threads/cthread.cpp
+   srcs/linux/server/server.cpp
+   srcs/linux/server/log.c
+   srcs/linux/server/user.c
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/stl/container.cpp
 #   srcs/stl/container-test.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/db/db-caller.cpp
    srcs/db/sqlite/normal.cpp
 #   srcs/db/postgresql/normal-pg.cpp
 #   srcs/db/sqlite/advanced.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/algorithm/malgorithm.cpp
    srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
@@ -108,6 +119,7 @@ set(SRC_LIST
 #   srcs/algorithm/ds/graph.cpp
 #   srcs/algorithm/ds/search.cpp
 #   srcs/algorithm/ds/sort.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/sep/sep.cpp
 #####################################################################
    srcs/tools/timer.cpp
