@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-02-10 16:55:28
+# Last modified: 2017-02-14 13:39:38
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -15,6 +15,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced
+    ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern
     ${PROJECT_SOURCE_DIR}/src/srcs/complex
     ${PROJECT_SOURCE_DIR}/src/srcs/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/boost
@@ -79,6 +80,7 @@ set(SRC_LIST
 #   srcs/primer/type-traits.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/advanced/advanced.cpp
+#   srcs/advanced/design-pattern/design-pattern.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/complex/
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -96,6 +98,8 @@ set(SRC_LIST
    srcs/linux/server/server.cpp
    srcs/linux/server/log.c
    srcs/linux/server/user.c
+   srcs/linux/server/process-rela.c
+   srcs/linux/server/model.c
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/stl/container.cpp
 #   srcs/stl/container-test.cpp
