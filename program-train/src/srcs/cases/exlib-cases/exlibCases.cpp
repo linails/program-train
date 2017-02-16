@@ -1,7 +1,7 @@
 /*
  * Progarm Name: exlibCases.cpp
  * Created Time: 2016-12-21 10:05:59
- * Last modified: 2017-01-14 15:54:16
+ * Last modified: 2017-01-20 22:43:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -25,7 +25,7 @@ int  exlibCases::exlibcases_main(int argc, char **argv)
     int ret = 0;
 
     {
-#if 1
+#if 0
         mJson mjson;
 
         ret = mjson.mjson_main(argc, argv);
