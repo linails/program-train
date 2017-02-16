@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.hpp
  * Created Time: 2016-11-09 15:05:54
- * Last modified: 2016-11-29 14:09:06
+ * Last modified: 2017-02-16 13:51:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,7 @@
 #include <string>
 #include <list>
 #include "infinite_loops_v2.h"
+#include <map>
 
 using std::vector;
 using std::tuple;
@@ -22,6 +23,7 @@ using std::unordered_map;
 using std::string;
 using std::list;
 using std::hash;
+using std::map;
 
 /* scene1 / scene2 / ... 
  *
@@ -30,7 +32,9 @@ using std::hash;
  *   vector<device_t> vdev;
  *   vector<scene_t> vscene;
  *
- *   SceneSetv3  ss(vdev, vscene);
+ *   vector<map<int, int> > vdefenses; //vector<map<gid, alarm>>
+ *
+ *   SceneSetv3  ss(vdev, vscene, vdefenses);
  *
  *   //[-1, 0, 1]
  *   // -1 : normal
@@ -50,9 +54,9 @@ using std::hash;
  * */
 class SceneSetv3{
 public:
-    SceneSetv3(vector<device_t> &r_vdev, vector<scene_t> &r_vscene);
+    SceneSetv3(vector<device_t> &r_vdev, vector<scene_t> &r_vscene, int max_gid);
     ~SceneSetv3();
-    int  reinit(vector<device_t> &r_vdev, vector<scene_t> &r_vscene);
+    int  reinit(vector<device_t> &r_vdev, vector<scene_t> &r_vscene, int max_gid);
 
     int  infinite_loops_check(scene_t &r_scene);    /* aim */
 
@@ -71,7 +75,7 @@ private:
     SceneSetv3(const SceneSetv3&) = delete;
     SceneSetv3 &operator=(const SceneSetv3&) = delete;
     int  init(vector<device_t> &r_vdev, vector<scene_t> &r_vscene);
-    int  collecting_gateway2defense(void);
+    int  collecting_gid2defense(void);
     int  scenev3_to_scenev2(scene_t &scenev2, scene_t &scenev3);
     int  scenev2_to_scenev3(scene_t &scenev3, scene_t &scenev2);
     int  scenev3_to_scenev2(vector<scene_t> &vscenev2, vector<scene_t> &vscenev3);
@@ -93,28 +97,40 @@ private:
     struct DefenseHash{
         size_t operator()(const defense_t &defense) const
         {
-            size_t ret = hash<string>()(defense.gateway) ^ hash<int>()(defense.alarm);
+            size_t ret = hash<int>()(defense.id) ^ hash<int>()(defense.alarm);
             return ret;
         }
     };
     struct DefenseEqual{
         bool operator()(const defense_t &ld, const defense_t &rd) const
         {
-            return ld.gateway == rd.gateway && ld.alarm == rd.alarm;
+            return ld.id == rd.id && ld.alarm == rd.alarm;
         }
     };
+
     /* <m_pos, defense_t> = <0xffff++, defense_t> */
     typedef unordered_map<device_t, defense_t, DeviceHash, DeviceEqual> Device2Defense_t;
     typedef unordered_map<defense_t, device_t, DefenseHash, DefenseEqual> Defense2Device_t;
-    /* <gateway, gw-index =>[0,+00) > */
-    typedef unordered_map<string, int> GatewaySet_t;
     SceneSetv2           *m_sst2;        /* pointer to SceneSetv2 instance */
     Device2Defense_t      m_device2defense;
     Defense2Device_t      m_defense2device;
     vector<device_t>      m_devices_set;
-    GatewaySet_t          m_gateways;
     vector<scene_t>       m_orig_scenes;
+    int                   m_max_gid;    // max defense group-id
 };
+
+/*
+ * Note : 修改说明，比对上一个版本 " Last-modified: 2016-11-29 "
+ *
+ *  typedef struct{               typedef struct{
+ *      string gateway;  ----\        int    id;  // group-id 的意思，= vector<gateway>
+ *      int    alarm;    ----/        int    alarm;
+ *  }defense_t;                   }defense_t;
+ *  
+ *  01. 提取 defense 中 没有对应的 gateway , 则可以直接将 gateway 设为空值
+ *
+ *  02. scene_t(v3) -> scene_t(v2)
+ * */
 
 #endif //_INFINITE_LOOPS_V3_HPP_
 

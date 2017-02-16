@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.cpp
  * Created Time: 2016-11-09 15:06:00
- * Last modified: 2016-11-29 14:08:41
+ * Last modified: 2017-02-16 13:54:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -52,9 +52,10 @@ using std::stringstream;
  *       }scene_t;
  * */
 
-SceneSetv3::SceneSetv3(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
+SceneSetv3::SceneSetv3(vector<device_t> &r_vdev, vector<scene_t> &r_vscene, int max_gid)
     :m_devices_set(r_vdev)
     ,m_orig_scenes(r_vscene)
+    ,m_max_gid(max_gid)
 {
     this->init(r_vdev, r_vscene);
 }
@@ -64,7 +65,7 @@ SceneSetv3::~SceneSetv3()
     delete this->m_sst2;
 }
 
-int  SceneSetv3::reinit(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
+int  SceneSetv3::reinit(vector<device_t> &r_vdev, vector<scene_t> &r_vscene, int max_gid)
 {
     int ret = 0;
 
@@ -74,10 +75,11 @@ int  SceneSetv3::reinit(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
     this->m_device2defense.clear();
     this->m_defense2device.clear();
     this->m_devices_set.clear();
-    this->m_gateways.clear();
 
     /* step 2: init SceneSetv3 */
     this->m_devices_set = r_vdev;
+    this->m_max_gid     = max_gid;
+
     ret = this->init(r_vdev, r_vscene);
 
     return ret;
@@ -191,14 +193,14 @@ int  SceneSetv3::init(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
      * 1. collecting gateway from devices | r_vdev
      * 2. defense_t -> devices
      * */
-    this->collecting_gateway2defense();
+    this->collecting_gid2defense();
 
 
 
     /*
      * format datav3 to datav2
      * */
-    vector<scene_t> vec_scenev2;
+    vector<scene_t>  vec_scenev2;
     vector<device_t> vec_devv2(this->m_devices_set);
 
     /* step 1 : scenev3 to scenev2 , and update defense status to this->m_defense2device device */
@@ -222,10 +224,11 @@ int  SceneSetv3::init(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
     return ret;
 }
 
-int  SceneSetv3::collecting_gateway2defense(void)
+int  SceneSetv3::collecting_gid2defense(void)
 {
     int ret = 0;
 
+#if 0
     for(auto &device : this->m_devices_set){
         auto got = this->m_gateways.find(device.gateway);
         if(got == this->m_gateways.end()){
@@ -265,18 +268,48 @@ int  SceneSetv3::collecting_gateway2defense(void)
         this->m_device2defense.insert(Device2Defense_t::value_type(device, defense));
         this->m_defense2device.insert(Defense2Device_t::value_type(defense, device));
     }
+#else
+    for(int i=0; i<this->m_max_gid; i++){
+        device_t     device;
+        defense_t    defense;
+        stringstream stream;
+
+        /* status = 0 */
+        defense.alarm   = 0;
+        defense.id      = i + 1;
+
+        stream << defense.alarm;
+        stream >> device.status;
+        
+        device.id       = defense.id;
+        device.gateway  = "Defense virtual gateway 0000";
+
+        this->m_device2defense.insert(Device2Defense_t::value_type(device, defense));
+        this->m_defense2device.insert(Defense2Device_t::value_type(defense, device));
+
+        /* status = 1 */
+        stream.clear();
+
+        defense.alarm   = 1;
+        stream << defense.alarm;
+        stream >> device.status;
+
+        this->m_device2defense.insert(Device2Defense_t::value_type(device, defense));
+        this->m_defense2device.insert(Defense2Device_t::value_type(defense, device));
+    }
+#endif
 
 
     /* For debug print */
     {
 #if 1
-        cout << "----------------------------- collecting_gateway2defense -----------------------------" << endl;
+        cout << "----------------------------- collecting_gid2defense -----------------------------" << endl;
         int i = 0;
         for(auto &unit : this->m_device2defense){
             printf( "[%d]\n", i);
             cout << "|defense : " << endl;
             cout << "|   alarm : " << unit.second.alarm << endl;
-            cout << "|   gateway : " << unit.second.gateway << endl;
+            cout << "|   gid : " << unit.second.id << endl;
             cout << "|device :" << endl;
             cout << "|   id : " << unit.first.id << endl;
             cout << "|   status : " << unit.first.status << endl;
@@ -288,19 +321,22 @@ int  SceneSetv3::collecting_gateway2defense(void)
             printf( "[%d]\n", i);
             cout << "|defense : " << endl;
             cout << "|   alarm : " << unit.first.alarm << endl;
-            cout << "|   gateway : " << unit.first.gateway << endl;
+            cout << "|   gid : " << unit.first.id << endl;
             cout << "|device :" << endl;
             cout << "|   id : " << unit.second.id << endl;
             cout << "|   status : " << unit.second.status << endl;
             printf( "|__________________________________[%d]\n", i++);
         }
-        cout << "----------------------------- collecting_gateway2defense -----------------------------" << endl;
+        cout << "----------------------------- collecting_gid2defense -----------------------------" << endl;
 #endif
     }
 
     return ret;
 }
 
+/* 
+ * have to update
+ * */
 int  SceneSetv3::scenev3_to_scenev2(scene_t &scenev2, scene_t &scenev3)
 {
     scenev2.id      = scenev3.id;

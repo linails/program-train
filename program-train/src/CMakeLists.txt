@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-02-14 13:39:38
+# Last modified: 2017-02-16 10:12:54
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -40,6 +40,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case002
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case003
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
@@ -132,10 +133,10 @@ set(SRC_LIST
    srcs/cases/cases.cpp
    srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case001/src/infinite_loops_v2.cpp
-#   srcs/cases/case001/src/infinite_loops_v3.cpp
-#   srcs/cases/case001/test/test_main.cpp
-#   srcs/cases/case001/test/v3_test.cpp
+   srcs/cases/case001/src/infinite_loops_v2.cpp
+   srcs/cases/case001/src/infinite_loops_v3.cpp
+   srcs/cases/case001/test/test_main.cpp
+   srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case002/dic-parser.cpp
 #   srcs/cases/case002/formatParsing.cpp
@@ -145,9 +146,11 @@ set(SRC_LIST
 #   srcs/cases/case002/rwfileoprt.cpp
 #   srcs/cases/case002/stringTools.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case003/key-bind-main.cpp
-   srcs/cases/case003/disk.cpp
-   srcs/cases/case003/msg.cpp
+#   srcs/cases/case003/key-bind-main.cpp
+#   srcs/cases/case003/disk.cpp
+#   srcs/cases/case003/msg.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   srcs/cases/case004/binditem-tetris.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp

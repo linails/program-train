@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class-enhenced.cpp
  * Created Time: 2017-01-05 09:00:05
- * Last modified: 2017-01-07 13:23:29
+ * Last modified: 2017-02-16 10:11:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -28,6 +28,8 @@ int  ClassEnhenced::class_enhenced_main(int argc, char **argv)
     ret = this->copy_ctrl(); assert(-1 != ret);
 
     ret = this->private_mem_use(); assert(-1 != ret);
+
+    ret = this->pure_VirtualBase(); assert(-1 != ret);
 
     return ret;
 }
@@ -99,5 +101,53 @@ int  ClassEnhenced::private_mem_use(void)
     cout << "oh.get_data() : " << oh.get_data() << endl;
 
     return ret;
+}
+
+int  ClassEnhenced::pure_VirtualBase(void)
+{
+    int ret = 0;
+
+    pureVirtualBase *pvb;
+
+    VirtualDrived vd;
+
+    pvb = &vd;
+
+    cout << "pvb->func01() : "; pvb->func01();
+    cout << "pvb->func02() : "; pvb->func02();
+    cout << "pvb->pureVirtualBase::func02() : "; pvb->pureVirtualBase::func02();
+
+    return ret;
+}
+
+pureVirtualBase::pureVirtualBase()
+{
+}
+
+pureVirtualBase::~pureVirtualBase()
+{
+}
+
+void pureVirtualBase::func02(void)
+{
+    cout << "func02 (pureVirtualBase) ..." << endl;
+}
+
+VirtualDrived::VirtualDrived()
+{
+}
+
+VirtualDrived::~VirtualDrived()
+{
+}
+
+void VirtualDrived::func01(void)
+{
+    cout << "func01 (VirtualDrived) ..." << endl;
+}
+
+void VirtualDrived::func02(void)
+{
+    cout << "func02 (VirtualDrived) ..." << endl;
 }
 

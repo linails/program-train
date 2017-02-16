@@ -1,7 +1,7 @@
 /*
  * Progarm Name: v3_test.cpp
  * Created Time: 2016-11-10 14:49:57
- * Last modified: 2016-11-29 14:11:39
+ * Last modified: 2017-02-16 13:57:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -63,7 +63,7 @@ void subtest_v2(void)
 
     get_scene_vector(vscene);
 
-    SceneSetv3  ss(vdev, vscene);
+    SceneSetv3  ss(vdev, vscene, 10);
 
     ss.print_all_set();
 
@@ -1695,7 +1695,7 @@ void subtest_v3(void)
 
     get_scene_vector(vscene);
 
-    SceneSetv3  ss(vdev, vscene);
+    SceneSetv3  ss(vdev, vscene, 10);
 
     ss.print_all_set();
 

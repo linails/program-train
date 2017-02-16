@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class-enhenced.hpp
  * Created Time: 2017-01-05 09:00:11
- * Last modified: 2017-01-07 13:26:21
+ * Last modified: 2017-02-16 10:09:03
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -22,6 +22,7 @@ public:
 private:
     int  copy_ctrl(void);
     int  private_mem_use(void);
+    int  pure_VirtualBase(void);
 };
 
 /* 
@@ -41,6 +42,24 @@ public:
     int get_data(void) const{ return this->m_data; }
 private:
     int m_data;
+};
+
+class pureVirtualBase{
+public:
+    pureVirtualBase();
+    virtual ~pureVirtualBase();
+    virtual void func01(void) = 0;
+    virtual void func02(void);
+private:
+};
+
+class VirtualDrived : public pureVirtualBase{
+public:
+    VirtualDrived();
+    virtual ~VirtualDrived();
+    virtual void func01(void);
+    virtual void func02(void);
+private:
 };
 
 #endif //_CLASS_ENHENCED_HPP_

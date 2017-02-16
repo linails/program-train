@@ -1,7 +1,7 @@
 /*
  * Progarm Name: process-rela.c
  * Created Time: 2017-02-14 09:39:50
- * Last modified: 2017-02-14 13:45:03
+ * Last modified: 2017-02-14 15:35:27
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,42 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
+
+/*
+ * Note :
+ *
+ * <1> 进程必定属于一个进程组，也只能属于一个进程组
+ *     一个进程组中可以包含多个进程
+ *     进程组的生命周期从被创建开始，到其内所有进程终止或离开该组
+ *     a. 获取当前进程所在的进程组ID使用函数 getpgrp()
+ *     b. 创建或加入其他组使用函数 setpgid()
+ *
+ * <2> 假设条件：
+ *     {
+ *       pid1 进程属于 pgid1 进程组
+ *       pid2 进程属于 pgid2 进程组，并且是 pgid2 进程组组长
+ *       进程组 pgid3
+ *     }
+ *     在 pid1 进程中调用 setpgid(pid2, pgid3)
+ *     a. (pid2 != pgid3) && (pid2 > 0) && (pgid3 > 0)
+ *        将 pid2 进程加入到 pgid3 组，此时 pid2 进程脱离 pgid2 进程组
+ *     b. (pid2 == pgid3) && (pid2 > 0) && (pgid3 > 0)
+ *        pid2 进程创建新进程组，成为新进程组组长 (pgid3 = pid2)
+ *     c. (pid2 == 0) && (pgid3 > 0)
+ *        将调用进程 pid1 加入到 pgid3 组中，此时 pid1 脱离 pgid1 进入 pgid3
+ *     d. (pid2 > 0) && (pgid3 == 0)
+ *        将 pid2 加入到调用进程所在的 pgid1 进程组中，此时 pid2 脱离 pgid2 进入 pgid1
+ *     e. (pid2 == 0) && (pgid3 == 0)
+ *        return -1; error
+ *
+ * <3> 一次登录就形成一次会话，会话组长即创建会话的进程
+ *     只有不是进程组长的进程才能创建进行会话
+ *
+ * <4> 如果 pid1 进程属于 pgid1 进程组，且不是组长，属于会话 sid1
+ *     在 pid1 进程中调用 setsid()
+ *     pid1 进程脱离 pgid1 进程组，创建一个新的会话 sid2(sid2 没有控制终端)
+ *     pid1 进程加入到 pgid2 组(pgid2 == pid1)
+ * */
 
 static int process_group(void);
 
