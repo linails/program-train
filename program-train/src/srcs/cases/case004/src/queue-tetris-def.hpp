@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris-def.hpp
  * Created Time: 2017-02-17 10:26:04
- * Last modified: 2017-02-17 15:37:02
+ * Last modified: 2017-02-17 17:26:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,12 +12,16 @@
 #include <tuple>
 #include <map>
 #include <vector>
+#include <algorithm>
+#include <iostream>
 
 using std::list;
 using std::tuple;
 using std::map;
 using std::vector;
 using std::pair;
+using std::cout;
+using std::endl;
 
 template <typename T>
 class QueueTetris{
@@ -28,7 +32,7 @@ public:
     int  pop(T &x);
     int  pop(T &expec, T &x);
     int  is_empty(void) const;
-    int  is_full(void) const;
+    int  size(void) const;
 private:
     list<T>     m_data;
 };
@@ -48,7 +52,7 @@ public:
 private:
     int  decrease(void); /* clear buttom layer */
 private:
-    int                                                 m_tid;
+    map<int, vector<int> >                              m_tid_devs;
     map<int, tuple<QueueTetris<T>, QueueTetris<T> > >   m_queue_tetris;
 };
 
@@ -67,35 +71,57 @@ QueueTetris<T>::~QueueTetris()
 template <typename T>
 int  QueueTetris<T>::push(T x)
 {
+    this->m_data.push_back(x);
     return 0;
 }
 
 template <typename T>
 int  QueueTetris<T>::pop(T &x)
 {
-    return 0;
+    int ret = 0;
+
+    if(false == this->m_data.empty()){
+        x = this->m_data.front();
+        this->m_data.pop_front();
+    }else
+        ret = -1;
+
+    return ret;
 }
 
 template <typename T>
 int  QueueTetris<T>::pop(T &expec, T &x)
 {
-    return 0;
+    int ret = 0;
+
+    if(false == this->m_data.empty()){
+        auto iter = find(this->m_data.begin(), this->m_data.end(), expec);
+        if(iter != this->m_data.end()){
+            x = *iter;
+            this->m_data.erase(iter);
+        }else
+            ret = -1;
+    }else
+        ret = -1;
+
+    return ret;
 }
 
 template <typename T>
 int  QueueTetris<T>::is_empty(void) const
 {
-    return 0;
+    return this->m_data.empty() ? 0 : -1;
 }
 
 template <typename T>
-int  QueueTetris<T>::is_full(void) const
+int  QueueTetris<T>::size(void) const
 {
-    return 0;
+    return this->m_data.size();
 }
 
 template <typename T>
 Tetris<T>::Tetris(map<int, vector<int> > &data) /* map<tid - <devs>> */
+    :m_tid_devs(data)
 {
 }
 
