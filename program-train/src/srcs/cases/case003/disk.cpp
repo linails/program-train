@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk.cpp
  * Created Time: 2017-01-16 11:12:58
- * Last modified: 2017-01-17 16:37:43
+ * Last modified: 2017-02-16 16:39:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -34,7 +34,7 @@ Disk::Disk()
             this->m_pqxx->prepare("select-bind-items-by-gw", "select name,id,devid,status from bind_devices where gateway=$1");
             this->m_pqxx->prepare("delete-bind-items-by-id", "delete from bind_devices where id=$1");
             this->m_pqxx->prepare("update-bind-items-by-id","update bind_devices set status=$1 where id=$2");
-            this->m_pqxx->prepare("select-bind-items-maxid", "select max(id) from bind_devices");
+            this->m_pqxx->prepare("select-bind-items-maxid", "select id from bind_devices where id=(select max(id) from bind_devices)");
 
 
             /* 

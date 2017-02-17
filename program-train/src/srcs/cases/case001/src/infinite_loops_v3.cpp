@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.cpp
  * Created Time: 2016-11-09 15:06:00
- * Last modified: 2017-02-16 13:54:30
+ * Last modified: 2017-02-16 14:36:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -334,9 +334,6 @@ int  SceneSetv3::collecting_gid2defense(void)
     return ret;
 }
 
-/* 
- * have to update
- * */
 int  SceneSetv3::scenev3_to_scenev2(scene_t &scenev2, scene_t &scenev3)
 {
     scenev2.id      = scenev3.id;

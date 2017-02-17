@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.hpp
  * Created Time: 2016-11-09 15:05:54
- * Last modified: 2017-02-16 13:51:12
+ * Last modified: 2017-02-16 14:39:16
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,7 +9,7 @@
 #define _INFINITE_LOOPS_V3_HPP_
 
 #include <vector>
-#include "common.h"
+#include "common.hpp"
 #include <tuple>
 #include <unordered_map>
 #include <string>
@@ -32,9 +32,7 @@ using std::map;
  *   vector<device_t> vdev;
  *   vector<scene_t> vscene;
  *
- *   vector<map<int, int> > vdefenses; //vector<map<gid, alarm>>
- *
- *   SceneSetv3  ss(vdev, vscene, vdefenses);
+ *   SceneSetv3  ss(vdev, vscene, max_gid);
  *
  *   //[-1, 0, 1]
  *   // -1 : normal

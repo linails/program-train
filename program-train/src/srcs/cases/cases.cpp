@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-02-16 14:03:43
+ * Last modified: 2017-02-17 15:36:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,7 +12,7 @@
 #include "exlibCases.hpp"
 #include <cassert>
 #include "key-bind-main.hpp"
-#include "binditem-tetris.hpp"
+#include "bit.hpp"
 
 using std::cout;
 using std::endl;
@@ -44,7 +44,7 @@ int Cases::cases_main(int argc, char **argv)
      * cases 001, 002 ,,,
      * */
     {
-#if 1
+#if 0
         /* case001 entry */
         test_main();
 #endif
@@ -74,9 +74,9 @@ int Cases::cases_main(int argc, char **argv)
         /* 
          * case004
          * */
-        BinditemTetris item_tetris;
+        Bit bit;
 
-        ret = item_tetris.binditem_tetris_main(argc, argv); assert(-1 != ret);
+        ret = bit.bit_main(argc, argv); assert(-1 != ret);
 #endif
     }
 
