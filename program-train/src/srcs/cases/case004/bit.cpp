@@ -1,7 +1,7 @@
 /*
  * Progarm Name: bit.cpp
  * Created Time: 2017-02-17 15:25:34
- * Last modified: 2017-02-17 17:20:42
+ * Last modified: 2017-02-20 15:15:37
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -142,6 +142,45 @@ int  Bit::queue_tetris_test(void)
         pop_expec("0", x);
     }
     cout << "---------------------------" << endl;
+    {
+        cout << "QueueTetris<int> ..." << endl;
+        int x;
+        QueueTetris<int> qti;
+
+        auto empty_check = [](QueueTetris<int> &qti){
+            if(0 == qti.is_empty()){
+                cout << "qti is empty !" << endl;
+            }else{
+                cout << "qti is not empty  - size : " << qti.size() << endl;
+            }
+        };
+
+        auto pop_ = [&qti, &empty_check](int &x, bool flag){
+            if(0 == qti.pop(x, flag)){
+                cout << "pop success !" << endl;
+                cout << "x = " << x << endl;
+                empty_check(qti);
+            }else{
+                cout << "pop failed !" << endl;
+                empty_check(qti);
+            }
+        };
+
+        empty_check(qti);
+
+        qti.push(0);
+        empty_check(qti);
+
+        pop_(x, false);
+        cout << "--" << endl;
+        pop_(x, true);
+        cout << "--" << endl;
+        pop_(x, false);
+        pop_(x, false);
+        pop_(x, true);
+
+    }
+    cout << "---------------------------" << endl;
     return ret;
 }
 
@@ -150,6 +189,13 @@ int  Bit::tetris_test(void)
     int ret = 0;
 
     Tetris<int> *ti = nullptr;
+    cout << "Tetris<int> *ti" << endl;
+
+
+    if(nullptr != ti){
+        delete ti;
+        ti = nullptr;
+    }
 
     cout << "---------------------------" << endl;
     return ret;
