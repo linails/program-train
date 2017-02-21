@@ -1,7 +1,7 @@
 /*
  * Progarm Name: binditem-tetris.hpp
  * Created Time: 2017-02-17 14:14:15
- * Last modified: 2017-02-17 16:14:59
+ * Last modified: 2017-02-21 13:36:35
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -45,7 +45,7 @@ private:
     map<int, list<BindItem_t> >     m_binditems;
     DevsMap_t                       m_devsmap; /* <gw, devid> -> pos-id */
     map<int, list<int> >            m_binditems_map;
-    CtrlCB_t                        m_ctrl_fun;
+    CtrlCB_t                        m_ctrl_fun = nullptr;
 };
 
 #endif //_BINDITEM_TETRIS_HPP_
