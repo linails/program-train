@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris-def.hpp
  * Created Time: 2017-02-17 10:26:04
- * Last modified: 2017-02-21 17:58:31
+ * Last modified: 2017-02-22 13:46:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -61,8 +61,9 @@ public:
     void print_info(int tid, unsigned line = 0);
 private:
     int  decrease(int tid); /* clear buttom layer */
-    int  check_tid_left_status(int tid, int status); /* same return 0 */
-    int  check_tid_right_status(int tid, int &status);
+    int  check_tid_left_status(int tid, T status); /* same return 0 */
+    int  check_tid_right_status(int tid, T &status);
+    int  check_for_trigger(int tid, int &tri_dev, T &left);
 private:
     map<int, int>                                       m_devs_tid;
     map<int, vector<int> >                              m_tid_devs;
@@ -71,7 +72,7 @@ private:
     std::function<int (int, T)>                         m_trigger_cb = nullptr;
 };
 
-#define ERROR_MAX_REMAIN    5
+#define ERROR_MAX_REMAIN    3
 
 //-----------------------------------------------------------------------------
 
@@ -278,6 +279,9 @@ int  Tetris<T>::is_empty(int tid) const
 template <typename T>
 int  Tetris<T>::push_left(int dev, T &left)
 {
+    cout << "<< V dev = " << dev << " - " << left << " >> " << endl;
+    this->print_info(this->m_devs_tid[dev], __LINE__);
+
     if(0 == this->error_check(this->m_devs_tid[dev])){
 
         /*
@@ -295,6 +299,8 @@ int  Tetris<T>::push_left(int dev, T &left)
                     std::get<0>(this->m_tid_devs_decoupling[this->m_devs_tid[dev]]).end(),
                     dev);
     if(iter != std::get<0>(this->m_tid_devs_decoupling[this->m_devs_tid[dev]]).end()){
+
+        cout << "Line " << __LINE__ << " - find it in this->m_tid_devs_decoupling[]"<< endl;
 
         /*
          * Trigger
@@ -352,31 +358,74 @@ int  Tetris<T>::push_left(int dev, T &left)
             #endif
         }
     }else{
+        cout << "Line " << __LINE__ << " - not find it in this->m_tid_devs_decoupling[]"<< endl;
 
         std::get<0>(this->m_queue_tetris[dev]).push(left);
 
         /*
          * clear buttom layer
          * */
-        this->decrease(this->m_devs_tid[dev]);
+        while(-1 != this->decrease(this->m_devs_tid[dev]));
 
         if(0 == std::get<1>(this->m_queue_tetris[dev]).is_empty()){
 
             QueueTetris<T> left_que = std::get<0>(this->m_queue_tetris[dev]);
-            cout << "Line : " << __LINE__ << " - left_que.size() : " << left_que.size() << endl; 
-            while(0 != left_que.is_empty()){
-                T left_u;
-                left_que.pop(left_u);
 
-                /* trigger to dev-brothers */
-                for(auto u : this->m_tid_devs[this->m_devs_tid[dev]]){
-                    std::get<1>(this->m_queue_tetris[u]).push(left_u);
+            if(0 != left_que.is_empty()){
+                cout << "Line : " << __LINE__ << " - left_que.size() : " << left_que.size() << endl;
+                while(0 != left_que.is_empty()){
+                    T left_u;
+                    left_que.pop(left_u);
+
+                    /* trigger to dev-brothers */
+                    for(auto u : this->m_tid_devs[this->m_devs_tid[dev]]){
+                        std::get<1>(this->m_queue_tetris[u]).push(left_u);
+                    }
+
+                    this->print_info(this->m_devs_tid[dev], __LINE__);
+
+                    if(0 != this->decrease(this->m_devs_tid[dev])){
+                        this->m_trigger_cb(this->m_devs_tid[dev], left_u);
+                    }else{
+                        cout << "Line : " << __LINE__ << " - push_left() - decrease() success !" << endl;
+                        this->print_info(this->m_devs_tid[dev], __LINE__);
+
+                        /* 
+                         * check For trigger
+                         * */
+                        int tri_dev = 0;
+                        int tri_left= 0;
+                        if(0 == this->check_for_trigger(this->m_devs_tid[dev], tri_dev, tri_left)){
+
+                            /* 
+                             * dev 的状态已经在 left_que 中，在下一个循环中会触发，这里不进行触发
+                             * */
+                            if(tri_dev != dev){
+                                /* trigger to dev-brothers */
+                                for(auto u : this->m_tid_devs[this->m_devs_tid[tri_dev]]){
+                                    std::get<1>(this->m_queue_tetris[u]).push(tri_left);
+                                }
+
+                                this->m_trigger_cb(this->m_devs_tid[tri_dev], tri_left);
+                            }
+                        }
+                    }
                 }
+            }else{
 
-                if(0 != this->decrease(this->m_devs_tid[dev])){
-                    this->m_trigger_cb(this->m_devs_tid[dev], left_u);
-                }else{
-                    cout << "Line : " << __LINE__ << " - push_left() - decrease() " << endl;
+                /* 
+                 * check For trigger
+                 * */
+                int tri_dev = 0;
+                int tri_left= 0;
+                if(0 == this->check_for_trigger(this->m_devs_tid[dev], tri_dev, tri_left)){
+
+                    /* trigger to dev-brothers */
+                    for(auto u : this->m_tid_devs[this->m_devs_tid[tri_dev]]){
+                        std::get<1>(this->m_queue_tetris[u]).push(tri_left);
+                    }
+
+                    this->m_trigger_cb(this->m_devs_tid[tri_dev], tri_left);
                 }
             }
         }else{
@@ -390,19 +439,40 @@ int  Tetris<T>::push_left(int dev, T &left)
 template <typename T>
 int  Tetris<T>::push_right(int tid, T &right)
 {
+    cout << "<< V tid = " << tid << " - " << right << " >> " << endl;
     vector<int> members = this->m_tid_devs[tid];
 
     for(auto u : members){
         auto iter = this->m_queue_tetris.find(u);
         if(iter != this->m_queue_tetris.end()){
-            std::get<1>(*iter).push(right);
+
+            if(0 != std::get<1>(this->m_queue_tetris[u]).is_empty()){
+                QueueTetris<T> right_que = std::get<1>(this->m_queue_tetris[u]);
+
+                bool same_flag = false;
+
+                T right_last;
+                while(0 != right_que.is_empty()){
+                    right_que.pop(right_last);
+
+                    if(right_last == right) same_flag = true;
+                    else                    same_flag = false;
+                }
+
+                if(false == same_flag){
+                    std::get<1>(iter->second).push(right);
+                }
+            }else{
+                std::get<1>(iter->second).push(right);
+            }
+
         }else{
-            QueueTetris<T> qleft;
-            QueueTetris<T> qright;
+            QueueTetris<T> left_que;
+            QueueTetris<T> right_que;
 
-            qright.push(right);
+            right_que.push(right);
 
-            this->m_queue_tetris.insert(make_pair(u, make_tuple(qleft, qright)));
+            this->m_queue_tetris.insert(make_pair(u, std::make_tuple(left_que, right_que)));
         }
     }
 
@@ -495,7 +565,7 @@ int  Tetris<T>::error_check(int tid)
             }
         }
 
-        this->m_tid_devs_decoupling.insert(make_pair(tid, make_tuple(decoupling_devs, -1)));
+        this->m_tid_devs_decoupling.insert(make_pair(tid, std::make_tuple(decoupling_devs, -1)));
 
         return 0;
     }
@@ -531,7 +601,7 @@ int  Tetris<T>::decrease(int tid) /* clear buttom layer */
 }
 
 template <typename T>
-int  Tetris<T>::check_tid_left_status(int tid, int status) /* same return 0 */
+int  Tetris<T>::check_tid_left_status(int tid, T status) /* same return 0 */
 {
     vector<int> members = this->m_tid_devs[tid];
 
@@ -554,7 +624,7 @@ int  Tetris<T>::check_tid_left_status(int tid, int status) /* same return 0 */
 }
 
 template <typename T>
-int  Tetris<T>::check_tid_right_status(int tid, int &status) /* same return 0 */
+int  Tetris<T>::check_tid_right_status(int tid, T &status) /* same return 0 */
 {
     vector<int> members = this->m_tid_devs[tid];
 
@@ -591,6 +661,40 @@ int  Tetris<T>::register_trigger_cb(std::function<int (int, T)> trigger)
 }
 
 template <typename T>
+int  Tetris<T>::check_for_trigger(int tid, int &tri_dev, T &left)
+{
+    int ret = -1;
+
+    auto right_empty = [this,
+                       &tri_dev,
+                       &left](int tid) -> int{
+        int ret = 0;
+        for(auto dev : this->m_tid_devs[tid]){
+            if(0 != std::get<1>(this->m_queue_tetris[dev]).is_empty()){
+                tri_dev = 0;
+                left = -1;
+
+                ret = -1;
+                break;
+            }else{
+                if(0 != std::get<0>(this->m_queue_tetris[dev]).is_empty()){
+                    std::get<0>(this->m_queue_tetris[dev]).pop(left, false);
+                    tri_dev = dev;
+                }
+            }
+        }
+        return ret;
+    };
+
+    if(0 == right_empty(tid)){
+        cout << "tri_dev = " << tri_dev << " - " << "left : " << left << endl;
+        ret = 0;
+    }
+
+    return ret;
+}
+
+template <typename T>
 void Tetris<T>::print_info(int tid, unsigned line)
 {
     cout << "-----------------------------------------------------------------------------" << endl;
@@ -600,34 +704,40 @@ void Tetris<T>::print_info(int tid, unsigned line)
 
     vector<int> members = this->m_tid_devs[tid];
     for(auto i : members){
-        QueueTetris<T> left_que = std::get<0>(this->m_queue_tetris[i]);
-        QueueTetris<T> right_que= std::get<1>(this->m_queue_tetris[i]);
+        auto iter = find(
+                        std::get<0>(this->m_tid_devs_decoupling[tid]).begin(),
+                        std::get<0>(this->m_tid_devs_decoupling[tid]).end(),
+                        i);
+        if(iter == std::get<0>(this->m_tid_devs_decoupling[tid]).end()){
+            QueueTetris<T> left_que = std::get<0>(this->m_queue_tetris[i]);
+            QueueTetris<T> right_que= std::get<1>(this->m_queue_tetris[i]);
 
-        printf("    left :<%3.3d> ", i);
-        while(0 != left_que.is_empty()){
-            T left_u;
+            printf("    left :<%3.3d> ", i);
+            while(0 != left_que.is_empty()){
+                T left_u;
 
-            if(0 == left_que.pop(left_u)){
-                if(typeid(int).name() == typeid(T).name()){
-                    printf(" %.2d", left_u);
+                if(0 == left_que.pop(left_u)){
+                    if(typeid(int).name() == typeid(T).name()){
+                        printf(" %.2d", left_u);
+                    }
                 }
+
             }
+            cout << endl;
 
-        }
-        cout << endl;
+            printf("    right:<%3.3d> ", i);
+            while(0 != right_que.is_empty()){
+                T right_u;
 
-        printf("    right:<%3.3d> ", i);
-        while(0 != right_que.is_empty()){
-            T right_u;
-
-            if(0 == right_que.pop(right_u)){
-                if(typeid(int).name() == typeid(T).name()){
-                    printf(" %.2d", right_u);
+                if(0 == right_que.pop(right_u)){
+                    if(typeid(int).name() == typeid(T).name()){
+                        printf(" %.2d", right_u);
+                    }
                 }
-            }
 
+            }
+            cout << endl;
         }
-        cout << endl;
     }
 }
 

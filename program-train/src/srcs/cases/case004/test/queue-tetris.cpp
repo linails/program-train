@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris.cpp
  * Created Time: 2017-02-17 10:25:09
- * Last modified: 2017-02-21 17:23:01
+ * Last modified: 2017-02-22 13:34:36
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -209,7 +209,9 @@ int tetris_test(void)
         /*
          * Testing ...
          * */
+        cout << "---------Testing 01--------" << endl;
         {
+            #if 0
             left = 1;
             ti->push_left(10, left); ti->print_info(1);
             left = 0;
@@ -223,9 +225,57 @@ int tetris_test(void)
             cout << "Line : " << __LINE__ << " File : " << __FILE__<< endl;
             left = 0;
             ti->push_left(10, left); ti->print_info(1);
+            #endif
         }
-        cout << "---------------------------" << endl;
+        cout << "---------Testing 02--------" << endl;
         {
+            #if 0
+            right = 1;
+            ti->push_right(1, right); ti->print_info(1);
+            ti->push_right(1, right); ti->print_info(1);
+
+            right = 0;
+            ti->push_right(1, right); ti->print_info(1);
+            ti->push_right(1, right); ti->print_info(1);
+
+            right = 1;
+            ti->push_right(1, right); ti->print_info(1);
+            ti->push_right(1, right); ti->print_info(1);
+            ti->push_right(1, right); ti->print_info(1);
+            #endif
+        }
+        cout << "---------Testing 03--------" << endl;
+        {
+            /*
+             * 这个测试假设 dev = 1 故障，无法 report
+             * */
+            #if 1
+            right = 1;  ti->push_right(1, right); ti->print_info(1);
+
+            left = 1;   ti->push_left(10, left); ti->print_info(1);
+            for(int i=1; i<9; i++) ti->push_left(i+1, left); ti->print_info(1);
+
+            right = 0;  ti->push_right(1, right); ti->print_info(1);
+            right = 1;  ti->push_right(1, right); ti->print_info(1);
+
+            {
+                left = 0;   ti->push_left(2, left); ti->print_info(1);
+                left = 1;   ti->push_left(2, left); ti->print_info(1);
+                left = 1;   ti->push_left(2, left); ti->print_info(1);
+                left = 1;   ti->push_left(2, left); ti->print_info(1);
+                left = 1;   ti->push_left(2, left); ti->print_info(1);
+
+                //left = 1;   ti->push_left(2, left); ti->print_info(1);
+                left = 1;   for(int i=2; i<9; i++) ti->push_left(i+1, left); ti->print_info(1);
+                left = 1;   ti->push_left(10, left); ti->print_info(1);
+                cout << "Line : " << __LINE__ << endl;
+                left = 0;   for(int i=2; i<9; i++) ti->push_left(i+1, left); ti->print_info(1);
+                left = 0;   ti->push_left(10, left); ti->print_info(1);
+
+                /* recover dev = 1 */
+                left = 0;   ti->push_left(1, left); ti->print_info(1);
+            }
+            #endif
         }
 
 
