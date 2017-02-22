@@ -1,7 +1,7 @@
 /*
  * Progarm Name: binditem-tetris.hpp
  * Created Time: 2017-02-17 14:14:15
- * Last modified: 2017-02-21 13:36:35
+ * Last modified: 2017-02-22 16:59:56
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,15 +17,15 @@ using std::hash;
 
 class BindItemTetris{
 public:
-    BindItemTetris();
+    BindItemTetris(std::function<int (int, int)> ctrl_trigger = nullptr);
     ~BindItemTetris();
     int  add_item_group(vector<BindItem_t> &items);
     int  del_item_group(int gid);
     int  add_item(BindItem_t &item);
     int  del_item(int gid, string gw, int devid);
-    int  report_status(string gw, int devid, int status);
-    int  ctrl_status(int gid, int status);
-    int  register_ctrl_cb(int (*ctrl)(void));
+    int  push_report_status(string gw, int devid, int status);
+    int  push_ctrl_status(int gid, int status);
+    int  register_ctrl_trigger(std::function<int (int, int)> ctrl_trigger); /* (gid, ctrl-status) */
 private:
     struct DeviceHash{
         size_t operator()(const device_t &device) const {
@@ -38,14 +38,16 @@ private:
             return ld.gateway == rd.gateway && ld.id == rd.id;
         }
     };
+    int  map_dev(void);                                 /* generate all map-dev */
+    int  map_dev(vector<BindItem_t> &items);            /* generate items -> vector<map-dev> */
+    int  map_dev(size_t &map_id, string gw, int devid); /* generate map-id or get map-id */
 private:
-    typedef int (*CtrlCB_t)(void);
     typedef unordered_map<device_t, size_t, DeviceHash, DeviceEqual> DevsMap_t;
-    Tetris<int>                    *m_tetris;
-    map<int, list<BindItem_t> >     m_binditems;
-    DevsMap_t                       m_devsmap; /* <gw, devid> -> pos-id */
-    map<int, list<int> >            m_binditems_map;
-    CtrlCB_t                        m_ctrl_fun = nullptr;
+    Tetris<int>                    *m_tetris = nullptr;
+    map<int, list<BindItem_t> >     m_binditems;        /* gid - list<BindItem_t> */
+    DevsMap_t                       m_devsmap;          /* <gw, devid> -> pos-id */
+    map<int, list<int> >            m_binditems_map;    /* gid - list<pos-id> */
+    std::function<int (int, int)>   m_ctrl_trigger = nullptr;
 };
 
 #endif //_BINDITEM_TETRIS_HPP_

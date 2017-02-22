@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris.cpp
  * Created Time: 2017-02-17 10:25:09
- * Last modified: 2017-02-22 14:14:50
+ * Last modified: 2017-02-22 15:05:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -201,7 +201,15 @@ int tetris_test(void)
             return 0;
         };
 
+#if 0
         ti = new Tetris<int>(data);
+#else
+        ti = new Tetris<int>();
+        for(auto &u : data){
+            pair<int, vector<int> > pair_d = u;
+            ti->add_tid(pair_d);
+        }
+#endif
 
         ti->register_trigger_cb(trigger);
 

@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-02-17 16:15:16
+# Last modified: 2017-02-22 14:29:33
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -156,7 +156,7 @@ set(SRC_LIST
    srcs/cases/case004/src/worker-thread.cpp
    srcs/cases/case004/src/binditem-tetris.cpp
    srcs/cases/case004/test/queue-tetris.cpp
-   srcs/cases/case004/test/binditem-tetris-test.cpp
+   srcs/cases/case004/test/bt-test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp

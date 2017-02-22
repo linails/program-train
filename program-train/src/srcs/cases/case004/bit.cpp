@@ -1,14 +1,14 @@
 /*
  * Progarm Name: bit.cpp
  * Created Time: 2017-02-17 15:25:34
- * Last modified: 2017-02-21 11:10:40
+ * Last modified: 2017-02-22 16:23:58
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "bit.hpp"
 #include <iostream>
-#include "binditem-tetris.hpp"
 #include <cassert>
+#include "bt-test.hpp"
 #include "queue-tetris.hpp"
 
 using std::cout;
@@ -47,12 +47,7 @@ int  Bit::tetris_test(void)
 
 int  Bit::bi_tetris_test(void)
 {
-    int ret = 0;
-
-    BindItemTetris binditem_tetris;
-
-    cout << "---------------------------" << endl;
-    return ret;
+    return bt_test();
 }
 
 

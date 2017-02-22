@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris-def.hpp
  * Created Time: 2017-02-17 10:26:04
- * Last modified: 2017-02-22 14:09:28
+ * Last modified: 2017-02-22 18:07:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -176,24 +176,13 @@ int  Tetris<T>::add_tid(pair<int, vector<int> > &data) /* pair<tid - <devs>> */
     auto iter = this->m_tid_devs.find(data.first);
 
     if(iter != this->m_tid_devs.end()){
-        vector<int> old_members = this->m_tid_devs[data.first];
-
+        ret = this->update_tid(data);
+    }else{
         this->m_tid_devs[data.first] = data.second;
-
-        for(auto u : old_members){
-            auto iter_u = this->m_devs_tid.find(u);
-            if(iter_u != this->m_devs_tid.end()){
-                this->m_devs_tid.erase(iter_u);
-            }else{
-                cout << "[Error] Line = " << __LINE__ << endl;
-            }
-        }
-
-        for(auto u : this->m_tid_devs[data.first]){
+        for(auto u : data.second){
             this->m_devs_tid[u] = data.first;
         }
-    }else
-        ret = -1;
+    }
 
     return ret;
 }
@@ -213,6 +202,25 @@ int  Tetris<T>::update_tid(pair<int, vector<int> > &data) /* pair<tid - <devs>> 
             auto iter_u = this->m_devs_tid.find(u);
             if(iter_u != this->m_devs_tid.end()){
                 this->m_devs_tid.erase(iter_u);
+
+                /* clear this->m_queue_tetris[u] */
+                auto dev_que_tetris = this->m_queue_tetris.find(u);
+                if(dev_que_tetris != this->m_queue_tetris.end()){
+                    std::get<0>(this->m_queue_tetris[u]).clear();
+                    std::get<1>(this->m_queue_tetris[u]).clear();
+                }
+
+                /* clear this->m_tid_devs_decoupling */
+                auto iter_d = this->m_tid_devs_decoupling.find(data.first);
+                if(iter_d != this->m_tid_devs_decoupling.end()){
+                    auto iter_dev = find(std::get<0>(this->m_tid_devs_decoupling.find(data.first)).begin(),
+                                         std::get<0>(this->m_tid_devs_decoupling.find(data.first)).end(),
+                                         u);
+                    if(iter_dev != std::get<0>(this->m_tid_devs_decoupling.find(data.first)).end()){
+                        std::get<0>(this->m_tid_devs_decoupling.find(data.first)).erase(iter_dev);
+                    }
+                }
+
             }else{
                 cout << "[Error] Line = " << __LINE__ << endl;
             }
@@ -241,12 +249,23 @@ int  Tetris<T>::del_tid(int tid)
             auto iter_u = this->m_devs_tid.find(u);
             if(iter_u != this->m_devs_tid.end()){
                 this->m_devs_tid.erase(iter_u);
+
+                auto dev_que_tetris = this->m_queue_tetris.find(u);
+                if(dev_que_tetris != this->m_queue_tetris.end()){
+                    std::get<0>(this->m_queue_tetris[u]).clear();
+                    std::get<1>(this->m_queue_tetris[u]).clear();
+                }
             }else{
                 cout << "[Error] Line = " << __LINE__ << endl;
             }
         }
 
         this->m_tid_devs.erase(iter);
+
+        auto iter_d = this->m_tid_devs_decoupling.find(tid);
+        if(iter_d != this->m_tid_devs_decoupling.end()){
+            this->m_tid_devs_decoupling.erase(iter_d);
+        }
     }else
         ret = -1;
 
