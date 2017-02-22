@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris-def.hpp
  * Created Time: 2017-02-17 10:26:04
- * Last modified: 2017-02-22 13:46:00
+ * Last modified: 2017-02-22 14:09:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -37,6 +37,7 @@ public:
     int  pop(T &expec, T &x, bool flag = true);
     int  is_empty(void) const;
     int  size(void) const;
+    void clear(void);
 private:
     list<T>     m_data;
 };
@@ -138,6 +139,12 @@ template <typename T>
 int  QueueTetris<T>::size(void) const
 {
     return this->m_data.size();
+}
+
+template <typename T>
+void QueueTetris<T>::clear(void)
+{
+    this->m_data.clear();
 }
 
 template <typename T>
@@ -306,6 +313,7 @@ int  Tetris<T>::push_left(int dev, T &left)
          * Trigger
          * */
         if(left != std::get<1>(this->m_tid_devs_decoupling[this->m_devs_tid[dev]])){
+            cout << "Line " << __LINE__ << endl;
 
             /* 
              * recover right
@@ -342,6 +350,7 @@ int  Tetris<T>::push_left(int dev, T &left)
          * Recover
          * */
         }else{
+            cout << "Line " << __LINE__ << endl;
 
             std::get<0>(this->m_queue_tetris[dev]).push(left);
             std::get<1>(this->m_queue_tetris[dev]).push(left);
@@ -526,7 +535,7 @@ int  Tetris<T>::error_check(int tid)
             if(status_right != status){
                 cout << "[Error] Line = " << __LINE__ << "status_right != status !"<< endl;
                 status = -1;
-                return 0;
+                return -1;
             }
         }
     }
@@ -555,17 +564,40 @@ int  Tetris<T>::error_check(int tid)
     }
 
     if((left_remain >= ERROR_MAX_REMAIN) && (right_remain >= ERROR_MAX_REMAIN)){
+
         /* 
          * decoupling
          * */
-        for(auto u : decoupling_devs){
-            auto iter = find(this->m_tid_devs[tid].begin(), this->m_tid_devs[tid].end(), u);
-            if(iter != this->m_tid_devs[tid].end()){
-                this->m_tid_devs[tid].erase(iter);
+
+        if(this->m_tid_devs_decoupling.find(tid) == this->m_tid_devs_decoupling.end()){
+            for(auto u : decoupling_devs){
+                auto iter = find(this->m_tid_devs[tid].begin(), this->m_tid_devs[tid].end(), u);
+                if(iter != this->m_tid_devs[tid].end()){
+                    this->m_tid_devs[tid].erase(iter);
+                    std::get<0>(this->m_queue_tetris[u]).clear();
+                    std::get<1>(this->m_queue_tetris[u]).clear();
+                }
+            }
+
+            this->m_tid_devs_decoupling.insert(make_pair(tid, std::make_tuple(decoupling_devs, -1)));
+        }else{
+            for(auto u : decoupling_devs){
+                auto iter = find(this->m_tid_devs[tid].begin(), this->m_tid_devs[tid].end(), u);
+                if(iter != this->m_tid_devs[tid].end()){
+                    this->m_tid_devs[tid].erase(iter);
+
+                    auto find_dev = find(std::get<0>(this->m_tid_devs_decoupling[tid]).begin(),
+                                         std::get<0>(this->m_tid_devs_decoupling[tid]).end(),
+                                         u);
+                    if(find_dev == std::get<0>(this->m_tid_devs_decoupling[tid]).end()){
+                        std::get<0>(this->m_tid_devs_decoupling[tid]).push_back(u);
+                        std::get<0>(this->m_queue_tetris[u]).clear();
+                        std::get<1>(this->m_queue_tetris[u]).clear();
+                    }
+
+                }
             }
         }
-
-        this->m_tid_devs_decoupling.insert(make_pair(tid, std::make_tuple(decoupling_devs, -1)));
 
         return 0;
     }

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris.cpp
  * Created Time: 2017-02-17 10:25:09
- * Last modified: 2017-02-22 13:34:36
+ * Last modified: 2017-02-22 14:14:50
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -249,7 +249,7 @@ int tetris_test(void)
             /*
              * 这个测试假设 dev = 1 故障，无法 report
              * */
-            #if 1
+            #if 0
             right = 1;  ti->push_right(1, right); ti->print_info(1);
 
             left = 1;   ti->push_left(10, left); ti->print_info(1);
