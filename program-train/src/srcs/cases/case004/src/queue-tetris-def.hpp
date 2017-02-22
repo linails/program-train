@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris-def.hpp
  * Created Time: 2017-02-17 10:26:04
- * Last modified: 2017-02-22 18:07:33
+ * Last modified: 2017-02-22 21:03:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -213,11 +213,11 @@ int  Tetris<T>::update_tid(pair<int, vector<int> > &data) /* pair<tid - <devs>> 
                 /* clear this->m_tid_devs_decoupling */
                 auto iter_d = this->m_tid_devs_decoupling.find(data.first);
                 if(iter_d != this->m_tid_devs_decoupling.end()){
-                    auto iter_dev = find(std::get<0>(this->m_tid_devs_decoupling.find(data.first)).begin(),
-                                         std::get<0>(this->m_tid_devs_decoupling.find(data.first)).end(),
+                    auto iter_dev = find(std::get<0>(this->m_tid_devs_decoupling[data.first]).begin(),
+                                         std::get<0>(this->m_tid_devs_decoupling[data.first]).end(),
                                          u);
-                    if(iter_dev != std::get<0>(this->m_tid_devs_decoupling.find(data.first)).end()){
-                        std::get<0>(this->m_tid_devs_decoupling.find(data.first)).erase(iter_dev);
+                    if(iter_dev != std::get<0>(this->m_tid_devs_decoupling[data.first]).end()){
+                        std::get<0>(this->m_tid_devs_decoupling[data.first]).erase(iter_dev);
                     }
                 }
 
