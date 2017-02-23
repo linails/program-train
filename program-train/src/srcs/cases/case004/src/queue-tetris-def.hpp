@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris-def.hpp
  * Created Time: 2017-02-17 10:26:04
- * Last modified: 2017-02-23 14:44:06
+ * Last modified: 2017-02-23 17:41:40
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -364,7 +364,7 @@ int  Tetris<T>::push_left(int dev, T &left)
 
             std::get<0>(this->m_tid_devs_decoupling[this->m_devs_tid[dev]]).erase(iter);
 
-            this->m_trigger_cb(this->m_devs_tid[dev], left);
+            if(nullptr != this->m_trigger_cb) this->m_trigger_cb(this->m_devs_tid[dev], left);
 
         /*
          * Recover
@@ -426,7 +426,7 @@ int  Tetris<T>::push_left(int dev, T &left)
                     this->print_info(this->m_devs_tid[dev], __LINE__);
 
                     if(0 != this->decrease(this->m_devs_tid[dev])){
-                        this->m_trigger_cb(this->m_devs_tid[dev], left_u);
+                        if(nullptr != this->m_trigger_cb) this->m_trigger_cb(this->m_devs_tid[dev], left_u);
                     }else{
                         cout << "Line : " << __LINE__ << " - push_left() - decrease() success !" << endl;
                         this->print_info(this->m_devs_tid[dev], __LINE__);
@@ -447,7 +447,8 @@ int  Tetris<T>::push_left(int dev, T &left)
                                     std::get<1>(this->m_queue_tetris[u]).push(tri_left);
                                 }
 
-                                this->m_trigger_cb(this->m_devs_tid[tri_dev], tri_left);
+                                if(nullptr != this->m_trigger_cb) 
+                                    this->m_trigger_cb(this->m_devs_tid[tri_dev], tri_left);
                             }
                         }
                     }
@@ -468,7 +469,7 @@ int  Tetris<T>::push_left(int dev, T &left)
 
                     cout << "Line : " << __LINE__ << " -m_trigger_cb() - tri_dev = " << tri_dev 
                          << " this->m_devs_tid[tri_dev] = " << this->m_devs_tid[tri_dev] << endl;
-                    if(0 != tri_dev)
+                    if((0 != tri_dev) && (nullptr != this->m_trigger_cb))
                         this->m_trigger_cb(this->m_devs_tid[tri_dev], tri_left);
                 }
             }

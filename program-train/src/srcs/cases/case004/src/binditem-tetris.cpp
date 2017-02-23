@@ -1,7 +1,7 @@
 /*
  * Progarm Name: binditem-tetris.cpp
  * Created Time: 2017-02-22 15:07:10
- * Last modified: 2017-02-23 13:46:51
+ * Last modified: 2017-02-23 17:40:48
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -100,7 +100,7 @@ int  BindItemTetris::add_item_group(vector<BindItem_t> &items)
 
         this->map_dev(items);
 
-        vector<int> gids; for(auto &item : items) gids.push_back(item.id);
+        vector<int> gids; for(auto &item : items) gids.push_back(item.id); 
         sort(gids.begin(), gids.end());
         auto iter = unique(gids.begin(), gids.end());
         gids.resize(std::distance(gids.begin(), iter));
@@ -237,7 +237,11 @@ int  BindItemTetris::push_ctrl_status(int gid, int status)
 
 int  BindItemTetris::register_ctrl_trigger(std::function<int (int, int)> ctrl_trigger) /* (gid, ctrl-status) */
 {
-    this->m_ctrl_trigger = ctrl_trigger; return 0;
+    this->m_ctrl_trigger = ctrl_trigger;
+    if(nullptr != this->m_tetris){
+        this->m_tetris->register_trigger_cb(this->m_ctrl_trigger);
+    }
+    return 0;
 }
 
 /*
@@ -266,7 +270,21 @@ int  BindItemTetris::map_dev(vector<BindItem_t> &items)
 {
     for(auto &item : items){
         int map_id;
-        this->map_dev(map_id, item.gateway, item.devid, item.id);
+        this->map_dev(map_id, item.gateway, item.devid, -1);
+
+        auto iter = this->m_binditems_map.find(item.id);
+        if(iter != this->m_binditems_map.end()){
+            auto isexist = find(this->m_binditems_map[item.id].begin(),
+                                this->m_binditems_map[item.id].end(),
+                                map_id);
+            if(isexist == this->m_binditems_map[item.id].end()){
+                this->m_binditems_map[item.id].push_back(map_id);
+            }
+        }else{
+            list<int> map_ids;
+            map_ids.push_back(map_id);
+            this->m_binditems_map[item.id] = map_ids;
+        }
     }
     return 0;
 }
