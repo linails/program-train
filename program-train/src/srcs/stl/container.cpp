@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-02-08 13:19:03
+ * Last modified: 2017-02-23 09:32:10
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -92,6 +92,44 @@ int  Container::vector_t(void)
             iv.erase(iter);
             fp(iv);
         }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        vector<int> gids;
+        gids.push_back(0);
+        gids.push_back(0);
+        gids.push_back(2);
+        gids.push_back(4);
+        gids.push_back(3);
+        gids.push_back(5);
+        gids.push_back(4);
+        gids.push_back(1);
+        gids.push_back(1);
+        gids.push_back(5);
+        gids.push_back(1);
+        gids.push_back(2);
+        gids.push_back(0);
+        gids.push_back(3);
+        gids.push_back(2);
+        gids.push_back(5);
+        gids.push_back(4);
+        gids.push_back(1);
+        gids.push_back(3);
+        gids.push_back(5);
+
+        auto print_gids = [](vector<int> &gids){
+            cout << "gids :";
+            for(auto i : gids) cout << " " << i;
+            cout << endl;
+        };
+
+        print_gids(gids);
+
+        sort(gids.begin(), gids.end()); print_gids(gids);
+
+        auto iter = unique(gids.begin(), gids.end()); print_gids(gids);
+
+        gids.resize(std::distance(gids.begin(), iter)); print_gids(gids);
     }
     cout << "-----------------------------------------" << endl;
 

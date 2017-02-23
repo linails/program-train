@@ -1,7 +1,7 @@
 /*
  * Progarm Name: queue-tetris-def.hpp
  * Created Time: 2017-02-17 10:26:04
- * Last modified: 2017-02-22 21:03:00
+ * Last modified: 2017-02-23 14:44:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -339,6 +339,7 @@ int  Tetris<T>::push_left(int dev, T &left)
              * */
             {
                 int dev_bro = this->m_tid_devs[this->m_devs_tid[dev]][0];
+                if(dev == dev_bro) dev_bro = this->m_tid_devs[this->m_devs_tid[dev]][1];
 
                 QueueTetris<T> right_que = std::get<1>(this->m_queue_tetris[dev_bro]);
 
@@ -371,8 +372,20 @@ int  Tetris<T>::push_left(int dev, T &left)
         }else{
             cout << "Line " << __LINE__ << endl;
 
-            std::get<0>(this->m_queue_tetris[dev]).push(left);
-            std::get<1>(this->m_queue_tetris[dev]).push(left);
+            {
+                int dev_bro = this->m_tid_devs[this->m_devs_tid[dev]][0];
+                if(dev == dev_bro) dev_bro = this->m_tid_devs[this->m_devs_tid[dev]][1];
+
+                QueueTetris<T> right_que = std::get<1>(this->m_queue_tetris[dev_bro]);
+
+                while(0 != right_que.is_empty()){
+                    T right_u;
+                    right_que.pop(right_u);
+
+                    std::get<0>(this->m_queue_tetris[dev]).push(right_u);
+                    std::get<1>(this->m_queue_tetris[dev]).push(right_u);
+                }
+            }
 
             this->m_tid_devs[this->m_devs_tid[dev]].push_back(dev);
 
@@ -453,7 +466,10 @@ int  Tetris<T>::push_left(int dev, T &left)
                         std::get<1>(this->m_queue_tetris[u]).push(tri_left);
                     }
 
-                    this->m_trigger_cb(this->m_devs_tid[tri_dev], tri_left);
+                    cout << "Line : " << __LINE__ << " -m_trigger_cb() - tri_dev = " << tri_dev 
+                         << " this->m_devs_tid[tri_dev] = " << this->m_devs_tid[tri_dev] << endl;
+                    if(0 != tri_dev)
+                        this->m_trigger_cb(this->m_devs_tid[tri_dev], tri_left);
                 }
             }
         }else{
@@ -469,6 +485,7 @@ int  Tetris<T>::push_right(int tid, T &right)
 {
     cout << "<< V tid = " << tid << " - " << right << " >> " << endl;
     vector<int> members = this->m_tid_devs[tid];
+    bool tri_flag = false;
 
     for(auto u : members){
         auto iter = this->m_queue_tetris.find(u);
@@ -489,9 +506,11 @@ int  Tetris<T>::push_right(int tid, T &right)
 
                 if(false == same_flag){
                     std::get<1>(iter->second).push(right);
+                    tri_flag = true;
                 }
             }else{
                 std::get<1>(iter->second).push(right);
+                tri_flag = true;
             }
 
         }else{
@@ -501,12 +520,19 @@ int  Tetris<T>::push_right(int tid, T &right)
             right_que.push(right);
 
             this->m_queue_tetris.insert(make_pair(u, std::make_tuple(left_que, right_que)));
+
+            tri_flag = true;
+            cout << "[Warning] Line : " << __LINE__ << " - tri_flag = true" << endl;
         }
     }
 
     auto iter = this->m_tid_devs_decoupling.find(tid);
     if(iter != this->m_tid_devs_decoupling.end()){
         std::get<1>(this->m_tid_devs_decoupling[tid]) = right;
+    }
+
+    if((true == tri_flag) && (nullptr != this->m_trigger_cb)){
+        this->m_trigger_cb(tid, right);
     }
 
     return 0;

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: binditem-tetris.hpp
  * Created Time: 2017-02-17 14:14:15
- * Last modified: 2017-02-22 16:59:56
+ * Last modified: 2017-02-23 13:21:39
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,6 +26,7 @@ public:
     int  push_report_status(string gw, int devid, int status);
     int  push_ctrl_status(int gid, int status);
     int  register_ctrl_trigger(std::function<int (int, int)> ctrl_trigger); /* (gid, ctrl-status) */
+    void print_info(int gid, unsigned line = 0);
 private:
     struct DeviceHash{
         size_t operator()(const device_t &device) const {
@@ -40,9 +41,9 @@ private:
     };
     int  map_dev(void);                                 /* generate all map-dev */
     int  map_dev(vector<BindItem_t> &items);            /* generate items -> vector<map-dev> */
-    int  map_dev(size_t &map_id, string gw, int devid); /* generate map-id or get map-id */
+    int  map_dev(int &map_id, string gw, int devid, int gid = -1);/* generate map-id or get map-id */
 private:
-    typedef unordered_map<device_t, size_t, DeviceHash, DeviceEqual> DevsMap_t;
+    typedef unordered_map<device_t, int, DeviceHash, DeviceEqual> DevsMap_t;
     Tetris<int>                    *m_tetris = nullptr;
     map<int, list<BindItem_t> >     m_binditems;        /* gid - list<BindItem_t> */
     DevsMap_t                       m_devsmap;          /* <gw, devid> -> pos-id */
