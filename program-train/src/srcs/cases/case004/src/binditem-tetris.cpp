@@ -1,7 +1,7 @@
 /*
  * Progarm Name: binditem-tetris.cpp
  * Created Time: 2017-02-22 15:07:10
- * Last modified: 2017-02-23 17:40:48
+ * Last modified: 2017-02-24 10:43:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -90,6 +90,24 @@ int  BindItemTetris::add_item_group(vector<BindItem_t> &items)
                     this->m_tetris->register_trigger_cb(this->m_ctrl_trigger);
                 }
             }
+        }else{
+
+            vector<int> gids; for(auto &item : items) gids.push_back(item.id); 
+            sort(gids.begin(), gids.end());
+            auto iter = unique(gids.begin(), gids.end());
+            gids.resize(std::distance(gids.begin(), iter));
+
+            /* update Tetris<int> */
+            for(auto gid : gids){
+                vector<int> map_ids; for(auto id : this->m_binditems_map[gid]) map_ids.push_back(id);
+
+                cout << "map_ids.size() : " << map_ids.size() << endl;
+
+                pair<int, vector<int> > tetris_data(gid, map_ids);
+                if(nullptr != this->m_tetris){
+                    this->m_tetris->add_tid(tetris_data);
+                }
+            }
         }
 
     /* 
@@ -108,6 +126,9 @@ int  BindItemTetris::add_item_group(vector<BindItem_t> &items)
         /* update Tetris<int> */
         for(auto gid : gids){
             vector<int> map_ids; for(auto id : this->m_binditems_map[gid]) map_ids.push_back(id);
+
+            cout << "map_ids.size() : " << map_ids.size() << endl;
+
             pair<int, vector<int> > tetris_data(gid, map_ids);
             if(nullptr != this->m_tetris){
                 this->m_tetris->add_tid(tetris_data);

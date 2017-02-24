@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-02-22 14:29:33
+# Last modified: 2017-02-24 14:31:03
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -46,6 +46,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-gtest
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -159,6 +160,7 @@ set(SRC_LIST
    srcs/cases/case004/test/bt-test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/exlib-cases/case-json/mjson.cpp
+   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
 )
@@ -179,6 +181,8 @@ set(link_lib
     ${libs_path}/lib/libssl.a
     ${libs_path}/lib/libcrypto.a
     ${libs_path}/lib/libpqxx.a
+    ${libs_path}/lib/libgtest.a
+    ${libs_path}/lib/libgtest_main.a
     pthread
     dl
     pq
