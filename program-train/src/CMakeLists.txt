@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-02-24 14:31:03
+# Last modified: 2017-02-24 17:43:46
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -136,10 +136,10 @@ set(SRC_LIST
    srcs/cases/cases.cpp
    srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case001/src/infinite_loops_v2.cpp
-#   srcs/cases/case001/src/infinite_loops_v3.cpp
-#   srcs/cases/case001/test/test_main.cpp
-#   srcs/cases/case001/test/v3_test.cpp
+   srcs/cases/case001/src/infinite_loops_v2.cpp
+   srcs/cases/case001/src/infinite_loops_v3.cpp
+   srcs/cases/case001/test/test_main.cpp
+   srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case002/dic-parser.cpp
 #   srcs/cases/case002/formatParsing.cpp
@@ -161,6 +161,7 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/exlib-cases/case-json/mjson.cpp
    srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
+   srcs/cases/exlib-cases/case-gtest/event-mecha.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
 )

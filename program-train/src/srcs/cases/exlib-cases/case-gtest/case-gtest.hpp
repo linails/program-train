@@ -1,7 +1,7 @@
 /*
  * Progarm Name: case-gtest.hpp
  * Created Time: 2017-02-24 13:36:11
- * Last modified: 2017-02-24 14:49:32
+ * Last modified: 2017-02-24 16:00:16
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -28,6 +28,14 @@
  * |    *_STRNE(str1, str);                     // the two C strings have different content
  * |    *_STRCASEEQ(expected_str, actual_str);  // the two C strings have the same content, ignoring case
  * |    *_STRCASENE(str1, str);                 // the two C strings have different content, ignoring case
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * |    *_THROW(statement, exception_type);     // statement throws an exception of the given type
+ * |    *_ANY_THROW(statement);                 // statement throws an exception of any type
+ * |    *_NO_THROW(statement);                  // statement doesn't throw any exception
+ * |    *_FLOAT_EQ(expected, actual);           // the two float values are almost equal
+ * |    *_DOUBLE_EQ(expected, actual);          // the two double values are almost equal
+ * |    *_NEAR(val1, val2, abs_error);          // the different between val1 and val2 doesn't exceed the given absolute error
  *
  * */
 

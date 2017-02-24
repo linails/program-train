@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-02-24 15:16:50
+ * Last modified: 2017-02-24 17:44:01
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -44,7 +44,7 @@ int Cases::cases_main(int argc, char **argv)
      * cases 001, 002 ,,,
      * */
     {
-#if 0
+#if 1
         /* case001 entry */
         test_main();
 #endif

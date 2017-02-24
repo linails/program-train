@@ -1,7 +1,7 @@
 /*
  * Progarm Name: v3_test.cpp
  * Created Time: 2016-11-10 14:49:57
- * Last modified: 2017-02-24 18:04:38
+ * Last modified: 2017-02-24 18:02:50
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -1386,9 +1386,9 @@ void eg05(SceneSetv3 &ss)
         //cscenes.push_back(20);
         //cdefense.push_back(def);
 
-        rcdevs.push_back(vdev[11]);
+        rcdevs.push_back(vdev[6]);
 
-        rdevs.push_back(vdev[8]);
+        rdevs.push_back(vdev[1]);
 
         //--------------------------------
         scene.condition_devs    = cdevs;
