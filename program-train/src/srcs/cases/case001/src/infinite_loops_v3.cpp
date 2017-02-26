@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.cpp
  * Created Time: 2016-11-09 15:06:00
- * Last modified: 2017-02-16 14:36:28
+ * Last modified: 2017-02-26 20:20:18
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -62,7 +62,9 @@ SceneSetv3::SceneSetv3(vector<device_t> &r_vdev, vector<scene_t> &r_vscene, int 
 
 SceneSetv3::~SceneSetv3()
 {
-    delete this->m_sst2;
+    if(nullptr != this->m_sst2){
+        delete this->m_sst2;
+    }
 }
 
 int  SceneSetv3::reinit(vector<device_t> &r_vdev, vector<scene_t> &r_vscene, int max_gid)
@@ -70,8 +72,9 @@ int  SceneSetv3::reinit(vector<device_t> &r_vdev, vector<scene_t> &r_vscene, int
     int ret = 0;
 
     /* step 1: clear all */
-    delete this->m_sst2;
-    this->m_sst2 = NULL;
+    if(nullptr != this->m_sst2) delete this->m_sst2;
+    this->m_sst2 = nullptr;
+
     this->m_device2defense.clear();
     this->m_defense2device.clear();
     this->m_devices_set.clear();
@@ -108,10 +111,15 @@ int  SceneSetv3::infinite_loops_check(scene_t &r_scene)    /* aim */
     }
 
     auto check = [this](scene_t &scenev3){
+        int ret = -1;
         scene_t scenev2;
         this->scenev3_to_scenev2(scenev2, scenev3);
-        return this->m_sst2->infinite_loops_check(scenev2);
+        if(nullptr != this->m_sst2)
+            ret = this->m_sst2->infinite_loops_check(scenev2);
+        return ret;
     };
+
+    this->collecting_new_devices(r_scene);
 
     ret = check(r_scene);
 
@@ -162,7 +170,10 @@ int  SceneSetv3::infinite_loops_check(scene_t &r_scene)    /* aim */
 
 int  SceneSetv3::del_scene(int sceneid)
 {
-    return this->m_sst2->del_scene(sceneid);
+    if(nullptr != this->m_sst2){
+        return this->m_sst2->del_scene(sceneid);
+    }else
+        return -1;
 }
 
 /*
@@ -176,13 +187,18 @@ int  SceneSetv3::filter(scene_t &r_exe_scene)
 
     this->scenev3_to_scenev2(scenev2, r_exe_scene);
 
-    return this->m_sst2->filter(scenev2);
+    if(nullptr != this->m_sst2){
+        return this->m_sst2->filter(scenev2);
+    }else
+        return -1;
 }
 
 void SceneSetv3::print_all_set(void)
 {
-    cout << "print_all_set ..." << endl;
-    this->m_sst2->print_all_set();
+    if(nullptr != this->m_sst2){
+        cout << "print_all_set ..." << endl;
+        this->m_sst2->print_all_set();
+    }
 }
 
 int  SceneSetv3::init(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
@@ -217,6 +233,7 @@ int  SceneSetv3::init(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
         this->m_sst2 = new SceneSetv2(vec_devv2, vec_scenev2);
         if(NULL == this->m_sst2) ret = -1;
     }else{
+        this->m_sst2 = nullptr;
         ret = -1;
         cout << "[Error] : vec_devv2.size() = 0 || vec_scenev2.size() = 0" << endl;
     }
@@ -334,6 +351,106 @@ int  SceneSetv3::collecting_gid2defense(void)
     return ret;
 }
 
+int  SceneSetv3::collecting_new_devices(scene_t &r_scene)
+{
+    bool new_devices_flag = false;
+    device_t *pdev = nullptr;
+
+    auto find_dev = [&pdev](device_t ori_dev){
+        if((pdev->id == ori_dev.id) && (pdev->gateway == ori_dev.gateway)){
+            return 1;
+        }else{
+            return 0;
+        }
+    };
+
+    auto traversal = [this,
+                      &pdev,
+                      &new_devices_flag,
+                      &find_dev](vector<device_t> &tra_devs){
+
+        for(auto &dev : tra_devs){
+
+            pdev = &dev;
+
+            auto iter = find_if(this->m_devices_set.begin(),
+                                this->m_devices_set.end(),
+                                find_dev);
+            if(iter == this->m_devices_set.end()){
+                new_devices_flag = true;
+                this->m_devices_set.push_back(dev);
+            }
+        }
+    };
+
+    cout << "collecting_new_devices " << endl;
+    {
+        traversal(r_scene.condition_devs);
+        traversal(r_scene.result_devs);
+        traversal(r_scene.recover_devs);
+    }
+
+    /* if m_orig_scenes.size() == 0 */
+    if(0 == this->m_orig_scenes.size()){
+        cout << "virtual - scenes " << endl;
+        scene_t scene;
+
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 1;
+        scene.time              = 10;
+        scene.timetype          = 2;
+
+        cdevs.push_back(this->m_devices_set[0]);
+
+        if(1 == this->m_devices_set.size()){
+            device_t vir_dev;
+            vir_dev.id      = 0xffff;
+            vir_dev.status  = "json ctrl cmd";
+            vir_dev.gateway = "gateway ...";
+            this->m_devices_set.push_back(vir_dev);
+        }
+        rdevs.push_back(this->m_devices_set[1]);
+
+        cout << "m_devices_set[0].id = " << this->m_devices_set[0].id << endl;
+        cout << "m_devices_set[1].id = " << this->m_devices_set[1].id << endl;
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        this->m_orig_scenes.push_back(scene);
+
+        new_devices_flag = true;
+    }
+
+    if(true == new_devices_flag){
+        cout << "Find new - devices !" << endl;
+
+        vector<device_t>      devices_set = this->m_devices_set;
+        vector<scene_t>       orig_scenes = this->m_orig_scenes;
+        int                   max_gid     = this->m_max_gid;    // max defense group-id
+
+        if(0 != this->reinit(devices_set, orig_scenes, max_gid)){
+            cout << "[Error] reinit failed !" << endl;
+        }else{
+            cout << "reinit success !" << endl;
+        }
+    }
+
+    return 0;
+}
+
 int  SceneSetv3::scenev3_to_scenev2(scene_t &scenev2, scene_t &scenev3)
 {
     scenev2.id      = scenev3.id;
@@ -384,5 +501,29 @@ int  SceneSetv3::scenev2_to_scenev3(vector<scene_t> &vscenev3, vector<scene_t> &
 {
     cout << "scenev2_to_scenev3 ..." << endl;
     return 0;
+}
+
+int  SceneSetv3::add_defense_gid(int defense_gid)
+{
+    int ret = 0;
+
+    if(defense_gid > this->m_max_gid){
+
+        vector<device_t>      devices_set = this->m_devices_set;
+        vector<scene_t>       orig_scenes = this->m_orig_scenes;
+
+        if(0 != this->reinit(devices_set, orig_scenes, defense_gid)){
+            cout << "[Error] reinit failed !" << endl;
+        }else{
+            cout << "reinit success !" << endl;
+        }
+        ret = 0;
+    }else{
+        cout << "[Info] defense_gid <= this->m_max_gid" << endl;
+        ret = -1;
+    }
+
+
+    return ret;
 }
 

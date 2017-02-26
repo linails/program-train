@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.hpp
  * Created Time: 2016-11-09 15:05:54
- * Last modified: 2017-02-16 14:39:16
+ * Last modified: 2017-02-26 14:27:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -67,6 +67,7 @@ public:
      * */
     int  filter(scene_t &r_exe_scene);
 
+    int  add_defense_gid(int defense_gid);
 public:
     void print_all_set(void);
 private:
@@ -74,6 +75,7 @@ private:
     SceneSetv3 &operator=(const SceneSetv3&) = delete;
     int  init(vector<device_t> &r_vdev, vector<scene_t> &r_vscene);
     int  collecting_gid2defense(void);
+    int  collecting_new_devices(scene_t &r_scene);
     int  scenev3_to_scenev2(scene_t &scenev2, scene_t &scenev3);
     int  scenev2_to_scenev3(scene_t &scenev3, scene_t &scenev2);
     int  scenev3_to_scenev2(vector<scene_t> &vscenev2, vector<scene_t> &vscenev3);
