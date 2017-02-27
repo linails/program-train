@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-02-27 17:53:53
+ * Last modified: 2017-02-27 20:33:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -102,7 +102,7 @@ int  DicParser::parser_xhzd(int argc, char **argv)
         ftool.get_wordcell(wc);
 
         /* Print */
-        #if 0
+        #if 1
         cout << "line : " << line << endl;
         cout << "wc.word : " << wc.word << endl;
         for(auto &u : wc.attr){
