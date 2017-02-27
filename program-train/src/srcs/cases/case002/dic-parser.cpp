@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-01-17 22:26:21
+ * Last modified: 2017-02-27 17:53:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,6 +16,7 @@
 #include "stringTools.h"
 #include <cassert>
 #include "format-parser.hpp"
+#include "disk-dic.hpp"
 
 using std::cout;
 using std::endl;
@@ -33,9 +34,9 @@ int  DicParser::dicparser_main(int argc, char **argv)
 {
     int ret = 0;
 
-    //ret = this->parser_xhzd(argc, argv); assert(-1 != ret);
+    ret = this->parser_xhzd(argc, argv); assert(-1 != ret);
 
-    ret = this->parser_xdhycd(argc, argv); assert(-1 != ret);
+    //ret = this->parser_xdhycd(argc, argv); assert(-1 != ret);
 
     //ret = this->parser_cycd(argc, argv); assert(-1 != ret);
 
@@ -100,6 +101,8 @@ int  DicParser::parser_xhzd(int argc, char **argv)
 
         ftool.get_wordcell(wc);
 
+        /* Print */
+        #if 0
         cout << "line : " << line << endl;
         cout << "wc.word : " << wc.word << endl;
         for(auto &u : wc.attr){
@@ -114,6 +117,7 @@ int  DicParser::parser_xhzd(int argc, char **argv)
             }
         }
         cout << endl;
+        #endif
     };
 
     //ret = fo.read_index_line(10000, dline, parser);

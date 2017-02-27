@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-02-24 17:43:46
+# Last modified: 2017-02-27 15:40:49
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -136,18 +136,20 @@ set(SRC_LIST
    srcs/cases/cases.cpp
    srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case001/src/infinite_loops_v2.cpp
-   srcs/cases/case001/src/infinite_loops_v3.cpp
-   srcs/cases/case001/test/test_main.cpp
-   srcs/cases/case001/test/v3_test.cpp
+#   srcs/cases/case001/src/infinite_loops_v2.cpp
+#   srcs/cases/case001/src/infinite_loops_v3.cpp
+#   srcs/cases/case001/test/test_main.cpp
+#   srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case002/dic-parser.cpp
-#   srcs/cases/case002/formatParsing.cpp
-#   srcs/cases/case002/format-parser.cpp
-#   srcs/cases/case002/regex_common.cpp
-#   srcs/cases/case002/rfileoprt.cpp
-#   srcs/cases/case002/rwfileoprt.cpp
-#   srcs/cases/case002/stringTools.cpp
+   srcs/cases/case002/dic-parser.cpp
+   srcs/cases/case002/formatParsing.cpp
+   srcs/cases/case002/format-parser.cpp
+   srcs/cases/case002/regex_common.cpp
+   srcs/cases/case002/rfileoprt.cpp
+   srcs/cases/case002/rwfileoprt.cpp
+   srcs/cases/case002/stringTools.cpp
+   srcs/cases/case002/disk-dic.cpp
+   srcs/cases/case002/segmentation.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case003/key-bind-main.cpp
 #   srcs/cases/case003/disk.cpp

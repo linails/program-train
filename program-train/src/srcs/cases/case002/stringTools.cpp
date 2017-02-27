@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2017-01-19 23:30:23
+ * Last modified: 2017-02-27 17:31:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -524,6 +524,11 @@ int  stringTools::split_utf_code(vector<string> &result, string s)
     }
 
     return ret;
+}
+
+int  stringTools::utf_code2string(string &s, vector<string> utf_code)
+{
+    for(auto &u : utf_code) s += u; return 0;
 }
 
 int  stringTools::utf_count(string &s)

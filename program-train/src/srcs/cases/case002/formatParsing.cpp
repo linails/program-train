@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-01-17 22:30:10
+ * Last modified: 2017-02-27 17:55:58
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,6 +16,7 @@
 #include <cassert>
 #include "cppjieba/Jieba.hpp"
 #include "cppjieba/KeywordExtractor.hpp"
+#include "segmentation.hpp"
 
 using std::map;
 using std::cout;
@@ -86,7 +87,7 @@ int formatPrint(string fname,string line)
 /*format parsing for xinhuazidian*/
 void formatTool::formatParsing_xhzd(string &s)
 {
-    #if 0
+    #if 1
     /* 
      * Only For debug
      * */
@@ -98,9 +99,16 @@ void formatTool::formatParsing_xhzd(string &s)
     };
     #endif
 
-
     /* get wc.word */
-    regex_common_c0x("^[\\w\\W][^`<\\s]+", s, this->m_wc.word);
+    {
+        regex_common_c0x("^[\\w\\W][^`<\\s]+", s, this->m_wc.word);
+
+        stringTools st;
+
+        char   buf[512] = {0, };
+        sprintf(buf, "[ *1234567890·]");
+        st.filter(buf, this->m_wc.word);
+    }
 
 
     /* get wc.attr */
@@ -111,28 +119,50 @@ void formatTool::formatParsing_xhzd(string &s)
         assert(units.size() == 1);
 
         regex_common_c0x("`\\d`[\\W\\w][^`<]*", units[0], this->m_wc.attr);
+
+        stringTools st;
+        char   buf[512] = {0, };
+        sprintf(buf, "[ `*1234567890·]");
+        for(size_t i=0; i<this->m_wc.attr.size(); i++){
+            st.filter(buf, this->m_wc.attr[i]);
+        }
     }
 
 
     /* get units */
     {
         vector<string> units;
-        //regex_common_c0x("(\\(\\d\\)){1}.+?(?=>\\(\\d\\))|\\(\\d\\).*", s, units);
 
-        #if 0
-        stringTools st(s);
+        vector<string> patterns;
+        patterns.push_back("(\\(\\d\\)).+?(?=\\(\\d\\))");
+        patterns.push_back("(\\(\\d\\)).+$");
+        this->regex_split(patterns, s, units);
 
-        st.match("([1-9])-[([1-9])|$]", units);
-        #else
-        this->regex_split(s, units);
-        #endif
+        /*
+         * 针对 (10) 及以上的条目进行处理
+         * */
+        {
+            if(9 <= units.size()){
+                vector<string> subunits;
 
-        //print_units(units);
+                vector<string> subpatterns;
+                subpatterns.push_back("(\\d\\)).+?(?=\\d\\))");
+                subpatterns.push_back("(\\d\\)).+$");
+                this->regex_split(subpatterns, units[8], subunits);
+                {
+                    if(false == subunits.empty()){
+                        cout << "subunits.size() = " << subunits.size() << endl;
+                        print_units(subunits);
+                    }
+                }
+            }
+        }
 
         vector<string> subunits;
         for(auto iter = units.begin();
                  iter!= units.end(); iter++){
 
+            //cout << "iter = " << *iter << endl;
             regex_common_c0x("<br>[^<]+", *iter, subunits);
             if(false == subunits.empty()){
                 for(auto iiter = subunits.begin();
@@ -231,9 +261,11 @@ void formatTool::formatParsing_xdhycd(string &s)
     if(1 < st.utf_count(this->m_wc.word)){
         this->m_wc.spell = string(bref, bref.find("]") + 1, string::npos);
 
+        #if 0
         vector<string> words;
         jieba.Cut(this->m_wc.spell, words, true);
         cout << "words : "; for(auto &s : words) cout << s << " / "; cout << endl;
+        #endif
     }
 
     /* get wc.attr */
@@ -245,11 +277,13 @@ void formatTool::formatParsing_xdhycd(string &s)
         for(auto &u : units) st.filter("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○1234567890]", u);
         this->m_wc.attr = units;
 
+        #if 0
         for(auto &us : units){
             vector<string> words;
             jieba.Cut(us, words, true);
             cout << "word- : "; for(auto &s : words) cout << s << " / "; cout << endl;
         }
+        #endif
     }
 
 }
@@ -324,6 +358,16 @@ void formatTool::formatParsing_hytycfyccd(string &s)
 
 //---------------------------------------------------------
 
+const char *formatTool::property_words[]  = {
+    "名",
+    "〈方〉",
+    "副",
+    "数",
+    "形",
+    "动",
+    ""
+};
+
 const char *formatTool::fnameList[] = {
     "cycd.txt",
     "hycddq.txt",
@@ -343,13 +387,13 @@ void (formatTool::* formatTool::formatParsingList[])(string &) = {
 /* 
  * For jieba dics
  * */
-const char* const formatTool::DICT_PATH      = "../src/libs/cppjieba/dict/jieba.dict.utf8";
-const char* const formatTool::HMM_PATH       = "../src/libs/cppjieba/dict/hmm_model.utf8";
-const char* const formatTool::USER_DICT_PATH = "../src/libs/cppjieba/dict/user.dict.utf8";
-const char* const formatTool::IDF_PATH       = "../src/libs/cppjieba/dict/idf.utf8";
-const char* const formatTool::STOP_WORD_PATH = "../src/libs/cppjieba/dict/stop_words.utf8";
+const char *const formatTool::DICT_PATH      = "../src/libs/cppjieba/dict/jieba.dict.utf8";
+const char *const formatTool::HMM_PATH       = "../src/libs/cppjieba/dict/hmm_model.utf8";
+const char *const formatTool::USER_DICT_PATH = "../src/libs/cppjieba/dict/user.dict.utf8";
+const char *const formatTool::IDF_PATH       = "../src/libs/cppjieba/dict/idf.utf8";
+const char *const formatTool::STOP_WORD_PATH = "../src/libs/cppjieba/dict/stop_words.utf8";
 
-Jieba formatTool::jieba(formatTool::DICT_PATH, formatTool::HMM_PATH, formatTool::USER_DICT_PATH);
+//Jieba formatTool::jieba(formatTool::DICT_PATH, formatTool::HMM_PATH, formatTool::USER_DICT_PATH);
 
 formatTool::formatTool(std::string fname,std::string line)
     :m_fname(&fname[fname.rfind('/') + 1])
@@ -367,7 +411,7 @@ formatTool::~formatTool()
 {
 }
 
-int  formatTool::regex_split(string &s, vector<string> &units)
+int  formatTool::regex_split(vector<string> &patterns, string &s, vector<string> &units)
 {
     int ret = 0;
 
@@ -378,7 +422,7 @@ int  formatTool::regex_split(string &s, vector<string> &units)
         size_t len = 0;
         vector<string> last;
 
-        regex_common_c0x("(\\(\\d\\)).+?(?=\\(\\d\\))", s, units);
+        regex_common_c0x(patterns[0].c_str(), s, units);
         if(0 != units.size()){
 
             memcpy(ptr, s.c_str(), s.size());
@@ -388,12 +432,11 @@ int  formatTool::regex_split(string &s, vector<string> &units)
 
             if(len < s.size()){
                 string sptr = &ptr[len];
-                regex_common_c0x("(\\(\\d\\)).+$", sptr, last);
+                regex_common_c0x(patterns[1].c_str(), sptr, last);
 
                 if(last.size() > 0){
                     units.push_back(last[0]);
                 }
-                //cout << "last[0] : " << last[0] << endl;
             }
         }else{
             units.push_back(s);

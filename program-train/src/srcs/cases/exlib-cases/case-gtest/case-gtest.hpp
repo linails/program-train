@@ -1,7 +1,7 @@
 /*
  * Progarm Name: case-gtest.hpp
  * Created Time: 2017-02-24 13:36:11
- * Last modified: 2017-02-24 16:00:16
+ * Last modified: 2017-02-27 09:50:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -28,6 +28,8 @@
  * |    *_STRNE(str1, str);                     // the two C strings have different content
  * |    *_STRCASEEQ(expected_str, actual_str);  // the two C strings have the same content, ignoring case
  * |    *_STRCASENE(str1, str);                 // the two C strings have different content, ignoring case
+ * |    *_DEATH(statement, regex);              // statement crashes with the given error
+ * |    *_EXIT(statement, predicate, regex);    // statement exits with the given error and its exit code matches predicate
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * |    *_THROW(statement, exception_type);     // statement throws an exception of the given type

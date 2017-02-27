@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2017-01-19 23:29:47
+ * Last modified: 2017-02-27 17:30:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -40,6 +40,7 @@ public:
     int  print_utf_code(string &s, int mode = 0);   // mode : [0/bin | 1/hex]
     int  print_utf_code(const char *str, int mode = 0);
     int  split_utf_code(vector<string> &result, string s = "");
+    int  utf_code2string(string &s, vector<string> utf_code);
     int  utf_count(string &s);
     int  utf_count(const char *str);
 private:
