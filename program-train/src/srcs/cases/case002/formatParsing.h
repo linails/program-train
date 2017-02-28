@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.h
  * Created Time: 2016-05-15 12:14:15
- * Last modified: 2017-02-27 17:50:04
+ * Last modified: 2017-02-28 10:00:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,9 +16,6 @@
 using std::string;
 using std::vector;
 using namespace cppjieba;
-
-/*for c callback*/
-extern int formatPrint(string fname, string line);
 
 typedef vector<vector<string> > ContentsType_t; 
 

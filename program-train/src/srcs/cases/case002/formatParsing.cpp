@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-02-27 22:18:40
+ * Last modified: 2017-02-28 11:06:48
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -21,17 +21,6 @@
 using std::map;
 using std::cout;
 using std::endl;
-
-//---------------------------------------------------------
-
-int formatPrint(string fname,string line)
-{
-    int ret = 0;
-
-    formatTool ftool(fname,line);
-
-    return ret;
-}
 
 /*format parsing for xinhuazidian*/
 void formatTool::formatParsing_xhzd(string &s)
@@ -151,15 +140,17 @@ void formatTool::formatParsing_xhzd(string &s)
             stringTools st;
             for(auto &vu : this->m_wc.contents){
                 for(auto &u : vu){
-                    st.filter("∶abcdefghijklmnopqrstuvwxyz ;-ABCDEFGHIJKLMNOPQRSTUVWXYZ'/.,", u);
+                    st.filter("∶ -", u);
 
                     vector<string> result; 
                     vector<string> remain; 
                     st.split_utf_code(result, u);
                     do{
                         remain.clear();
-                        auto begin = find(result.begin(), result.end(), "[");
                         auto end   = find(result.begin(), result.end(), "]");
+                        auto begin = find(result.begin(), result.end(), "[");
+
+                        if(begin > end){ end = find(begin, result.end(), "]"); }
                         if((begin != result.end()) && (end != result.end())){
                             for(auto iter = result.begin();
                                      iter!= result.end(); iter++){
@@ -173,6 +164,7 @@ void formatTool::formatParsing_xhzd(string &s)
                         }
 
                         result = remain;
+                        //print_units(result);
                     }while(remain.end() != find(remain.begin(), remain.end(), "["));
                 }
             }

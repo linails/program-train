@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-02-27 20:33:21
+ * Last modified: 2017-02-28 16:57:20
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -28,11 +28,14 @@ DicParser::DicParser()
 
 DicParser::~DicParser()
 {
+    this->uninit();
 }
 
 int  DicParser::dicparser_main(int argc, char **argv)
 {
     int ret = 0;
+
+    ret = this->init(argc, argv); assert(-1 != ret);
 
     ret = this->parser_xhzd(argc, argv); assert(-1 != ret);
 
@@ -45,6 +48,27 @@ int  DicParser::dicparser_main(int argc, char **argv)
     //ret = this->parser_hytycfyccd(argc, argv); assert(-1 != ret);
 
     return ret;
+}
+
+int  DicParser::init(int argc, char **argv)
+{
+    if(3 == argc){
+        this->m_db = string(argv[2]);
+        cout << "this->m_db : " << this->m_db << endl;
+    }
+    if(nullptr == this->m_disk){
+        this->m_disk = new DiskDic(this->m_db);
+    }
+    return 0;
+}
+
+int  DicParser::uninit(void)
+{
+    if(nullptr != this->m_disk){
+        delete this->m_disk;
+        this->m_disk = nullptr;
+    }
+    return 0;
 }
     
 int  DicParser::parser_xhzd(int argc, char **argv)
@@ -73,7 +97,7 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     /* 
      *
      * */
-    auto print_line = [](string line) ->void{
+    auto print_line = [this](string line) ->void{
         static unsigned int index = 0;
         cout << endl;
         cout << "Line " << ++index << " : " << line << endl;
@@ -84,14 +108,16 @@ int  DicParser::parser_xhzd(int argc, char **argv)
 
     ret = fo.read_index_line(10000, dline, print_line);
 
-    //ret = formatPrint(fn, dline);
 
+    if(nullptr != this->m_disk){
+        this->m_disk->init_tables();
+    }
 
 
     /* 
      *
      * */
-    auto parser = [](string line) -> void{
+    auto parser = [this](string line) -> void{
 
         WordCell_t wc;
         string fn = "/home/minphone/space_sdc/workspace/"
@@ -100,6 +126,17 @@ int  DicParser::parser_xhzd(int argc, char **argv)
         formatTool ftool(fn,line);
 
         ftool.get_wordcell(wc);
+
+        /* add in database */
+        {
+            #if 1
+            if((nullptr != this->m_disk) && (wc.attr.size() == 2)){
+                if(-1 != this->m_disk->insert_ws_word_spell(wc.word, wc.attr[1])){
+                    cout << "insert ... succeed !" << endl;
+                }
+            }
+            #endif
+        }
 
         /* Print */
         #if 1
@@ -227,6 +264,10 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     ret = fo.read_linebyline(filter);
 #endif
 
+    if(nullptr != this->m_disk){
+        this->m_disk->init_tables();
+    }
+
     /* 
      *
      * */
@@ -282,7 +323,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     timer.timing();
     #else
 
-    int index = 18000;
+    int index = 38000;
     for(int i=0 + index; i<10 + index; i++){
         timer.timing();
         ret = fo.read_index_line(i, dline, parser);

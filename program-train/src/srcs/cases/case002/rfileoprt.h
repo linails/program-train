@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rfileoprt.h
  * Created Time: 2015-12-28 20:39:01
- * Last modified: 2016-12-15 23:04:58
+ * Last modified: 2017-02-28 16:16:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,6 +10,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <functional>
 
 using namespace std;
 
@@ -23,8 +24,10 @@ public:
     int read_linebyline(void (*pcb)(const char *p_line));
     int read_linebyline(void (*pcb)(string line));
     int read_linebyline(void (*pcb)(string &r_line));
+    int read_linebyline(std::function<void (string)> pcb = nullptr);
     /*read index line*/
-    int read_index_line(unsigned int index,string &dline, void (*pcb)(string line) = NULL);
+    //int read_index_line(unsigned int index,string &dline, void (*pcb)(string line) = NULL);
+    int read_index_line(unsigned int index,string &dline, std::function<void (string)> pcb = nullptr);
     int read_index_line(unsigned int index,void (*pcb)(string line));
     int read_index_line(unsigned int index,void (*pcb)(string &r_line));
     int read_index_line(unsigned int index,void (*pcb)(string ,string));

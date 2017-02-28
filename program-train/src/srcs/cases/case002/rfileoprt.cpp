@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rfileoprt.cpp
  * Created Time: 2015-12-28 20:38:55
- * Last modified: 2016-12-15 23:04:10
+ * Last modified: 2017-02-28 16:17:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -82,8 +82,35 @@ int rFileOprt::read_linebyline(void (*pcb)(std::string &r_line))
     return -1;
 }
 
+int rFileOprt::read_linebyline(std::function<void (string)> pcb)
+{
+    if(pcb != NULL){
+        for(auto iter = this->m_contents.begin();
+                 iter!= this->m_contents.end(); iter++){
+            pcb(*iter);
+        }
+        return 0;
+    }
+    return -1;
+}
+
+#if 0
 /*readfile index line*/
 int rFileOprt::read_index_line(unsigned int index,std::string &dline, void (*pcb)(string line))
+{
+    if(index <= this->m_contents.size() && index >= 1){
+        dline = this->m_contents[--index];
+
+        if(NULL != pcb){
+            pcb(dline);
+        }
+        return 0;
+    }
+    return -1;
+}
+#endif
+
+int rFileOprt::read_index_line(unsigned int index,string &dline, std::function<void (string)> pcb)
 {
     if(index <= this->m_contents.size() && index >= 1){
         dline = this->m_contents[--index];
