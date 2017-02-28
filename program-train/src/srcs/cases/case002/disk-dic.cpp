@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk-dic.cpp
  * Created Time: 2017-02-27 15:35:36
- * Last modified: 2017-02-28 17:19:05
+ * Last modified: 2017-02-28 20:19:40
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -30,8 +30,8 @@ using std::string;
  * */
 const char *DiskDic::CorpusTables[] = {
 "create table CorpusWordSpell(word text, spell text, remark text, plural integer default 0, unique(word,spell))",
-"create table CorpusWordMeans(word text, mean text, source text, remark text)",
-"create table CorpusWordChars(word text, char text, mean text, source text, remark text)"
+"create table CorpusWordMeans(word text, mean text, source text, remark text, unique(word,mean))",
+"create table CorpusWordChars(word text, char text, mean text, source text, remark text, unique(word,char))"
 };
 
 DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
@@ -40,7 +40,35 @@ DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
 {"part|insert-WS-word",             "insert into CorpusWordSpell(word) values('%s')"},
 {"part|insert-WS-words",            "insert into CorpusWordSpell(words, plural) values('%s',1)"},
 {"part|insert-WS-word/spell",       "insert into CorpusWordSpell(word, spell) values('%s','%s')"},
-{"update-WS-spell",                 "update CorpusWordSpell set spell='%s' where word='%s'"}
+{"update-WS-spell",                 "update CorpusWordSpell set spell='%s' where word='%s'"},
+{"update-WS-remark",                "update CorpusWordSpell set remark='%s' where word='%s'"},
+{"update-WS-plural",                "update CorpusWordSpell set plural='%d' where word='%s'"},
+{"select-WS|full",                  "select * from CorpusWordSpell where word='%s'"}, // 可能返回多个 - 同音
+{"select-WS-spell",                 "select spell from CorpusWordSpell where word='%s'"},
+{"select-WS-remark",                "select remark from CorpusWordSpell where word='%s'"},
+{"select-WS-plural",                "select plural from CorpusWordSpell where word='%s'"},
+{"full|insert-WM",                  "insert into CorpusWordMeans values('%s','%s','%s','%s')"},
+{"part|insert-WM-word",             "insert into CorpusWordMeans(word) values('%s')"},
+{"part|insert-WM-word/mean",        "insert into CorpusWordMeans(word, mean) values('%s','%s')"},
+{"part|insert-WM-word/mean/source", "insert into CorpusWordMeans(word, mean, source) values('%s','%s','%s')"},
+{"part|insert-WM-word/remark",      "insert into CorpusWordMeans(word, remark) values('%s','%s')"},
+{"update-WM-mean",                  "update CorpusWordMeans set mean='%s' where word='%s'"},
+{"update-WM-source",                "update CorpusWordMeans set source='%s' where word='%s'"},
+{"update-WM-remark",                "update CorpusWordMeans set remark='%s' where word='%s'"},
+{"select-WM|full",                  "select * from CorpusWordMeans where word='%s'"}, // 可能返回多个 - 多义
+{"select-WM-mean",                  "select mean from CorpusWordMeans where word='%s'"},
+{"select-WM-source",                "select source from CorpusWordMeans where word='%s'"},
+{"select-WM-remark",                "select remark from CorpusWordMeans where word='%s'"},
+{"full|insert-WC",                  "insert CorpusWordChars into values('%s','%s','%s','%s','%s')"},
+{"part|insert-WC-word",             "insert into CorpusWordChars(word) values('%s')"},
+{"part|insert-WC-word/char",        "insert into CorpusWordChars(word, char) values('%s','%s')"},
+{"part|insert-WC-word/mean",        "insert into CorpusWordChars(word, mean) values('%s','%s')"},
+{"part|insert-WC-word/mean/source", "insert into CorpusWordChars(word, mean, source) values('%s','%s','%s')"},
+{"part|insert-WC-word/remark",      "insert into CorpusWordChars(word, remark) values('%s','%s')"},
+{"update-WC-char",                  "update CorpusWordChars set char='%s' where word='%s'"},
+{"update-WC-mean",                  "update CorpusWordChars set mean='%s' where word='%s'"},
+{"update-WC-source",                "update CorpusWordChars set source='%s' where word='%s'"},
+{"update-WC-remark",                "update CorpusWordChars set remark='%s' where word='%s'"},
 };
 
 DiskDic::DiskDic(string db)
