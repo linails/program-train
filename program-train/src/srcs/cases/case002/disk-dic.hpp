@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk-dic.hpp
  * Created Time: 2017-02-27 15:35:40
- * Last modified: 2017-02-28 16:48:24
+ * Last modified: 2017-03-01 17:41:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "stringTools.h"
 
 using std::string;
 using std::vector;
@@ -29,6 +30,8 @@ public:
     int  insert_ws_word(vector<string> &v_word);
     int  insert_ws_word_spell(string word, string spell);
     int  insert_ws_word_spell(vector<pair<string, string> > &v_word_spell); // <word,spell>
+    int  get_spell(vector<string> &spells, string word);
+    int  get_word_spell(vector<pair<string, string> > &v_word_spell);
 private:
     typedef struct{ const char *tag; const char *sql; }SqlOprts_t;
     typedef map<const char *, const char *> SqlMap_t;
@@ -38,6 +41,7 @@ private:
     string      m_db;
     sqlite3    *m_conn = nullptr;
     SqlMap_t    m_sqlmap;
+    stringTools m_st;
 };
 
 #endif //_DISK_DIC_HPP_

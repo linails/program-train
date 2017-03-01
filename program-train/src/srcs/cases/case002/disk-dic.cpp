@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk-dic.cpp
  * Created Time: 2017-02-27 15:35:36
- * Last modified: 2017-02-28 20:19:40
+ * Last modified: 2017-03-01 17:43:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,21 +29,45 @@ using std::string;
  *  06 char     : 词性
  * */
 const char *DiskDic::CorpusTables[] = {
-"create table CorpusWordSpell(word text, spell text, remark text, plural integer default 0, unique(word,spell))",
-"create table CorpusWordMeans(word text, mean text, source text, remark text, unique(word,mean))",
-"create table CorpusWordChars(word text, char text, mean text, source text, remark text, unique(word,char))"
+"create table CorpusWordSpell(\
+    id integer primary key unique,\
+    word text,\
+    spell text,\
+    remark text,\
+    plural integer default 0,\
+    unique(word,spell))",
+"create table CorpusWordMeans(\
+    id integer primary key unique,\
+    word text,\
+    mean text,\
+    source text,\
+    remark text,\
+    unique(word,mean))",
+"create table CorpusWordChars(\
+    id integer primary key unique,\
+    word text,\
+    char text,\
+    mean text,\
+    source text,\
+    remark text,\
+    unique(word,char))"
 };
 
 DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
 {"full|insert-WS|single",           "insert into CorpusWordSpell values('%s','%s','%s')"},
 {"full|insert-WS|plural",           "insert into CorpusWordSpell values('%s','%s','%s',1)"},
+{"full|insert-WS|bulk",             "insert into CorpusWordSpell values(?,?,?,?)"},
 {"part|insert-WS-word",             "insert into CorpusWordSpell(word) values('%s')"},
-{"part|insert-WS-words",            "insert into CorpusWordSpell(words, plural) values('%s',1)"},
+{"part|insert-WS-words",            "insert into CorpusWordSpell(word, plural) values('%s',1)"},
 {"part|insert-WS-word/spell",       "insert into CorpusWordSpell(word, spell) values('%s','%s')"},
+{"part|insert-WS-words/spell",      "insert into CorpusWordSpell(word, spell, plural) values('%s','%s',1)"},
+{"part|insert-WS-words/spell|bulk", "insert into CorpusWordSpell(word, spell, plural) values(?,?,?)"},
 {"update-WS-spell",                 "update CorpusWordSpell set spell='%s' where word='%s'"},
 {"update-WS-remark",                "update CorpusWordSpell set remark='%s' where word='%s'"},
 {"update-WS-plural",                "update CorpusWordSpell set plural='%d' where word='%s'"},
-{"select-WS|full",                  "select * from CorpusWordSpell where word='%s'"}, // 可能返回多个 - 同音
+{"select-WS|full-all",              "select * from CorpusWordSpell"},
+{"select-WS|full-by(id)",           "select * from CorpusWordSpell where id='%d'"},
+{"select-WS|full-by(word)",         "select * from CorpusWordSpell where word='%s'"}, // 可能返回多个 - 同音
 {"select-WS-spell",                 "select spell from CorpusWordSpell where word='%s'"},
 {"select-WS-remark",                "select remark from CorpusWordSpell where word='%s'"},
 {"select-WS-plural",                "select plural from CorpusWordSpell where word='%s'"},
@@ -55,7 +79,8 @@ DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
 {"update-WM-mean",                  "update CorpusWordMeans set mean='%s' where word='%s'"},
 {"update-WM-source",                "update CorpusWordMeans set source='%s' where word='%s'"},
 {"update-WM-remark",                "update CorpusWordMeans set remark='%s' where word='%s'"},
-{"select-WM|full",                  "select * from CorpusWordMeans where word='%s'"}, // 可能返回多个 - 多义
+{"select-WM|full-by(id)",           "select * from CorpusWordMeans where id='%d'"},
+{"select-WM|full-by(word)",         "select * from CorpusWordMeans where word='%s'"}, // 可能返回多个 - 多义
 {"select-WM-mean",                  "select mean from CorpusWordMeans where word='%s'"},
 {"select-WM-source",                "select source from CorpusWordMeans where word='%s'"},
 {"select-WM-remark",                "select remark from CorpusWordMeans where word='%s'"},
@@ -69,6 +94,13 @@ DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
 {"update-WC-mean",                  "update CorpusWordChars set mean='%s' where word='%s'"},
 {"update-WC-source",                "update CorpusWordChars set source='%s' where word='%s'"},
 {"update-WC-remark",                "update CorpusWordChars set remark='%s' where word='%s'"},
+{"select-WC|full-by(id)",           "select * from CorpusWordChars where id='%d'"},
+{"select-WC|full-by(word)",         "select * from CorpusWordChars where word='%s'"}, // 可能返回多个 - 多义
+{"select-WC|full-by(char)",         "select * from CorpusWordChars where char='%s'"}, // 可能返回多个
+{"select-WC-char",                  "select char from CorpusWordChars where word='%s'"},
+{"select-WC-mean",                  "select mean from CorpusWordChars where word='%s'"},
+{"select-WC-source",                "select source from CorpusWordChars where word='%s'"},
+{"select-WC-remark",                "select remark from CorpusWordChars where word='%s'"},
 };
 
 DiskDic::DiskDic(string db)
@@ -78,7 +110,7 @@ DiskDic::DiskDic(string db)
     int result = sqlite3_open(m_db.c_str(), &this->m_conn);
     if(result != SQLITE_OK){
         sqlite3_close(this->m_conn);
-        cout << "[ERROR] open db failed" << endl;
+        cout << "[Error] open db failed" << endl;
         return;
     }else{
         cout << "open succeed !" << endl;
@@ -103,18 +135,22 @@ int  DiskDic::init_tables(void)
     for(size_t i=0; i<sizeof(CorpusTables)/sizeof(*CorpusTables); i++){
         sqlite3_stmt *stmt = NULL;
 
-        if(SQLITE_OK != sqlite3_prepare_v2(this->m_conn, CorpusTables[i], strlen(CorpusTables[i]), &stmt, NULL)){
+        if(SQLITE_OK != sqlite3_prepare_v2(this->m_conn,
+                                           CorpusTables[i],
+                                           strlen(CorpusTables[i]),
+                                           &stmt,
+                                           NULL)){
             if(stmt){
                 sqlite3_finalize(stmt);
             }
-            cout << "[ERROR] Create Table failed : " << CorpusTables[i] << endl;
+            cout << "[Error] Create Table failed : " << CorpusTables[i] << endl;
             ret = -1;
             continue;
         }
 
         if(SQLITE_DONE != sqlite3_step(stmt)){
             sqlite3_finalize(stmt);
-            cout << "[ERROR] step failed " << endl;
+            cout << "[Error] step failed " << endl;
             ret = -1;
             continue;
         }
@@ -153,11 +189,18 @@ int  DiskDic::insert_ws_word_spell(string word, string spell)
     sqlite3_stmt *stmt = NULL;
     char sql[512]      = {0, };
 
-    sprintf(sql, this->m_sqlmap["part|insert-WS-word/spell"], word.c_str(), spell.c_str());
+    if(1 < this->m_st.utf_count(word)){
+        sprintf(sql, this->m_sqlmap["part|insert-WS-words/spell"], word.c_str(), spell.c_str());
+    }else{
+        sprintf(sql, this->m_sqlmap["part|insert-WS-word/spell"], word.c_str(), spell.c_str());
+    }
 
-    if(sqlite3_prepare_v2(this->m_conn, sql, strlen(sql), &stmt, NULL) != SQLITE_OK){
-        if(stmt)
-            sqlite3_finalize(stmt);
+    if(sqlite3_prepare_v2(this->m_conn,
+                          sql,
+                          strlen(sql),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
         return -1;
     }
     if(sqlite3_step(stmt) != SQLITE_DONE){
@@ -178,6 +221,152 @@ int  DiskDic::insert_ws_word_spell(string word, string spell)
  * */
 int  DiskDic::insert_ws_word_spell(vector<pair<string, string> > &v_word_spell)
 {
+    sqlite3_stmt *stmt  = NULL;
+    string beginSQL     = "begin transaction";
+    string commitSQL    = "commit";
+
+    /*
+     * begin transaction
+     * */
+    if(sqlite3_prepare_v2(this->m_conn,
+                          beginSQL.c_str(),
+                          beginSQL.size(),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE){
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+    sqlite3_finalize(stmt);
+
+
+    /* 
+     * insert data
+     * */
+    auto bulk_init = [&stmt, this](){
+        stmt = NULL;
+        if(sqlite3_prepare_v2(this->m_conn, 
+                              this->m_sqlmap["part|insert-WS-words/spell|bulk"], 
+                              strlen(this->m_sqlmap["part|insert-WS-words/spell|bulk"]),
+                              &stmt,
+                              NULL) != SQLITE_OK){
+            if(stmt) sqlite3_finalize(stmt);
+            return -1;
+        }else
+            return 0;
+    };
+
+    if(0 != bulk_init()) return -1;
+
+    for(auto &ws : v_word_spell){
+        int plural = 0; if(1 < this->m_st.utf_count(ws.first)) plural = 1;
+
+        sqlite3_bind_text(stmt, 1, ws.first.c_str(),  ws.first.size(), SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 2, ws.second.c_str(), ws.second.size(), SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt,  3, plural);
+
+        if(sqlite3_step(stmt) != SQLITE_DONE){
+            sqlite3_finalize(stmt);
+            if(0 != bulk_init()) return -1;
+            cout << "[Error] sqlite-step failed !" << endl;
+            continue;
+        }
+
+        sqlite3_reset(stmt);
+    }
+    if(stmt) sqlite3_finalize(stmt);
+
+
+    /*
+     * commit
+     * */
+    stmt = NULL;
+    if(sqlite3_prepare_v2(this->m_conn, 
+                          commitSQL.c_str(),
+                          commitSQL.size(),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE){
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+    sqlite3_finalize(stmt);
+
+    return 0;
+}
+
+int  DiskDic::get_spell(vector<string> &spells, string word)
+{
+    sqlite3_stmt *stmt  = NULL;
+    char sql[512]       = {0, };
+    sprintf(sql, this->m_sqlmap["select-WS-spell"], word.c_str());
+
+    if(sqlite3_prepare_v2(this->m_conn,
+                          sql,
+                          strlen(sql),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    do{
+        int ret = sqlite3_step(stmt);
+        if(SQLITE_ROW == ret){
+            string spell = (const char *)sqlite3_column_text(stmt, 0);
+            spells.push_back(spell);
+        }else if(SQLITE_DONE == ret){
+            break;
+        }else{
+            cout << "[Error] select failed" << endl;
+            sqlite3_finalize(stmt);
+            return -1;
+        }
+    }while(1);
+
+    return 0;
+}
+
+int  DiskDic::get_word_spell(vector<pair<string, string> > &v_word_spell)
+{
+    sqlite3_stmt *stmt  = NULL;
+
+    if(sqlite3_prepare_v2(this->m_conn,
+                          this->m_sqlmap["select-WS|full-all"],
+                          strlen(this->m_sqlmap["select-WS|full-all"]),
+                          &stmt, NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    v_word_spell.clear();
+
+    do{
+        int ret = sqlite3_step(stmt);
+
+        if(SQLITE_ROW == ret){
+            //int id = sqlite3_column_int(stmt, 0); cout << "id = " << id << endl;
+            string word((const char *)sqlite3_column_text(stmt, 1));
+            string spell((const char *)sqlite3_column_text(stmt, 2));
+            v_word_spell.push_back(make_pair(word, spell));
+        }else if(SQLITE_DONE == ret){
+            break;
+        }else{
+            cout << "[Error] select failed" << endl;
+            sqlite3_finalize(stmt);
+            return -1;
+        }
+
+    }while(1);
+
+    if(stmt) sqlite3_finalize(stmt);
+
     return 0;
 }
 

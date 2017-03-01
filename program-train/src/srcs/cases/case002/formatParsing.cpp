@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-02-28 11:06:48
+ * Last modified: 2017-03-01 09:40:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -60,7 +60,7 @@ void formatTool::formatParsing_xhzd(string &s)
 
         stringTools st;
         char   buf[512] = {0, };
-        sprintf(buf, "[ `*1234567890·]");
+        sprintf(buf, "[ `*1234567890·－]");
         for(size_t i=0; i<this->m_wc.attr.size(); i++){
             st.filter(buf, this->m_wc.attr[i]);
         }

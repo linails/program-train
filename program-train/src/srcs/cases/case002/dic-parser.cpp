@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-02-28 16:57:20
+ * Last modified: 2017-03-01 17:42:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -113,11 +113,15 @@ int  DicParser::parser_xhzd(int argc, char **argv)
         this->m_disk->init_tables();
     }
 
+    /* 
+     * used For bulk into database
+     * */
+    vector<pair<string, string> > word_spells;
 
     /* 
      *
      * */
-    auto parser = [this](string line) -> void{
+    auto parser = [this, &word_spells](string line) -> void{
 
         WordCell_t wc;
         string fn = "/home/minphone/space_sdc/workspace/"
@@ -129,11 +133,15 @@ int  DicParser::parser_xhzd(int argc, char **argv)
 
         /* add in database */
         {
-            #if 1
+            #if 0
             if((nullptr != this->m_disk) && (wc.attr.size() == 2)){
                 if(-1 != this->m_disk->insert_ws_word_spell(wc.word, wc.attr[1])){
                     cout << "insert ... succeed !" << endl;
                 }
+            }
+            #else
+            if(wc.attr.size() == 2){
+                word_spells.push_back(make_pair(wc.word, wc.attr[1]));
             }
             #endif
         }
@@ -158,8 +166,35 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     };
 
     //ret = fo.read_index_line(10000, dline, parser);
-    ret = fo.read_linebyline(parser);
-    //ret = fo.read_index_line(2, dline, parser);
+    //ret = fo.read_linebyline(parser);
+    //ret = fo.read_index_line(1, dline, parser);
+
+#if 1
+    #if 1
+    int index = 0;
+    for(int i=0 + index; i<10 + index; i++){
+        timer.timing();
+        ret = fo.read_index_line(i, dline, parser);
+        timer.timing();
+    }
+    #else
+    ret = fo.read_index_line(1, dline, parser);
+    #endif
+
+    #if 1
+    if(-1 != this->m_disk->insert_ws_word_spell(word_spells)){
+        cout << "bulk insert succeed" << endl;
+    }
+    #endif
+#endif
+
+    word_spells.clear();
+    cout << "word_spells.size() : " << word_spells.size() << endl;
+    this->m_disk->get_word_spell(word_spells);
+    cout << "word_spells.size() : " << word_spells.size() << endl;
+
+    vector<string> spells;
+    this->m_disk->get_spell(spells, word_spells[0].first);
 
     return ret;
 }
