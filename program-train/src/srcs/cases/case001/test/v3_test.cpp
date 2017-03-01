@@ -1,7 +1,7 @@
 /*
  * Progarm Name: v3_test.cpp
  * Created Time: 2016-11-10 14:49:57
- * Last modified: 2017-02-26 20:26:03
+ * Last modified: 2017-03-01 13:26:57
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -1993,10 +1993,11 @@ void eg06(SceneSetv3 &ss)
         vector<int>         rcscenes;
 
 
-        scene.id                = 40;
+        scene.id                = 2;
         scene.time              = 8 * 3600; // 6:00:00
         scene.timetype          = 2;
 
+#if 0
         cdevs.push_back(vdev[66]);
 
         /* bug record :
@@ -2008,6 +2009,18 @@ void eg06(SceneSetv3 &ss)
 
         //rscenes.push_back(27);
         rcdevs.push_back(vdev[66]);
+#endif
+        cdevs.push_back(vdev[2]);
+
+
+        rdevs.push_back(vdev[1000]);
+        rdevs.push_back(vdev[37]);
+        rdevs.push_back(vdev[29]);
+        rdevs.push_back(vdev[0]);
+        rdevs.push_back(vdev[322]);
+        rdevs.push_back(vdev[21]);
+        rdevs.push_back(vdev[214]);
+
 
         //--------------------------------
         scene.condition_devs    = cdevs;
@@ -2022,6 +2035,58 @@ void eg06(SceneSetv3 &ss)
         timer.timing();
         int ret = ss.infinite_loops_check(scene);    // aim 
         cout << "ret : " << ret << " - vdev[66]"<< endl;
+     
+        if(0 == ret){
+            cout << "infinite loop ? : YES" << endl;
+        }else if(1 == ret){
+            cout << "timing error !" << endl;
+        }else{
+            cout << "infinite loop ? : NO" << endl;
+        }
+        timer.timing();
+        cout << "----------------------------------------------------------------" << endl;
+    }
+}
+
+void eg07(SceneSetv3 &ss)
+{
+    {
+        scene_t scene;
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 2;
+        scene.time              = 20;
+        scene.timetype          = 2;
+
+        cdevs.push_back(vdev[20]);
+        //cscenes.push_back(3);
+
+        rdevs.push_back(vdev[419]);
+        rdevs.push_back(vdev[398]);
+        rdevs.push_back(vdev[220]);
+        rdevs.push_back(vdev[383]);
+        rdevs.push_back(vdev[4]);
+        rdevs.push_back(vdev[27]);
+        rdevs.push_back(vdev[154]);
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        cout << "----------------------------------------------------------------" << endl;
+        Timer timer;
+        timer.timing();
+        int ret = ss.infinite_loops_check(scene);    // aim 
      
         if(0 == ret){
             cout << "infinite loop ? : YES" << endl;
@@ -2065,6 +2130,12 @@ void subtest_v3(void)
             gatewayid++;
         }
     }
+    device_t dev = {
+        128,
+        "myhome : ------------------------",
+        "json ctrl cmd"
+    };
+    vdev.push_back(dev);
 
     cout << "gatewayid : " << gatewayid << endl;
 
@@ -2097,13 +2168,26 @@ void subtest_v3(void)
     void eg05(SceneSetv3 &ss);
     eg05(ss);
 
+    cout << "----------------------------------------------------------------" << endl;
+    cout << "================================================================" << endl;
+    ss.del_scene(2);
+    ss.del_scene(3);
+    ss.del_scene(4);
+    ss.del_scene(5);
+    ss.del_scene(7);
+    ss.del_scene(9);
+    ss.del_scene(10);
     void eg06(SceneSetv3 &ss);
-    //eg06(ss);
+    eg06(ss);
+    cout << "================================================================" << endl;
+    ss.del_scene(2);
+    void eg07(SceneSetv3 &ss);
+    eg07(ss);
 
     cout << "----------------------------------------------------------------" << endl;
 
-    ss.add_defense_gid(11);
-    ss.add_defense_gid(12);
+    //ss.add_defense_gid(11);
+    //ss.add_defense_gid(12);
     //ss.add_defense_gid(12);
 
     ss.print_all_set();

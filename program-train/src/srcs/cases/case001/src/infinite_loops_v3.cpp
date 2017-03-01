@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.cpp
  * Created Time: 2016-11-09 15:06:00
- * Last modified: 2017-02-26 20:20:18
+ * Last modified: 2017-03-01 13:56:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -92,6 +92,11 @@ int  SceneSetv3::infinite_loops_check(scene_t &r_scene)    /* aim */
 {
     int ret = 0;
 
+    /* 
+     * For debug : print scene
+     * */
+    this->print_scene(r_scene);
+
     auto check_loopself = [](scene_t &scenev3){
         auto iter = find(scenev3.condition_scenes.begin(), 
                          scenev3.condition_scenes.end(), 
@@ -171,6 +176,36 @@ int  SceneSetv3::infinite_loops_check(scene_t &r_scene)    /* aim */
 int  SceneSetv3::del_scene(int sceneid)
 {
     if(nullptr != this->m_sst2){
+
+        #if 1
+        auto isexist = [&sceneid](scene_t scene){
+            if(sceneid == scene.id){
+                /* exist */
+                return 1;
+            }else{
+                return 0;
+            }
+        };
+
+        /* Is exist before
+         *
+         *  Y : restore
+         *  N : break
+         * */
+        auto iter = find_if(this->m_orig_scenes.begin(), 
+                            this->m_orig_scenes.end(), 
+                            isexist);
+
+        if(iter == this->m_orig_scenes.end()){
+            /* N */
+            cout << "find nothing !" << endl;
+        }else{
+            /* Y */
+            cout << "find it : sceie.id(" << iter->id << ") and del it !" << endl;
+            this->m_orig_scenes.erase(iter);
+        }
+        #endif
+
         return this->m_sst2->del_scene(sceneid);
     }else
         return -1;
@@ -525,5 +560,39 @@ int  SceneSetv3::add_defense_gid(int defense_gid)
 
 
     return ret;
+}
+
+void SceneSetv3::print_scene(scene_t &scene)
+{
+
+    auto devs_info = [](vector<device_t> &devs){
+        for(auto &dev : devs){
+            cout << "                                  ";
+            cout <<dev.id << " - " << dev.gateway << endl;
+        }
+    };
+    auto scenes_info = [](vector<int> &scenes){
+        for(auto sid : scenes){ cout << sid << " - "; } cout << endl;
+    };
+    auto defenses_info = [](vector<defense_t> &defenses){
+        for(auto &did : defenses){
+            cout << "(" << did.id << "," << did.alarm << ")" << "-";
+        }
+        cout << endl;
+    };
+
+    string head = "[SceneSetv3-info]";
+    cout << "------------------ Scene ------------------" << endl;
+    cout << head << " id = " << scene.id << endl;
+    cout << head << " contion--(devs): " << endl; devs_info(scene.condition_devs);
+    cout << head << " contion-(scene): " ; scenes_info(scene.condition_scenes);
+    cout << head << " contion-(defen): " ; defenses_info(scene.condition_defense);
+    cout << head << " result---(devs): " << endl; devs_info(scene.result_devs);
+    cout << head << " result--(scene): " ; scenes_info(scene.result_scenes);
+    cout << head << " result--(defen): " ; defenses_info(scene.result_defense);
+    cout << head << " recover--(devs): " << endl; devs_info(scene.recover_devs);
+    cout << head << " recover-(scene): " ; scenes_info(scene.recover_scenes);
+    cout << head << " recover-(defen): " ; defenses_info(scene.recover_defense);
+    cout << "-------------------------------------------" << endl;
 }
 

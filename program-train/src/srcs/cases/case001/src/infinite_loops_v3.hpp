@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.hpp
  * Created Time: 2016-11-09 15:05:54
- * Last modified: 2017-02-26 14:27:55
+ * Last modified: 2017-03-01 13:33:08
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -80,6 +80,7 @@ private:
     int  scenev2_to_scenev3(scene_t &scenev3, scene_t &scenev2);
     int  scenev3_to_scenev2(vector<scene_t> &vscenev2, vector<scene_t> &vscenev3);
     int  scenev2_to_scenev3(vector<scene_t> &vscenev3, vector<scene_t> &vscenev2);
+    void print_scene(scene_t &scene);
 private:
     struct DeviceHash{
         size_t operator()(const device_t &device) const
