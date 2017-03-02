@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rfileoprt.cpp
  * Created Time: 2015-12-28 20:38:55
- * Last modified: 2017-02-28 16:17:23
+ * Last modified: 2017-03-02 09:09:11
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -56,6 +56,7 @@ int rFileOprt::read_linebyline(void (*pcb)(const char *p_line))
     return -1;
 }
 
+#if 0
 /*readfile linebyline ,pcb: callback of parse line data*/
 int rFileOprt::read_linebyline(void (*pcb)(std::string line))
 {
@@ -68,6 +69,7 @@ int rFileOprt::read_linebyline(void (*pcb)(std::string line))
     }
     return -1;
 }
+#endif
 
 /*readfile linebyline ,pcb: callback of parse line data*/
 int rFileOprt::read_linebyline(void (*pcb)(std::string &r_line))

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rfileoprt.h
  * Created Time: 2015-12-28 20:39:01
- * Last modified: 2017-02-28 16:16:59
+ * Last modified: 2017-03-02 09:09:02
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -22,7 +22,7 @@ public:
 
     /*readfile linebyline,pcb: callback of parse line data*/
     int read_linebyline(void (*pcb)(const char *p_line));
-    int read_linebyline(void (*pcb)(string line));
+    //int read_linebyline(void (*pcb)(string line));
     int read_linebyline(void (*pcb)(string &r_line));
     int read_linebyline(std::function<void (string)> pcb = nullptr);
     /*read index line*/

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-03-01 14:05:19
+ * Last modified: 2017-03-02 09:49:40
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -54,9 +54,13 @@ int Cases::cases_main(int argc, char **argv)
         /* 
          * case002
          * */
-        DicParser dp;
+        DicParser *pdp = new DicParser();
+        DicParser::get_instance(pdp);
 
-        ret = dp.dicparser_main(argc, argv); assert(-1 != ret);
+        if(nullptr != pdp){
+            ret = pdp->dicparser_main(argc, argv); assert(-1 != ret);
+            delete pdp;
+        }
 #endif
     }
     {

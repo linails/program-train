@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.h
  * Created Time: 2016-05-15 12:14:15
- * Last modified: 2017-02-28 10:00:04
+ * Last modified: 2017-03-02 16:41:26
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,10 +12,12 @@
 #include <vector>
 #include "cppjieba/Jieba.hpp"
 #include "cppjieba/KeywordExtractor.hpp"
+#include <map>
 
 using std::string;
 using std::vector;
 using namespace cppjieba;
+using std::pair;
 
 typedef vector<vector<string> > ContentsType_t; 
 
@@ -38,6 +40,29 @@ private:
     void formatParsing_xdhycd(string &s);    /*for 现代汉语词典*/
     void formatParsing_xhzd(string &s);      /*for 新华字典*/
     int  regex_split(vector<string> &patterns, string &s, vector<string> &units);
+
+    /*
+     * pair eg. "[]" / "()"
+     *
+     * return eg."[unit]"
+     *            ^    ^
+     *            |    |
+     * Index: < first,last >
+     *
+     * Failed : pos = <-1, -1>
+     * */
+    int  unit_in_block_check(pair<int, int> &pos, string &unit, string &oristr, const char *spair);
+
+    /* 
+     * unit : str
+     *
+     * return eg."strxxxxstr"
+     *             ^      ^
+     *             |      |
+     * Index: < first , last >
+     * Failed : pos = <-1, -1>
+     * */
+    int  block_check(pair<int, int> &pos, string &oristr, string &unit);
 private:
     static const char *const DICT_PATH      ;
     static const char *const HMM_PATH       ;

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-03-01 17:42:53
+ * Last modified: 2017-03-02 15:39:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,10 +17,18 @@
 #include <cassert>
 #include "format-parser.hpp"
 #include "disk-dic.hpp"
+#include "alpha-bet.hpp"
 
 using std::cout;
 using std::endl;
 using std::string;
+
+DicParser *DicParser::instance = nullptr;
+
+DicParser *DicParser::get_instance(DicParser *ptr)
+{
+    if(nullptr != ptr) instance = ptr; return instance;
+}
 
 DicParser::DicParser()
 {
@@ -37,9 +45,9 @@ int  DicParser::dicparser_main(int argc, char **argv)
 
     ret = this->init(argc, argv); assert(-1 != ret);
 
-    ret = this->parser_xhzd(argc, argv); assert(-1 != ret);
+    //ret = this->parser_xhzd(argc, argv); assert(-1 != ret);
 
-    //ret = this->parser_xdhycd(argc, argv); assert(-1 != ret);
+    ret = this->parser_xdhycd(argc, argv); assert(-1 != ret);
 
     //ret = this->parser_cycd(argc, argv); assert(-1 != ret);
 
@@ -117,11 +125,12 @@ int  DicParser::parser_xhzd(int argc, char **argv)
      * used For bulk into database
      * */
     vector<pair<string, string> > word_spells;
+    vector<string>                words;
 
     /* 
      *
      * */
-    auto parser = [this, &word_spells](string line) -> void{
+    auto parser = [this, &word_spells, &words](string line) -> void{
 
         WordCell_t wc;
         string fn = "/home/minphone/space_sdc/workspace/"
@@ -142,6 +151,9 @@ int  DicParser::parser_xhzd(int argc, char **argv)
             #else
             if(wc.attr.size() == 2){
                 word_spells.push_back(make_pair(wc.word, wc.attr[1]));
+            }else{
+                words.push_back(wc.word);
+                //word_spells.push_back(make_pair(wc.word, ""));
             }
             #endif
         }
@@ -169,7 +181,7 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     //ret = fo.read_linebyline(parser);
     //ret = fo.read_index_line(1, dline, parser);
 
-#if 1
+#if 0
     #if 1
     int index = 0;
     for(int i=0 + index; i<10 + index; i++){
@@ -181,13 +193,20 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     ret = fo.read_index_line(1, dline, parser);
     #endif
 
-    #if 1
+#endif
+    #if 0
     if(-1 != this->m_disk->insert_ws_word_spell(word_spells)){
-        cout << "bulk insert succeed" << endl;
+        cout << "bulk insert succeed | <word, spell>" << endl;
     }
     #endif
-#endif
+    #if 0
+    cout << "words.size() : " << words.size() << endl;
+    if(-1 != this->m_disk->insert_ws_word(words)){
+        cout << "bulk insert succeed | only word" << endl;
+    }
+    #endif
 
+#if 1
     word_spells.clear();
     cout << "word_spells.size() : " << word_spells.size() << endl;
     this->m_disk->get_word_spell(word_spells);
@@ -196,6 +215,37 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     vector<string> spells;
     this->m_disk->get_spell(spells, word_spells[0].first);
 
+    words.clear();
+    this->m_disk->get_words(words, 1);
+    cout << "words.size() : " << words.size() << endl;
+
+    spells.clear();
+    this->m_disk->get_all_spells(spells);
+    cout << "spells.size() : " << spells.size() << endl;
+
+    #if 0
+    stringTools st;
+    for(auto spell : spells){
+        cout << "spell : " << spell << endl;
+        vector<string> alphas;
+        st.split_utf_code(alphas, spell);
+        //this->m_disk->insert_alphabet(alphas);
+    }
+    #endif
+
+    AlphaBet abet;
+
+    words.clear();
+    this->m_disk->get_all_words(words);
+    abet.add_words(words);
+    abet.add_spell(spells);
+
+    vector<string> alphas;
+    abet.get_alplas(alphas);
+    cout << "alphas : "; for(auto &u : alphas) cout << u ; cout << "|" << endl;
+    //this->m_disk->insert_alphabet(alphas, 0);
+
+#endif
     return ret;
 }
 
@@ -306,7 +356,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     /* 
      *
      * */
-    auto parser = [](string line) -> void{
+    auto parser = [this](string line) -> void{
 
         WordCell_t wc;
         string fn = "/home/minphone/space_sdc/workspace/"
@@ -316,9 +366,9 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
 
         ftool.get_wordcell(wc);
 
-        //cout << "line : " << line << endl;
+        cout << "line : " << line << endl;
         cout << "wc.word : " << wc.word << endl;
-        cout << "wc.spel : " << wc.spell << " - " << wc.spell.length();
+        cout << "wc.spel : " << wc.spell << endl;
 
 #if 0
         for(int i=0; i<wc.spell.length(); i++){
@@ -326,7 +376,6 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
             printf("%d-%c ", c, c);
         }
 #endif
-        cout << endl;
 
         for(auto &u : wc.attr){
             cout << "wc.attr : " << u << endl;
@@ -358,7 +407,7 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     timer.timing();
     #else
 
-    int index = 38000;
+    int index = 31000;
     for(int i=0 + index; i<10 + index; i++){
         timer.timing();
         ret = fo.read_index_line(i, dline, parser);
@@ -461,5 +510,10 @@ int  DicParser::parser_hytycfyccd(int argc, char **argv)
     int ret = 0;
 
     return ret;
+}
+
+DiskDic *DicParser::get_disk(void)
+{
+    return this->m_disk;
 }
 

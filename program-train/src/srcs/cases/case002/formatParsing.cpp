@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-03-01 09:40:49
+ * Last modified: 2017-03-02 17:57:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,6 +17,7 @@
 #include "cppjieba/Jieba.hpp"
 #include "cppjieba/KeywordExtractor.hpp"
 #include "segmentation.hpp"
+#include "dic-parser.hpp"
 
 using std::map;
 using std::cout;
@@ -42,10 +43,7 @@ void formatTool::formatParsing_xhzd(string &s)
         regex_common_c0x("^[\\w\\W][^`<\\s]+", s, this->m_wc.word);
 
         stringTools st;
-
-        char   buf[512] = {0, };
-        sprintf(buf, "[ *1234567890·]");
-        st.filter(buf, this->m_wc.word);
+        st.filter("[ *1234567890·]", this->m_wc.word);
     }
 
 
@@ -59,10 +57,8 @@ void formatTool::formatParsing_xhzd(string &s)
         regex_common_c0x("`\\d`[\\W\\w][^`<]*", units[0], this->m_wc.attr);
 
         stringTools st;
-        char   buf[512] = {0, };
-        sprintf(buf, "[ `*1234567890·－]");
         for(size_t i=0; i<this->m_wc.attr.size(); i++){
-            st.filter(buf, this->m_wc.attr[i]);
+            st.filter("[ `*1234567890·－]", this->m_wc.attr[i]);
         }
     }
 
@@ -176,31 +172,72 @@ void formatTool::formatParsing_xhzd(string &s)
 /*format parsing for xiandaihanyucidian*/
 void formatTool::formatParsing_xdhycd(string &s)
 {
-    stringTools st;
-    st.filter("[<]-[>]", s);
+    vector<string> alphas;
+    vector<string> words;
+    DicParser::get_instance()->get_disk()->get_all_alpha(alphas);
+    DicParser::get_instance()->get_disk()->get_all_words(words);
+    cout << "alphas : " << alphas << endl;
 
-    /* get wc.word 
-     * 1> "^.[^*<\\s]+" */
-    regex_common_c0x("^.[^*<\\s]+", s, this->m_wc.word);
+    {
+        stringTools st;
+        st.filter("[<]-[>]", s);
 
-    char   buf[512] = {0, };
-    string bref(s, 0, s.find("①"));
-
-    sprintf(buf, "[ *1234567890·%s]", this->m_wc.word.c_str());
-    st.filter(buf, bref);
-    this->m_wc.spell = bref;
-
-    if(1 < st.utf_count(this->m_wc.word)){
-        this->m_wc.spell = string(bref, bref.find("]") + 1, string::npos);
-
-        #if 0
-        vector<string> words;
-        jieba.Cut(this->m_wc.spell, words, true);
-        cout << "words : "; for(auto &s : words) cout << s << " / "; cout << endl;
-        #endif
+        /* get wc.word 
+         * 1> "^.[^*<\\s]+" */
+        regex_common_c0x("^.[^*<\\s]+", s, this->m_wc.word);
     }
 
-    /* get wc.attr */
+
+    /* 
+     * get spell 
+     * */
+    {
+        stringTools st;
+        string bref(s, 0, s.find("①"));
+
+        st.filter("[ *1234567890·]", bref);
+        this->m_wc.spell = bref;
+
+        {
+            pair<int, int> pos;
+            if(0 != this->unit_in_block_check(pos, this->m_wc.word, bref, "[]")){
+                if(0 == this->block_check(pos, bref, this->m_wc.word)){
+                    printf("pos<int, int> = <%d, %d>\n", pos.first, pos.second);
+                    this->m_wc.spell = string(bref, pos.second, string::npos);
+                }else{
+                    cout << "[Warning] Line = " << __LINE__ << endl;
+                }
+            }
+        }
+
+
+        if(1 < st.utf_count(this->m_wc.word)){
+            this->m_wc.spell = string(bref, bref.find("]") + 1, string::npos);
+        }
+
+        st.filter("()～〈 ", this->m_wc.spell);
+
+        string fstring;
+        list<string> spell_l; st.split_utf_code(spell_l, this->m_wc.spell);
+        for(auto iter = spell_l.begin();
+                 iter!= spell_l.end(); iter++){
+            auto isexist = find(words.begin(), words.end(), *iter);
+            if(isexist != words.end()){
+                fstring = *iter;
+                cout << "fstring : " << fstring << endl;
+                break;
+            }
+        }
+
+        if(false == fstring.empty()){
+            this->m_wc.spell = string(this->m_wc.spell, 0, this->m_wc.spell.find(fstring));
+        }
+    }
+
+
+    /*
+     * get wc.attr 
+     * */
     {
         vector<string> units;
 
@@ -208,14 +245,6 @@ void formatTool::formatParsing_xdhycd(string &s)
         st.match("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]", units);
         for(auto &u : units) st.filter("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○1234567890]", u);
         this->m_wc.attr = units;
-
-        #if 0
-        for(auto &us : units){
-            vector<string> words;
-            jieba.Cut(us, words, true);
-            cout << "word- : "; for(auto &s : words) cout << s << " / "; cout << endl;
-        }
-        #endif
     }
 
 }
@@ -342,8 +371,72 @@ int  formatTool::regex_split(vector<string> &patterns, string &s, vector<string>
 
 int  formatTool::get_wordcell(WordCell_t &wc)
 {
-    wc = this->m_wc;
+    wc = this->m_wc; return 0;
+}
 
-    return 0;
+/*
+ * pair eg. "[]" / "()"
+ *
+ * return eg."[unit]"
+ *            ^    ^
+ *            |    |
+ * Index: < first,last >
+ *
+ * Failed : pos = <-1, -1>
+ * */
+int  formatTool::unit_in_block_check(pair<int, int> &pos, string &unit, string &oristr, const char *spair)
+{
+    int ret = -1;
+
+    /* init pos */
+    pos.first = -1;
+    pos.second= -1;
+
+    stringTools st;
+    if(2 == st.utf_count(spair)){
+        string finder;
+        vector<string> spair_utf;
+        st.split_utf_code(spair_utf, spair);
+
+        finder += spair_utf[0];
+        finder += unit;
+        finder += spair_utf[1];
+
+        if((int)string::npos != (pos.first = oristr.find(finder))){
+            pos.second= pos.first + finder.size();
+            ret = 0;
+        }
+    }
+
+    return ret;
+}
+
+/* 
+ * unit : str
+ *
+ * return eg."strxxxxstr"
+ *            ^        ^
+ *            |        |
+ * Index: < first , last >
+ * Failed : pos = <-1, -1>
+ * */
+int  formatTool::block_check(pair<int, int> &pos, string &oristr, string &unit)
+{
+    int ret = -1;
+
+    /* init pos */
+    pos.first = -1;
+    pos.second= -1;
+
+    if((int)string::npos != (pos.first = oristr.find(unit))){
+        if(0 == pos.first){
+            if((int)string::npos != (pos.second = oristr.find(unit, unit.length()))){
+                pos.second += unit.length();
+                ret = 0;
+            }
+        }
+    }
+
+    return ret;
 }
 

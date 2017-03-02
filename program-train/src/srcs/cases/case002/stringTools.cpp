@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2017-02-27 20:24:12
+ * Last modified: 2017-03-02 15:23:07
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -526,7 +526,34 @@ int  stringTools::split_utf_code(vector<string> &result, string s)
     return ret;
 }
 
+int  stringTools::split_utf_code(list<string> &result, string s)
+{
+    int ret = 0;
+
+    vector<vector<unsigned char> > vvch;
+
+    if(true == s.empty()){
+        ret = this->utf_string2code(vvch, this->m_str);
+    }else{
+        ret = this->utf_string2code(vvch, s);
+    }
+
+    string st;
+    for(auto &u : vvch){
+        st.clear();
+        for(auto ch : u) st.push_back(ch);
+        result.push_back(st);
+    }
+
+    return ret;
+}
+
 int  stringTools::utf_code2string(string &s, vector<string> utf_code)
+{
+    s.clear(); for(auto &u : utf_code) s += u; return 0;
+}
+
+int  stringTools::utf_code2string(string &s, list<string> utf_code)
 {
     s.clear(); for(auto &u : utf_code) s += u; return 0;
 }

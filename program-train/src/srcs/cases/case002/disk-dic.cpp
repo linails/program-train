@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk-dic.cpp
  * Created Time: 2017-02-27 15:35:36
- * Last modified: 2017-03-01 17:43:22
+ * Last modified: 2017-03-02 15:03:38
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -27,8 +27,13 @@ using std::string;
  *  04 source   : 出处
  *  05 mean     : 意义
  *  06 char     : 词性
+ *  07 plural   : 单复数，即字数
  * */
 const char *DiskDic::CorpusTables[] = {
+"create table CorpusAlphabet(\
+    id integer primary key unique,\
+    alpha text unique,\
+    remark text)",
 "create table CorpusWordSpell(\
     id integer primary key unique,\
     word text,\
@@ -54,14 +59,20 @@ const char *DiskDic::CorpusTables[] = {
 };
 
 DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
+{"full|insert-AB",                  "insert into CorpusAlphabet values('%s','%s')"},
+{"part|insert-AB-alpha",            "insert into CorpusAlphabet(alpha) values('%s')"},
+{"part|insert-AB-alpha|bulk",       "insert into CorpusAlphabet(alpha) values(?)"},
+{"update-AB-remark",                "update CorpusAlphabet set remark='%s' where alpha='%s'"},
+{"select-AB|full-all",              "select * from CorpusAlphabet"},
 {"full|insert-WS|single",           "insert into CorpusWordSpell values('%s','%s','%s')"},
 {"full|insert-WS|plural",           "insert into CorpusWordSpell values('%s','%s','%s',1)"},
 {"full|insert-WS|bulk",             "insert into CorpusWordSpell values(?,?,?,?)"},
 {"part|insert-WS-word",             "insert into CorpusWordSpell(word) values('%s')"},
 {"part|insert-WS-words",            "insert into CorpusWordSpell(word, plural) values('%s',1)"},
 {"part|insert-WS-word/spell",       "insert into CorpusWordSpell(word, spell) values('%s','%s')"},
-{"part|insert-WS-words/spell",      "insert into CorpusWordSpell(word, spell, plural) values('%s','%s',1)"},
+{"part|insert-WS-words/spell",      "insert into CorpusWordSpell(word, spell, plural) values('%s','%s','%d')"},
 {"part|insert-WS-words/spell|bulk", "insert into CorpusWordSpell(word, spell, plural) values(?,?,?)"},
+{"part|insert-WS-words/plural|bulk","insert into CorpusWordSpell(word, plural) values(?,?)"},
 {"update-WS-spell",                 "update CorpusWordSpell set spell='%s' where word='%s'"},
 {"update-WS-remark",                "update CorpusWordSpell set remark='%s' where word='%s'"},
 {"update-WS-plural",                "update CorpusWordSpell set plural='%d' where word='%s'"},
@@ -69,8 +80,11 @@ DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
 {"select-WS|full-by(id)",           "select * from CorpusWordSpell where id='%d'"},
 {"select-WS|full-by(word)",         "select * from CorpusWordSpell where word='%s'"}, // 可能返回多个 - 同音
 {"select-WS-spell",                 "select spell from CorpusWordSpell where word='%s'"},
+{"select-WS-spells|full",           "select spell from CorpusWordSpell"},
+{"select-WS-words|full",            "select word from CorpusWordSpell"},
 {"select-WS-remark",                "select remark from CorpusWordSpell where word='%s'"},
 {"select-WS-plural",                "select plural from CorpusWordSpell where word='%s'"},
+{"select-WS-word|by(plural)",       "select word from CorpusWordSpell where plural='%d'"},
 {"full|insert-WM",                  "insert into CorpusWordMeans values('%s','%s','%s','%s')"},
 {"part|insert-WM-word",             "insert into CorpusWordMeans(word) values('%s')"},
 {"part|insert-WM-word/mean",        "insert into CorpusWordMeans(word, mean) values('%s','%s')"},
@@ -164,36 +178,12 @@ int  DiskDic::init_tables(void)
     return ret;
 }
 
-int  DiskDic::insert_ws_single_full(string word, string spell, string remark)
-{
-    return 0;
-}
-
-int  DiskDic::insert_ws_plural_full(string word, string spell, string remark)
-{
-    return 0;
-}
-
-int  DiskDic::insert_ws_word(string word)
-{
-    return 0;
-}
-
-int  DiskDic::insert_ws_word(vector<string> &v_word)
-{
-    return 0;
-}
-
-int  DiskDic::insert_ws_word_spell(string word, string spell)
+int  DiskDic::insert_alphabet(string alpha, string remark)
 {
     sqlite3_stmt *stmt = NULL;
-    char sql[512]      = {0, };
+    char sql[1024]     = {0, };
 
-    if(1 < this->m_st.utf_count(word)){
-        sprintf(sql, this->m_sqlmap["part|insert-WS-words/spell"], word.c_str(), spell.c_str());
-    }else{
-        sprintf(sql, this->m_sqlmap["part|insert-WS-word/spell"], word.c_str(), spell.c_str());
-    }
+    sprintf(sql, this->m_sqlmap["full|insert-AB"], alpha.c_str(), remark.c_str());
 
     if(sqlite3_prepare_v2(this->m_conn,
                           sql,
@@ -216,10 +206,35 @@ int  DiskDic::insert_ws_word_spell(string word, string spell)
     return 0;
 }
 
-/*
- * <word,spell>
- * */
-int  DiskDic::insert_ws_word_spell(vector<pair<string, string> > &v_word_spell)
+int  DiskDic::insert_alphabet(string alpha)
+{
+    sqlite3_stmt *stmt = NULL;
+    char sql[1024]     = {0, };
+
+    sprintf(sql, this->m_sqlmap["part|insert-AB-alpha"], alpha.c_str());
+
+    if(sqlite3_prepare_v2(this->m_conn,
+                          sql,
+                          strlen(sql),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE){
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    /* 
+     * release stmt
+     * */
+    sqlite3_finalize(stmt);
+
+    return 0;
+}
+
+int  DiskDic::insert_alphabet(vector<string> &alphas)
 {
     sqlite3_stmt *stmt  = NULL;
     string beginSQL     = "begin transaction";
@@ -249,8 +264,8 @@ int  DiskDic::insert_ws_word_spell(vector<pair<string, string> > &v_word_spell)
     auto bulk_init = [&stmt, this](){
         stmt = NULL;
         if(sqlite3_prepare_v2(this->m_conn, 
-                              this->m_sqlmap["part|insert-WS-words/spell|bulk"], 
-                              strlen(this->m_sqlmap["part|insert-WS-words/spell|bulk"]),
+                              this->m_sqlmap["part|insert-AB-alpha|bulk"], 
+                              strlen(this->m_sqlmap["part|insert-AB-alpha|bulk"]),
                               &stmt,
                               NULL) != SQLITE_OK){
             if(stmt) sqlite3_finalize(stmt);
@@ -261,12 +276,9 @@ int  DiskDic::insert_ws_word_spell(vector<pair<string, string> > &v_word_spell)
 
     if(0 != bulk_init()) return -1;
 
-    for(auto &ws : v_word_spell){
-        int plural = 0; if(1 < this->m_st.utf_count(ws.first)) plural = 1;
+    for(auto &alpha : alphas){
 
-        sqlite3_bind_text(stmt, 1, ws.first.c_str(),  ws.first.size(), SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 2, ws.second.c_str(), ws.second.size(), SQLITE_TRANSIENT);
-        sqlite3_bind_int(stmt,  3, plural);
+        sqlite3_bind_text(stmt, 1, alpha.c_str(),  alpha.size(), SQLITE_TRANSIENT);
 
         if(sqlite3_step(stmt) != SQLITE_DONE){
             sqlite3_finalize(stmt);
@@ -301,10 +313,262 @@ int  DiskDic::insert_ws_word_spell(vector<pair<string, string> > &v_word_spell)
     return 0;
 }
 
+int  DiskDic::get_all_alpha(vector<string> &alphas)
+{
+    sqlite3_stmt *stmt  = NULL;
+
+    if(sqlite3_prepare_v2(this->m_conn,
+                          this->m_sqlmap["select-AB|full-all"],
+                          strlen(this->m_sqlmap["select-AB|full-all"]),
+                          &stmt, NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    alphas.clear();
+
+    do{
+        int ret = sqlite3_step(stmt);
+
+        if(SQLITE_ROW == ret){
+            //int id = sqlite3_column_int(stmt, 0); cout << "id = " << id << endl;
+            string alpha((const char *)sqlite3_column_text(stmt, 1));
+            alphas.push_back(alpha);
+        }else if(SQLITE_DONE == ret){
+            break;
+        }else{
+            cout << "[Error] select failed" << endl;
+            sqlite3_finalize(stmt);
+            return -1;
+        }
+
+    }while(1);
+
+    if(stmt) sqlite3_finalize(stmt);
+
+    return 0;
+}
+
+int  DiskDic::insert_ws_single_full(string word, string spell, string remark)
+{
+    return 0;
+}
+
+int  DiskDic::insert_ws_plural_full(string word, string spell, string remark)
+{
+    return 0;
+}
+
+int  DiskDic::insert_ws_word(string word)
+{
+    return 0;
+}
+
+int  DiskDic::insert_ws_word(vector<string> &v_word)
+{
+    sqlite3_stmt *stmt  = NULL;
+    string beginSQL     = "begin transaction";
+    string commitSQL    = "commit";
+
+    /*
+     * begin transaction
+     * */
+    if(sqlite3_prepare_v2(this->m_conn,
+                          beginSQL.c_str(),
+                          beginSQL.size(),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE){
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+    sqlite3_finalize(stmt);
+
+
+    /* 
+     * insert data
+     * */
+    auto bulk_init = [&stmt, this](){
+        stmt = NULL;
+        if(sqlite3_prepare_v2(this->m_conn, 
+                              this->m_sqlmap["part|insert-WS-words/plural|bulk"], 
+                              strlen(this->m_sqlmap["part|insert-WS-words/plural|bulk"]),
+                              &stmt,
+                              NULL) != SQLITE_OK){
+            if(stmt) sqlite3_finalize(stmt);
+            return -1;
+        }else
+            return 0;
+    };
+
+    if(0 != bulk_init()) return -1;
+
+    for(auto &word : v_word){
+        int plural = this->m_st.utf_count(word);
+        sqlite3_bind_text(stmt, 1, word.c_str(),  word.size(), SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt,  2, plural);
+
+        if(sqlite3_step(stmt) != SQLITE_DONE){
+            sqlite3_finalize(stmt);
+            if(0 != bulk_init()) return -1;
+            cout << "[Error] sqlite-step failed !" << endl;
+            continue;
+        }
+
+        sqlite3_reset(stmt);
+    }
+    if(stmt) sqlite3_finalize(stmt);
+
+
+    /*
+     * commit
+     * */
+    stmt = NULL;
+    if(sqlite3_prepare_v2(this->m_conn, 
+                          commitSQL.c_str(),
+                          commitSQL.size(),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE){
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(stmt) sqlite3_finalize(stmt);
+
+    return 0;
+}
+
+int  DiskDic::insert_ws_word_spell(string word, string spell)
+{
+    sqlite3_stmt *stmt = NULL;
+    char sql[1024]     = {0, };
+    int  count         = 0;
+
+    if(1 < (count = this->m_st.utf_count(word))){
+        sprintf(sql, this->m_sqlmap["part|insert-WS-words/spell"], word.c_str(), spell.c_str(), count);
+    }else{
+        sprintf(sql, this->m_sqlmap["part|insert-WS-word/spell"], word.c_str(), spell.c_str());
+    }
+
+    if(sqlite3_prepare_v2(this->m_conn,
+                          sql,
+                          strlen(sql),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE){
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    /* 
+     * release stmt
+     * */
+    if(stmt) sqlite3_finalize(stmt);
+
+    return 0;
+}
+
+/*
+ * <word,spell>
+ * */
+int  DiskDic::insert_ws_word_spell(vector<pair<string, string> > &v_word_spell)
+{
+    sqlite3_stmt *stmt  = NULL;
+    string beginSQL     = "begin transaction";
+    string commitSQL    = "commit";
+
+    /*
+     * begin transaction
+     * */
+    if(sqlite3_prepare_v2(this->m_conn,
+                          beginSQL.c_str(),
+                          beginSQL.size(),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE){
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    if(stmt) sqlite3_finalize(stmt);
+
+
+    /* 
+     * insert data
+     * */
+    auto bulk_init = [&stmt, this](){
+        stmt = NULL;
+        if(sqlite3_prepare_v2(this->m_conn, 
+                              this->m_sqlmap["part|insert-WS-words/spell|bulk"], 
+                              strlen(this->m_sqlmap["part|insert-WS-words/spell|bulk"]),
+                              &stmt,
+                              NULL) != SQLITE_OK){
+            if(stmt) sqlite3_finalize(stmt);
+            return -1;
+        }else
+            return 0;
+    };
+
+    if(0 != bulk_init()) return -1;
+
+    for(auto &ws : v_word_spell){
+        int plural = this->m_st.utf_count(ws.first);
+
+        sqlite3_bind_text(stmt, 1, ws.first.c_str(),  ws.first.size(), SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 2, ws.second.c_str(), ws.second.size(), SQLITE_TRANSIENT);
+        sqlite3_bind_int(stmt,  3, plural);
+
+        if(sqlite3_step(stmt) != SQLITE_DONE){
+            sqlite3_finalize(stmt);
+            if(0 != bulk_init()) return -1;
+            cout << "[Error] sqlite-step failed !" << endl;
+            continue;
+        }
+
+        sqlite3_reset(stmt);
+    }
+
+    if(stmt) sqlite3_finalize(stmt);
+
+
+    /*
+     * commit
+     * */
+    stmt = NULL;
+    if(sqlite3_prepare_v2(this->m_conn, 
+                          commitSQL.c_str(),
+                          commitSQL.size(),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+    if(sqlite3_step(stmt) != SQLITE_DONE){
+        sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    if(stmt) sqlite3_finalize(stmt);
+
+    return 0;
+}
+
 int  DiskDic::get_spell(vector<string> &spells, string word)
 {
     sqlite3_stmt *stmt  = NULL;
-    char sql[512]       = {0, };
+    char sql[1024]      = {0, };
     sprintf(sql, this->m_sqlmap["select-WS-spell"], word.c_str());
 
     if(sqlite3_prepare_v2(this->m_conn,
@@ -316,10 +580,15 @@ int  DiskDic::get_spell(vector<string> &spells, string word)
         return -1;
     }
 
+    spells.clear();
+
     do{
         int ret = sqlite3_step(stmt);
         if(SQLITE_ROW == ret){
-            string spell = (const char *)sqlite3_column_text(stmt, 0);
+            string spell;
+            const char *ps = (const char *)sqlite3_column_text(stmt, 0);
+            if(NULL != ps) spell = ps;
+
             spells.push_back(spell);
         }else if(SQLITE_DONE == ret){
             break;
@@ -329,6 +598,8 @@ int  DiskDic::get_spell(vector<string> &spells, string word)
             return -1;
         }
     }while(1);
+
+    if(stmt) sqlite3_finalize(stmt);
 
     return 0;
 }
@@ -353,7 +624,11 @@ int  DiskDic::get_word_spell(vector<pair<string, string> > &v_word_spell)
         if(SQLITE_ROW == ret){
             //int id = sqlite3_column_int(stmt, 0); cout << "id = " << id << endl;
             string word((const char *)sqlite3_column_text(stmt, 1));
-            string spell((const char *)sqlite3_column_text(stmt, 2));
+
+            string spell;
+            const char *ps = (const char *)sqlite3_column_text(stmt, 2);
+            if(NULL != ps) spell = ps;
+
             v_word_spell.push_back(make_pair(word, spell));
         }else if(SQLITE_DONE == ret){
             break;
@@ -363,6 +638,111 @@ int  DiskDic::get_word_spell(vector<pair<string, string> > &v_word_spell)
             return -1;
         }
 
+    }while(1);
+
+    if(stmt) sqlite3_finalize(stmt);
+
+    return 0;
+}
+
+int  DiskDic::get_words(vector<string> &words, int plural)
+{
+    sqlite3_stmt *stmt  = NULL;
+    char sql[1024]      = {0, };
+    sprintf(sql, this->m_sqlmap["select-WS-word|by(plural)"], plural);
+
+    if(sqlite3_prepare_v2(this->m_conn,
+                          sql,
+                          strlen(sql),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    do{
+        int ret = sqlite3_step(stmt);
+        if(SQLITE_ROW == ret){
+            string word= (const char *)sqlite3_column_text(stmt, 0);
+            words.push_back(word);
+        }else if(SQLITE_DONE == ret){
+            break;
+        }else{
+            cout << "[Error] select failed" << endl;
+            sqlite3_finalize(stmt);
+            return -1;
+        }
+    }while(1);
+
+    if(stmt) sqlite3_finalize(stmt);
+
+    return 0;
+}
+
+int  DiskDic::get_all_spells(vector<string> &spells)
+{
+    sqlite3_stmt *stmt  = NULL;
+
+    if(sqlite3_prepare_v2(this->m_conn,
+                          this->m_sqlmap["select-WS-spells|full"],
+                          strlen(this->m_sqlmap["select-WS-spells|full"]),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    spells.clear();
+
+    do{
+        int ret = sqlite3_step(stmt);
+        if(SQLITE_ROW == ret){
+            string spell;
+            const char *ps = (const char *)sqlite3_column_text(stmt, 0);
+            if(NULL != ps) spell = ps;
+
+            spells.push_back(spell);
+        }else if(SQLITE_DONE == ret){
+            break;
+        }else{
+            cout << "[Error] select failed" << endl;
+            sqlite3_finalize(stmt);
+            return -1;
+        }
+    }while(1);
+
+    if(stmt) sqlite3_finalize(stmt);
+
+    return 0;
+}
+
+int  DiskDic::get_all_words(vector<string> &words)
+{
+    sqlite3_stmt *stmt  = NULL;
+
+    if(sqlite3_prepare_v2(this->m_conn,
+                          this->m_sqlmap["select-WS-words|full"],
+                          strlen(this->m_sqlmap["select-WS-words|full"]),
+                          &stmt,
+                          NULL) != SQLITE_OK){
+        if(stmt) sqlite3_finalize(stmt);
+        return -1;
+    }
+
+    words.clear();
+
+    do{
+        int ret = sqlite3_step(stmt);
+        if(SQLITE_ROW == ret){
+            string word= (const char *)sqlite3_column_text(stmt, 0);
+            words.push_back(word);
+        }else if(SQLITE_DONE == ret){
+            break;
+        }else{
+            cout << "[Error] select failed" << endl;
+            sqlite3_finalize(stmt);
+            return -1;
+        }
     }while(1);
 
     if(stmt) sqlite3_finalize(stmt);

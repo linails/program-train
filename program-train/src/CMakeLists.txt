@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-01 14:04:59
+# Last modified: 2017-03-02 10:59:00
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -150,16 +150,17 @@ set(SRC_LIST
    srcs/cases/case002/stringTools.cpp
    srcs/cases/case002/disk-dic.cpp
    srcs/cases/case002/segmentation.cpp
+   srcs/cases/case002/alpha-bet.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case003/key-bind-main.cpp
 #   srcs/cases/case003/disk.cpp
 #   srcs/cases/case003/msg.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case004/bit.cpp
-   srcs/cases/case004/src/worker-thread.cpp
-   srcs/cases/case004/src/binditem-tetris.cpp
-   srcs/cases/case004/test/queue-tetris.cpp
-   srcs/cases/case004/test/bt-test.cpp
+#   srcs/cases/case004/bit.cpp
+#   srcs/cases/case004/src/worker-thread.cpp
+#   srcs/cases/case004/src/binditem-tetris.cpp
+#   srcs/cases/case004/test/queue-tetris.cpp
+#   srcs/cases/case004/test/bt-test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/exlib-cases/case-json/mjson.cpp
    srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
