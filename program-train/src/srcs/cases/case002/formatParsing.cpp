@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-03-02 17:57:14
+ * Last modified: 2017-03-02 22:29:29
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -243,7 +243,18 @@ void formatTool::formatParsing_xdhycd(string &s)
 
         stringTools st(s);
         st.match("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]", units);
-        for(auto &u : units) st.filter("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○1234567890]", u);
+        for(auto &u : units){
+            st.filter("[\\①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○1234567890· ]", u);
+
+            int index = -1;
+            if((int)string::npos != (index = u.find(this->m_wc.spell))){
+                u = string(u, index + this->m_wc.spell.length(), string::npos);
+            }
+
+            st.filter("[abcdefghijklmnopqrstuvwxyz]", u);
+            st.filter("[［]-[］]", u);
+            st.remove_duplicates(u, "。");
+        }
         this->m_wc.attr = units;
     }
 

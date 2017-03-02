@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2017-03-02 15:22:33
+ * Last modified: 2017-03-02 22:28:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -45,6 +45,11 @@ public:
     int  utf_code2string(string &s, list<string> utf_code);
     int  utf_count(string &s);
     int  utf_count(const char *str);
+    /* 
+     * remove = A           | remove = B  |  remove = NULL
+     * "AABBB" -> "ABBB"    |  -> "AAB"   |  -> "AB"
+     * */
+    int  remove_duplicates(string &s, const char *remove = nullptr);
 private:
     int  get_pattern_mode(const char *pattern);
     int  get_subpatterns(const char *pattern);

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2017-03-02 15:23:07
+ * Last modified: 2017-03-02 22:30:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -571,6 +571,15 @@ int  stringTools::utf_count(const char *str)
 {
     string s(str);
     return this->utf_count(s);
+}
+
+/* 
+ * remove = A           | remove = B  |  remove = NULL
+ * "AABBB" -> "ABBB"    |  -> "AAB"   |  -> "AB"
+ * */
+int  stringTools::remove_duplicates(string &s, const char *remove)
+{
+    return 0;
 }
 
 /*success return pattern mode >= 0
