@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-03-02 15:39:14
+ * Last modified: 2017-03-03 15:32:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -18,6 +18,7 @@
 #include "format-parser.hpp"
 #include "disk-dic.hpp"
 #include "alpha-bet.hpp"
+#include <tuple>
 
 using std::cout;
 using std::endl;
@@ -236,7 +237,7 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     AlphaBet abet;
 
     words.clear();
-    this->m_disk->get_all_words(words);
+    this->m_disk->get_all_words_ws(words);
     abet.add_words(words);
     abet.add_spell(spells);
 
@@ -288,67 +289,6 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     //ret = fo.read_index_line(10000, dline, print_line);
 #endif
 
-#if 0
-    auto filter = [](string line) -> void{
-        #if 0
-        static size_t index = 0;
-        static size_t maxlen = 0;
-
-        index++;
-
-        # if 1
-        if(line.size() > maxlen){
-            maxlen = line.size();
-
-            cout << endl;
-            cout << "Line " << index << " : " << line << endl;
-            cout << endl;
-        }
-        # else
-        int cnt = count(line.begin(), line.end(), '<');
-        if(cnt > maxlen){
-            maxlen = cnt;
-
-            cout << endl;
-            cout << "Line " << index << " : " << line << endl;
-            cout << endl;
-        }
-        # endif
-        #else
-        static size_t max = 0;
-
-        WordCell_t wc;
-        string fn = "/home/minphone/space_sdc/workspace/"
-                    "dic_parse/dicparse/src/dic/xdhycd.txt";
-
-        formatTool ftool(fn,line);
-
-        ftool.get_wordcell(wc);
-
-        if(wc.attr.size() > max){
-            //cout << "line : " << line << endl;
-            cout << "wc.word : " << wc.word << endl;
-            for(auto &u : wc.attr){
-                cout << "wc.attr : " << u << endl;
-            }
-
-            int index = 0;
-            for(auto &uv : wc.contents){
-                index++;
-                for(auto &u : uv){
-                    printf("[%d]cout : %s\n", index, u.c_str());
-                }
-            }
-            cout << endl;
-            max = wc.attr.size();
-        }
-
-        #endif
-    };
-
-    ret = fo.read_linebyline(filter);
-#endif
-
     if(nullptr != this->m_disk){
         this->m_disk->init_tables();
     }
@@ -370,15 +310,8 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
         cout << "wc.word : " << wc.word << endl;
         cout << "wc.spel : " << wc.spell << endl;
 
-#if 0
-        for(int i=0; i<wc.spell.length(); i++){
-            unsigned char c = wc.spell[i];
-            printf("%d-%c ", c, c);
-        }
-#endif
-
-        for(auto &u : wc.attr){
-            cout << "wc.attr : " << u << endl;
+        for(auto &u : wc.attr_xdhycd){
+            cout << "wc.<char_|attr> : " << std::get<0>(u) << "|" << std::get<1>(u) << endl;
         }
 
         int index = 0;

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.h
  * Created Time: 2016-05-15 12:14:15
- * Last modified: 2017-03-02 16:41:26
+ * Last modified: 2017-03-03 14:59:39
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,19 +13,28 @@
 #include "cppjieba/Jieba.hpp"
 #include "cppjieba/KeywordExtractor.hpp"
 #include <map>
+#include <tuple>
 
 using std::string;
 using std::vector;
 using namespace cppjieba;
 using std::pair;
+using std::tuple;
 
 typedef vector<vector<string> > ContentsType_t; 
 
-typedef struct{
+/* 
+ * tuple<char_, attr> -> eg. pair<动, xxxxx>
+ *                       eg. pair<形, xxxxx>
+ * */
+typedef vector<tuple<string, string>> AttrXdhycd_t;
+
+typedef struct WordCell{
     string             word;       //亶
-    string             spell;      // dan
+    string             spell;      //dan
     vector<string>     attr;
     ContentsType_t     contents;   //(形声。本义:谷多) , 同本义 [full of grains] ... 
+    AttrXdhycd_t       attr_xdhycd;
 }WordCell_t;
 
 class formatTool{
@@ -34,11 +43,11 @@ public:
     ~formatTool();
     int  get_wordcell(WordCell_t &wc);
 private:
+    void formatParsing_xhzd(string &s);      /*for 新华字典*/
+    void formatParsing_xdhycd(string &s);    /*for 现代汉语词典*/
     void formatParsing_cycd(string &s);      /*for 成语词典*/
     void formatParsing_hycddq(string &s);    /*for 汉语词典大全*/
     void formatParsing_hytycfyccd(string &s);/*for 汉语同义词反义词词典*/
-    void formatParsing_xdhycd(string &s);    /*for 现代汉语词典*/
-    void formatParsing_xhzd(string &s);      /*for 新华字典*/
     int  regex_split(vector<string> &patterns, string &s, vector<string> &units);
 
     /*

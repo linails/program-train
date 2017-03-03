@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-03-02 22:29:29
+ * Last modified: 2017-03-03 16:20:50
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -175,12 +175,14 @@ void formatTool::formatParsing_xdhycd(string &s)
     vector<string> alphas;
     vector<string> words;
     DicParser::get_instance()->get_disk()->get_all_alpha(alphas);
-    DicParser::get_instance()->get_disk()->get_all_words(words);
-    cout << "alphas : " << alphas << endl;
+    DicParser::get_instance()->get_disk()->get_all_words_ws(words);
+    //cout << "alphas : " << alphas << endl;
 
     {
         stringTools st;
         st.filter("[<]-[>]", s);
+        st.filter("﻿", s, 1);
+        //cout << "s after filter<> = " << s << endl;
 
         /* get wc.word 
          * 1> "^.[^*<\\s]+" */
@@ -215,7 +217,8 @@ void formatTool::formatParsing_xdhycd(string &s)
             this->m_wc.spell = string(bref, bref.find("]") + 1, string::npos);
         }
 
-        st.filter("()～〈 ", this->m_wc.spell);
+        st.filter("()～〈 《-－∥□（）", this->m_wc.spell);
+        st.filter("\\s\\up", this->m_wc.spell, 1);
 
         string fstring;
         list<string> spell_l; st.split_utf_code(spell_l, this->m_wc.spell);
@@ -224,7 +227,7 @@ void formatTool::formatParsing_xdhycd(string &s)
             auto isexist = find(words.begin(), words.end(), *iter);
             if(isexist != words.end()){
                 fstring = *iter;
-                cout << "fstring : " << fstring << endl;
+                //cout << "fstring : " << fstring << endl;
                 break;
             }
         }
@@ -234,9 +237,10 @@ void formatTool::formatParsing_xdhycd(string &s)
         }
     }
 
+    //cout << "spell : " << this->m_wc.spell << endl;
 
     /*
-     * get wc.attr 
+     * get wc.attr_xdhycd.second | attr
      * */
     {
         vector<string> units;
@@ -244,18 +248,27 @@ void formatTool::formatParsing_xdhycd(string &s)
         stringTools st(s);
         st.match("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○]", units);
         for(auto &u : units){
-            st.filter("[\\①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○1234567890· ]", u);
+            st.filter("[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮○1234567890· ]", u);
 
             int index = -1;
             if((int)string::npos != (index = u.find(this->m_wc.spell))){
                 u = string(u, index + this->m_wc.spell.length(), string::npos);
             }
 
-            st.filter("[abcdefghijklmnopqrstuvwxyz]", u);
-            st.filter("[［]-[］]", u);
+            st.filter("\\n", u, 1);
+            //st.filter("[［]-[］]", u); // !
+
             st.remove_duplicates(u, "。");
+
+            this->m_wc.attr_xdhycd.push_back(make_tuple("", u));
         }
-        this->m_wc.attr = units;
+    }
+
+
+    /* 
+     * get wc.attr_xdhycd.first | get char_ by segmentation
+     * */
+    for(auto &u : this->m_wc.attr_xdhycd){
     }
 
 }
@@ -289,12 +302,14 @@ void formatTool::formatParsing_hytycfyccd(string &s)
 
 const char *formatTool::property_words[]  = {
     "名",
-    "〈方〉",
     "副",
     "数",
     "形",
     "动",
-    ""
+    "介",
+    "〈方〉",
+    "〈口〉",
+    "〈书〉"
 };
 
 const char *formatTool::fnameList[] = {

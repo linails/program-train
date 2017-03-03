@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2017-03-02 22:30:33
+ * Last modified: 2017-03-03 13:28:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -220,9 +220,31 @@ int  stringTools::filter(const char *pattern, string &unit, int mode) // default
 {
     int ret = 0;
 
-    if(0 == mode){ // pattern2
+
+    /* 
+     * pattern2
+     * */
+    if(0 == mode){ 
         ret = this->filter(pattern, unit);
-    }else{         // pattern 5: {"[", string, "]"} : 过滤 [string] 这种结构内容, 完全匹配
+
+
+    /* 
+     * pattern 5: {"[string]"} : 过滤 "[string]" 这种结构内容, 完全匹配
+     * */
+    }else{
+        int pos = -1;
+        do{
+            if((int)string::npos != (pos = unit.find(pattern))){
+                if(0 != pos){
+                    string head(unit, 0, pos);
+                    string end(unit, pos + strlen(pattern), string::npos);
+
+                    unit = head + end;
+                }else{
+                    unit = string(unit, pos + strlen(pattern), string::npos);
+                }
+            }
+        }while(-1 != pos);
     }
 
     return ret;
@@ -579,7 +601,72 @@ int  stringTools::utf_count(const char *str)
  * */
 int  stringTools::remove_duplicates(string &s, const char *remove)
 {
-    return 0;
+    int     fpos    = -1;
+    int     spos    = -1;
+    int     ret     = -1;
+    int     index   = 0;
+
+
+    /* 
+     * remove != null
+     * */
+    if(NULL != remove){
+        do{
+            if((int)string::npos != (fpos = s.find(remove, index))){
+                index = fpos + strlen(remove);
+                if((int)string::npos != (spos = s.find(remove, index))){
+                    if((int)(strlen(remove)) == (spos - fpos)){
+                        cout << "find duplicates ! - " << remove << endl;
+                        string head(s, 0, spos);
+                        string end(s, spos+strlen(remove), string::npos);
+
+                        s = head;
+                        ret = 0;
+                        if(true == end.empty()) break;
+                        else{
+                            while((int)string::npos != (spos = end.find(remove))){
+                                if(0 == spos){
+                                    end = string(end, strlen(remove), string::npos);
+                                }else
+                                    break;
+                            }
+                            s += end;
+                        }
+                    }
+                }else{
+                    break;
+                }
+            }else
+                break;
+        }while(1);
+
+
+    /*
+     * remove = null
+     * */
+    }else{
+        list<string> utf_list;
+        this->split_utf_code(utf_list, s);
+
+        auto begin = utf_list.begin();
+        auto end   = begin; end++;
+
+        do{
+            if(end != utf_list.end()){
+                if(*begin == *end){
+                    end = utf_list.erase(end);
+                }else{
+                    begin = end;
+                    end++;
+                }
+            }else
+                break;
+        }while(1);
+
+        this->utf_code2string(s, utf_list);
+    }
+
+    return ret;
 }
 
 /*success return pattern mode >= 0

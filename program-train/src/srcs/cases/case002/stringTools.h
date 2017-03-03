@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2017-03-02 22:28:14
+ * Last modified: 2017-03-03 13:20:36
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,7 +26,7 @@ public:
      *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"} : filter
      *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'} : match
      *  pattern 4: {"[a),b),c)]-[a),b),c)]"} : match, 多字符间隔
-     *  pattern 5: {"[", string, "]"} : 过滤 [string] 这种结构内容, 完全匹配
+     *  pattern 5: {"[string]"} : 过滤 "[string]" 这种结构内容, 完全匹配
      *  pattern 6: {"[<]-[>], [[]-[]$]"} : match
      * */
     int  filter(const char *pattern2);

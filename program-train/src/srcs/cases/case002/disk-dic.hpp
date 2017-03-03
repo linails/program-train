@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk-dic.hpp
  * Created Time: 2017-02-27 15:35:40
- * Last modified: 2017-03-02 12:34:26
+ * Last modified: 2017-03-03 15:31:42
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -18,6 +18,14 @@ using std::string;
 using std::vector;
 using std::map;
 using std::pair;
+
+typedef struct{
+    string word;
+    string char_;
+    string mean;
+    string source;
+    string remark;
+}WordChars_t;
 
 class DiskDic{
 public:
@@ -38,7 +46,12 @@ public:
     int  get_all_spells(vector<string> &spells);
     int  get_word_spell(vector<pair<string, string> > &v_word_spell);
     int  get_words(vector<string> &words, int plural);
-    int  get_all_words(vector<string> &words);
+    int  get_all_words_ws(vector<string> &words);
+    int  insert_wc_full(WordChars_t &wc);
+    int  insert_wc_full(vector<WordChars_t> &wcs);
+    int  insert_wc_word_mean_source(WordChars_t &wc);
+    int  insert_wc_word_mean_source(vector<WordChars_t> &wcs);
+    int  get_all_words_wc(vector<string> &words);
 private:
     typedef struct{ const char *tag; const char *sql; }SqlOprts_t;
     typedef map<const char *, const char *> SqlMap_t;

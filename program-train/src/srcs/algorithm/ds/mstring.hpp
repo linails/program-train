@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mstring.hpp
  * Created Time: 2017-01-07 09:32:37
- * Last modified: 2017-01-09 13:39:23
+ * Last modified: 2017-03-03 09:04:27
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -63,7 +63,7 @@ mString::mString(const char *str)
     :m_buf(NULL)
 {
     this->m_len  = strlen(str);
-    this->m_size = (this->m_len / 128) + 1;
+    this->m_size = ((this->m_len / 128) + 1) * 128;
     this->resize();
     memcpy(this->m_buf, str, this->m_len);
 }
@@ -72,7 +72,7 @@ mString::mString(string &s)
     :m_buf(NULL)
 {
     this->m_len  = s.length();
-    this->m_size = (this->m_len / 128) + 1;
+    this->m_size = ((this->m_len / 128) + 1) * 128;
     this->resize();
     memcpy(this->m_buf, s.c_str(), this->m_len);
 }
@@ -80,7 +80,7 @@ mString::mString(string &s)
 mString::mString(const mString &s)
 {
     this->m_len  = s.length();
-    this->m_size = (this->m_len / 128) + 1;
+    this->m_size = ((this->m_len / 128) + 1) * 128;
     this->resize();
     memcpy(this->m_buf, s.c_str(), this->m_len);
 }

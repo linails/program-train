@@ -1,12 +1,19 @@
 /*
  * Progarm Name: segmentation.hpp
  * Created Time: 2017-02-27 15:40:22
- * Last modified: 2017-03-02 08:56:54
+ * Last modified: 2017-03-03 16:13:01
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #ifndef _SEGMENTATION_HPP_
 #define _SEGMENTATION_HPP_
+
+#include <vector>
+#include <string>
+#include <list>
+
+using std::vector;
+using std::string;
 
 /* 
  * Note :
@@ -17,6 +24,19 @@
  * 04. 有存在孤立成分则说明切分错误
  * 05. 无孤立成分则表明切分正确
  * */
+
+class Segmentation{
+public:
+    Segmentation(string s);
+    ~Segmentation();
+    int  result(vector<string> &result);
+private:
+    int  segmen();
+    int  isolated_check(vector<string> &seg);
+private:
+    string          m_str;
+    vector<string>  m_words;
+};
 
 #endif //_SEGMENTATION_HPP_
 
