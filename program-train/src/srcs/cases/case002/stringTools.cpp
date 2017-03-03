@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.cpp
  * Created Time: 2016-05-26 19:47:27
- * Last modified: 2017-03-03 13:28:14
+ * Last modified: 2017-03-03 23:40:27
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -196,6 +196,7 @@ int stringTools::filter(const char *pattern2, std::string &unit)
         /*
          * 0 ... 1 : 1hu, [123au], 
          * 2 :       [123]-[123], [<]-[>]
+         * 3 :       {"<[>-<]>"} : filter
          * */
         switch(this->count_char((*iter).c_str(), '[')){
             case 0 ... 1:
@@ -667,6 +668,55 @@ int  stringTools::remove_duplicates(string &s, const char *remove)
     }
 
     return ret;
+}
+
+/* 
+ * eg .
+ *  "()"-> complete pair
+ *  "(" -> incomplete pair
+ * pairs = "()[]{}"
+ * result : pair<pair, pos> -> pair<"(", 12>
+ * */
+int  stringTools::incomplete_pair_check(vector<pair<string, int> > &result, string &s, const char *pairs)
+{
+    return 0;
+}
+
+/* 
+ * eg .
+ *  "()"-> complete pair
+ *  "(" -> incomplete pair
+ * pairs = "()[]{}"
+ * */
+int  stringTools::incomplete_pair_del(string &s, const char *pairs)
+{
+#if 0
+    int     fpos    = -1;
+    int     spos    = -1;
+    int     index   = 0;
+    vector<string>                utf_char;
+    vector<pair<string, string> > utf_pairs;
+
+    if(nullptr != pairs)    this->split_utf_code(utf_char, pairs);
+    else                    this->split_utf_code(utf_char, this->m_pairs);
+
+    for(int i=0; i<utf_char.size()/2; i++){
+        utf_pairs.push_back(make_pair(utf_char[0+i], utf_char[1+i]));
+    }
+
+    for(auto &u : utf_pairs){
+        do{
+            if(string::npos != (fpos = s.find(u.first, index))){
+                if(string::npos != (spos = s.find(u.second, fpos))){
+                }else{
+                }
+            }else{
+            }
+        }while(1);
+    }
+#endif
+
+    return 0;
 }
 
 /*success return pattern mode >= 0

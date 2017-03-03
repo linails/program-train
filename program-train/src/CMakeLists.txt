@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-02 10:59:00
+# Last modified: 2017-03-03 23:51:54
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -151,6 +151,8 @@ set(SRC_LIST
    srcs/cases/case002/disk-dic.cpp
    srcs/cases/case002/segmentation.cpp
    srcs/cases/case002/alpha-bet.cpp
+   srcs/cases/case002/statistics.cpp
+   srcs/cases/case002/denoise.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case003/key-bind-main.cpp
 #   srcs/cases/case003/disk.cpp

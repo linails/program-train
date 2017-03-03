@@ -1,7 +1,7 @@
 /*
  * Progarm Name: formatParsing.cpp
  * Created Time: 2016-05-15 12:14:11
- * Last modified: 2017-03-03 16:20:50
+ * Last modified: 2017-03-04 00:32:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -182,7 +182,6 @@ void formatTool::formatParsing_xdhycd(string &s)
         stringTools st;
         st.filter("[<]-[>]", s);
         st.filter("﻿", s, 1);
-        //cout << "s after filter<> = " << s << endl;
 
         /* get wc.word 
          * 1> "^.[^*<\\s]+" */
@@ -202,7 +201,8 @@ void formatTool::formatParsing_xdhycd(string &s)
 
         {
             pair<int, int> pos;
-            if(0 != this->unit_in_block_check(pos, this->m_wc.word, bref, "[]")){
+            if((0 != this->unit_in_block_check(pos, this->m_wc.word, bref, "[]")) ||
+               (1 == st.utf_count(this->m_wc.word))){
                 if(0 == this->block_check(pos, bref, this->m_wc.word)){
                     printf("pos<int, int> = <%d, %d>\n", pos.first, pos.second);
                     this->m_wc.spell = string(bref, pos.second, string::npos);
@@ -217,8 +217,8 @@ void formatTool::formatParsing_xdhycd(string &s)
             this->m_wc.spell = string(bref, bref.find("]") + 1, string::npos);
         }
 
-        st.filter("()～〈 《-－∥□（）", this->m_wc.spell);
-        st.filter("\\s\\up", this->m_wc.spell, 1);
+        st.filter("()～〈 《-－∥□（）［[", this->m_wc.spell);
+        st.filter("\\\\s\\\\up", this->m_wc.spell, 1);
 
         string fstring;
         list<string> spell_l; st.split_utf_code(spell_l, this->m_wc.spell);
@@ -234,6 +234,8 @@ void formatTool::formatParsing_xdhycd(string &s)
 
         if(false == fstring.empty()){
             this->m_wc.spell = string(this->m_wc.spell, 0, this->m_wc.spell.find(fstring));
+            st.filter("［[、—", this->m_wc.spell);
+            st.filter("[［]-[］]", this->m_wc.spell);
         }
     }
 

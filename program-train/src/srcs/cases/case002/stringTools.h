@@ -1,7 +1,7 @@
 /*
  * Progarm Name: stringTools.h
  * Created Time: 2016-05-26 19:47:33
- * Last modified: 2017-03-03 13:20:36
+ * Last modified: 2017-03-03 23:40:01
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,10 +11,12 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <map>
 
 using std::string;
 using std::vector;
 using std::list;
+using std::pair;
 
 class stringTools{
 public:
@@ -24,9 +26,10 @@ public:
     /*
      * filter/match success return 0
      *  pattern 2: {"1hu, [123au], [123]-[123], [<]-[>]"} : filter
+     *  pattern 3: {"<[>-<]>"} : filter
      *  pattern 3: {'[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]-[^①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]'} : match
      *  pattern 4: {"[a),b),c)]-[a),b),c)]"} : match, 多字符间隔
-     *  pattern 5: {"[string]"} : 过滤 "[string]" 这种结构内容, 完全匹配
+     *  pattern 5: {"[string]"} : 过滤 "[string]" 这种结构内容, 完全匹配 : filter
      *  pattern 6: {"[<]-[>], [[]-[]$]"} : match
      * */
     int  filter(const char *pattern2);
@@ -50,6 +53,15 @@ public:
      * "AABBB" -> "ABBB"    |  -> "AAB"   |  -> "AB"
      * */
     int  remove_duplicates(string &s, const char *remove = nullptr);
+    /* 
+     * eg .
+     *  "()"-> complete pair
+     *  "(" -> incomplete pair
+     * pairs = "()[]{}"
+     * result : pair<pair, pos> -> pair<"(", 12>
+     * */
+    int  incomplete_pair_check(vector<pair<string, int> > &result, string &s, const char *pairs = nullptr);
+    int  incomplete_pair_del(string &s, const char *pairs = nullptr);
 private:
     int  get_pattern_mode(const char *pattern);
     int  get_subpatterns(const char *pattern);
@@ -68,6 +80,7 @@ private:
     string              m_str;
     string              m_pattern;
     vector<string>      m_subpatterns;
+    string              m_pairs = "()[]{}<>（）";
 };
 
 #endif //_STRINGTOOLS_H_

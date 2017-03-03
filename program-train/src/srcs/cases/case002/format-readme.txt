@@ -1,6 +1,6 @@
 # format-readme.txt
 # Created Time: 2017-02-27 20:51:57
-# Last modified: 2017-02-27 21:09:48
+# Last modified: 2017-03-03 22:25:14
 #
 
 
@@ -181,4 +181,24 @@ wc.attr : dǎn
  *                                问为何？杨彪说有舐犊之爱\n
  *
  * */
+
+## 汉语词典大全 ##
+/*
+ * 齶	
+ * <br><img src="file://guoji.bmp">
+ * <br>\n<font size=4 color=red>齶
+ * <br>\n</font><font size=3 color=orange>【汉语拼音】è 
+ * <br>\n</font><font size=3 color=green>【台湾音标】　ㄜˋ
+ * <br>\n</font><font size=3 color=blue>【解释】同“腭”。
+ * <br>\n</font><font size=3 color=blue>【解释】郑码：IOBZ，U：9F76，GBK：FD7C
+ * <br>\n</font><font size=3 color=blue>【解释】笔画数：24，部首：齒，笔顺编号：212134341343452251251115
+ * <br>\n</font>
+ */
+
+
+## 汉语同义词反义词词典 ##
+/*
+ * 哀吟	<font color=green>［同］</font><br>长歌当哭<br>\n悲歌<br>\n
+ */
+
 
