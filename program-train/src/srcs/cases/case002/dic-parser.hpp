@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.hpp
  * Created Time: 2016-12-15 22:09:32
- * Last modified: 2017-03-02 14:58:23
+ * Last modified: 2017-03-04 09:07:13
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,16 +10,19 @@
 
 #include <string>
 #include "disk-dic.hpp"
+#include "statistics.hpp"
 
 using std::string;
 
 class DicParser{
 public:
-    static DicParser *get_instance(DicParser *ptr = nullptr);
-    DiskDic *get_disk(void);
     DicParser();
     ~DicParser();
     int  dicparser_main(int argc, char **argv);
+public:
+    static DicParser*get_instance(DicParser *ptr = nullptr);
+    DiskDic         *get_disk(void);
+    Statistics      *get_statistics(void);
 private:
     int  init(int argc, char **argv);
     int  uninit(void);
@@ -28,9 +31,14 @@ private:
     int  parser_cycd(int argc, char **argv);
     int  parser_hycddq(int argc, char **argv);
     int  parser_hytycfyccd(int argc, char **argv);
+    int  later_stage_xhzd(int argc, char **argv);
+    int  later_stage_xdhycd(int argc, char **argv);
+    int  later_stage_cycd(int argc, char **argv);
+    int  later_stage_hytycfyccd(int argc, char **argv);
 private:
     static DicParser *instance;
     DiskDic    *m_disk = nullptr;
+    Statistics *m_stati= nullptr;
     string      m_db   = "/home/minphone/corpus.db";
 };
 

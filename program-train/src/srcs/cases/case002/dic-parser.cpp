@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-03-03 21:19:12
+ * Last modified: 2017-03-04 10:41:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -445,8 +445,26 @@ int  DicParser::parser_hytycfyccd(int argc, char **argv)
     return ret;
 }
 
-DiskDic *DicParser::get_disk(void)
+int  DicParser::later_stage_xhzd(int argc, char **argv)
 {
-    return this->m_disk;
+    return 0;
 }
+
+int  DicParser::later_stage_xdhycd(int argc, char **argv)
+{
+    return 0;
+}
+
+int  DicParser::later_stage_cycd(int argc, char **argv)
+{
+    return 0;
+}
+
+int  DicParser::later_stage_hytycfyccd(int argc, char **argv)
+{
+    return 0;
+}
+
+DiskDic         *DicParser::get_disk(void){ return this->m_disk; }
+Statistics      *DicParser::get_statistics(void){ return this->m_stati; }
 

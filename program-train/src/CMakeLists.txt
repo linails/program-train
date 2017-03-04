@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-03 23:51:54
+# Last modified: 2013-03-04 11:31:02
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -153,6 +153,8 @@ set(SRC_LIST
    srcs/cases/case002/alpha-bet.cpp
    srcs/cases/case002/statistics.cpp
    srcs/cases/case002/denoise.cpp
+   srcs/cases/case002/format-later-stage.cpp
+   srcs/cases/case002/python-module.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case003/key-bind-main.cpp
 #   srcs/cases/case003/disk.cpp

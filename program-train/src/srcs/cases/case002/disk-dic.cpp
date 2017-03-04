@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk-dic.cpp
  * Created Time: 2017-02-27 15:35:36
- * Last modified: 2017-03-03 16:00:40
+ * Last modified: 2017-03-04 13:29:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -28,12 +28,23 @@ using std::string;
  *  05 mean     : 意义
  *  06 char     : 词性
  *  07 plural   : 单复数，即字数
+ *  08 synonym  : 同义词
+ *  09 antonym  : 反义词
+ *  F0 noise_sign : 噪声标记
  * */
 const char *DiskDic::CorpusTables[] = {
+
+/* 
+ * 拼音字母表
+ * */
 "create table CorpusAlphabet(\
     id integer primary key unique,\
     alpha text unique,\
     remark text)",
+
+/* 
+ * word - spell 
+ * */
 "create table CorpusWordSpell(\
     id integer primary key unique,\
     word text,\
@@ -41,6 +52,10 @@ const char *DiskDic::CorpusTables[] = {
     remark text,\
     plural integer default 0,\
     unique(word,spell))",
+
+/*
+ * word - mean
+ * */
 "create table CorpusWordMeans(\
     id integer primary key unique,\
     word text,\
@@ -48,6 +63,10 @@ const char *DiskDic::CorpusTables[] = {
     source text,\
     remark text,\
     unique(word,mean))",
+
+/* 
+ * word - characteristic
+ * */
 "create table CorpusWordChars(\
     id integer primary key unique,\
     word text,\
@@ -55,7 +74,34 @@ const char *DiskDic::CorpusTables[] = {
     mean text,\
     source text,\
     remark text,\
-    unique(word,char))"
+    unique(word,char))",
+
+/* 
+ * 拼音组成字母统计表
+ * */
+"create table CorpusSpellStatis(\
+    id integer primary key unique,\
+    word text unique,\
+    count integer,\
+    noise_sign integer default 0)",
+
+/* 
+ * 同义词
+ * */
+"create table CorpusWordSynonym(\
+    id integer primary key unique,\
+    word text,\
+    synonym text,\
+    unique(word, synonym))",
+
+/*
+ * 反义词
+ * */
+"create table CorpusWordAntonym(\
+    id integer primary key unique,\
+    word text,\
+    antonym text,\
+    unique(word, antonym))"
 };
 
 DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
