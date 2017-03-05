@@ -1,7 +1,7 @@
 /*
  * Progarm Name: disk-dic.cpp
  * Created Time: 2017-02-27 15:35:36
- * Last modified: 2017-03-04 13:29:45
+ * Last modified: 2017-03-05 21:56:46
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -30,7 +30,14 @@ using std::string;
  *  07 plural   : 单复数，即字数
  *  08 synonym  : 同义词
  *  09 antonym  : 反义词
- *  F0 noise_sign : 噪声标记
+ *  10 idiom    : 成语、习语
+ *  11 eg       : 示例
+ *  12 use      : 用法
+ *  13 story    : 故事
+ *  14 sp       : 语句片段/说法片段
+ *  F0 noise_sign         : 噪声标记
+ *  F1 allegorical_saying : 歇后语
+ *  F2 lantern_riddle     : 灯谜面
  * */
 const char *DiskDic::CorpusTables[] = {
 
@@ -101,7 +108,41 @@ const char *DiskDic::CorpusTables[] = {
     id integer primary key unique,\
     word text,\
     antonym text,\
-    unique(word, antonym))"
+    unique(word, antonym))",
+
+/* 
+ * 成语 - 意义
+ * */
+"create table CorpusIdiomsMean(\
+    id integer primary key unique,\
+    idiom text unique,\
+    mean text,\
+    source text,\
+    eg text,\
+    allegorical_saying text,\
+    lantern_riddle text,\
+    use text,\
+    story text)",
+
+"create table CorpusIdiomsSynonym(\
+    id integer primary key unique,\
+    idiom text,\
+    synonym text,\
+    unique(idiom, synonym))",
+
+"create table CorpusIdiomsAntonym(\
+    id integer primary key unique,\
+    idiom text,\
+    antonym text,\
+    unique(idiom, antonym))",
+
+/*
+ * statement-part
+ * */
+"create table CorpusStatementPart(\
+    id integer primary key unique,\
+    sp text unique,\
+    remark text)"
 };
 
 DiskDic::SqlOprts_t DiskDic::CorpusTableOprts[] = {
@@ -198,19 +239,28 @@ DiskDic::~DiskDic()
 int  DiskDic::init_tables(void)
 {
     int ret = 0;
+    stringTools st;
 
     for(size_t i=0; i<sizeof(CorpusTables)/sizeof(*CorpusTables); i++){
         sqlite3_stmt *stmt = NULL;
+        string sql(CorpusTables[i]);
+
+        st.remove_duplicates(sql, " ");
 
         if(SQLITE_OK != sqlite3_prepare_v2(this->m_conn,
+                                           #if 0
                                            CorpusTables[i],
                                            strlen(CorpusTables[i]),
+                                           #else
+                                           sql.c_str(),
+                                           sql.length(),
+                                           #endif
                                            &stmt,
                                            NULL)){
             if(stmt){
                 sqlite3_finalize(stmt);
             }
-            cout << "[Error] Create Table failed : " << CorpusTables[i] << endl;
+            cout << "[Error] Create Table failed : " << sql << endl;
             ret = -1;
             continue;
         }
@@ -224,7 +274,7 @@ int  DiskDic::init_tables(void)
 
         if(stmt){
             sqlite3_finalize(stmt);
-            cout << "Create Table Successed : " << CorpusTables[i] << endl;
+            cout << "Create Table Successed : " << sql << endl;
         }
     }
 

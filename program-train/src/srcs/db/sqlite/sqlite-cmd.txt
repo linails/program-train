@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-28 17:05:29
-# Last modified: 2017-03-01 15:37:04
+# Last modified: 2017-03-05 10:02:37
 #
 
 ----------------------------------------------------
@@ -68,6 +68,11 @@ sqlite 存储类
 .mode column
 .headers on
 .nullvalue NULL
+
+.output dd.sql
+.dump
+
+.read dd.sql
 
 /****************************************************************/
 关系操作划分成3类
