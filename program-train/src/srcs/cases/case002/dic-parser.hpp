@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.hpp
  * Created Time: 2016-12-15 22:09:32
- * Last modified: 2017-03-04 09:07:13
+ * Last modified: 2017-03-06 21:34:57
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -35,6 +35,8 @@ private:
     int  later_stage_xdhycd(int argc, char **argv);
     int  later_stage_cycd(int argc, char **argv);
     int  later_stage_hytycfyccd(int argc, char **argv);
+    int  spell_statistic(int argc, char **argv);
+    int  later_stage_spell(int argc, char **argv);
 private:
     static DicParser *instance;
     DiskDic    *m_disk = nullptr;

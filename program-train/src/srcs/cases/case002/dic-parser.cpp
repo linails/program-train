@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-03-04 10:41:14
+ * Last modified: 2017-03-06 23:32:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -19,6 +19,8 @@
 #include "disk-dic.hpp"
 #include "alpha-bet.hpp"
 #include <tuple>
+#include <cstring>
+#include <cstdio>
 
 using std::cout;
 using std::endl;
@@ -48,13 +50,17 @@ int  DicParser::dicparser_main(int argc, char **argv)
 
     //ret = this->parser_xhzd(argc, argv); assert(-1 != ret);
 
-    ret = this->parser_xdhycd(argc, argv); assert(-1 != ret);
+    //ret = this->parser_xdhycd(argc, argv); assert(-1 != ret);
 
     //ret = this->parser_cycd(argc, argv); assert(-1 != ret);
 
     //ret = this->parser_hycddq(argc, argv); assert(-1 != ret);
 
     //ret = this->parser_hytycfyccd(argc, argv); assert(-1 != ret);
+
+    //ret = this->spell_statistic(argc, argv); assert(-1 != ret);
+
+    ret = this->later_stage_spell(argc, argv); assert(-1 != ret);
 
     return ret;
 }
@@ -79,7 +85,7 @@ int  DicParser::uninit(void)
     }
     return 0;
 }
-    
+
 int  DicParser::parser_xhzd(int argc, char **argv)
 {
     cout << "parser_xhzd ..." << endl;
@@ -461,6 +467,66 @@ int  DicParser::later_stage_cycd(int argc, char **argv)
 }
 
 int  DicParser::later_stage_hytycfyccd(int argc, char **argv)
+{
+    return 0;
+}
+
+int  DicParser::spell_statistic(int argc, char **argv)
+{
+    int ret = 0;
+
+    cout << "spell_statistic ..." << endl;
+
+    string fn = "/home/minphone/share/exOrigin/log-spell-2";
+
+    if(1 != argc){
+        fn = string(argv[1]);
+    }
+    cout << "fn : " << fn << endl;
+
+    Timer timer;
+    timer.timing();
+    rFileOprt fo(fn);
+    timer.timing();
+
+    Statistics statis;
+
+    auto parser = [&statis](string line){
+        stringTools     st;
+        vector<string>  result;
+        int             pos = -1;
+
+        if((int)string::npos != (pos = line.find("spel : "))){
+
+            string sline(line, pos + strlen("spel : "), string::npos);
+            if(false == sline.empty()){
+                st.split_utf_code(result, sline);
+
+                for(auto &s : result){
+                    cout << "s = " << s << endl;
+                    statis.increase(s);
+                }
+
+                cout << "sline : " << line << endl;
+            }
+        }
+    };
+
+    string dline;
+    ret = fo.read_linebyline(parser);
+    //ret = fo.read_index_line(1000, dline, parser);
+
+    map<string, float>  ret_statis;    // <'p', 0.243>,<'a', 0.534> ...
+    statis.get_statis(ret_statis);
+
+    for(auto &u : ret_statis){
+        printf("(%s - %f)\n", u.first.c_str(), u.second);
+    }
+
+    return ret;
+}
+
+int  DicParser::later_stage_spell(int argc, char **argv)
 {
     return 0;
 }
