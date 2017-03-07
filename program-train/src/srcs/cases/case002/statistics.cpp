@@ -1,12 +1,13 @@
 /*
  * Progarm Name: statistics.cpp
  * Created Time: 2017-03-03 23:50:34
- * Last modified: 2017-03-05 12:43:17
+ * Last modified: 2017-03-06 20:45:36
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "statistics.hpp"
 #include <iostream>
+#include <cstdio>
 
 using std::cout;
 using std::endl;
@@ -25,7 +26,7 @@ int  Statistics::increase(string char_)
     if(iter != this->m_word_freq.end()){
         this->m_word_freq[char_]++;
     }else{
-        this->m_word_freq[char_] = 0;
+        this->m_word_freq[char_] = 1;
     }
 
     this->m_statis_updated_flag = false;
@@ -73,9 +74,16 @@ int  Statistics::calc(void)
 {
     size_t all = 0;
 
-    for(auto &u : this->m_word_freq) all += u.second;
+    for(auto &u : this->m_word_freq){
+        printf("(%s - %d)\n", u.first.c_str(), u.second);
+        all += u.second;
+    }
 
-    for(auto &u : this->m_statis) u.second = (this->m_word_freq[u.first] * 1.0) / (all * 1.0);
+    this->m_statis.clear();
+
+    for(auto &u : this->m_word_freq){
+        this->m_statis[u.first] = (u.second * 1.0) / (all * 1.0);
+    }
 
     this->m_statis_updated_flag = true;
 
