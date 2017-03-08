@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2013-03-04 11:31:02
+# Last modified: 2017-03-08 14:29:04
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -47,6 +47,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-gtest
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-xml
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -169,6 +170,7 @@ set(SRC_LIST
    srcs/cases/exlib-cases/case-json/mjson.cpp
    srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
    srcs/cases/exlib-cases/case-gtest/event-mecha.cpp
+   srcs/cases/exlib-cases/case-xml/xml-parser.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
 )
@@ -191,6 +193,7 @@ set(link_lib
     ${libs_path}/lib/libpqxx.a
     ${libs_path}/lib/libgtest.a
     ${libs_path}/lib/libgtest_main.a
+    ${libs_path}/lib/libtinyxml.a
     pthread
     dl
     pq

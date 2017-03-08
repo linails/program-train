@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <master>
+        <mqtt_server>127.0.0.1</mqtt_server>
+        <mqtt_port>8888</mqtt_port>
+        <ssl_key_path>/home/minphone/share/sslkey</ssl_key_path>
+        <plugin_msg_path>/home/minphone/share/plugin</plugin_msg_path>
+        <plugin_msg_keepalive>/home/minphone/share/keepalive</plugin_msg_keepalive>
+        <mqtt_topic>/home/minphone/share/topic</mqtt_topic>
+    </master>
+    <plugin>
+        <log_path>/home/minphone/share/logpath</log_path>
+        <log_level>10</log_level>
+        <postgresql_connection>127.0.0.1:7890</postgresql_connection>
+        <redis_addr>127.0.0.1:7890</redis_addr>
+        <redis_password>redispw12345678</redis_password>
+        <jpush_addr>123.456.789.98:3187</jpush_addr>
+        <jpush_config>
+            <android>
+                <appkey>appkey</appkey>
+                <master_secret>master_secret</master_secret>
+                <access_id>access_id</access_id>
+                <access_key>access_key</access_key>
+                <secret_key>secret_key</secret_key>
+            </android>
+            <ios>
+                <appkey>appkey</appkey>
+                <master_secret>master_secret</master_secret>
+                <access_id>access_id</access_id>
+                <access_key>access_key</access_key>
+                <secret_key>secret_key</secret_key>
+            </ios>
+        </jpush_config>
+        <msg_addr>msg_addr</msg_addr>
+        <msg_account>msg_account</msg_account>
+        <msg_password>123454566</msg_password>
+        <msg_content>xxxxxxmsgxxxxxcontent</msg_content>
+    </plugin>>
+</document>
