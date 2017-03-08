@@ -8,7 +8,7 @@
         <plugin_msg_keepalive>/home/minphone/share/keepalive</plugin_msg_keepalive>
         <mqtt_topic>/home/minphone/share/topic</mqtt_topic>
     </master>
-    <plugin>
+    <msg_plugin>
         <log_path>/home/minphone/share/logpath</log_path>
         <log_level>10</log_level>
         <postgresql_connection>127.0.0.1:7890</postgresql_connection>
@@ -35,5 +35,5 @@
         <msg_account>msg_account</msg_account>
         <msg_password>123454566</msg_password>
         <msg_content>xxxxxxmsgxxxxxcontent</msg_content>
-    </plugin>>
+    </msg_plugin>>
 </document>

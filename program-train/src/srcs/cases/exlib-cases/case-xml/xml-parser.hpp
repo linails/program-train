@@ -1,7 +1,7 @@
 /*
  * Progarm Name: xml-parser.hpp
  * Created Time: 2017-03-08 14:23:03
- * Last modified: 2017-03-08 15:53:15
+ * Last modified: 2017-03-08 18:02:37
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,9 +12,13 @@
 #include <vector>
 #include "tinyxml/tinystr.h"
 #include "tinyxml/tinyxml.h"
+#include <thread>
+#include <sys/stat.h>
+#include <time.h>
 
 using std::string;
 using std::vector;
+using std::thread;
 
 typedef struct {
     string mqtt_server;
@@ -55,10 +59,13 @@ public:
     int  main(int argc, char **argv);
 private:
     int  tinyxml_reader(void);
+    void config_file_check(void);
 private:
-    string      m_file;
-    xmlMaster_t m_xml_master;
-    xmlPlugin_t m_xml_plugin;
+    thread          *m_check_loop = nullptr;
+    time_t           m_st_mtime = 0;
+    string           m_file;
+    xmlMaster_t      m_xml_master;
+    xmlPlugin_t      m_xml_plugin;
 };
 
 #endif //_XML_PARSER_HPP_

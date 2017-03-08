@@ -1,19 +1,33 @@
 /*
  * Progarm Name: xml-parser.cpp
  * Created Time: 2017-03-08 14:22:59
- * Last modified: 2017-03-08 17:05:56
+ * Last modified: 2017-03-08 18:06:14
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "xml-parser.hpp"
 #include <iostream>
 #include <cassert>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <time.h>
+#include <fcntl.h>
+#include <cstdio>
+#include <cstdlib>
+#include <functional>
+#include <typeinfo>
+#include <chrono>
 
 using std::cout;
 using std::endl;
 
 xmlParser::xmlParser()
 {
+    this->m_check_loop = new thread(&xmlParser::config_file_check, this);
+    if(nullptr == this->m_check_loop){
+        cout << "[Error] new failed in xmlParser !" << endl;
+    }
 }
 
 xmlParser::~xmlParser()
@@ -35,6 +49,7 @@ int  xmlParser::main(int argc, char **argv)
 
     ret = this->tinyxml_reader(); assert(-1 != ret);
 
+    while(1);
     return ret;
 }
 
@@ -114,7 +129,7 @@ int  xmlParser::tinyxml_reader(void)
          * read plugin Element 
          * */
         {
-            TiXmlElement *plugin = hRoot.FirstChild("plugin").Element();
+            TiXmlElement *plugin = hRoot.FirstChild("msg_plugin").Element();
             if(NULL != plugin){
                 cout << "find Element <plugin>" << endl;
             }else{
@@ -132,7 +147,7 @@ int  xmlParser::tinyxml_reader(void)
             element(this->m_xml_plugin.msg_content,     plugin, "msg_content",   "root");
             element(this->m_xml_plugin.postgresql_connection, plugin, "postgresql_connection", "root");
 
-            TiXmlElement *client = hRoot.FirstChild("plugin").FirstChild("jpush_config").Element();
+            TiXmlElement *client = hRoot.FirstChild("msg_plugin").FirstChild("jpush_config").Element();
             if(NULL != client){
                 cout << "find Element <jpush_config>" << endl;
             }else{
@@ -190,4 +205,23 @@ int  xmlParser::tinyxml_reader(void)
     return ret;
 }
 
+void xmlParser::config_file_check(void)
+{
+    struct stat file_stat;
+
+    while(1){
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+        cout << "sleep ... " << endl;
+
+        stat(this->m_file.c_str(), &file_stat);
+
+        if(this->m_st_mtime != file_stat.st_mtime){
+            cout << "sec : " << file_stat.st_mtime << endl;
+
+            this->tinyxml_reader();
+
+            this->m_st_mtime = file_stat.st_mtime;
+        }
+    }
+}
 
