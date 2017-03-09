@@ -1,7 +1,7 @@
 /*
  * Progarm Name: exlibCases.cpp
  * Created Time: 2016-12-21 10:05:59
- * Last modified: 2017-03-08 15:05:11
+ * Last modified: 2017-03-09 14:05:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,7 +10,7 @@
 #include "mjson.hpp"
 #include "case-gtest.hpp"
 #include <cassert>
-#include "xml-parser.hpp"
+#include "xml-main.hpp"
 
 using std::cout;
 using std::endl;
@@ -45,7 +45,7 @@ int  exlibCases::exlibcases_main(int argc, char **argv)
     cout << "---------------------------" << endl;
     {
         #if 1
-        xmlParser parser;
+        xmlMain   parser;
 
         ret = parser.main(argc, argv); assert(-1 != ret);
         #endif

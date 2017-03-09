@@ -1,7 +1,7 @@
 /*
  * Progarm Name: xml-parser.hpp
  * Created Time: 2017-03-08 14:23:03
- * Last modified: 2017-03-08 18:02:37
+ * Last modified: 2017-03-09 17:43:56
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -25,7 +25,6 @@ typedef struct {
     string mqtt_port;
     string ssl_key_path;
     string plugin_msg_path;
-    string plugin_msg_keepalive;
     string mqtt_topic;
 }xmlMaster_t;
 
@@ -50,20 +49,53 @@ typedef struct {
     string msg_account;
     string msg_password;
     string msg_content;
+    string avatar_upload;
+    string avatar_download;
+    string phonehead_3;
+    string phonehead_4;
 }xmlPlugin_t;
 
 class xmlParser{
 public:
-    xmlParser();
+    xmlParser(string path = "");
     ~xmlParser();
-    int  main(int argc, char **argv);
+    int  test(void);
+    int  getMaster_server_port(string &ip, int &port);
+    int  getMaster_ssl_key_path(string &path);
+    int  getMaster_plugin_path(string &path);
+    int  getMaster_topic(string &topic);
+    int  getPlugin_log_path(string &path);
+    int  getPlugin_log_level(int &level);
+    int  getPlugin_postgresql_connection(string &conn);
+    int  getPlugin_redis_addr(string &ip, int &port);
+    int  getPlugin_redis_password(string &pwd);
+    int  getPlugin_jpush_addr(string &addr);
+    int  getPlugin_msg_addr(string &addr);
+    int  getPlugin_msg_account(string &account);
+    int  getPlugin_msg_password(string &pwd);
+    int  getPlugin_msg_contents(vector<string> &contents);
+    int  getPlugin_avatar_upload(string &addr);
+    int  getPlugin_avatar_download(string &addr);
+    int  getPlugin_phonehead_3(string &head);
+    int  getPlugin_phonehead_4(string &head);
+    int  getPlugin_android_appkey(string &appkey);
+    int  getPlugin_android_master_secret(string &master_secret);
+    int  getPlugin_android_access_id(string &access_id);
+    int  getPlugin_android_access_key(string &access_key);
+    int  getPlugin_android_secret_key(string &secret_key);
+    int  getPlugin_ios_appkey(string &appkey);
+    int  getPlugin_ios_master_secret(string &master_secret);
+    int  getPlugin_ios_access_id(string &access_id);
+    int  getPlugin_ios_access_key(string &access_key);
+    int  getPlugin_ios_secret_key(string &secret_key);
+public:
 private:
     int  tinyxml_reader(void);
     void config_file_check(void);
 private:
+    string           m_file       = "/etc/server-config.xml";
     thread          *m_check_loop = nullptr;
-    time_t           m_st_mtime = 0;
-    string           m_file;
+    time_t           m_st_mtime   = 0;
     xmlMaster_t      m_xml_master;
     xmlPlugin_t      m_xml_plugin;
 };

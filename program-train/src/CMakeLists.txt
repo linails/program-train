@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-08 14:29:04
+# Last modified: 2017-03-09 14:05:26
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -170,6 +170,7 @@ set(SRC_LIST
    srcs/cases/exlib-cases/case-json/mjson.cpp
    srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
    srcs/cases/exlib-cases/case-gtest/event-mecha.cpp
+   srcs/cases/exlib-cases/case-xml/xml-main.cpp
    srcs/cases/exlib-cases/case-xml/xml-parser.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
