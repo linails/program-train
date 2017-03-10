@@ -1,7 +1,7 @@
 /*
  * Progarm Name: db-caller.cpp
  * Created Time: 2016-12-20 17:32:32
- * Last modified: 2017-02-09 15:04:52
+ * Last modified: 2017-03-10 17:18:37
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,7 @@
 #include "mos.hpp"
 #include <string>
 #include <cassert>
+#include "normal-redis.hpp"
 
 using std::cout;
 using std::endl;
@@ -30,13 +31,15 @@ int  dbCaller::dbcaller_main(int argc, char **argv)
 {
     int ret = 0;
 
-    ret = this->sqlite_normal(argc, argv); assert(-1 != ret);
+    //ret = this->sqlite_normal(argc, argv); assert(-1 != ret);
     
-    ret = this->sqlite_advanced(argc, argv); assert(-1 != ret);
+    //ret = this->sqlite_advanced(argc, argv); assert(-1 != ret);
 
-    ret = this->postgresql_normal(argc, argv); assert(-1 != ret);
+    //ret = this->postgresql_normal(argc, argv); assert(-1 != ret);
 
-    ret = this->postgresql_advanced(argc, argv); assert(-1 != ret);
+    //ret = this->postgresql_advanced(argc, argv); assert(-1 != ret);
+
+    ret = this->redis_normal(argc, argv); assert(-1 != ret);
 
     return ret;
 }
@@ -90,6 +93,17 @@ int  dbCaller::postgresql_normal(int argc, char **argv)
 int  dbCaller::postgresql_advanced(int argc, char **argv)
 {
     int ret = 0;
+
+    return ret;
+}
+
+int  dbCaller::redis_normal(int argc, char **argv)
+{
+    int ret = 0;
+
+    NormalRedis nreids;
+
+    ret = nreids.main(argc, argv); assert(-1 != ret);
 
     return ret;
 }

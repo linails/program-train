@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-09 14:05:26
+# Last modified: 2017-03-10 17:12:24
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -32,6 +32,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/db
     ${PROJECT_SOURCE_DIR}/src/srcs/db/sqlite
     ${PROJECT_SOURCE_DIR}/src/srcs/db/postgresql
+    ${PROJECT_SOURCE_DIR}/src/srcs/db/redis
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/ds
@@ -111,6 +112,7 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/db/db-caller.cpp
    srcs/db/sqlite/normal.cpp
+   srcs/db/redis/normal-redis.cpp
 #   srcs/db/postgresql/normal-pg.cpp
 #   srcs/db/sqlite/advanced.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -195,6 +197,7 @@ set(link_lib
     ${libs_path}/lib/libgtest.a
     ${libs_path}/lib/libgtest_main.a
     ${libs_path}/lib/libtinyxml.a
+    ${libs_path}/lib/libhiredis.a
     pthread
     dl
     pq
