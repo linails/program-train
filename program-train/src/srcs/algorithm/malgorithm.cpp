@@ -1,7 +1,7 @@
 /*
  * Progarm Name: malgorithm.cpp
  * Created Time: 2016-08-14 10:35:26
- * Last modified: 2017-01-18 22:38:57
+ * Last modified: 2017-03-14 23:23:24
  */
 
 #include "malgorithm.hpp"
@@ -12,6 +12,7 @@
 #include "data-structure.h"
 #include "data-structure.hpp"
 #include <cassert>
+#include "other-string.hpp"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
 
     cout << "----------- algorithm_main -----------" << endl;
     {
-        non_mutating_algo();
+        //non_mutating_algo();
 
         //mutating_algo();
 
@@ -37,7 +38,7 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
     }
     cout << "----------- data structure --------------" << endl;
     {
-#if 0
+    #if 0
         /* 
          * version C
          * */
@@ -54,18 +55,26 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
                 }
             }
         }
-#endif
+    #endif
     }
     cout << "----------- data structure --------------" << endl;
     {
-#if 0
+    #if 0
         /* 
          * version C++
          * */
         DataStructure ds;
 
         ret = ds.datastruct_main(argc, argv); assert(-1 != ret);
-#endif
+    #endif
+    }
+    cout << "----------- other data structure --------------" << endl;
+    {
+    #if 1
+        OtherString os;
+
+        ret = os.main(argc, argv); assert(-1 != ret);
+    #endif
     }
 
     return ret;

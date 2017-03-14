@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-10 17:12:24
+# Last modified: 2017-03-14 23:27:35
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -36,6 +36,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/ds
+    ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/others
     ${PROJECT_SOURCE_DIR}/src/srcs/cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
@@ -117,6 +118,7 @@ set(SRC_LIST
 #   srcs/db/sqlite/advanced.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/algorithm/malgorithm.cpp
+   srcs/algorithm/others/other-string.cpp
    srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
