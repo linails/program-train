@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dic-parser.cpp
  * Created Time: 2016-12-15 22:09:28
- * Last modified: 2017-03-06 23:32:14
+ * Last modified: 2017-03-07 15:29:25
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -21,6 +21,7 @@
 #include <tuple>
 #include <cstring>
 #include <cstdio>
+#include "format-later-stage.hpp"
 
 using std::cout;
 using std::endl;
@@ -137,11 +138,9 @@ int  DicParser::parser_xhzd(int argc, char **argv)
     /* 
      *
      * */
-    auto parser = [this, &word_spells, &words](string line) -> void{
+    auto parser = [this, &word_spells, &words, &fn](string line) -> void{
 
         WordCell_t wc;
-        string fn = "/home/minphone/space_sdc/workspace/"
-                    "dic_parse/dicparse/src/dic/xhzd.txt";
 
         formatTool ftool(fn,line);
 
@@ -302,11 +301,9 @@ int  DicParser::parser_xdhycd(int argc, char **argv)
     /* 
      *
      * */
-    auto parser = [this](string line) -> void{
+    auto parser = [this, &fn](string line) -> void{
 
         WordCell_t wc;
-        string fn = "/home/minphone/space_sdc/workspace/"
-                    "dic_parse/dicparse/src/dic/xdhycd.txt";
 
         formatTool ftool(fn,line);
 
@@ -388,11 +385,9 @@ int  DicParser::parser_cycd(int argc, char **argv)
     /* 
      *
      * */
-    auto parser = [](string line) -> void{
+    auto parser = [&fn](string line) -> void{
 
         WordCell_t wc;
-        string fn = "/home/minphone/space_sdc/workspace/"
-                    "dic_parse/dicparse/src/dic/cycd.txt";
 
         formatTool ftool(fn,line);
 
@@ -528,7 +523,30 @@ int  DicParser::spell_statistic(int argc, char **argv)
 
 int  DicParser::later_stage_spell(int argc, char **argv)
 {
-    return 0;
+    cout << "later - stage For spell !" << endl;
+
+    int ret = 0;
+    string fn = "/home/minphone/share/exOrigin/log-spell-2";
+
+    if(1 != argc){
+        fn = string(argv[1]);
+    }
+    cout << "fn : " << fn << endl;
+
+    Timer timer;
+    timer.timing();
+    rFileOprt fo(fn);
+    timer.timing();
+
+    auto parser = [](string line){
+        cout << "line = " << line << endl;
+    };
+
+    string dline;
+    //ret = fo.read_linebyline(parser);
+    ret = fo.read_index_line(1000, dline, parser);
+
+    return ret;
 }
 
 DiskDic         *DicParser::get_disk(void){ return this->m_disk; }

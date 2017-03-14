@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-03-02 09:49:40
+ * Last modified: 2017-03-08 14:22:18
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -50,7 +50,7 @@ int Cases::cases_main(int argc, char **argv)
 #endif
     }
     {
-#if 1
+#if 0
         /* 
          * case002
          * */
