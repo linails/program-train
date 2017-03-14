@@ -2,6 +2,8 @@
 package main
 
 import "fmt"
+//import "errors"
+//import "mymath"
 
 func main() {
     // 可以有局部作用域
@@ -14,6 +16,10 @@ func main() {
     map_fun()
 
     flow_ctrl()
+
+    function()
+
+    error_func()
 }
 
 func str_fun() {
@@ -396,4 +402,132 @@ func flow_ctrl() {
     fmt.Println("-----------------------------------------")
 }
 
+func function() {
+    {
+        a, b := 1, 2
+        //c := mymath.Plus(a, b)
+
+        c := function_child_01(a, b)
+
+        fmt.Println("c = a + b : ", c)
+
+        function_child_03(a, b, c)
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        var v1 int = 1
+        var v2 int64 = 234
+        var v3 string = "hello"
+        var v4 float32 = 1.234
+        function_child_04(v1, v2, v3, v4)
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        // 匿名函数类似 javascript 的匿名函数 | 类似 C/C++ lambda 表达式
+
+        f := func(x, y int) int {
+            return x * y
+        }
+
+        fmt.Println("f(10, 20) = ", f(10, 20))
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        var j int = 5
+        var n int = 0
+
+        // 这个匿名函数确实像一个类的实例，在第二次调用的时候，i 是增加了之后的值
+        a := func()(func(*int)) {
+            var i int = 10
+            return func(n *int) {
+                fmt.Printf("i, j = %d, %d, %d\n", i, j, *n)
+                i++
+                *n++
+            }
+        }()
+
+        a(&n)
+        j *= 2
+        a(&n)
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        a := func(val int) int {
+            val += 1    // 这一句如果直接写在 return 中会编译出错, ([Error] eg. return val += 1)
+            return val
+        }
+
+        fmt.Printf("a(2) = %d\n", a(2))
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        a := func() (func()){
+            return func(){
+                fmt.Printf("val = \n")
+            }
+        }()
+
+        a()
+    }
+    fmt.Println("-----------------------------------------")
+}
+
+// 如果返回值就一个，可以类似 C++ 的 lambda 表达式的写法
+// 返回值被命名后，它们的值在函数开始的时候被自动初始化为空
+func function_child_01(a, b int) int {
+    return a - b
+}
+
+// 如果参数列表中有若干个相邻的参数类型相同，则可以省略前面变量的类型声明
+// 返回值如果多个参数类型也相同，也可以进行省略
+func function_child_02(a, b int) (ret int, err error) {
+    return a + b, nil
+}
+
+// 定义不定参数的函数 (参数类型都是一样的)
+func function_child_03(args ... int){
+    for i, arg := range args {
+        fmt.Println("args ", i, " - ", arg)
+    }
+}
+
+// 如果希望传入任意类型，则可以指定类型为 interface{}
+// 用 interface{} 传递任意类型的数据是 go 语言的惯例用法
+func function_child_04(args ... interface{}) {
+    for i, arg := range args {
+        switch arg.(type) {
+            case int:
+                fmt.Println("i = ", i, " , arg(int) = ", arg)
+            case string:
+                fmt.Println("i = ", i, " , arg(string) = ", arg)
+            case int64:
+                fmt.Println("i = ", i, " , arg(int64) = ", arg)
+            default:
+                fmt.Println("i = ", i, " , arg(default) = ", arg)
+        }
+    }
+}
+
+func error_func() {
+    fmt.Println("[Function] : error_func() !")
+    {
+        // go 语言中引入了一个关于错误处理的标准模式，即 error 接口
+        // func Foo(param int) (n int, err error){
+        //    // ...
+        //}
+        //
+        // n, err := Foo(0)
+        // if err != nil {
+        //      错误处理
+        // } else {
+        //      正常执行
+        // }
+        //
+        //
+    }
+    fmt.Println("-----------------------------------------")
+}
+
+// Note :
+// 其他文件中的函数调用也非常简单：只要事先导入了该函数所在的包
 
