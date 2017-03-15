@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-10 17:12:24
+# Last modified: 2017-03-15 15:01:13
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -64,6 +64,7 @@ include_directories(
 
 set(SRC_LIST
    main.cpp 
+   srcs/manager.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/primer/primer.cpp
 #   srcs/primer/regex_test.cpp
@@ -136,28 +137,29 @@ set(SRC_LIST
    srcs/tools/timer.cpp
    srcs/tools/timing.c
    srcs/tools/format.c
+   srcs/tools/cfg-loader.cpp
    srcs/cases/cases.cpp
    srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case001/src/infinite_loops_v2.cpp
-#   srcs/cases/case001/src/infinite_loops_v3.cpp
-#   srcs/cases/case001/test/test_main.cpp
-#   srcs/cases/case001/test/v3_test.cpp
+   srcs/cases/case001/src/infinite_loops_v2.cpp
+   srcs/cases/case001/src/infinite_loops_v3.cpp
+   srcs/cases/case001/test/test_main.cpp
+   srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case002/dic-parser.cpp
-   srcs/cases/case002/formatParsing.cpp
-   srcs/cases/case002/format-parser.cpp
-   srcs/cases/case002/regex_common.cpp
-   srcs/cases/case002/rfileoprt.cpp
-   srcs/cases/case002/rwfileoprt.cpp
-   srcs/cases/case002/stringTools.cpp
-   srcs/cases/case002/disk-dic.cpp
-   srcs/cases/case002/segmentation.cpp
-   srcs/cases/case002/alpha-bet.cpp
-   srcs/cases/case002/statistics.cpp
-   srcs/cases/case002/denoise.cpp
-   srcs/cases/case002/format-later-stage.cpp
-   srcs/cases/case002/python-module.cpp
+#   srcs/cases/case002/dic-parser.cpp
+#   srcs/cases/case002/formatParsing.cpp
+#   srcs/cases/case002/format-parser.cpp
+#   srcs/cases/case002/regex_common.cpp
+#   srcs/cases/case002/rfileoprt.cpp
+#   srcs/cases/case002/rwfileoprt.cpp
+#   srcs/cases/case002/stringTools.cpp
+#   srcs/cases/case002/disk-dic.cpp
+#   srcs/cases/case002/segmentation.cpp
+#   srcs/cases/case002/alpha-bet.cpp
+#   srcs/cases/case002/statistics.cpp
+#   srcs/cases/case002/denoise.cpp
+#   srcs/cases/case002/format-later-stage.cpp
+#   srcs/cases/case002/python-module.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case003/key-bind-main.cpp
 #   srcs/cases/case003/disk.cpp
@@ -172,8 +174,8 @@ set(SRC_LIST
    srcs/cases/exlib-cases/case-json/mjson.cpp
    srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
    srcs/cases/exlib-cases/case-gtest/event-mecha.cpp
-   srcs/cases/exlib-cases/case-xml/xml-main.cpp
-   srcs/cases/exlib-cases/case-xml/xml-parser.cpp
+#   srcs/cases/exlib-cases/case-xml/xml-main.cpp
+#   srcs/cases/exlib-cases/case-xml/xml-parser.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
 )
