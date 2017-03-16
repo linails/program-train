@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mlinux.cpp
  * Created Time: 2016-12-21 09:39:00
- * Last modified: 2017-02-10 16:29:27
+ * Last modified: 2017-03-15 18:58:35
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,6 +17,7 @@
 #include "io.hpp"
 #include "server.hpp"
 #include <cassert>
+#include "mos.hpp"
 
 using std::cout;
 using std::endl;
@@ -105,7 +106,7 @@ int  mLinux::mlinux_main(int argc, char **argv)
 #endif
     cout << "---------------------------" << endl;
     {
-#if 1
+#if 0
         ret = this->server(argc, argv); assert(-1 != ret);
 #endif
     }

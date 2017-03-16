@@ -1,7 +1,7 @@
 /*
  * Progarm Name: manager.hpp
  * Created Time: 2017-03-15 14:55:40
- * Last modified: 2017-03-15 15:49:18
+ * Last modified: 2017-03-16 10:34:31
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -23,7 +23,7 @@
 using std::string;
 using std::vector;
 
-#define COMPILE_FLAG_Primer         1
+#define COMPILE_FLAG_Primer         0
 #define COMPILE_FLAG_Advanced       0
 #define COMPILE_FLAG_Container      0
 #define COMPILE_FLAG_dbCaller       0
@@ -35,9 +35,12 @@ class Manager{
 public:
     Manager(string path = "");
     ~Manager();
-    CfgLoader *get_xml_cfg(void);
     int  main(int argc, char **argv);
+public:
+    static Manager *get_instance(Manager *ptr = nullptr);
+    CfgLoader      *get_xml_cfg(void);
 private:
+    static Manager *instance;
     string      m_cfg_path;
     CfgLoader  *m_xml_cfg   = nullptr;
     #if COMPILE_FLAG_Primer

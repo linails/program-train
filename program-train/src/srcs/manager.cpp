@@ -1,7 +1,7 @@
 /*
  * Progarm Name: manager.cpp
  * Created Time: 2017-03-15 14:55:36
- * Last modified: 2017-03-15 15:49:19
+ * Last modified: 2017-03-16 09:19:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,6 +10,13 @@
 
 using std::cout;
 using std::endl;
+
+Manager *Manager::instance = nullptr;
+
+Manager *Manager::get_instance(Manager *ptr)
+{
+    if(nullptr != ptr) instance = ptr; return instance;
+}
 
 Manager::Manager(string path)
 {

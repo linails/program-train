@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-15 15:56:44
+# Last modified: 2017-03-16 09:42:14
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -145,6 +145,7 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case001/src/infinite_loops_v2.cpp
    srcs/cases/case001/src/infinite_loops_v3.cpp
+   srcs/cases/case001/src/conflict-check.cpp
    srcs/cases/case001/test/test_main.cpp
    srcs/cases/case001/test/v3_test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
