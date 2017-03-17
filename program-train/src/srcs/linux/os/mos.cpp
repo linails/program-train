@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mos.cpp
  * Created Time: 2016-11-25 09:24:26
- * Last modified: 2016-11-27 10:55:01
+ * Last modified: 2017-03-15 18:59:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,7 +29,12 @@ string Mos::pwd(void)
     return string(buf);
 }
 
-int Mos::pwd(string &cpath)
+string Mos::home(void)
+{
+    return getenv("HOME");
+}
+
+int  Mos::pwd(string &cpath)
 {
     char buf[128] = {0, };
 
@@ -40,6 +45,11 @@ int Mos::pwd(string &cpath)
         return 0;
     else
         return -1;
+}
+
+int  Mos::home(string &home)
+{
+    home = getenv("HOME"); return 0;
 }
 
 

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: exlibCases.cpp
  * Created Time: 2016-12-21 10:05:59
- * Last modified: 2017-03-09 14:05:04
+ * Last modified: 2017-03-14 16:52:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -44,7 +44,7 @@ int  exlibCases::exlibcases_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-        #if 1
+        #if 0
         xmlMain   parser;
 
         ret = parser.main(argc, argv); assert(-1 != ret);
