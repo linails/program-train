@@ -1,9 +1,47 @@
 
 package main
 
+// Note :
+// import 支持的加载方式
+// 01. 相对路径
+//     import "./model"
+//
+// 02. 绝对路径
+//     import "/home/minphone/model"
+//
+// ----------------------------------------------
+// import 常用的几种方式
+// 01. 点操作，导入这个包后，调用就可以省略前缀包名
+//     import (
+//        . "fmt"
+//     )
+//     
+//     Printf("xxxxx")     
+//
+// 02. 别名操作
+//     import (
+//        f "fmt"
+//     )
+//
+//     f.Printf("xxxxx")     
+//
+// 03. _操作
+//     import (
+//        _ "xxx/xxx/xxx/xxmodule"
+//     )
+//     _操作只是进入该包，即只调用了包里面的 init() 函数，不可以使用包里面的函数
+//
+
 import "fmt"
+import "os"
+import "runtime"
+import "github.com/op/go-logging"
 //import "errors"
 //import "mymath"
+
+// Note :
+// go 语言里面有两个保留函数 init 函数(所有的 package 都可以应用) 和 main 函数
+// go 会自动调用 init() 和 main()
 
 func main() {
     // 可以有局部作用域
@@ -20,6 +58,18 @@ func main() {
     function()
 
     error_func()
+
+    pointer_func()
+
+    defer_func()
+
+    struct_func()
+
+    method_fun()
+
+    goroutine_fun()
+
+    log_fun()
 }
 
 func str_fun() {
@@ -61,7 +111,7 @@ func array_fun() {
     // [1000] * float64
     // [3][5] int
     // [2][2][2] float64
-    // 便利容器可以使用关键字：range 来进行便利，range 返回两个值，一个是元素下标，一个是元素的值
+    // 遍历容器可以使用关键字：range 来进行便利，range 返回两个值，一个是元素下标，一个是元素的值
     // go语言中的数组是一个值类型，所以作为参数的时候会进行复制动作
 
     array := [5] int{1, 2, 3, 4, 5 } // 定义的时候初始化
@@ -74,6 +124,7 @@ func array_fun() {
 
 func array_slice() {
     fmt.Println("[Function] : array_slice() !")
+
 
     // 和 python 中的 list 比较接近
     // 操作数组元素的所有方法，都适用于数组切片
@@ -400,6 +451,16 @@ func flow_ctrl() {
         }
     }
     fmt.Println("-----------------------------------------")
+    {
+        var a int = 10
+
+        for a > 0 {
+            fmt.Printf("a = %d\n", a)
+            //a = a - 1
+            a--
+        }
+    }
+    fmt.Println("-----------------------------------------")
 }
 
 func function() {
@@ -463,13 +524,47 @@ func function() {
     {
         a := func() (func()){
             return func(){
-                fmt.Printf("val = \n")
+                fmt.Printf("val = ...\n")
             }
         }()
 
         a()
+        a()
     }
     fmt.Println("-----------------------------------------")
+    {
+        //a := func(val int) {
+        //    fmt.Printf("val = %d\n", val)
+        //}(3)
+
+        //a(2);
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        // type 可以函数类型，类似C++的functional
+
+        type FuncType func(int, int) int
+
+        plus := func(a, b int) int{
+            return a + b
+        }
+
+        mul := func(a, b int) int{
+            return a * b
+        }
+
+        minus := func(a, b int) int{
+            return a - b
+        }
+
+        doMath := func(a int, b int, cb FuncType){
+            fmt.Printf("a = %d , b = %d | a O b = %d \n", a, b, cb(a, b))
+        }
+
+        doMath(1, 2, plus)
+        doMath(1, 2, mul)
+        doMath(1, 2, minus)
+    }
 }
 
 // 如果返回值就一个，可以类似 C++ 的 lambda 表达式的写法
@@ -528,6 +623,324 @@ func error_func() {
     fmt.Println("-----------------------------------------")
 }
 
+func incr(p *int){
+    *p++
+}
+
+func pointer_func() {
+    fmt.Println("[Function] : pointer_func() !")
+    {
+        // 任何类型的指针的零值都是 nil
+        // 如果 p != nil 测试为真，那么 p 是指向某个有效变量
+        var a int = 10
+        var c int
+
+        b := &a
+
+        fmt.Printf("*b = %d\n", *b)
+        fmt.Printf("addr b = %d\n", b)
+
+        // 指针的比较也是类型一致的才可以进行比较
+        // &a == &b 就是错误的
+        fmt.Printf("&a == b : ")
+        fmt.Println(&a == b)
+
+        fmt.Printf("&a == &c : ")
+        fmt.Println(&a == &c)
+
+        // 在 go 语言中，返回函数中局部变量的地址也是安全的
+        // 且每次返回的地址还是不一样的
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        var a int = 10
+        fmt.Println("a = ", a)
+
+        incr(&a)
+        fmt.Println("a = ", a)
+    }
+}
+
+func defer_func_01(){
+
+    var b int = 20
+
+    a := func(){
+        fmt.Printf("b = %d\n", b)
+    }
+
+    defer a()
+
+    fmt.Println("Line = 600")
+
+    fmt.Println("Line = 600+")
+
+    // 这里返回的话，则打印的 b = 20
+    return
+
+    b++
+
+    fmt.Println("Line = 600++")
+
+    // 这里返回的话，则打印的 b = 21
+}
+
+func defer_func(){
+    fmt.Println("[Function] : defer_func() !")
+    {
+        // defer 表示延迟执行，函数在结束前统一运行 defer 语句
+        // 然后遵守先进后出的原则进行调用，即最后一个定义的 defer 语
+        // 句最先执行
+        //
+        // eg-01.
+        // defer srcFile.Close()
+        // 
+        // eg-02.
+        // defer func(){
+        //   ToDo
+        // }()
+        //
+        // Note :
+        // 一个函数中可以定义多个 defer 函数
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        defer_func_01()
+    }
+}
+
+func struct_func(){
+    fmt.Println("[Function] : struct_func() !")
+    {
+        type person struct{
+            name string
+            age int
+        }
+
+        var p person
+
+        p.name = "alex"
+        p.age  = 25
+
+        fmt.Printf("name = %s - age = %d \n", p.name, p.age)
+
+        // 快捷定义方式
+        a := person{"Lin", 24}
+        fmt.Printf("name = %s - age = %d \n", a.name, a.age)
+
+        b := person{age:26, name:"min"}
+        fmt.Printf("name = %s - age = %d \n", b.name, b.age)
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        // struct 的匿名字段
+        // 当匿名字段是一个 struct 是时候，那么这个 struct 所拥有
+        // 是全部字段都被隐士地引入了当前定义的这个 struct
+
+        type Human struct{
+            name string
+            age int
+        }
+
+        // 所有的内置类型和自定义类型都可以作为匿名字段
+        type Student struct{
+            Human
+            class string
+            weight string
+        }
+
+        a := Student{Human{"axx", 20}, "class-01", "30kg"}
+
+        fmt.Printf("a.name = %s - age = %d - class = %s\n", a.name, a.age, a.class)
+    }
+    fmt.Println("-----------------------------------------")
+    {
+    }
+}
+
+//
+// Note :
+// go 语言的面向对象非常简单，没有任何私有、公有关键字
+// 通过大小写来实现（大写开头的为公有，小写开头的为私有）
+// 
+type Rectangle struct{
+    width, height float64
+}
+
+func(r Rectangle) area() float64{
+    return r.width * r.height
+}
+
+func method_fun(){
+    fmt.Println("[Function] : method_fun() !")
+    {
+        // method 的语法
+        // func (r ReceiverType) funcName(parameters) (results)
+        //
+        // Note :
+        // 一个数据类型定义了很多的 method 后，就像类似C++的 class 定义了很多的成员函数
+
+        r1 := Rectangle{12, 2}
+        fmt.Printf("area of r1 is: %f\n", r1.area())
+    }
+    fmt.Println("-----------------------------------------")
+    {
+    }
+}
+
+//
+// Note :
+// goruntine 运行在相同的地址空间，因此访问共享内存必须做好同步
+// go 语言提供一个很好的通信机制 channel , 类似 Unix 中的 shell 管道
+//
+func say(s string){
+    for i:=0; i<5; i++{
+        // runtime.Gosched() 表示让CPU把时间片让给别人
+        // 下次某个时候继续恢复执行该 goruntine
+        runtime.Gosched()
+        fmt.Printf("s = %s \n", s)
+    }
+}
+
+//
+// 默认情况下，channel 接收和发送数据都是阻塞的
+// 默认的情况下 channel 是无缓冲的
+//
+// Note :
+// ch := make(chan type, value)
+// value == 0 ! 默认的无缓冲模式（阻塞）
+// value > 0  ! 缓冲（非阻塞，直到 value 个元素）
+//
+func sum(a []int, c chan int){
+    sum := 0
+    for _, v := range a{
+        sum += v
+    }
+
+    c <- sum    // send sum to c
+}
+
+func fibonacci(n int, c chan int){
+    x, y := 1, 1
+    for i := 0; i < n; i++{
+        c <- x
+        x, y = y, x + y
+    }
+    close(c)
+}
+
+func goroutine_fun(){
+    fmt.Println("[Function] : goroutine_fun() !")
+    {
+        go say("hello");    // 开启一个新的 goruntines 执行
+        say("world");       // 当前 goruntines 执行
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        a := []int {7, 2, 8, -9, 4, 0}
+
+        c := make(chan int)
+
+        go sum(a[ : len(a)/2], c)
+        go sum(a[len(a)/2 : ], c)
+
+        x, y := <-c, <-c // receive from c
+        fmt.Printf("x = %d ; y = %d ; x+y = %d \n", x, y, x+y)
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        f := func(c chan int){
+            a := 1000
+            for a > 0{
+                a--
+            }
+
+            for a < 3{
+                fmt.Printf("inner c = %d \n", <-c )
+                a++
+            }
+        }
+        c := make(chan int, 1)
+
+        go f(c)
+        go f(c)
+        c <- 1
+        c <- 2
+        c <- 3
+        c <- 4
+        c <- 5
+        fmt.Printf("outer c = %d \n", <-c )
+        fmt.Printf("end ...\n")
+
+        // 显示关闭 channel
+        // 应该在生产者的地方关闭 channel ，否则容易出错
+        close(c)
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        c := make(chan int, 10)
+        go fibonacci(10, c)
+
+        // range c 可以不断读取 channel 里面的数据，直到 channel 被显式关闭
+        for i := range c{
+            fmt.Printf("i = %d\n", i)
+        }
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        // Note :
+        // 当存在多个 channel 的时候，可以通过 select 进行监听 channel 上的数据流
+        // select 默认是阻塞的
+        // 只有当监听的 channel 中发送或接收可以进行时才会运行，当多个
+        // channel 都准备好的时候， select 是随机选择一个执行的
+        //
+        //
+        // select 里面还有 default 语法，select 其实就是类似 switch 的功能
+        // default 就是当监听的 channel 都没有准备好的时候，默认执行，则不再
+        // 进行阻塞等待 channel
+        // 
+    }
+}
+
+var log = logging.MustGetLogger("example")
+
+var format = logging.MustStringFormatter(
+    `%{color} %{time:15:04:05.000} %{shortfunc} > %{level:.4s} %{id:03x} %{color:reset} %{message}`,
+)
+
+type Password string
+
+func (p Password)Redacted() interface{} {
+    return logging.Redact(string(p))
+}
+
+func log_fun(){
+    fmt.Println("[Function] : log_fun() !")
+
+    logFile, err := os.OpenFile("log.txt", os.O_WRONLY, 0666)
+    if err != nil{
+        fmt.Println(err)
+    }
+
+    backend1 := logging.NewLogBackend(logFile, "", 0)
+    backend2 := logging.NewLogBackend(os.Stderr, "", 0)
+
+    backend2Formatter := logging.NewBackendFormatter(backend2, format)
+    backend1Leveled := logging.AddModuleLevel(backend1)
+    backend1Leveled.SetLevel(logging.INFO, "")
+
+    logging.SetBackend(backend1Leveled, backend2Formatter)
+
+    log.Debugf("debug %s", Password("secret"))
+    log.Info("info")
+    log.Notice("notice")
+    log.Warning("Warning")
+    log.Error("error ....")
+    log.Critical("critical ...")
+}
+
 // Note :
 // 其他文件中的函数调用也非常简单：只要事先导入了该函数所在的包
+//
+// 内建常量：true false iota nil
 
