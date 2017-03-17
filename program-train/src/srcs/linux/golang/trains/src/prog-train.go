@@ -773,6 +773,7 @@ func(r Rectangle) area() float64{
 
 func method_fun(){
     fmt.Println("[Function] : method_fun() !")
+    log_init()
     {
         // method 的语法
         // func (r ReceiverType) funcName(parameters) (results)
@@ -782,6 +783,7 @@ func method_fun(){
 
         r1 := Rectangle{12, 2}
         fmt.Printf("area of r1 is: %f\n", r1.area())
+        log.Warning("area of r1 is: ", r1.area())
     }
     fmt.Println("-----------------------------------------")
     {
@@ -831,6 +833,7 @@ func fibonacci(n int, c chan int){
 
 func goroutine_fun(){
     fmt.Println("[Function] : goroutine_fun() !")
+    log_init()
     {
         go say("hello");    // 开启一个新的 goruntines 执行
         say("world");       // 当前 goruntines 执行
@@ -883,7 +886,8 @@ func goroutine_fun(){
 
         // range c 可以不断读取 channel 里面的数据，直到 channel 被显式关闭
         for i := range c{
-            fmt.Printf("i = %d\n", i)
+            //fmt.Printf("i = %d\n", i)
+            log.Info("i = ", i)
         }
     }
     fmt.Println("-----------------------------------------")
@@ -905,7 +909,8 @@ func goroutine_fun(){
 var log = logging.MustGetLogger("example")
 
 var format = logging.MustStringFormatter(
-    `%{color} %{time:15:04:05.000} %{shortfunc} > %{level:.4s} %{id:03x} %{color:reset} %{message}`,
+    `%{color} %{time} %{shortfunc} > %{level:.4s} %{id:5d} %{color:reset} %{message}`,
+    //`%{time} %{shortfunc} > %{level:.4s} %{id:5d} %{message}`,
 )
 
 type Password string
@@ -914,29 +919,62 @@ func (p Password)Redacted() interface{} {
     return logging.Redact(string(p))
 }
 
+func log_init(){
+    backend2 := logging.NewLogBackend(os.Stdout, "", 0)
+    backend2Formatter := logging.NewBackendFormatter(backend2, format)
+    logging.SetBackend(backend2Formatter)
+}
+
 func log_fun(){
     fmt.Println("[Function] : log_fun() !")
+    {
+        /*
+        logFile, err := os.OpenFile("log.txt", os.O_WRONLY, 0666)
+        if err != nil{
+            fmt.Println(err)
+        }
+        */
 
-    logFile, err := os.OpenFile("log.txt", os.O_WRONLY, 0666)
-    if err != nil{
-        fmt.Println(err)
+        //backend1 := logging.NewLogBackend(logFile, "", 0)
+        //backend2 := logging.NewLogBackend(os.Stderr, "", 0)
+        backend2 := logging.NewLogBackend(os.Stdout, "", 0)
+        //backend2 := logging.NewLogBackend(logFile, "", 0)
+
+        backend2Formatter := logging.NewBackendFormatter(backend2, format)
+        //backend1Leveled := logging.AddModuleLevel(backend1)
+        //backend1Leveled.SetLevel(logging.INFO, "")
+
+        //logging.SetBackend(backend1Leveled, backend2Formatter)
+        logging.SetBackend(backend2Formatter)
+
+        log.Debug("debug %s", Password("secret"))
+        log.Info("info")
+        log.Notice("notice")
+
+        /*
+        a := 2000
+        for a > 0{
+            a--
+            log.Notice("a = ", a)
+        } 
+        */
+        //log.Warning("Warning")
+        //log.Error("error ....")
+        //log.Critical("critical ...")
+
+        //log.Debug("debug %s", Password("secret"))
+        //log.Info("info")
+        //log.Notice("notice")
+        //log.Warning("Warning")
+        //log.Error("error ....")
+        //log.Critical("critical ...")
     }
-
-    backend1 := logging.NewLogBackend(logFile, "", 0)
-    backend2 := logging.NewLogBackend(os.Stderr, "", 0)
-
-    backend2Formatter := logging.NewBackendFormatter(backend2, format)
-    backend1Leveled := logging.AddModuleLevel(backend1)
-    backend1Leveled.SetLevel(logging.INFO, "")
-
-    logging.SetBackend(backend1Leveled, backend2Formatter)
-
-    log.Debugf("debug %s", Password("secret"))
-    log.Info("info")
-    log.Notice("notice")
-    log.Warning("Warning")
-    log.Error("error ....")
-    log.Critical("critical ...")
+    fmt.Println("-----------------------------------------")
+    {
+        log.Notice("notice")
+        log.Warning("Warning")
+        log.Error("error ....")
+    }
 }
 
 // Note :

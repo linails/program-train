@@ -7,6 +7,7 @@ pwd
 
 if [ "$GOPATH" = "" ]; then
     echo "gopath is empty"
+    export GOPATH=`pwd`/../
 else
     echo "gopath : "
     echo $GOPATH
@@ -21,6 +22,8 @@ if [ -d github.com ]; then
 else
     go get github.com/op/go-logging
 fi
+
+echo "---------------------------------- "
 
 if [ "$#" != "0" ]; then
     echo "para count : "$#
