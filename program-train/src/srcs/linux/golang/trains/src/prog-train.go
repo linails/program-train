@@ -37,7 +37,7 @@ import "os"
 import "runtime"
 import "github.com/op/go-logging"
 //import "errors"
-//import "mymath"
+import . "mymath"
 
 // Note :
 // go 语言里面有两个保留函数 init 函数(所有的 package 都可以应用) 和 main 函数
@@ -70,6 +70,8 @@ func main() {
     goroutine_fun()
 
     log_fun()
+
+    mine_func()
 }
 
 func str_fun() {
@@ -269,6 +271,15 @@ func array_slice() {
             fmt.Print(v, " ")
         }
         fmt.Println()
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        var a []int
+
+        fmt.Println("len(a) =", len(a))
+
+        a = append(a, 1)
+        fmt.Println("len(a) =", len(a))
     }
     fmt.Println("-----------------------------------------")
 }
@@ -542,6 +553,7 @@ func function() {
     fmt.Println("-----------------------------------------")
     {
         // type 可以函数类型，类似C++的functional
+        // 还有点类似 typedef 
 
         type FuncType func(int, int) int
 
@@ -712,6 +724,7 @@ func defer_func(){
 func struct_func(){
     fmt.Println("[Function] : struct_func() !")
     {
+        // 用 type 定义 struct 的时候，就类似于 typedef
         type person struct{
             name string
             age int
@@ -974,6 +987,24 @@ func log_fun(){
         log.Notice("notice")
         log.Warning("Warning")
         log.Error("error ....")
+    }
+    fmt.Println("-----------------------------------------")
+}
+
+func mine_func(){
+    fmt.Println("[Function] : log_fun() !")
+    {
+        fmt.Printf("mymath.Plus(2, 2) = %d\n", Plus(2, 2));
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        r := &Rect1{0, 0, 10, 20}
+        fmt.Printf("r.area() = %f \n", r.Area())
+        CalcRectangle()
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        Interface_fun()
     }
 }
 
