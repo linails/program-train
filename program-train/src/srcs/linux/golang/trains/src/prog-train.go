@@ -38,6 +38,7 @@ import "runtime"
 import "github.com/op/go-logging"
 //import "errors"
 import . "mymath"
+import "sorter"
 
 // Note :
 // go 语言里面有两个保留函数 init 函数(所有的 package 都可以应用) 和 main 函数
@@ -72,6 +73,8 @@ func main() {
     log_fun()
 
     mine_func()
+
+    sorter.Sorter()
 }
 
 func str_fun() {
