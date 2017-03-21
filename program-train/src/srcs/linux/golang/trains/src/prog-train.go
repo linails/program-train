@@ -134,6 +134,7 @@ func array_slice() {
     // 和 python 中的 list 比较接近
     // 操作数组元素的所有方法，都适用于数组切片
     // 数组切片可以动态增减元素
+    // : 操作是左闭右开区间 [)
 
     // 创建数组切片的方法主要有两种：基于数组和直接创建
     // 01. 基于数组 
@@ -144,7 +145,7 @@ func array_slice() {
     // 01. 基于数组 
     {
         var myarray [10] int = [10] int{1, 2, 3, 4, 5, 6, 7, 8}
-        var myslice []int = myarray[:5]
+        var myslice []int = myarray[:5] // [)
 
         fmt.Println("elements of myarray : ")
         for _, v := range myarray {
@@ -191,8 +192,9 @@ func array_slice() {
 
     fmt.Println("-----------------------------------------")
     {
-        // cap()函数返回数组切片的空间大小
-        // len()返回数组切片中当前存储的元素个数
+        // cap()函数返回数组切片的空间大小 - 存储能力
+        // len()返回数组切片中当前存储的元素个数 - 长度
+        // 数组切片的长度和存储能力是两个不同的量
 
         myslice := make([]int, 5, 10)
         fmt.Println("cap(myslice) : ", cap(myslice))
@@ -285,6 +287,21 @@ func array_slice() {
         fmt.Println("len(a) =", len(a))
     }
     fmt.Println("-----------------------------------------")
+    {
+        // delete element of array slice
+
+        a := []int {1, 2, 3, 4, 5, 6, 7, 8}
+
+        fmt.Println("a = ", a)
+        fmt.Println("a[:1] :", a[:1])
+        fmt.Println("a[1:] :", a[1:])
+
+        index := 5
+        
+        a = append(a[:index], a[index+1:]...)
+        fmt.Println("a = ", a)
+    }
+    fmt.Println("-----------------------------------------")
 }
 
 func map_fun() {
@@ -350,6 +367,22 @@ func map_fun() {
             fmt.Println("Did't find person id = 2")
         }
 
+    }
+    fmt.Println("-----------------------------------------")
+    {
+        var m map[int] []int
+
+        var iv []int
+
+        iv = append(iv, 1, 2, 3)
+        fmt.Println("iv = ", iv)
+
+        m = make(map[int] []int)
+
+        m[1] = iv
+        m[2] = iv
+
+        fmt.Println("m = ", m)
     }
     fmt.Println("-----------------------------------------")
 }
@@ -771,6 +804,29 @@ func struct_func(){
     }
     fmt.Println("-----------------------------------------")
     {
+        type Request_t struct{
+            Method string
+            Params string
+        }
+
+        var r Request_t = Request_t{"1", "2"}
+
+        fmt.Println("r = ", r)
+
+        type Combine_t struct{
+            int_val     int
+            flo_val     float32
+            str_val     string
+            int_val1    int
+        }
+
+        var co Combine_t = Combine_t{1, 2, "nicel", 4}
+
+        fmt.Println("co = ", co)
+
+        var pco *Combine_t = &Combine_t{2, 3, "addr", 5}
+        fmt.Println("pco = ", *pco)
+        fmt.Println("pco = ", pco)
     }
 }
 
