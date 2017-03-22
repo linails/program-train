@@ -122,5 +122,35 @@ func Interface_fun(){
     {
         BTreeExample()
     }
+    fmt.Println("-----------------------------------------")
+    {
+        var a, b int = 1 , 2
+        var s1, s2 string = "string 1", "string 2"
+
+        typeComparator(a, b)
+        typeComparator(s1, s2)
+    }
+    fmt.Println("-----------------------------------------")
+}
+
+func typeComparator(a, b interface{}){
+    fmt.Println("[Function] : typeComparator() !")
+    {
+        switch a.(type) {
+            case int:
+                s1 := a.(int)
+                s2 := b.(int)
+
+                fmt.Println("a.(int) s1 = ", s1)
+                fmt.Println("b.(int) s2 = ", s2)
+            case string:
+                s1 := a.(string)
+                s2 := b.(string)
+
+                fmt.Println("a.(string) s1 = ", s1)
+                fmt.Println("b.(string) s2 = ", s2)
+        }
+    }
+    fmt.Println("-----------------------------------------")
 }
 

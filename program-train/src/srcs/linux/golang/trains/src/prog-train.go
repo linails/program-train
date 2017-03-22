@@ -302,6 +302,21 @@ func array_slice() {
         fmt.Println("a = ", a)
     }
     fmt.Println("-----------------------------------------")
+    {
+        data := []interface{}{
+            1,
+            "string 1",
+            "string 2",
+            2,
+            4.245,
+        }
+
+        fmt.Println("len(data) = ", len(data))
+
+        data1 := []interface{}{1, 2, 3, 4, 5, "string1", "string2", 0.32}
+        fmt.Println("len(data1) = ", len(data1))
+    }
+    fmt.Println("-----------------------------------------")
 }
 
 func map_fun() {
