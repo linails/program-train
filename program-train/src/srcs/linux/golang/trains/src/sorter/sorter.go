@@ -61,5 +61,3 @@ type Age_t []Person_t
 func (a Age_t) Len() int { return len(a) }
 func (a Age_t) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
 func (a Age_t) Less(i, j int) bool { return a[i].age < a[j].age }
-
-
