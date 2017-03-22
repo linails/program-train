@@ -1,4 +1,7 @@
 
+# Note :
+# test-go.sh sorter/algo/bubblesort
+
 {
     {
         var v1 int
