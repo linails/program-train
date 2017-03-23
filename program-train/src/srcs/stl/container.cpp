@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-02-23 09:32:10
+ * Last modified: 2017-03-23 15:12:10
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -23,6 +23,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cassert>
+#include <stack>
 
 using std::cout;
 using std::endl;
@@ -34,6 +35,7 @@ using std::list;
 using std::tuple;
 using std::make_pair;
 using std::make_tuple;
+using std::stack;
 
 Container::Container()
 {
@@ -54,6 +56,8 @@ int  Container::container_main(int argc, char **argv)
     ret = this->list_t(); assert(-1 != ret);
 
     ret = this->map_t(); assert(-1 != ret); 
+
+    ret = this->stack_t(); assert(-1 != ret); 
 
     return ret;
 }
@@ -221,6 +225,37 @@ int  Container::map_t(void)
             cout << "std::get<0>(dev) : " << std::get<0>(dev) << endl;
             cout << "std::get<1>(dev) : " << std::get<1>(dev) << endl;
         }
+    }
+    cout << "-----------------------------------------" << endl;
+
+    return ret;
+}
+
+int  Container::stack_t(void)
+{
+    int ret = 0;
+
+    {
+        auto stack_info = [](stack<int> &is){
+            vector<int> copy;
+            cout << "stack<int> : ";
+            while(false == is.empty()){
+                cout << is.top() << " ";
+                copy.push_back(is.top());
+                is.pop();
+            }
+            cout << endl;
+
+            for(auto iter = copy.rbegin(); iter != copy.rend(); iter++) is.push(*iter);
+        };
+
+        stack<int> is;
+
+        is.push(1);
+        is.push(3);
+
+        stack_info(is);
+        stack_info(is);
     }
     cout << "-----------------------------------------" << endl;
 
