@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.hpp
  * Created Time: 2017-03-22 10:15:01
- * Last modified: 2017-03-22 18:45:51
+ * Last modified: 2017-03-23 14:12:25
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,6 +17,7 @@
 #include <map>
 #include "dev-avl-tree.hpp"
 #include "dev-child-sibling-tree.hpp"
+#include "conflict-common.hpp"
 
 using std::vector;
 using std::tuple;
@@ -26,14 +27,8 @@ using std::list;
 using std::hash;
 using std::map;
 
-/* 
- * devict_t -> device_tsl_t
- * defense_t -> device_tsl_t
- * */
-typedef struct{
-    int     id;
-    string  status;
-}device_tsl_t;
+class DevChildSiblingTree;
+class DevAVLTree;
 
 /* 
  * scene_t -> scene_tsl_t
@@ -62,9 +57,9 @@ public:
     int  check(scene_t &scene);
 private:
 private:
-    int  convert(device_tsl_t &tsl, device_t &dev);
-    int  convert(int &tsl_pos, device_t &dev);
-    int  convert(scene_tsl_t &tsl, scene_t &scene);
+    int  convert(device_tsl_t &tsl, device_t &dev);     // DevMgr_t
+    int  convert(int &tsl_pos, device_t &dev);          // DevMgr_t
+    int  convert(scene_tsl_t &tsl, scene_t &scene);     // SceneMgr_t
     int  create_scene_cs_tree(DevChildSiblingTree *cstree, scene_tsl_t &tsl);
     int  convert_cs2avl_tree(DevAVLTree *avltree, DevChildSiblingTree *cstree);
 private:
@@ -100,6 +95,7 @@ private:
         map<int, DevChildSiblingTree*>  scene_cs_tree;      // map< root, child-sibling-tree > | root = scene_t.id
         map<int, DevAVLTree*>           scene_avl_tree;     // map< root, dev-avl-tree > | root = scene_t.id
     }avlTreeMgr_t;
+private:
     vector<device_t>       *m_pdevices_set = nullptr;
     vector<scene_t>        *m_porig_scenes = nullptr;
     DevMgr_t                m_dev_mgr;

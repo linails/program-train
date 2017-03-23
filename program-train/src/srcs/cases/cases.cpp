@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-03-14 16:51:55
+ * Last modified: 2017-03-23 17:16:10
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,7 @@
 #include <cassert>
 #include "key-bind-main.hpp"
 #include "bit.hpp"
+#include "tester-case001.hpp"
 
 using std::cout;
 using std::endl;
@@ -45,8 +46,12 @@ int Cases::cases_main(int argc, char **argv)
      * */
     {
 #if 1
-        /* case001 entry */
-        test_main();
+        /*
+         * case001 entry
+         * */
+        TesterCase001 infinite_loops;
+
+        ret = infinite_loops.main(argc, argv); assert(-1 != ret);
 #endif
     }
     {

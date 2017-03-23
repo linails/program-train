@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cfg-loader.cpp
  * Created Time: 2017-03-14 18:36:20
- * Last modified: 2017-03-22 10:12:15
+ * Last modified: 2017-03-23 17:24:20
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -218,7 +218,6 @@ void CfgLoader::cfg_file_check(void)
     struct stat file_stat;
 
     while(1){
-        if(-1 != this->m_killed) break;
 
         stat(this->m_file.c_str(), &file_stat);
 
@@ -229,6 +228,8 @@ void CfgLoader::cfg_file_check(void)
 
             this->m_st_mtime = file_stat.st_mtime;
         }
+
+        if(-1 != this->m_killed) break;
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
         //cout << "[xmlParser check config-file stat thread] sleep ... " << endl;
