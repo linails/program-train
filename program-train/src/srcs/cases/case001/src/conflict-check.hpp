@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.hpp
  * Created Time: 2017-03-22 10:15:01
- * Last modified: 2017-03-23 14:12:25
+ * Last modified: 2017-03-27 18:54:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -55,7 +55,14 @@ public:
      *  failed  :     -1 
      * */
     int  check(scene_t &scene);
+    int  reset_gid(int max_gid = -1);
+    int  device_add(device_t &dev);         // only concern dev.id | dev.gateway
+    int  device_add(vector<device_t> &devs);// only concern dev.id | dev.gateway
+    int  device_del(device_t &dev);         // only concern dev.id | dev.gateway
+    int  device_del(vector<device_t> &devs);// only concern dev.id | dev.gateway
 private:
+    int  sets_init(void);
+    int  get_tsl_pos(void);
 private:
     int  convert(device_tsl_t &tsl, device_t &dev);     // DevMgr_t
     int  convert(int &tsl_pos, device_t &dev);          // DevMgr_t
@@ -75,11 +82,11 @@ private:
                 return ld.gateway == rd.gateway && ld.id == rd.id;
             }
         };
-        int                     maxpos = -1;
+        int                     maxpos = 0;
         map<int, device_tsl_t>  tsl_set;
         list<int>               tsl_set_del;    // save deleted device_tsl_t | pos(int)
         map<int, int>           def2tsl;        // map< defense_t.id, tsl_pos >
-        map<int, int>           tsl2def;        // map< tsl_pos, defense_t.id>
+        map<int, int>           tsl2def;        // map< tsl_pos, defense_t.id >
         map<int, int>           scene2tsl;      // map< scene_t.id, tsl_pos >
         map<int, int>           tsl2scene;      // map< tsl_pos, scene_t.id >
         map<int, device_t>                                      tsl2dev;
@@ -100,6 +107,7 @@ private:
     vector<scene_t>        *m_porig_scenes = nullptr;
     DevMgr_t                m_dev_mgr;
     SceneMgr_t              m_scene_mgr;
+    avlTreeMgr_t            m_avl_mgr;
 };
 
 #endif //_CONFLICT_CHECK_HPP_

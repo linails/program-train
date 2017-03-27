@@ -1,7 +1,7 @@
 /*
  * Progarm Name: xml-parser.cpp
  * Created Time: 2017-03-08 14:22:59
- * Last modified: 2017-03-09 17:54:41
+ * Last modified: 2017-03-27 17:14:20
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -217,8 +217,6 @@ void xmlParser::config_file_check(void)
     struct stat file_stat;
 
     while(1){
-        std::this_thread::sleep_for(std::chrono::seconds(3));
-        cout << "[xmlParser check config-file stat thread] sleep ... " << endl;
 
         stat(this->m_file.c_str(), &file_stat);
 
@@ -229,6 +227,9 @@ void xmlParser::config_file_check(void)
 
             this->m_st_mtime = file_stat.st_mtime;
         }
+
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+        cout << "[xmlParser check config-file stat thread] sleep ... " << endl;
     }
 }
 
