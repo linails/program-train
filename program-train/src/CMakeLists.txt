@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-23 18:59:36
+# Last modified: 2017-03-27 10:35:37
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -146,6 +146,7 @@ set(SRC_LIST
    srcs/cases/case001/src/infinite_loops_v2.cpp
    srcs/cases/case001/src/infinite_loops_v3.cpp
    srcs/cases/case001/src/dev-child-sibling-tree.cpp
+   srcs/cases/case001/src/dev-avl-tree.cpp
    srcs/cases/case001/test/tester-case001.cpp
    srcs/cases/case001/test/test_main.cpp
    srcs/cases/case001/test/v3_test.cpp
