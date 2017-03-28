@@ -1,7 +1,7 @@
 /*
  * Progarm Name: tester-case001.cpp
  * Created Time: 2017-03-23 17:10:37
- * Last modified: 2017-03-27 13:18:55
+ * Last modified: 2017-03-28 10:06:42
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,6 +11,7 @@
 #include "test_main.h"
 #include "test-child-sibling-tree.hpp"
 #include "test-avl-tree.hpp"
+#include "test-conflict-check.hpp"
 
 using std::cout;
 using std::endl;
@@ -32,6 +33,8 @@ int  TesterCase001::main(int argc, char **argv)
     ret = this->child_sibling(); assert(-1 != ret);
 
     ret = this->avl(); assert(-1 != ret);
+
+    ret = this->conflict(); assert(-1 != ret);
 
     return ret;
 }
@@ -61,6 +64,13 @@ int  TesterCase001::avl(void)
     TesterAVLTree tree;
 
     ret = tree.insert(); assert(-1 != ret);
+
+    return ret;
+}
+
+int  TesterCase001::conflict(void)
+{
+    int ret = 0;
 
     return ret;
 }

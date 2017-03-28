@@ -1,7 +1,7 @@
 /*
  * Progarm Name: tester-case001.hpp
  * Created Time: 2017-03-23 17:10:49
- * Last modified: 2017-03-27 11:10:38
+ * Last modified: 2017-03-28 10:06:07
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -23,6 +23,7 @@ private:
     int  infinite_loops(void);
     int  child_sibling(void);
     int  avl(void);
+    int  conflict(void);
 private:
     int             m_argc;
     vector<string>  m_argvs;

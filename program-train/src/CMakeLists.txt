@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-27 18:11:31
+# Last modified: 2017-03-28 10:10:19
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -153,6 +153,7 @@ set(SRC_LIST
    srcs/cases/case001/test/v3_test.cpp
    srcs/cases/case001/test/test-avl-tree.cpp
    srcs/cases/case001/test/test-child-sibling-tree.cpp
+   srcs/cases/case001/test/test-conflict-check.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case002/dic-parser.cpp
 #   srcs/cases/case002/formatParsing.cpp
@@ -199,8 +200,8 @@ set(libs_path ${PROJECT_SOURCE_DIR}/src/libs/x86_64)
 endif()
 
 set(link_lib
-    ${libs_path}/libsqlite3.a
-    ${libs_path}/libjson.a
+    ${libs_path}/lib/libsqlite3.a
+    ${libs_path}/lib/libjson.a
     ${libs_path}/lib/libssl.a
     ${libs_path}/lib/libcrypto.a
     ${libs_path}/lib/libpqxx.a

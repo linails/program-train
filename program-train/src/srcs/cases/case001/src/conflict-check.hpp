@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.hpp
  * Created Time: 2017-03-22 10:15:01
- * Last modified: 2017-03-27 18:54:00
+ * Last modified: 2017-03-28 18:14:03
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -60,9 +60,16 @@ public:
     int  device_add(vector<device_t> &devs);// only concern dev.id | dev.gateway
     int  device_del(device_t &dev);         // only concern dev.id | dev.gateway
     int  device_del(vector<device_t> &devs);// only concern dev.id | dev.gateway
+    int  del_scene(int scene_id);
 private:
     int  sets_init(void);
+    int  tree_init(void);
     int  get_tsl_pos(void);
+    int  add_trig(int trig, int scene_id);                  // trig_set
+    int  add_trig(vector<int> &trigs, int scene_id);        // trig_set
+    int  add_trig(list<device_tsl_t> trigs, int scene_id);  // trig_set
+    int  del_trig(int trig, int scene_id);                  // trig_set
+    int  del_trig(vector<int> trigs, int scene_id);         // trig_set
 private:
     int  convert(device_tsl_t &tsl, device_t &dev);     // DevMgr_t
     int  convert(int &tsl_pos, device_t &dev);          // DevMgr_t
@@ -93,7 +100,7 @@ private:
         unordered_map<device_t, int, DeviceHash, DeviceEqual>   dev2tsl;
     }DevMgr_t;
     typedef struct {
-        map<int, int>           trig_set;       // map< tsl_pos(dev), scene_t.id >
+        map<int, list<int> >    trig_set;       // map< tsl_pos(dev), scene_t.id >
         map<int, scene_t>       scene_ori;
         map<int, scene_tsl_t>   scene_tsl;
         list<int>               scene_del;      // save deleted scene_t.id | scene_t.id(int)
