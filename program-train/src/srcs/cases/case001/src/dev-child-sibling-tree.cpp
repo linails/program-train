@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dev-child-sibling-tree.cpp
  * Created Time: 2017-03-23 13:31:18
- * Last modified: 2017-03-23 18:13:48
+ * Last modified: 2017-03-29 17:26:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -80,43 +80,55 @@ int  DevChildSiblingTree::insert_child(key_t parent, device_tsl_t &child, int ti
     int ret     = 0;
     btNode *pos = nullptr;
 
-    if(0 == this->find(pos, parent, this->m_root)){
+    if(nullptr == this->m_root){
 
-        /* 
-         * m_left  is child
-         * m_right is sibling
-         * */
-        if(nullptr == pos->m_left){
-            /* 
-             * as pos's child | pos->child
-             * */
-            btNode *node = new btNode(child.id, time, child.status);
-            if(nullptr != node){
-                pos->m_left  = node;
-            }else{
-                cout << "[Error] new btNode failed !" << endl;
-                ret = -1;
-            }
-        }else{
-            /* 
-             * as pos's child's sibling | pos->child->sibling
-             * */
-
-            btNode *sibling = pos->m_left;
-            while(nullptr != sibling->m_right) sibling = sibling->m_right;
-
-            btNode *node = new btNode(child.id, time, child.status);
-            if(nullptr != node){
-                sibling->m_right = node;
-            }else{
-                cout << "[Error] new btNode failed !" << endl;
-                ret = -1;
-            }
+        this->m_root = new btNode(child.id, time, child.status);
+        if(nullptr == this->m_root){
+            cout << "[Error] new btNode failed !" << endl;
+            ret = -1;
         }
 
     }else{
-        cout << "[Error] line = " << __LINE__ << endl;
-        ret = -1;
+
+        if(0 == this->find(pos, parent, this->m_root)){
+
+            /* 
+             * m_left  is child
+             * m_right is sibling
+             * */
+            if(nullptr == pos->m_left){
+                /* 
+                 * as pos's child | pos->child
+                 * */
+                btNode *node = new btNode(child.id, time, child.status);
+                if(nullptr != node){
+                    pos->m_left  = node;
+                }else{
+                    cout << "[Error] new btNode failed !" << endl;
+                    ret = -1;
+                }
+            }else{
+                /* 
+                 * as pos's child's sibling | pos->child->sibling
+                 * */
+
+                btNode *sibling = pos->m_left;
+                while(nullptr != sibling->m_right) sibling = sibling->m_right;
+
+                btNode *node = new btNode(child.id, time, child.status);
+                if(nullptr != node){
+                    sibling->m_right = node;
+                }else{
+                    cout << "[Error] new btNode failed !" << endl;
+                    ret = -1;
+                }
+            }
+
+        }else{
+            cout << "[Error] line = " << __LINE__ << endl;
+            ret = -1;
+        }
+
     }
 
     return ret;
