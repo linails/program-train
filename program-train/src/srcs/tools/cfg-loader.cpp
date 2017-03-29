@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cfg-loader.cpp
  * Created Time: 2017-03-14 18:36:20
- * Last modified: 2017-03-23 17:24:20
+ * Last modified: 2017-03-29 09:18:00
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -186,6 +186,23 @@ int  CfgLoader::cfg_reader(void)
             element(this->m_xml_plugin.log_level,         plugin, "log_level",       "root");
 
         }
+
+
+        /*
+         * read root elements
+         * */
+        {
+            for(auto &u : this->m_xml_root_child){
+                TiXmlElement *root = hRoot.FirstChild(u.first.c_str()).Element();
+                if(NULL != root){
+                    printf("find Element <%s>\n", u.first.c_str());
+                }else{
+                    printf("[Error] no Element <%s>\n", u.first.c_str());
+                }
+
+                for(auto &child : u.second) element(child.second, root, child.first.c_str(), "root");
+            }
+        }
     }
 
     /*
@@ -208,7 +225,39 @@ int  CfgLoader::cfg_reader(void)
         print("script_port", this->m_xml_plugin.script_port);
         print("log_path", this->m_xml_plugin.log_path);
         print("log_level", this->m_xml_plugin.log_level);
+
+        for(auto &u : this->m_xml_root_child){
+            for(auto &child : u.second){
+                print(child.first.c_str(), child.second);
+            }
+        }
     }
+
+    return ret;
+}
+
+int  CfgLoader::register_RootChild(string root, string child)
+{
+    map<string, string> child_val;
+    child_val.insert(make_pair(child, ""));
+
+    this->m_xml_root_child.insert(make_pair(root, child_val)); return 0;
+}
+
+int  CfgLoader::getRoot_child(string &xml, string root, string child)
+{
+    int ret = 0;
+
+    auto fi_root = this->m_xml_root_child.find(root);
+    if(fi_root != this->m_xml_root_child.end()){
+
+        auto fi_child = fi_root->second.find(child);
+        if(fi_child != fi_root->second.end()){
+            xml = fi_child->second;
+        }else
+            ret = -1;
+    }else
+        ret = -1;
 
     return ret;
 }
