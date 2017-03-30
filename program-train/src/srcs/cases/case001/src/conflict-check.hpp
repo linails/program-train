@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.hpp
  * Created Time: 2017-03-22 10:15:01
- * Last modified: 2017-03-28 18:14:03
+ * Last modified: 2017-03-30 13:42:29
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -62,6 +62,8 @@ public:
     int  device_del(vector<device_t> &devs);// only concern dev.id | dev.gateway
     int  del_scene(int scene_id);
 private:
+    int  check_collect_max_gid(scene_t &scene);
+    int  check_collect_new_devs(scene_t &scene);
     int  sets_init(void);
     int  tree_init(void);
     int  get_tsl_pos(void);

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dev-child-sibling-tree.cpp
  * Created Time: 2017-03-23 13:31:18
- * Last modified: 2017-03-29 17:26:00
+ * Last modified: 2017-03-30 11:24:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -174,7 +174,9 @@ int  DevChildSiblingTree::pre_order(std::function<int (btNode *)> visit)
 
     node_stack.push(nullptr);
     while(nullptr != node){
-        visit(node);
+
+        if(0 != visit(node)) return -1;
+
         if(nullptr != node->m_right) node_stack.push(node->m_right);
         if(nullptr != node->m_left)  node = node->m_left;
         else{

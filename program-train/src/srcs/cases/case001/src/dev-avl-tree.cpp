@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dev-avl-tree.cpp
  * Created Time: 2017-03-27 09:12:17
- * Last modified: 2017-03-27 14:59:13
+ * Last modified: 2017-03-30 15:51:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -43,7 +43,7 @@ int  DevAVLTree::in_order(std::function<int (avlNode *)> visit)
     return -1;
 }
 
-int  DevAVLTree::in_order(std::function<int (device_tsl_t &, int)> visit)
+int  DevAVLTree::in_order(std::function<int (map<int, device_tsl_t> &)> visit)
 {
     if(nullptr != this->m_root){
         return this->in_order(this->m_root, visit);
@@ -63,18 +63,24 @@ int  DevAVLTree::in_order(avlNode *root, std::function<int (avlNode *)> visit)
     return 0;
 }
 
-int  DevAVLTree::in_order(avlNode *root, std::function<int (device_tsl_t &, int)> visit)
+int  DevAVLTree::in_order(avlNode *root, std::function<int (map<int, device_tsl_t> &)> visit)
 {
     if(nullptr != root){
         this->in_order(root->m_left, visit);
 
+        map<int, device_tsl_t> map_td;
         device_tsl_t    tsl;
         int             time = -1;
 
         tsl.id          = root->m_key;
-        tsl.status      = root->m_status;
-        time            = root->m_time;
-        visit(tsl, time);
+
+        for(auto &u : root->m_ts){
+            time            = u.first;
+            tsl.status      = u.second;
+            map_td.insert(make_pair(time, tsl));
+        }
+
+        visit(map_td);
 
         this->in_order(root->m_right, visit);
     }
@@ -82,7 +88,7 @@ int  DevAVLTree::in_order(avlNode *root, std::function<int (device_tsl_t &, int)
     return 0;
 }
 
-int  DevAVLTree::search(key_t key, device_tsl_t &node, int &time) // key = device_tsl_t.id
+int  DevAVLTree::search(key_t key, map<int, device_tsl_t> &nodes) // key = device_tsl_t.id
 {
     int ret = -1;
 
@@ -92,9 +98,18 @@ int  DevAVLTree::search(key_t key, device_tsl_t &node, int &time) // key = devic
 
         do{
             if(key == pnode->m_key){
+
+                int          time = -1;
+                device_tsl_t node;
+
                 node.id     = pnode->m_key;
-                node.status = pnode->m_status;
-                time        = pnode->m_time;
+
+                for(auto &u : pnode->m_ts){
+                    time            = u.first;
+                    node.status     = u.second;
+                    nodes.insert(make_pair(time, node));
+                }
+
                 ret         = 0;
                 break;
             }else if(key > pnode->m_key){
@@ -134,7 +149,7 @@ int  DevAVLTree::search(key_t key, std::function<int (avlNode *)> visit)
     return ret;
 }
 
-int  DevAVLTree::search(key_t key, std::function<int (device_tsl_t &, int)> visit)
+int  DevAVLTree::search(key_t key, std::function<int (map<int, device_tsl_t> &)> visit)
 {
     int ret = -1;
 
@@ -144,14 +159,19 @@ int  DevAVLTree::search(key_t key, std::function<int (device_tsl_t &, int)> visi
 
         do{
             if(key == pnode->m_key){
+                map<int, device_tsl_t> map_td;
                 int          time = -1;
                 device_tsl_t node;
 
                 node.id     = pnode->m_key;
-                node.status = pnode->m_status;
-                time        = pnode->m_time;
 
-                visit(node, time);
+                for(auto &u : pnode->m_ts){
+                    time            = u.first;
+                    node.status     = u.second;
+                    map_td.insert(make_pair(time, node));
+                }
+
+                visit(map_td);
 
                 ret         = 0;
                 break;
@@ -195,8 +215,10 @@ avlNode *DevAVLTree::insert(avlNode *root, device_tsl_t &node, int time)
         return root;
     }else if(node.id < root->m_key){
         root->m_left  = this->insert(root->m_left , node, time);
-    }else{
+    }else if(node.id > root->m_key){
         root->m_right = this->insert(root->m_right, node, time);
+    }else{
+        root->push_time_status(time, node.status);
     }
 
 

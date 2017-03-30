@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.cpp
  * Created Time: 2017-03-27 15:08:09
- * Last modified: 2017-03-29 18:37:56
+ * Last modified: 2017-03-30 16:29:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -56,7 +56,87 @@ ConflictCheck::~ConflictCheck()
  * */
 int  ConflictCheck::check(scene_t &scene)
 {
-    return 0;
+    int ret = -1;
+
+    /* 
+     * get max_gid from scene.xxx_defense;
+     * */
+    this->check_collect_max_gid(scene);
+
+
+    /* 
+     * get new device from scene.xxx_devs;
+     * */
+    this->check_collect_new_devs(scene);
+
+
+    /* 
+     * scene -> tsl
+     * */
+    scene_tsl_t tsl;
+    this->convert(tsl, scene);     // SceneMgr_t
+
+
+    /* 
+     * create cstree and travel node 
+     *
+     * if avltree.search(node) == 0
+     *    ret = 0;
+     * else
+     *    m_avl_mgr.insert(tsl)
+     * */
+    {
+        DevChildSiblingTree *cstree = new DevChildSiblingTree();
+        if(nullptr != cstree){
+            this->create_scene_cs_tree(cstree, tsl);
+
+            auto visit = [this, &ret](btNode *pos) -> int{
+
+                for(auto &u : this->m_avl_mgr.scene_avl_tree){
+                    map<int, device_tsl_t> nodes;
+                    if(-1 != u.second->search(pos->m_key, nodes)){ // key = device_tsl_t.id
+                        cout << endl;
+                        cout << "search(key) | key = " << pos->m_key << endl;
+                        for(auto &u : nodes){
+                            printf("status -> time : ( %s -> %d )\n", u.second.status.c_str(), u.first);
+
+                            if((pos->m_time == u.first) && (pos->m_status == u.second.status)){
+                                ret = 0;
+                                return -1;
+                            }
+                        }
+                    }
+                }
+
+                return 0;
+            };
+
+            cstree->pre_order(visit);
+
+            if(-1 != ret){
+                delete cstree;
+            }else{
+                this->m_avl_mgr.scene_cs_tree.insert(make_pair(tsl.id, cstree));
+
+                /* 
+                 * init avl
+                 * */
+                DevAVLTree *avltree = new DevAVLTree();
+                if(nullptr != avltree){
+                    this->convert_cs2avl_tree(avltree, cstree);
+
+                    this->m_avl_mgr.scene_avl_tree.insert(make_pair(tsl.id, avltree));
+                }else{
+                    cout << "[Error] new DevAVLTree() failed !" << endl;
+                    ret = -1;
+                }
+            }
+        }else{
+            cout << "[Error] new DevChildSiblingTree() failed !" << endl;
+        }
+    }
+
+    return ret;
 }
 
 int  ConflictCheck::reset_gid(int max_gid)
@@ -272,7 +352,7 @@ int  ConflictCheck::convert(scene_tsl_t &tsl, scene_t &scene)     // SceneMgr_t
 
             stringstream  stream;
             stream << def.alarm;
-            stream >> tsl_dev.status;
+            stream >> tsl_dev.status; // flash new status
 
             tsl.results.push_back(tsl_dev);
         }
@@ -700,5 +780,54 @@ int  ConflictCheck::tree_init(void)
     }
 
     return ret;
+}
+
+/* 
+ * get max_gid from scene.xxx_defense;
+ *
+ * if max_gid < def2tsl.size()
+ *      continue
+ * else
+ *   reset_gid(max_gid)
+ * */
+int  ConflictCheck::check_collect_max_gid(scene_t &scene)
+{
+    int max_gid = -1;
+
+    for(auto &def : scene.condition_defense){
+        if(def.id > max_gid) max_gid = def.id;
+    }
+
+    for(auto &def : scene.result_defense){
+        if(def.id > max_gid) max_gid = def.id;
+    }
+
+    for(auto &def : scene.recover_defense){
+        if(def.id > max_gid) max_gid = def.id;
+    }
+
+    this->reset_gid(max_gid);
+
+    return 0;
+}
+
+/* 
+ * get new device from scene.xxx_devs;
+ * */
+int  ConflictCheck::check_collect_new_devs(scene_t &scene)
+{
+    for(auto &dev : scene.condition_devs){
+        device_tsl_t  tsl;  this->convert(tsl, dev);
+    }
+
+    for(auto &dev : scene.result_devs){
+        device_tsl_t  tsl;  this->convert(tsl, dev);
+    }
+
+    for(auto &dev : scene.recover_devs){
+        device_tsl_t  tsl;  this->convert(tsl, dev);
+    }
+
+    return 0;
 }
 

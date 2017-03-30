@@ -1,7 +1,7 @@
 /*
  * Progarm Name: test-avl-tree.cpp
  * Created Time: 2017-03-23 14:20:51
- * Last modified: 2017-03-27 14:58:49
+ * Last modified: 2017-03-30 15:58:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -68,18 +68,40 @@ int  TesterAVLTree::insert(void)
             set_val(tsl, time, 20, "string 20", 20); tree.insert(tsl, time);
             set_val(tsl, time,  2, "string  2",  2); tree.insert(tsl, time);
             set_val(tsl, time,  4, "string  4",  4); tree.insert(tsl, time);
-            set_val(tsl, time, 13, "string 13", 13); tree.insert(tsl, time);
-            //set_val(tsl, time,  9, "string  9",  9); tree.insert(tsl, time);
+            set_val(tsl, time, 13, "string 13-1", 2013); tree.insert(tsl, time);
+            set_val(tsl, time, 13, "string 13-2", 2017); tree.insert(tsl, time);
+            set_val(tsl, time, 13, "string 13-3", 2018); tree.insert(tsl, time);
 
             tree.in_order(visit);
 
-            int n = 6;
-            tree.search(n, tsl, time); // key = device_tsl_t.id
-            cout << endl;
-            cout << "search(n) | n = " << n << endl;
-            cout << "tsl.id = " << tsl.id << endl;
-            cout << "tsl.status = " << tsl.status << endl;
-            cout << "time = " << time << endl;
+            {
+                map<int, device_tsl_t> nodes;
+                int n = 13;
+                if(-1 != tree.search(n, nodes)){ // key = device_tsl_t.id
+                    cout << endl;
+                    cout << "search(n) | n = " << n << endl;
+                    cout << "tsl.id = " << tsl.id << endl;
+                    for(auto &u : nodes){
+                        printf("status -> time : ( %s -> %d )\n", u.second.status.c_str(), u.first);
+                    }
+                }else{
+                    printf("search(%d) | return -1\n", n);
+                }
+            }
+            {
+                map<int, device_tsl_t> nodes;
+                int n = 16;
+                if(-1 != tree.search(n, nodes)){ // key = device_tsl_t.id
+                    cout << endl;
+                    cout << "search(n) | n = " << n << endl;
+                    cout << "tsl.id = " << tsl.id << endl;
+                    for(auto &u : nodes){
+                        printf("status -> time : ( %s -> %d )\n", u.second.status.c_str(), u.first);
+                    }
+                }else{
+                    cout << "[Warning] search(16) | return -1" << endl;
+                }
+            }
         }
 
     }
