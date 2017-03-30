@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2017-02-16 10:12:23
+ * Last modified: 2017-03-30 11:06:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,6 +26,7 @@
 #include "regex_cpp11.h"
 #include <cassert>
 #include "class-enhenced.hpp"
+#include "jump.hpp"
 
 using std::cout;
 using std::endl;
@@ -60,7 +61,7 @@ int  Primer::primer_main(int argc, char **argv)
         //exception_test();
         //overload_test();
     }
-#if 0
+    #if 0
     {
         cout << "---------------------------------------------------------" << endl;
 
@@ -76,7 +77,7 @@ int  Primer::primer_main(int argc, char **argv)
             }
         }
     }
-#else
+    #else
     {
         cout << "---------------------------------------------------------" << endl;
 
@@ -97,9 +98,9 @@ int  Primer::primer_main(int argc, char **argv)
             }
         }
     }
-#endif
+    #endif
     {
-#if 0
+    #if 0
         cout << "---------------------------------------------------------" << endl;
 
         regex_cpp11 re;
@@ -111,21 +112,27 @@ int  Primer::primer_main(int argc, char **argv)
         }
         assert(-1 != ret);
 
-#endif
+    #endif
     }
     {
-#if 0
+    #if 0
         cout << "---------------------------------------------------------" << endl;
         mLambda mlambda;
         ret = mlambda.mlambda_main(argc, argv); assert(-1 != ret);
-#endif
+    #endif
     }
     {
-#if 0
+    #if 0
         cout << "---------------------------------------------------------" << endl;
         ClassEnhenced ce;
-        ce.class_enhenced_main(argc, argv); assert(-1 != ret);
-#endif
+        ret = ce.class_enhenced_main(argc, argv); assert(-1 != ret);
+    #endif
+    }
+    {
+    #if 1
+        Jumper jumper;
+        ret = jumper.main(argc, argv); assert(-1 != ret);
+    #endif
     }
 
     return ret;
