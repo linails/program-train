@@ -1,7 +1,7 @@
 /*
  * Progarm Name: tester-case001.cpp
  * Created Time: 2017-03-23 17:10:37
- * Last modified: 2017-03-28 10:06:42
+ * Last modified: 2017-03-31 13:37:16
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include "test-child-sibling-tree.hpp"
 #include "test-avl-tree.hpp"
 #include "test-conflict-check.hpp"
+#include <gtest/gtest.h>
 
 using std::cout;
 using std::endl;

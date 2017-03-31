@@ -1,12 +1,13 @@
 /*
  * Progarm Name: manager.cpp
  * Created Time: 2017-03-15 14:55:36
- * Last modified: 2017-03-16 09:19:43
+ * Last modified: 2017-03-31 13:37:39
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "manager.hpp"
 #include <iostream>
+#include <gtest/gtest.h>
 
 using std::cout;
 using std::endl;
@@ -167,6 +168,16 @@ int  Manager::main(int argc, char **argv)
         }else{
             cout << "[Error] new mAlgorithm() failed !" << endl;
         }
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_gTest
+        /* 
+         * init google test
+         * */
+        ::testing::InitGoogleTest(&argc, argv);
+
+        ret = RUN_ALL_TESTS();
         #endif
     }
 

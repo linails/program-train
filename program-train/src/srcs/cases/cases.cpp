@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-03-23 17:16:10
+ * Last modified: 2017-03-31 13:45:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -34,28 +34,28 @@ int Cases::cases_main(int argc, char **argv)
      * exlib-cases
      * */
     {
-#if 0
+        #if COMPILE_FLAG_exlibCases
         exlibCases exlibcases;
 
         ret = exlibcases.exlibcases_main(argc, argv); assert(-1 != ret);
-#endif
+        #endif
     }
 
     /* 
      * cases 001, 002 ,,,
      * */
     {
-#if 1
+        #if COMPILE_FLAG_case001
         /*
          * case001 entry
          * */
         TesterCase001 infinite_loops;
 
         ret = infinite_loops.main(argc, argv); assert(-1 != ret);
-#endif
+        #endif
     }
     {
-#if 0
+        #if COMPILE_FLAG_case002
         /* 
          * case002
          * */
@@ -66,27 +66,27 @@ int Cases::cases_main(int argc, char **argv)
             ret = pdp->dicparser_main(argc, argv); assert(-1 != ret);
             delete pdp;
         }
-#endif
+        #endif
     }
     {
-#if 0
+        #if COMPILE_FLAG_case003
         /* 
          * case003
          * */
         KeyBind kbind;
 
         ret = kbind.keybind_main(argc, argv); assert(-1 != ret);
-#endif
+        #endif
     }
     {
-#if 0
+        #if COMPILE_FLAG_case004
         /* 
          * case004
          * */
         Bit bit;
 
         ret = bit.bit_main(argc, argv); assert(-1 != ret);
-#endif
+        #endif
     }
 
     return ret;

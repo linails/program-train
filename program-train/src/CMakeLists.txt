@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-03-30 11:01:58
+# Last modified: 2017-03-31 13:49:55
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -142,7 +142,7 @@ set(SRC_LIST
    srcs/tools/format.c
    srcs/tools/cfg-loader.cpp
    srcs/cases/cases.cpp
-   srcs/cases/exlib-cases/exlibCases.cpp
+#   srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case001/src/infinite_loops_v2.cpp
    srcs/cases/case001/src/infinite_loops_v3.cpp
@@ -181,9 +181,9 @@ set(SRC_LIST
 #   srcs/cases/case004/test/queue-tetris.cpp
 #   srcs/cases/case004/test/bt-test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/exlib-cases/case-json/mjson.cpp
-   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
-   srcs/cases/exlib-cases/case-gtest/event-mecha.cpp
+#   srcs/cases/exlib-cases/case-json/mjson.cpp
+#   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
+#   srcs/cases/exlib-cases/case-gtest/event-mecha.cpp
 #   srcs/cases/exlib-cases/case-xml/xml-main.cpp
 #   srcs/cases/exlib-cases/case-xml/xml-parser.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
