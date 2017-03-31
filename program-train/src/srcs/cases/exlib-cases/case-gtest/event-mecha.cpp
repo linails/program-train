@@ -1,7 +1,7 @@
 /*
  * Progarm Name: event-mecha.cpp
  * Created Time: 2017-02-24 16:17:05
- * Last modified: 2017-02-24 16:42:04
+ * Last modified: 2017-03-31 11:19:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -25,6 +25,8 @@ void GlobalCase::TearDown(void)
 void SuiteCase::SetUpTestCase(void)
 {
     cout << "SuiteCase SetUpTestCase()" << endl;
+
+    //this->m_uc.set(10);
 }
 
 void SuiteCase::TearDownTestCase(void)
@@ -35,6 +37,7 @@ void SuiteCase::TearDownTestCase(void)
 void CaseCase::SetUp(void)
 {
     cout << "CaseCase SetUp()" << endl;
+    this->m_uc.set(10);
 }
 
 void CaseCase::TearDown(void)

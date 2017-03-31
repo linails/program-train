@@ -1,7 +1,7 @@
 /*
  * Progarm Name: case-gtest.hpp
  * Created Time: 2017-02-24 13:36:11
- * Last modified: 2017-02-27 09:50:55
+ * Last modified: 2017-03-31 10:31:07
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -47,7 +47,6 @@ public:
     ~CaseGtest();
     int  cg_main(int argc, char **argv);
 private:
-    int  first_case(int argc, char **argv);
     int  base_assert(void);
 };
 

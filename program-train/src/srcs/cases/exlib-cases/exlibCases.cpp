@@ -1,7 +1,7 @@
 /*
  * Progarm Name: exlibCases.cpp
  * Created Time: 2016-12-21 10:05:59
- * Last modified: 2017-03-14 16:52:22
+ * Last modified: 2017-03-30 17:09:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -36,7 +36,7 @@ int  exlibCases::exlibcases_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-        #if 0
+        #if 1
         CaseGtest cg;
 
         ret = cg.cg_main(argc, argv); assert(-1 != ret);

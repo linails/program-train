@@ -1,7 +1,7 @@
 /*
  * Progarm Name: event-mecha.hpp
  * Created Time: 2017-02-24 16:17:09
- * Last modified: 2017-02-24 16:42:15
+ * Last modified: 2017-03-31 11:26:05
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -33,6 +33,7 @@
  * */
 
 #include <gtest/gtest.h>
+#include "user-class.hpp"
 
 /* 
  * 01
@@ -52,6 +53,7 @@ protected:
     static void TearDownTestCase(void);
 protected:
     //static T* shared_resource_;
+    UserClass   m_uc;
 };
 
 /* 
@@ -61,6 +63,7 @@ class CaseCase : public testing::Test{
 protected:
     virtual void SetUp(void);
     virtual void TearDown(void);
+    UserClass   m_uc;
 };
 
 #endif //_EVENT_MECHA_HPP_
