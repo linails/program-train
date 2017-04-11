@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.hpp
  * Created Time: 2017-03-22 10:15:01
- * Last modified: 2017-03-30 13:42:29
+ * Last modified: 2017-04-10 17:36:31
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -82,7 +82,7 @@ private:
     typedef struct {
         struct DeviceHash{
             size_t operator()(const device_t &device) const {
-                size_t ret = hash<int>()(device.id) ^ hash<string>()(device.gateway) ^ hash<string>()(device.status);
+                size_t ret = hash<int>()(device.id) ^ hash<string>()(device.gateway);
                 return ret;
             }
         };

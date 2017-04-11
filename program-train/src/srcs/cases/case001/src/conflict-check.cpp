@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.cpp
  * Created Time: 2017-03-27 15:08:09
- * Last modified: 2017-03-30 16:29:04
+ * Last modified: 2017-04-11 17:18:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include "dev-avl-tree.hpp"
 #include <algorithm>
 #include <stack>
+#include "debug-info.hpp"
 
 using std::cout;
 using std::endl;
@@ -35,15 +36,25 @@ ConflictCheck::ConflictCheck(vector<device_t> *devices_set, vector<scene_t> *ori
 
 ConflictCheck::~ConflictCheck()
 {
+    printf("~ConflictCheck()\n");
+
     if(false == this->m_avl_mgr.scene_cs_tree.empty()){
         for(auto &u : this->m_avl_mgr.scene_cs_tree){
-            if(nullptr != u.second) delete u.second;
+            if(nullptr != u.second){
+                delete u.second;
+                u.second = nullptr;
+                printf("delete ... cs\n");
+            }
         }
     }
 
     if(false == this->m_avl_mgr.scene_avl_tree.empty()){
         for(auto &u : this->m_avl_mgr.scene_avl_tree){
-            if(nullptr != u.second) delete u.second;
+            if(nullptr != u.second){
+                delete u.second;
+                u.second = nullptr;
+                printf("delete ... avl\n");
+            }
         }
     }
 }
@@ -75,6 +86,7 @@ int  ConflictCheck::check(scene_t &scene)
      * */
     scene_tsl_t tsl;
     this->convert(tsl, scene);     // SceneMgr_t
+    dprint_scene_tsl(this->m_dev_mgr.tsl2dev, tsl, __LINE__);
 
 
     /* 
@@ -89,6 +101,7 @@ int  ConflictCheck::check(scene_t &scene)
         DevChildSiblingTree *cstree = new DevChildSiblingTree();
         if(nullptr != cstree){
             this->create_scene_cs_tree(cstree, tsl);
+            dprint_cs_tree(cstree, __LINE__);
 
             auto visit = [this, &ret](btNode *pos) -> int{
 
@@ -100,7 +113,7 @@ int  ConflictCheck::check(scene_t &scene)
                         for(auto &u : nodes){
                             printf("status -> time : ( %s -> %d )\n", u.second.status.c_str(), u.first);
 
-                            if((pos->m_time == u.first) && (pos->m_status == u.second.status)){
+                            if((pos->m_time == u.first) && (pos->m_status != u.second.status)){
                                 ret = 0;
                                 return -1;
                             }
@@ -115,6 +128,8 @@ int  ConflictCheck::check(scene_t &scene)
 
             if(-1 != ret){
                 delete cstree;
+
+                this->del_scene(scene.id);
             }else{
                 this->m_avl_mgr.scene_cs_tree.insert(make_pair(tsl.id, cstree));
 
@@ -124,6 +139,8 @@ int  ConflictCheck::check(scene_t &scene)
                 DevAVLTree *avltree = new DevAVLTree();
                 if(nullptr != avltree){
                     this->convert_cs2avl_tree(avltree, cstree);
+
+                    dprint_avl_tree(avltree , __LINE__);
 
                     this->m_avl_mgr.scene_avl_tree.insert(make_pair(tsl.id, avltree));
                 }else{
@@ -390,6 +407,37 @@ int  ConflictCheck::convert(scene_tsl_t &tsl, scene_t &scene)     // SceneMgr_t
         }
     }
 
+
+    /* 
+     * generate pos add into -> scene2tsl || tsl add into -> m_scene_mgr
+     * */
+    {
+        auto fi = this->m_dev_mgr.scene2tsl.find(scene.id);
+        if(fi == this->m_dev_mgr.scene2tsl.end()){
+            int pos = this->get_tsl_pos();
+
+            this->m_dev_mgr.scene2tsl[scene.id] = pos;
+            this->m_dev_mgr.tsl2scene[pos]      = scene.id;
+
+            /*
+             * insert into tsl_set;
+             *
+             * Note : tsl.status is null
+             *
+             * */
+            device_tsl_t  tsl_dev;
+            tsl_dev.id      = pos;
+
+            this->m_dev_mgr.tsl_set.insert(make_pair(pos, tsl_dev));
+        }
+
+
+        this->m_scene_mgr.scene_ori.insert(make_pair(scene.id, scene));
+        this->m_scene_mgr.scene_tsl.insert(make_pair(scene.id, tsl));
+
+        this->add_trig(tsl.conditions, tsl.id);
+    }
+
     return 0;
 }
 
@@ -422,8 +470,11 @@ int  ConflictCheck::create_scene_cs_tree(DevChildSiblingTree *cstree, scene_tsl_
                 int scene_id = this->m_dev_mgr.tsl2scene[tsl_dev.id];
                 scene_tsl_t &tsl = this->m_scene_mgr.scene_tsl[scene_id];
 
+                dprint_scene_tsl(this->m_dev_mgr.tsl2dev, tsl, __LINE__);
+
                 int exe_time = tsl.time;
                 if(2 == tsl.timetype) exe_time += time;
+                cout << "exe_time : " << exe_time << endl;
 
                 int index = 0;
                 for(auto &tsl_d : tsl.results){
@@ -470,10 +521,13 @@ int  ConflictCheck::create_scene_cs_tree(DevChildSiblingTree *cstree, scene_tsl_
 
         int tsl_pos = this->m_dev_mgr.scene2tsl[tsl.id];
         device_tsl_t tsl_dev = this->m_dev_mgr.tsl_set[tsl_pos];
+        dprint_dev_tsl(tsl_dev, __LINE__);
 
         pair<device_tsl_t *, int> tsl_time(make_pair(&tsl_dev, tsl.time));
 
         do{
+            dprint_tsl_time(tsl_time, __LINE__);
+
             unit(*tsl_time.first, tsl_time.second);
 
             tsl_time = backspace.top();
@@ -708,21 +762,63 @@ int  ConflictCheck::del_trig(vector<int> trigs, int scene_id)
 
 int  ConflictCheck::del_scene(int scene_id)
 {
-    this->m_scene_mgr.scene_del.push_back(scene_id);
+    /* 
+     * del scene from this->m_dev_mgr
+     * */
+    {
+        int  pos = -1;
 
-    auto fi_tsl = this->m_scene_mgr.scene_tsl.find(scene_id);
-    if(fi_tsl != this->m_scene_mgr.scene_tsl.end()){
+        auto fi_sce_tsl = this->m_dev_mgr.scene2tsl.find(scene_id);
+        if(fi_sce_tsl != this->m_dev_mgr.scene2tsl.end()){
+            pos = this->m_dev_mgr.scene2tsl[scene_id];
 
-        for(auto &tsl_dev : fi_tsl->second.conditions){
-            this->del_trig(tsl_dev.id, scene_id);
+            this->m_dev_mgr.scene2tsl.erase(fi_sce_tsl);
         }
 
-        this->m_scene_mgr.scene_tsl.erase(fi_tsl);
+        auto fi_tsl_sce = this->m_dev_mgr.tsl2scene.find(pos);
+        if(fi_tsl_sce != this->m_dev_mgr.tsl2scene.end()){
+            this->m_dev_mgr.tsl2scene.erase(fi_tsl_sce);
+        }
+
+        auto fi_tsl_set = this->m_dev_mgr.tsl_set.find(pos);
+        if(fi_tsl_set != this->m_dev_mgr.tsl_set.end()){
+            this->m_dev_mgr.tsl_set.erase(fi_tsl_set);
+        }
+
+        auto fi_li = find(this->m_dev_mgr.tsl_set_del.begin(),
+                          this->m_dev_mgr.tsl_set_del.end(),
+                          pos);
+        if(fi_li == this->m_dev_mgr.tsl_set_del.end()){
+            this->m_dev_mgr.tsl_set_del.push_back(pos);
+        }
     }
 
-    auto fi_ori = this->m_scene_mgr.scene_ori.find(scene_id);
-    if(fi_ori != this->m_scene_mgr.scene_ori.end()){
-        this->m_scene_mgr.scene_ori.erase(fi_ori);
+
+    /* 
+     * del scene from this->m_scene_mgr
+     * */
+    {
+        auto fi_del = find(this->m_scene_mgr.scene_del.begin(), 
+                           this->m_scene_mgr.scene_del.end(),
+                           scene_id);
+        if(fi_del == this->m_scene_mgr.scene_del.end()){
+            this->m_scene_mgr.scene_del.push_back(scene_id);
+        }
+
+        auto fi_tsl = this->m_scene_mgr.scene_tsl.find(scene_id);
+        if(fi_tsl != this->m_scene_mgr.scene_tsl.end()){
+
+            for(auto &tsl_dev : fi_tsl->second.conditions){
+                this->del_trig(tsl_dev.id, scene_id);
+            }
+
+            this->m_scene_mgr.scene_tsl.erase(fi_tsl);
+        }
+
+        auto fi_ori = this->m_scene_mgr.scene_ori.find(scene_id);
+        if(fi_ori != this->m_scene_mgr.scene_ori.end()){
+            this->m_scene_mgr.scene_ori.erase(fi_ori);
+        }
     }
 
     /* 
@@ -731,11 +827,21 @@ int  ConflictCheck::del_scene(int scene_id)
     {
         auto fi_cs = this->m_avl_mgr.scene_cs_tree.find(scene_id);
         if(fi_cs != this->m_avl_mgr.scene_cs_tree.end()){
+
+            if(nullptr != fi_cs->second){
+                delete fi_cs->second;
+            }
+
             this->m_avl_mgr.scene_cs_tree.erase(fi_cs);
         }
 
         auto fi_avl = this->m_avl_mgr.scene_avl_tree.find(scene_id);
         if(fi_avl != this->m_avl_mgr.scene_avl_tree.end()){
+
+            if(nullptr != fi_avl->second){
+                delete fi_avl->second;
+            }
+
             this->m_avl_mgr.scene_avl_tree.erase(fi_avl);
         }
     }
@@ -766,6 +872,8 @@ int  ConflictCheck::tree_init(void)
                 DevAVLTree *avltree = new DevAVLTree();
                 if(nullptr != avltree){
                     this->convert_cs2avl_tree(avltree, cstree);
+
+                    dprint_avl_tree(avltree , __LINE__);
 
                     this->m_avl_mgr.scene_avl_tree.insert(make_pair(tsl_scene.id, avltree));
                 }else{
