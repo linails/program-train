@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.cpp
  * Created Time: 2017-03-27 15:08:09
- * Last modified: 2017-04-11 17:18:55
+ * Last modified: 2017-04-12 10:16:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -36,14 +36,11 @@ ConflictCheck::ConflictCheck(vector<device_t> *devices_set, vector<scene_t> *ori
 
 ConflictCheck::~ConflictCheck()
 {
-    printf("~ConflictCheck()\n");
-
     if(false == this->m_avl_mgr.scene_cs_tree.empty()){
         for(auto &u : this->m_avl_mgr.scene_cs_tree){
             if(nullptr != u.second){
                 delete u.second;
                 u.second = nullptr;
-                printf("delete ... cs\n");
             }
         }
     }
@@ -53,7 +50,6 @@ ConflictCheck::~ConflictCheck()
             if(nullptr != u.second){
                 delete u.second;
                 u.second = nullptr;
-                printf("delete ... avl\n");
             }
         }
     }

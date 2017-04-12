@@ -1,7 +1,7 @@
 /*
  * Progarm Name: dev-avl-tree.cpp
  * Created Time: 2017-03-27 09:12:17
- * Last modified: 2017-03-30 15:51:21
+ * Last modified: 2017-04-12 10:10:08
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -28,7 +28,7 @@ int  DevAVLTree::insert(device_tsl_t &node, int time)
     if(nullptr == this->m_root){
         this->m_root = this->insert(this->m_root, node, time);
     }else{
-        this->insert(this->m_root, node, time);
+        this->m_root = this->insert(this->m_root, node, time);
     }
 
     return 0;
