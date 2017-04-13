@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.cpp
  * Created Time: 2016-11-09 15:06:00
- * Last modified: 2017-03-01 13:56:00
+ * Last modified: 2017-04-13 14:56:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -64,6 +64,10 @@ SceneSetv3::~SceneSetv3()
 {
     if(nullptr != this->m_sst2){
         delete this->m_sst2;
+    }
+
+    if(nullptr != this->m_cc){
+        delete this->m_cc;
     }
 }
 
@@ -168,6 +172,19 @@ int  SceneSetv3::infinite_loops_check(scene_t &r_scene)    /* aim */
     }else if(-1 == ret){ /* normal */
         /* Add this new scene to this->m_orig_scenes */
         this->m_orig_scenes.push_back(r_scene);
+
+
+        /* 
+         * ConflictCheck.check
+         * ret
+         *  success : sid(>0) | conflict
+         *  failed  :     -1 
+         * */
+        int conflict_ret = -1;
+        if(-1 != (conflict_ret = this->m_cc->check(r_scene))){
+            ret = 2;
+            this->del_scene(r_scene.id);
+        }
     }
 
     return ret;
@@ -267,6 +284,19 @@ int  SceneSetv3::init(vector<device_t> &r_vdev, vector<scene_t> &r_vscene)
     if(vec_devv2.size() > 0 && vec_scenev2.size() > 0){
         this->m_sst2 = new SceneSetv2(vec_devv2, vec_scenev2);
         if(NULL == this->m_sst2) ret = -1;
+        else{
+            if(nullptr != this->m_cc){
+                delete this->m_cc;
+                this->m_cc = nullptr;
+            }
+
+            this->m_cc = new ConflictCheck(&this->m_devices_set, &this->m_orig_scenes);
+            if(nullptr == this->m_cc){
+                ret = -1;
+            }else{
+                this->m_cc->reset_gid(this->m_max_gid);
+            }
+        }
     }else{
         this->m_sst2 = nullptr;
         ret = -1;

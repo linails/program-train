@@ -1,7 +1,7 @@
 /*
  * Progarm Name: infinite_loops_v3.hpp
  * Created Time: 2016-11-09 15:05:54
- * Last modified: 2017-03-01 13:33:08
+ * Last modified: 2017-04-13 14:34:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,6 +16,7 @@
 #include <list>
 #include "infinite_loops_v2.h"
 #include <map>
+#include "conflict-check.hpp"
 
 using std::vector;
 using std::tuple;
@@ -38,6 +39,7 @@ using std::map;
  *   // -1 : normal
  *   //  0 : infinite loop
  *   //  1 : timing error
+ *   //  2 : conflict !
  *
  *   int ret = ss.infinite_loops_check(scene);    // aim 
  *
@@ -45,6 +47,8 @@ using std::map;
  *       cout << "infinite loop ? : YES" << endl;
  *   }else if(1 == ret){
  *       cout << "timing error !" << endl;
+ *   }else if(2 == ret){
+ *       cout << "conflict !" << endl;
  *   }else{
  *       cout << "infinite loop ? : NO" << endl;
  *   }
@@ -118,6 +122,7 @@ private:
     vector<device_t>      m_devices_set;
     vector<scene_t>       m_orig_scenes;
     int                   m_max_gid;    // max defense group-id
+    ConflictCheck        *m_cc = nullptr;
 };
 
 /*

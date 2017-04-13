@@ -1,7 +1,7 @@
 /*
  * Progarm Name: tester-case001.cpp
  * Created Time: 2017-03-23 17:10:37
- * Last modified: 2017-04-12 09:32:12
+ * Last modified: 2017-04-13 14:40:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,7 +29,7 @@ int  TesterCase001::main(int argc, char **argv)
 {
     int ret = 0;
 
-    //ret = this->infinite_loops(); assert(-1 != ret);
+    ret = this->infinite_loops(); assert(-1 != ret);
 
     ret = this->child_sibling(); assert(-1 != ret);
 
