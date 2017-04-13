@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cfg-loader.hpp
  * Created Time: 2017-03-14 18:36:24
- * Last modified: 2017-03-28 18:51:35
+ * Last modified: 2017-04-13 11:06:03
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,12 +16,14 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <map>
+#include <sstream>
 
 using std::string;
 using std::vector;
 using std::thread;
 using std::map;
 using std::make_pair;
+using std::stringstream;
 
 typedef struct{
     string  master_ip;
@@ -66,6 +68,7 @@ private:
     xmlMaster_t      m_xml_master;
     xmlPlugin_t      m_xml_plugin;
     xmlRootChild_t   m_xml_root_child;
+    stringstream     m_ssbuf;
 };
 
 #endif //_CFG_LOADER_HPP_

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cfg-loader.cpp
  * Created Time: 2017-03-14 18:36:20
- * Last modified: 2017-03-29 09:18:00
+ * Last modified: 2017-04-13 11:17:43
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -209,8 +209,13 @@ int  CfgLoader::cfg_reader(void)
      * print info
      * */
     {
-        auto print = [](const char *str, string &s){
-            printf("%s = %s \n", str, s.c_str());
+        auto print = [this](const char *str, string &s){
+            char *buf = new char[1024]{0, };
+
+            sprintf(buf, "[cfg-Loader] %s = %s \n", str, s.c_str());
+            this->m_ssbuf << buf;
+
+            delete [] buf;
         };
 
         print("master_ip", this->m_xml_master.master_ip);
@@ -231,6 +236,8 @@ int  CfgLoader::cfg_reader(void)
                 print(child.first.c_str(), child.second);
             }
         }
+
+        cout << this->m_ssbuf.str() << endl;
     }
 
     return ret;
@@ -271,7 +278,9 @@ void CfgLoader::cfg_file_check(void)
         stat(this->m_file.c_str(), &file_stat);
 
         if(this->m_st_mtime != file_stat.st_mtime){
-            cout << "Time : " << file_stat.st_mtime << endl;
+            this->m_ssbuf << "[cfg-Loader] Time : ";
+            this->m_ssbuf << file_stat.st_mtime;
+            this->m_ssbuf << endl;
 
             this->cfg_reader();
 
