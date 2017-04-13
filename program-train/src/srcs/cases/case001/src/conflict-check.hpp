@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.hpp
  * Created Time: 2017-03-22 10:15:01
- * Last modified: 2017-04-10 17:36:31
+ * Last modified: 2017-04-13 10:40:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -78,6 +78,7 @@ private:
     int  convert(scene_tsl_t &tsl, scene_t &scene);     // SceneMgr_t
     int  create_scene_cs_tree(DevChildSiblingTree *cstree, scene_tsl_t &tsl);
     int  convert_cs2avl_tree(DevAVLTree *avltree, DevChildSiblingTree *cstree);
+    int  rebuild_trees(list<device_tsl_t> &conditions, int sid, bool add = true);
 private:
     typedef struct {
         struct DeviceHash{

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: test-conflict-check.cpp
  * Created Time: 2017-03-28 10:04:47
- * Last modified: 2017-04-11 16:13:11
+ * Last modified: 2017-04-13 11:22:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -42,8 +42,8 @@ void TesterConflict::SetUpTestCase(void)
 
     init_scenes();
 
-    cout << "devies_set.size() : " << devices_set.size() << endl;
-    cout << "orig_scenes.size() : " << orig_scenes.size() << endl;
+    cout << "[gtest] devies_set.size() : " << devices_set.size() << endl;
+    cout << "[gtest] orig_scenes.size() : " << orig_scenes.size() << endl;
 
 }
 
@@ -101,9 +101,8 @@ TEST_F(TesterConflict, init_ConflictCheck)
     if(nullptr == cc){
         cc = new ConflictCheck(&devices_set, &orig_scenes);
         ASSERT_NE(nullptr, cc);
-        cout << "new cc" << endl;
     }else{
-        cout << "cc != nullptr" << endl;
+        cout << "[gtest] cc != nullptr" << endl;
     }
 }
 
@@ -131,10 +130,10 @@ TEST_F(TesterConflict, add_scene_1_)
         rdevs.push_back(vdev[3]);
         rdevs.push_back(vdev[4]);
         rdevs.push_back(vdev[5]);
-        //rdevs.push_back(vdev[6]);
-        //rdevs.push_back(vdev[7]);
-        //rdevs.push_back(vdev[8]);
-        //rdevs.push_back(vdev[18]);
+        rdevs.push_back(vdev[6]);
+        rdevs.push_back(vdev[7]);
+        rdevs.push_back(vdev[8]);
+        rdevs.push_back(vdev[18]);
 
         //--------------------------------
         scene.condition_devs    = cdevs;
@@ -146,17 +145,16 @@ TEST_F(TesterConflict, add_scene_1_)
 
         if(nullptr != cc){
             int ret = cc->check(scene);
-            cout << "cc->check() : " << ret << endl;
+            cout << "[gtest] cc->check() : " << ret << endl;
             EXPECT_EQ(-1, ret);
         }else{
-            cout << "cc->check() is null" << endl;
+            cout << "[gtest] cc->check() is null" << endl;
         }
     }
 }
 
-TEST_F(TesterConflict, add_scene_2_)
+TEST_F(TesterConflict, add_scene_2_1_)
 {
-#if 0
     {
         vector<device_t> &vdev = devices_set;
 
@@ -195,16 +193,447 @@ TEST_F(TesterConflict, add_scene_2_)
 
         if(nullptr != cc){
             int ret = cc->check(scene);
-            cout << "cc->check() : " << ret << endl;
+            cout << "[gtest] cc->check() : " << ret << endl;
             EXPECT_NE(-1, ret);
         }else{
-            cout << "cc->check() is null" << endl;
+            cout << "[gtest] cc->check() is null" << endl;
         }
     }
-#endif
 }
 
-TEST_F(TesterConflict, init0)
+TEST_F(TesterConflict, add_scene_2_2_)
 {
+    {
+        vector<device_t> &vdev = devices_set;
+
+        vdev[4].status = "status 1";
+
+        scene_t scene;
+
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 2;
+        scene.time              = 100;
+        scene.timetype          = 1;
+
+        cdevs.push_back(vdev[9]);
+
+        rdevs.push_back(vdev[13]);   // <--
+        rdevs.push_back(vdev[4]);
+        rdevs.push_back(vdev[15]);
+        rdevs.push_back(vdev[16]);
+        rdevs.push_back(vdev[17]);
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        if(nullptr != cc){
+            int ret = cc->check(scene);
+            cout << "[gtest] cc->check() : " << ret << endl;
+            EXPECT_NE(-1, ret);
+        }else{
+            cout << "[gtest] cc->check() is null" << endl;
+        }
+    }
+}
+
+TEST_F(TesterConflict, add_scene_2_3_)
+{
+    {
+        vector<device_t> &vdev = devices_set;
+
+        //vdev[4].status = "status 1";
+
+        scene_t scene;
+
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 2;
+        scene.time              = 100;
+        scene.timetype          = 1;
+
+        cdevs.push_back(vdev[9]);
+
+        rdevs.push_back(vdev[13]);   // <--
+        rdevs.push_back(vdev[14]);
+        rdevs.push_back(vdev[15]);
+        rdevs.push_back(vdev[16]);
+        rdevs.push_back(vdev[17]);
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        if(nullptr != cc){
+            int ret = cc->check(scene);
+            cout << "[gtest] cc->check() : " << ret << endl;
+            EXPECT_EQ(-1, ret);
+        }else{
+            cout << "[gtest] cc->check() is null" << endl;
+        }
+    }
+}
+
+TEST_F(TesterConflict, add_scene_3_1_)
+{
+    {
+        vector<device_t> &vdev = devices_set;
+
+        //vdev[4].status = "status 1";
+
+        scene_t scene;
+
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 3;
+        scene.time              = 10;
+        scene.timetype          = 2;
+
+        cdevs.push_back(vdev[10]);
+
+        rdevs.push_back(vdev[2]);   // <--
+        rdevs.push_back(vdev[5]);
+        rdevs.push_back(vdev[6]);
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        if(nullptr != cc){
+            int ret = cc->check(scene);
+            cout << "[gtest] cc->check() : " << ret << endl;
+            EXPECT_EQ(-1, ret);
+        }else{
+            cout << "[gtest] cc->check() is null" << endl;
+        }
+    }
+}
+
+TEST_F(TesterConflict, add_scene_4_1_)
+{
+    vector<device_t> &vdev = devices_set;
+
+    vdev[4].status = "status 1";
+
+    scene_t scene;
+
+    vector<device_t>    cdevs;
+    vector<int>         cscenes;
+    vector<device_t>    rdevs;
+    vector<int>         rscenes;
+    vector<device_t>    rcdevs;
+    vector<int>         rcscenes;
+
+
+    scene.id                = 4;
+    scene.time              = 10;
+    scene.timetype          = 2;
+
+    cdevs.push_back(vdev[9]);
+
+    rdevs.push_back(vdev[13]);   // <--
+    rdevs.push_back(vdev[4]);
+    rdevs.push_back(vdev[15]);
+    rdevs.push_back(vdev[16]);
+    rdevs.push_back(vdev[17]);
+
+    //--------------------------------
+    scene.condition_devs    = cdevs;
+    scene.condition_scenes  = cscenes;
+    scene.result_devs       = rdevs;
+    scene.result_scenes     = rscenes;
+    scene.recover_devs      = rcdevs;
+    scene.recover_scenes    = rcscenes;
+
+    if(nullptr != cc){
+        int ret = cc->check(scene);
+        cout << "[gtest] cc->check() : " << ret << endl;
+        EXPECT_EQ(-1, ret);
+    }else{
+        cout << "[gtest] cc->check() is null" << endl;
+    }
+}
+
+TEST_F(TesterConflict, add_scene_5_1_)
+{
+    vector<device_t> &vdev = devices_set;
+
+    vdev[3].status = "status 1";
+
+    scene_t scene;
+
+    vector<device_t>    cdevs;
+    vector<int>         cscenes;
+    vector<device_t>    rdevs;
+    vector<int>         rscenes;
+    vector<device_t>    rcdevs;
+    vector<int>         rcscenes;
+
+
+    scene.id                = 5;
+    scene.time              = 110;
+    scene.timetype          = 1;
+
+    cdevs.push_back(vdev[30]);
+
+    rdevs.push_back(vdev[10]);   // <--
+    rdevs.push_back(vdev[3]);
+
+    //--------------------------------
+    scene.condition_devs    = cdevs;
+    scene.condition_scenes  = cscenes;
+    scene.result_devs       = rdevs;
+    scene.result_scenes     = rscenes;
+    scene.recover_devs      = rcdevs;
+    scene.recover_scenes    = rcscenes;
+
+    if(nullptr != cc){
+        int ret = cc->check(scene);
+        cout << "[gtest] cc->check() : " << ret << endl;
+        EXPECT_EQ(-1, ret);
+    }else{
+        cout << "[gtest] cc->check() is null" << endl;
+    }
+}
+
+TEST_F(TesterConflict, add_scene_6_1_)
+{
+    vector<device_t> &vdev = devices_set;
+
+    vdev[3].status = "status 1";
+
+    scene_t scene;
+
+    vector<device_t>    cdevs;
+    vector<int>         cscenes;
+    vector<device_t>    rdevs;
+    vector<int>         rscenes;
+    vector<device_t>    rcdevs;
+    vector<int>         rcscenes;
+
+
+    scene.id                = 6;
+    scene.time              = 120;
+    scene.timetype          = 1;
+
+    cdevs.push_back(vdev[31]);
+
+    rdevs.push_back(vdev[20]);
+    rdevs.push_back(vdev[21]);
+    rdevs.push_back(vdev[3]);
+
+    //--------------------------------
+    scene.condition_devs    = cdevs;
+    scene.condition_scenes  = cscenes;
+    scene.result_devs       = rdevs;
+    scene.result_scenes     = rscenes;
+    scene.recover_devs      = rcdevs;
+    scene.recover_scenes    = rcscenes;
+
+    if(nullptr != cc){
+        int ret = cc->check(scene);
+        cout << "[gtest] cc->check() : " << ret << endl;
+        EXPECT_EQ(-1, ret);
+    }else{
+        cout << "[gtest] cc->check() is null" << endl;
+    }
+}
+
+TEST_F(TesterConflict, add_scene_7_1_)
+{
+    vector<device_t> &vdev = devices_set;
+
+    vdev[2].status = "status 1";
+
+    scene_t scene;
+
+    vector<device_t>    cdevs;
+    vector<int>         cscenes;
+    vector<device_t>    rdevs;
+    vector<int>         rscenes;
+    vector<device_t>    rcdevs;
+    vector<int>         rcscenes;
+
+
+    scene.id                = 7;
+    scene.time              = 110;
+    scene.timetype          = 2;
+
+    cdevs.push_back(vdev[32]);
+
+    rdevs.push_back(vdev[2]);
+
+    //--------------------------------
+    scene.condition_devs    = cdevs;
+    scene.condition_scenes  = cscenes;
+    scene.result_devs       = rdevs;
+    scene.result_scenes     = rscenes;
+    scene.recover_devs      = rcdevs;
+    scene.recover_scenes    = rcscenes;
+
+    if(nullptr != cc){
+        int ret = cc->check(scene);
+        cout << "[gtest] cc->check() : " << ret << endl;
+        EXPECT_EQ(-1, ret);
+    }else{
+        cout << "[gtest] cc->check() is null" << endl;
+    }
+}
+
+TEST_F(TesterConflict, add_scene_8_1_)
+{
+    vector<device_t> &vdev = devices_set;
+
+    //vdev[2].status = "status 1";
+
+    scene_t scene;
+
+    vector<device_t>    cdevs;
+    vector<int>         cscenes;
+    vector<device_t>    rdevs;
+    vector<int>         rscenes;
+    vector<device_t>    rcdevs;
+    vector<int>         rcscenes;
+
+
+    scene.id                = 8;
+    scene.time              = 10;
+    scene.timetype          = 1;
+
+    cdevs.push_back(vdev[33]);
+
+    rdevs.push_back(vdev[32]);
+    rdevs.push_back(vdev[30]);
+
+    //--------------------------------
+    scene.condition_devs    = cdevs;
+    scene.condition_scenes  = cscenes;
+    scene.result_devs       = rdevs;
+    scene.result_scenes     = rscenes;
+    scene.recover_devs      = rcdevs;
+    scene.recover_scenes    = rcscenes;
+
+    if(nullptr != cc){
+        int ret = cc->check(scene);
+        cout << "[gtest] cc->check() : " << ret << endl;
+        EXPECT_NE(-1, ret);
+    }else{
+        cout << "[gtest] cc->check() is null" << endl;
+    }
+}
+
+TEST_F(TesterConflict, add_scene_8_2_)
+{
+    vector<device_t> &vdev = devices_set;
+
+    vdev[20].status = "status 1";
+
+    scene_t scene;
+
+    vector<device_t>    cdevs;
+    vector<int>         cscenes;
+    vector<device_t>    rdevs;
+    vector<int>         rscenes;
+    vector<device_t>    rcdevs;
+    vector<int>         rcscenes;
+
+
+    scene.id                = 8;
+    scene.time              = 20;
+    scene.timetype          = 2;
+
+    cdevs.push_back(vdev[4]);
+
+    rdevs.push_back(vdev[20]);
+    rdevs.push_back(vdev[25]);
+
+    //--------------------------------
+    scene.condition_devs    = cdevs;
+    scene.condition_scenes  = cscenes;
+    scene.result_devs       = rdevs;
+    scene.result_scenes     = rscenes;
+    scene.recover_devs      = rcdevs;
+    scene.recover_scenes    = rcscenes;
+
+    if(nullptr != cc){
+        int ret = cc->check(scene);
+        cout << "[gtest] cc->check() : " << ret << endl;
+        EXPECT_EQ(-1, ret);
+    }else{
+        cout << "[gtest] cc->check() is null" << endl;
+    }
+}
+
+TEST_F(TesterConflict, add_scene_9_1_)
+{
+    vector<device_t> &vdev = devices_set;
+
+    //vdev[2].status = "status 1";
+
+    scene_t scene;
+
+    vector<device_t>    cdevs;
+    vector<int>         cscenes;
+    vector<device_t>    rdevs;
+    vector<int>         rscenes;
+    vector<device_t>    rcdevs;
+    vector<int>         rcscenes;
+
+
+    scene.id                = 9;
+    scene.time              = 10;
+    scene.timetype          = 1;
+
+    cdevs.push_back(vdev[34]);
+
+    rdevs.push_back(vdev[2]);
+    rdevs.push_back(vdev[31]);
+
+    //--------------------------------
+    scene.condition_devs    = cdevs;
+    scene.condition_scenes  = cscenes;
+    scene.result_devs       = rdevs;
+    scene.result_scenes     = rscenes;
+    scene.recover_devs      = rcdevs;
+    scene.recover_scenes    = rcscenes;
+
+    if(nullptr != cc){
+        int ret = cc->check(scene);
+        cout << "[gtest] cc->check() : " << ret << endl;
+        EXPECT_NE(-1, ret);
+    }else{
+        cout << "[gtest] cc->check() is null" << endl;
+    }
 }
 

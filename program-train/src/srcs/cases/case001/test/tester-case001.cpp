@@ -1,7 +1,7 @@
 /*
  * Progarm Name: tester-case001.cpp
  * Created Time: 2017-03-23 17:10:37
- * Last modified: 2017-04-11 17:32:36
+ * Last modified: 2017-04-12 09:32:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -269,7 +269,6 @@ void TesterCase001::print_tree(DevChildSiblingTree *tree)
     cout << endl;
 }
 
-static
 int  TesterCase001::visit(avlNode *node)
 {
     printf("key: %d height: %d ", node->m_key, node->m_height);

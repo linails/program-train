@@ -1,7 +1,7 @@
 /*
  * Progarm Name: conflict-check.cpp
  * Created Time: 2017-03-27 15:08:09
- * Last modified: 2017-04-12 10:16:43
+ * Last modified: 2017-04-13 13:44:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -96,53 +96,67 @@ int  ConflictCheck::check(scene_t &scene)
     {
         DevChildSiblingTree *cstree = new DevChildSiblingTree();
         if(nullptr != cstree){
-            this->create_scene_cs_tree(cstree, tsl);
-            dprint_cs_tree(cstree, __LINE__);
+            if(-1 != this->create_scene_cs_tree(cstree, tsl)){
+                dprint_cs_tree(cstree, __LINE__);
 
-            auto visit = [this, &ret](btNode *pos) -> int{
+                auto visit = [this, &ret](btNode *pos) -> int{
 
-                for(auto &u : this->m_avl_mgr.scene_avl_tree){
-                    map<int, device_tsl_t> nodes;
-                    if(-1 != u.second->search(pos->m_key, nodes)){ // key = device_tsl_t.id
-                        cout << endl;
-                        cout << "search(key) | key = " << pos->m_key << endl;
-                        for(auto &u : nodes){
-                            printf("status -> time : ( %s -> %d )\n", u.second.status.c_str(), u.first);
+                    for(auto &u : this->m_avl_mgr.scene_avl_tree){
+                        map<int, device_tsl_t> nodes;
+                        if(-1 != u.second->search(pos->m_key, nodes)){ // key = device_tsl_t.id
+                            cout << endl;
+                            cout << "search(key) | key = " << pos->m_key << endl;
+                            for(auto &u : nodes){
+                                printf("status -> time : ( %s -> %d )\n", u.second.status.c_str(), u.first);
 
-                            if((pos->m_time == u.first) && (pos->m_status != u.second.status)){
-                                ret = 0;
-                                return -1;
+                                if((pos->m_time == u.first) && (pos->m_status != u.second.status)){
+                                    ret = 0;
+                                    return -1;
+                                }
                             }
                         }
                     }
-                }
 
-                return 0;
-            };
+                    return 0;
+                };
 
-            cstree->pre_order(visit);
+                cstree->pre_order(visit);
 
-            if(-1 != ret){
-                delete cstree;
+                if(-1 != ret){
+                    delete cstree;
 
-                this->del_scene(scene.id);
-            }else{
-                this->m_avl_mgr.scene_cs_tree.insert(make_pair(tsl.id, cstree));
-
-                /* 
-                 * init avl
-                 * */
-                DevAVLTree *avltree = new DevAVLTree();
-                if(nullptr != avltree){
-                    this->convert_cs2avl_tree(avltree, cstree);
-
-                    dprint_avl_tree(avltree , __LINE__);
-
-                    this->m_avl_mgr.scene_avl_tree.insert(make_pair(tsl.id, avltree));
+                    this->del_scene(scene.id);
                 }else{
-                    cout << "[Error] new DevAVLTree() failed !" << endl;
-                    ret = -1;
+                    this->m_avl_mgr.scene_cs_tree.insert(make_pair(tsl.id, cstree));
+
+                    /* 
+                     * init avl
+                     * */
+                    DevAVLTree *avltree = new DevAVLTree();
+                    if(nullptr != avltree){
+                        this->convert_cs2avl_tree(avltree, cstree);
+
+                        dprint_avl_tree(avltree , __LINE__);
+
+                        this->m_avl_mgr.scene_avl_tree.insert(make_pair(tsl.id, avltree));
+                    }else{
+                        cout << "[Error] new DevAVLTree() failed !" << endl;
+                        ret = -1;
+                    }
+
+
+                    /* 
+                     * reinit add_trig -> avl-tree 
+                     * */
+                    this->rebuild_trees(tsl.conditions, tsl.id);
                 }
+            }else{
+                /* 
+                 * reinit add_trig -> avl-tree 
+                 * */
+                this->rebuild_trees(tsl.conditions, tsl.id);
+
+                delete cstree;
             }
         }else{
             cout << "[Error] new DevChildSiblingTree() failed !" << endl;
@@ -794,7 +808,7 @@ int  ConflictCheck::del_scene(int scene_id)
      * del scene from this->m_scene_mgr
      * */
     {
-        auto fi_del = find(this->m_scene_mgr.scene_del.begin(), 
+        auto fi_del = find(this->m_scene_mgr.scene_del.begin(),
                            this->m_scene_mgr.scene_del.end(),
                            scene_id);
         if(fi_del == this->m_scene_mgr.scene_del.end()){
@@ -804,11 +818,18 @@ int  ConflictCheck::del_scene(int scene_id)
         auto fi_tsl = this->m_scene_mgr.scene_tsl.find(scene_id);
         if(fi_tsl != this->m_scene_mgr.scene_tsl.end()){
 
+            list<device_tsl_t> conditions = fi_tsl->second.conditions;
             for(auto &tsl_dev : fi_tsl->second.conditions){
                 this->del_trig(tsl_dev.id, scene_id);
             }
 
             this->m_scene_mgr.scene_tsl.erase(fi_tsl);
+
+
+            /* 
+             * reinit del_trig -> avl-tree
+             * */
+            this->rebuild_trees(conditions, scene_id, false);
         }
 
         auto fi_ori = this->m_scene_mgr.scene_ori.find(scene_id);
@@ -933,5 +954,89 @@ int  ConflictCheck::check_collect_new_devs(scene_t &scene)
     }
 
     return 0;
+}
+
+int  ConflictCheck::rebuild_trees(list<device_tsl_t> &conditions, int sid, bool add)
+{
+    int ret = 0;
+
+    for(auto &tsl_dev : conditions){
+
+        if(false != add){
+            /* 
+             * add trig in trig_set
+             * */
+            this->add_trig(tsl_dev.id, sid);
+        }
+
+        /* 
+         * update sid's trigs -> cstree/avltree
+         * */
+        for(auto iter = this->m_scene_mgr.scene_tsl.begin();
+                 iter!= this->m_scene_mgr.scene_tsl.end(); iter++){
+
+            auto finder = [&tsl_dev](device_tsl_t tsl) -> int{
+                if(tsl.id == tsl_dev.id){
+                    return 1;
+                }else{
+                    return 0;
+                }
+            };
+
+            auto fc = find_if(iter->second.results.begin(),
+                              iter->second.results.end(), finder);
+            if(fc != iter->second.results.end()){
+                scene_tsl_t &tsl_scene = iter->second;
+
+                auto fi_cstree = this->m_avl_mgr.scene_cs_tree.find(iter->first);
+                if(fi_cstree != this->m_avl_mgr.scene_cs_tree.end()){
+
+                    auto p_cs = this->m_avl_mgr.scene_cs_tree[iter->first];
+                    if(nullptr != p_cs){
+                        delete p_cs;
+                        this->m_avl_mgr.scene_cs_tree[iter->first] = nullptr;
+                    }else{
+                        cout << "[Error] !!! : line = " << __LINE__ << endl;
+                        ret = -1;
+                    }
+
+                    auto p_avl = this->m_avl_mgr.scene_avl_tree[iter->first];
+                    if(nullptr != p_avl){
+                        delete p_avl;
+                        this->m_avl_mgr.scene_avl_tree[iter->first] = nullptr;
+                    }else{
+                        cout << "[Error] !!! : line = " << __LINE__ << endl;
+                        ret = -1;
+                    }
+
+                    DevChildSiblingTree *cstree = new DevChildSiblingTree();
+                    if(nullptr != cstree){
+                        this->create_scene_cs_tree(cstree, tsl_scene);
+
+                        DevAVLTree *avltree = new DevAVLTree();
+                        if(nullptr != avltree){
+                            this->convert_cs2avl_tree(avltree, cstree);
+                            dprint_avl_tree(avltree , __LINE__);
+
+                            /* update */
+                            this->m_avl_mgr.scene_cs_tree[iter->first]  = cstree;
+                            this->m_avl_mgr.scene_avl_tree[iter->first] = avltree;
+                        }else{
+                            cout << "[Error] new DevAVLTree() failed " << __LINE__ << endl;
+                            ret = -1;
+                        }
+
+                    }else{
+                        cout << "[Error] new DevChildSiblingTree() failed " << __LINE__ << endl;
+                        ret = -1;
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    return ret;
 }
 
