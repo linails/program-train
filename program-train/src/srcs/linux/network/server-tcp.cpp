@@ -1,7 +1,7 @@
 /*
  * Progarm Name: server-tcp.cpp
  * Created Time: 2017-04-14 16:55:04
- * Last modified: 2017-04-14 17:15:18
+ * Last modified: 2017-04-14 18:00:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -50,6 +50,8 @@ int  ServerTcp::echo(int timeout_seconds)
     while(timeout_seconds--){
         sleep(1);
     }
+
+    this->kill_thread();
 
     return 0;
 }
