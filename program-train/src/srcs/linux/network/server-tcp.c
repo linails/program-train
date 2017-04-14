@@ -1,7 +1,7 @@
 /*
  * Progarm Name: server-tcp.c
  * Created Time: 2016-10-06 00:01:30
- * Last modified: 2016-10-30 14:29:14
+ * Last modified: 2017-04-14 16:25:11
  */
 
 #include "server-tcp.h"
@@ -85,14 +85,14 @@ int server_tcp_main(int argc, char **argv)
     }
     printf("-----------------------------\n");
     {
-#if 0
+#if 1
         int server_tcp_echo(int argc, char **argv);
         ret = server_tcp_echo(argc, argv);
 #endif
     }
     printf("-------------------------------\n");
     {
-#if 1
+#if 0
         int server_tcp_half_close(int argc, char **argv);
         ret = server_tcp_half_close(argc, argv);
 #endif
