@@ -1,7 +1,7 @@
 /*
  * Progarm Name: lambda.cpp
  * Created Time: 2016-03-28 20:57:04
- * Last modified: 2016-07-28 17:46:44
+ * Last modified: 2016-12-18 12:33:16
  */
 
 #include "lambda.h"
@@ -13,8 +13,29 @@
 
 using namespace std;
 
-void lambda_test(void)
+mLambda::mLambda()
 {
+}
+
+mLambda::~mLambda()
+{
+}
+
+int  mLambda::mlambda_main(int argc, char **argv)
+{
+    int ret = 0;
+
+    ret = this->mlambda_test();
+
+    ret = this->mlambda_cb();
+
+    return ret;
+}
+
+int  mLambda::mlambda_test(void)
+{
+    int ret = 0;
+
     cout << "-----------------------------------------" << endl;
     {
         vector<int> c {1,2,3,4,5,6,7};
@@ -93,6 +114,109 @@ void lambda_test(void)
         cout << "f = " << f() << endl;
         cout << "a = " << a << endl;
     }
+
+    return ret;
 }
 
+int  mLambda::mlambda_cb(void)
+{
+    int ret = 0;
+
+    cout << "-----------------------------------------" << endl;
+    {
+        auto f = [](int (*pf)(char *s)){
+            string s = "mLambda::callback is running ...";
+
+            pf((char *)s.c_str());
+        };
+
+        f(mLambda::callback);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        string sa = "this is sa";
+
+        auto f = [&sa](int (*pf)(char *s)){
+            pf((char *)sa.c_str());
+        };
+
+        f(mLambda::callback);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        string sa = "this is sa";
+
+        auto f = [&sa](int (*pf)(char *s)){
+            pf((char *)sa.c_str());
+        };
+
+        auto cb = [](char *s) -> int{
+            int ret = 0;
+            cout << "cb : " << s << endl;
+            return ret;
+        };
+
+        f(cb);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+#if 0
+        /*
+         * Warning : 错误用法
+         *    这种用法是错误的，lambda表达式中如果包含捕获，则通过普通的回调函数指针赋值传递为语法错误
+         * */
+
+        string sa = "this is sa";
+        string sb = "this is sb";
+
+        auto f = [&sa](int (*pf)(char *s)){
+            pf((char *)sa.c_str());
+        };
+
+        auto cb = [&sb](char *s) -> int{
+            int ret = 0;
+            cout << "cb : " << s << endl;
+            cout << "sb : " << sb << endl;
+            return ret;
+        };
+
+        f(cb);
+#endif
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        string sa = "this is sa";
+        string sb = "this is sb";
+
+        /* 
+         * Warning : 正确用法
+         *   lambda 表达式有捕获功能的时候作为回调函数，则需要通过函数包装器进行传递
+         * */
+        auto f = [&sa](function<int (char *)> pf){
+            pf((char *)sa.c_str());
+        };
+
+        auto cb = [&sb](char *s) -> int{
+            int ret = 0;
+            cout << "cb : " << s << endl;
+            cout << "sb : " << sb << endl;
+            return ret;
+        };
+
+        function<int(char *)> fr = cb;
+
+        f(fr);
+    }
+
+    return ret;
+}
+
+int  mLambda::callback(char *s)
+{
+    int ret = 0;
+
+    cout << "cb : " << s << endl;
+
+    return ret;
+}
 

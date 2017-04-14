@@ -1,49 +1,47 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-12-15 13:41:15
+ * Last modified: 2017-04-14 23:54:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include <iostream>
-#include "primer.hpp"
-#include "db_test.hpp"
-#include "cases.hpp"
-#include "mlinux.hpp"
-#include "m-algorithm.hpp"
+#include <cassert>
+#include "manager.hpp"
+#include <string>
 
-
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 
 int main(int argc, char **argv)
 {
     int ret = 0;
 
-    {
-        Primer  primer;
-    }
-    {
-        db_test();
-    }
-    {
-        mLinux mlinux;
+    string path;
 
-        ret = mlinux.mlinux_main(argc, argv);
+    switch(argc){
+        case 1:
+            break;
+        case 2:
+            path = argv[1];
+            break;
+        case 3:
+            cout << "[Warning] argc = 3" << endl;
+            break;
     }
-    {
-#if 0
-        Cases cases;
 
-        ret = cases.cases_main();
-#endif
+    Manager *pmgr = Manager::get_instance(new Manager(path));
+    if(nullptr != pmgr){
+        cout << "new successed" << endl;
+    }else{
+        cout << "[Error] new Manager() failed !" << endl;
     }
-    {
-#if 0
-        mAlgorithm malgorithm;
 
-        ret = malgorithm.algorithm_main(argc, argv);
-#endif
-    }
+    ret = pmgr->main(argc, argv); assert(-1 != ret);
+
+    delete pmgr;
+
     return ret;
 }
 

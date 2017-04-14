@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-28 17:05:29
-# Last modified: 2016-12-04 13:44:06
+# Last modified: 2017-03-05 10:02:37
 #
 
 ----------------------------------------------------
@@ -61,12 +61,18 @@ sqlite 存储类
 6.create index [unique] index_name on table_name (columns);
 7.drop index index_name;
 8.delete from tblname;                            //删除所有行
+  delete from CorpusWordSpell where id=8;
   
 /****************************************************************/
 .echo on
 .mode column
 .headers on
 .nullvalue NULL
+
+.output dd.sql
+.dump
+
+.read dd.sql
 
 /****************************************************************/
 关系操作划分成3类

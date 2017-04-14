@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mos.hpp
  * Created Time: 2016-11-25 09:24:31
- * Last modified: 2016-11-27 10:54:46
+ * Last modified: 2017-03-15 18:59:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -17,7 +17,9 @@ public:
     Mos();
     ~Mos();
     string pwd(void);
-    int pwd(string &cpath);
+    string home(void);
+    int  pwd(string &cpath);
+    int  home(string &home);
 private:
 };
 

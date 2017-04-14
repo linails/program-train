@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2016-12-12 21:26:58
+ * Last modified: 2017-02-04 12:03:13
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,6 +11,7 @@
 #include <string.h>
 #include "ctest.h"
 #include <stdarg.h>
+#include "jump.h"
 
 static
 int  cprimer_main(void *cthis, int argc, char **argv)
@@ -21,17 +22,71 @@ int  cprimer_main(void *cthis, int argc, char **argv)
 
     if(NULL != cthis){
 
-        //((cPrimer_t *)cthis)->other_test();
+        ret = ((cPrimer_t *)cthis)->other_test();
 
-        ((cPrimer_t *)cthis)->process_token();
+        ret = ((cPrimer_t *)cthis)->process_token();
 
-        ((cPrimer_t *)cthis)->para_uncertainty(cthis);
+        ret = ((cPrimer_t *)cthis)->para_uncertainty(cthis);
+
+        ret = ((cPrimer_t *)cthis)->gnu_c();
+
+        {
+            cJumper_t *cjumper = NULL;
+
+            if(0 == cjumper_constructor_safety(&cjumper)){
+
+                if(NULL != cjumper){
+                    printf("cjumper constructor successed !\n");
+
+                    if(0 != (ret = cjumper->cjumper_main((void *)cjumper, 0, NULL))){
+                        printf("[Error] : cjumper->cjumper_main() failed \n");
+                    }
+
+                    if(0 == cjumper->destructor(&cjumper)){
+                        printf("cjumper destructor successed !\n");
+                    }
+                }
+            }
+        }
 
     }else{
         ret = -1;
         printf("[Warning] cthis is NULL !\n");
     }
     return ret;
+}
+
+static
+int  other_test(void)
+{
+    printf(" --- other-test ---\n");
+    {
+        typedef union {
+            int     a;
+            char    b[5];
+        }iso_u;
+
+        printf("sizeof(iso_u) : %d\n", (int)sizeof(iso_u));
+
+        /* 
+         * Note : union 虽然不常直接定义变量，不过直接定义变量的时候，初始化只能初始化第一个成员的类型
+         * */
+        iso_u iso = {8};
+
+        printf("iso.a = %d\n", iso.a);
+
+    }
+    printf("-------------------\n");
+    {
+        int array[3] = {1, 2, 3};
+
+        printf("%x, %x\n", (unsigned int)(array+1), (unsigned int)(&array+1));
+        printf(" - %x \n", (unsigned int)(&array+1) - (unsigned int)(array+1));
+    }
+
+    printf("\n");
+
+    return 0;
 }
 
 static
@@ -115,6 +170,102 @@ int  pu_fun(int n, ...)
     return ret;
 }
 
+static
+int  gnu_c(void)
+{
+    int ret = 0;
+
+    printf("-----------GNU-C-----------\n");
+
+    /*  
+     *  GNU C : 零长度和变量长度数组
+     *  */
+    {
+        /* 
+         * 1> int data[0] 仅仅意味着程序中通过 var_data 结构体实例的 data[index] 成员可以访问 len 之后的第
+         *    index 个地址，它并没有为 data[] 数组分配内存
+         * 2> 因此，sizeof(struct var_data) = sizeof(int)
+         * */
+        struct var_data{
+            int len;
+            int data[0];
+        };
+
+        printf("sizeof(var_data) : %d\n", (int)sizeof(struct var_data));
+    }
+    printf("---------------------------\n");
+    {
+        int  index = 10;
+        char data[index];
+        /* 
+         *  错误用法
+         *
+         *  char data[index] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; -> Error
+         *  char data[10]    = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; -> OK
+         * */
+
+        printf("sizeof(data) : %d\n", (int)sizeof(data));
+    }
+    printf("---------------------------\n");
+    {
+        /* 
+         * case x ... y 语法, 表示满足区间 [x, y] 的 case
+         * */
+        int index = 13;
+
+        switch(index){
+            case 1 ... 10 :
+                printf("index : %d -> case 1 ... 10 \n", index);
+                break;
+            case 11 ... 20 :
+                printf("index : %d -> case 11 ... 20 \n", index);
+                break;
+            default:
+                break;
+        }
+
+        char ch = 'f';
+
+        switch(ch){
+            case '0' ... '9':
+                printf("ch : %c --> case '0' ... '9' \n", ch);
+                break;
+            case 'a' ... 'z':
+                printf("ch : %c --> case 'a' ... 'z' \n", ch);
+                break;
+            case 'A' ... 'Z':
+                printf("ch : %c --> case 'A' ... 'Z' \n", ch);
+                break;
+            default:
+                break;
+        }
+    }
+    printf("---------------------------\n");
+    {
+        /* 
+         * 指定数组索引号的方法来初始化
+         * */
+
+        int data[30] = {[0 ... 20] = 99};
+
+        printf("data : ");
+        for(int i=0; i<30; i++){
+            printf("%.2d ", data[i]);
+        }
+        printf("\n");
+
+        int dat[30] = {[20] = 99};
+
+        printf("dat : ");
+        for(int i=0; i<30; i++){
+            printf("%.2d ", dat[i]);
+        }
+        printf("\n");
+    }
+
+    return ret;
+}
+
 //----------------------------------------------------------------------------------------------
 
 static
@@ -142,7 +293,7 @@ cPrimer_t *cprimer_constructor(void)
          * Loading all functions here !
          * */
 
-        //cprimer->other_test = other_test;
+        cprimer->other_test = other_test;
 
         cprimer->destructor = destructor;
 
@@ -151,6 +302,8 @@ cPrimer_t *cprimer_constructor(void)
         cprimer->para_uncertainty = para_uncertainty;
 
         cprimer->pu_fun = pu_fun;
+
+        cprimer->gnu_c = gnu_c;
 
         cprimer->cprimer_main = cprimer_main;
 
@@ -174,7 +327,7 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
              * Loading all functions here !
              * */
 
-            //cprimer->other_test = other_test;
+            (*pobj)->other_test = other_test;
 
             (*pobj)->destructor = destructor;
 
@@ -183,6 +336,8 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
             (*pobj)->para_uncertainty = para_uncertainty;
 
             (*pobj)->pu_fun = pu_fun;
+
+            (*pobj)->gnu_c = gnu_c;
 
             (*pobj)->cprimer_main = cprimer_main;
         }

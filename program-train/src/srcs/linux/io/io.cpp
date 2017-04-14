@@ -1,7 +1,7 @@
 /*
  * Progarm Name: io.cpp
  * Created Time: 2016-12-10 21:31:16
- * Last modified: 2016-12-11 19:29:11
+ * Last modified: 2016-12-31 21:33:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -195,6 +195,57 @@ int  Io::io_multiplexing_epoll(void)
      *  2> epoll_ctl    : 向空间注册并注销文件描述符
      *  3> epoll_wait   : 与 select 函数类似，等待文件描述符发生变化
      * */
+
+    int ret = 0;
+
+    return ret;
+}
+
+int  Io::io_send_recv(void)
+{
+    cout << "io_send_recv ..." << endl;
+
+    /* 
+     *  #include <sys/socket.h>
+     *  ssize_t send(int sockfd, const void *buf, size_t nbytes, int flags);
+     *      -> 成功时返回发送的字节数，失败返回-1
+     *      -- sockfd   : 表示与数据传输对象的连接的套接字文件描述符
+     *      -- buf      : 保存待传输数据的缓冲地址值
+     *      -- nbytes   : 待传输的字节数
+     *      -- flags    : 传输数据时指定的可选项信息
+     *
+     *  #include <sys/socket.h>
+     *  ssize_t recv(int sockfd, void *buf, size_t nbytes, int flags);
+     *      -> 成功时返回接收的字节数(收到EOF时返回0)，失败时返回-1
+     *      -- sockfd   : 表示与数据传输对象的连接的套接字文件描述符
+     *      -- buf      : 保存接收数据的缓冲地址值
+     *      -- nbytes   : 可接收的最大字节数
+     *      -- flags    : 接收数据时指定的可选项信息
+     *
+     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+     *
+     *  send / recv 函数的最后一个参数是收发数据时的可选项，可进行或操作
+     *
+     *      可选项       |                含义                |  send  |  recv
+     *  -----------------+------------------------------------+--------+----------
+     *    MSG_OOB        |  用于传输带外数据                  |    O   |    O
+     *    MSG_PEEK       |  验证输入缓冲中是否存在接收的数据  |    X   |    O
+     *    MSG_DONTROUTE  |  数据传输过程中不参照路由表，在本  |    O   |    X
+     *                   |  地寻找目的地                      |        |        
+     *    MSG_DONTWAIT   |  调用I/O函数时不阻塞，用于使用非   |    O   |    O
+     *                   |  阻塞IO                            |        |        
+     *    MSG_WAITALL    |  防止函数返回，直到接收全部请求的  |    X   |    O
+     *                   |  字节数                            |        |    
+     * */
+
+    int ret = 0;
+
+    return ret;
+}
+
+int  Io::io_readv_writev(void)
+{
+    cout << "io_readv_writev ..." << endl;
 
     int ret = 0;
 

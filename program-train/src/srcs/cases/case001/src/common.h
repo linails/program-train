@@ -1,7 +1,7 @@
 /*
  * Progarm Name: common.h
  * Created Time: 2016-07-27 13:11:34
- * Last modified: 2016-11-10 14:33:30
+ * Last modified: 2017-02-15 16:37:27
  */
 
 #ifndef _COMMON_H_
@@ -22,7 +22,7 @@ typedef struct{
 }device_t;
 
 typedef struct{
-    string gateway;
+    int    id;
     int    alarm;    /* alarm - status : On[1], off[0] */
 }defense_t;
 
