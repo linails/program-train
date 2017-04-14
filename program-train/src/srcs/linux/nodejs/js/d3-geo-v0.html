@@ -1,0 +1,686 @@
+<! 集合发挥 >
+<! minphone linails@foxmail.com >
+<!>
+<!>
+
+<html>
+
+    <style>
+        body{
+            width:1060px;
+            margin:50px auto;
+        }
+        path {  stroke: #fff; }
+        path:hover {  opacity:0.9; }
+        rect:hover {  fill:blue; }
+        .axis {  font: 10px sans-serif; }
+        .legend tr{    border-bottom:1px solid grey; }
+        .legend tr:first-child{    border-top:1px solid grey; }
+
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #000;
+          shape-rendering: crispEdges;
+        }
+
+        .x.axis path {  display: none; }
+        .legend{
+            margin-bottom:65px;
+            display:inline-block;
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+        .legend td{
+            padding:4px 5px;
+            vertical-align:bottom;
+        }
+        .legendDecv, .legendPerc{
+            align:right;
+            width:30px;
+        }
+    </style>
+
+    <head>
+        <meta charset = "utf-8">
+        <title>d3-geo</title>
+        <link rel="stylesheet" type="text/css" href="../libs/css/styles.css">
+        <!script src="http://d3js.org/d3.v3.min.js" charset = "utf-8"><!/script>
+        <script src="../libs/d3/d3.js" charset = "utf-8"></script>
+    </head>
+
+    <body>
+    <pre>
+<!>
+<!>
+<!>
+<!>
+    <script>
+
+    function draw_geo(geojson)
+    {
+        var fset   = {};
+
+        fset.geo   = {};
+        fset.hg    = {};
+        fset.pie   = {};
+        fset.leg   = {};
+        fset.json  = geojson;
+
+
+        /* printf for debug */
+        function printf(msg){
+            console.log(msg + "\n");
+        }
+
+        function create_svg()
+        {
+
+            var w = 850;
+            var h = 780;
+
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("transform", "translate(0,0)")
+                        .attr("width", w)
+                        .attr("height", h)
+
+            fset.svgs       = {};
+            fset.svgs.d_geo = [];
+            fset.svgs.svg   = svg;
+            fset.svgs.w     = w;
+            fset.svgs.h     = h;
+
+        }
+
+        function geoGraph()
+        {
+
+            var color = d3.scale
+                      .quantize()
+                      .range([
+                                "rgb(237, 248, 233)",
+                                "rgb(186, 228, 179)",
+                                "rgb(116, 196, 118)",
+                                "rgb(49, 163, 84)",
+                                "rgb(0, 109, 44)"
+                              ])
+                      .domain([
+                                d3.min(geojson.features, function(d){ return d.properties.total; }),
+                                d3.max(geojson.features, function(d){ return d.properties.total; })
+                              ])
+
+            var projection = d3.geo
+                           .mercator()
+                           .center([107, 31])
+                           .scale(850)
+                           //.translate([fset.svgs.w*0.55, fset.svgs.h*0.70])
+                           .translate([780*0.55, 580*0.70 + 200])
+                           .scale([700]) // default value is 1000
+
+            var path = d3.geo
+                         .path()
+                         .projection(projection)
+
+            fset.json.features
+                   .forEach(function(d){
+                        var centroid = path.centroid(d);
+                            centroid.x = centroid[0];
+                            centroid.y = centroid[1];
+                            centroid.features = d;
+                        d.properties.centroid = centroid;
+                   });
+
+            fset.svgs.svg.selectAll("gpath")
+                .data(geojson.features)
+                .enter()
+                .append("path")
+                .attr("d", path)
+                .attr("fill", gfill)
+                .on("mouseover", gmouseover)
+                .on("mouseout", gmouseout)
+
+            function gfill(d){
+                /* collecting d */
+                fset.svgs.d_geo.push({"d" : d, "state" : d.properties.name});
+                return color(d.properties.total);
+            }
+
+            function gmouseover(d, i){
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("fill", "green")
+
+                //var st = fData.filter(function(s){ return s.State == d.properties.name;})[0],
+                //nD = d3.keys(st.devices).map(function(s){ return {type:s,devices:st.devices[s]};});
+
+                //pC.update(nD, "draw - geo ...");
+                //leg.update(nD);
+                printf("geo mouseover");
+
+            }
+
+            function gmouseout(d, i){
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .attr("fill", color(d.properties.total))
+
+                //leg.update(tF);
+                //pC.update(tF, "draw - geo out");
+
+                printf("geo mouseout");
+            }
+
+            function geo_update(state, in_out)
+            {
+                fset.svgs.svg.selectAll("gpath")
+                    .data(fset.json.features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path)
+                    .attr("fill", gu_fill)
+                    .on("mouseover", gmouseover)
+                    .on("mouseout", gmouseout)
+
+                function gu_fill(d)
+                {
+                    if(state == d.properties.name){
+                        if(in_out == "in"){
+                            d3.select(this)
+                                .transition()
+                                .duration(100)
+                                .attr("fill", "green")
+                        }else{
+                            d3.select(this)
+                                .transition()
+                                .duration(100)
+                                .attr("fill", color(d.properties.total))
+                        }
+                    }else{
+                        return color(d.properties.total);
+                    }
+                }
+
+                /*
+                fset.svgs.svg.selectAll("tpath")
+                    .data(geojson.features)
+                    .enter()
+                    .append("text")
+                    .text(function(d){ return d.properties.name; })
+                    .attr("x", function(d, i) { return d.properties.centroid.x; })
+                    .attr("y", function(d, i) { return d.properties.centroid.y; })
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", 9)
+                    .on("mouseover", tmouseover)
+                    .on("mouseout", tmouseout)
+                 */
+            }
+
+            fset.geo.update = geo_update;
+
+            /* For Test */
+            {
+                geo_update("内蒙", "in")
+                geo_update("内蒙", "out")
+            }
+
+            fset.svgs.svg.selectAll("tpath")
+                .data(geojson.features)
+                .enter()
+                .append("text")
+                .text(function(d){ return d.properties.name; })
+                .attr("x", function(d, i) { return d.properties.centroid.x; })
+                .attr("y", function(d, i) { return d.properties.centroid.y; })
+                .attr("text-anchor", "middle")
+                .attr("font-size", 9)
+                .attr("fill", "black")
+                //.on("mouseover", tmouseover)
+                //.on("mouseout", tmouseout)
+
+            function tmouseover(d){
+                geo_update(d.properties.name, "in")
+            }
+
+            function tmouseout(d){
+                geo_update(d.properties.name, "out")
+
+                /*
+                fset.svgs.svg.selectAll("tpath")
+                    .data(geojson.features)
+                    .enter()
+                    .append("text")
+                    .text(function(d){ return d.properties.name; })
+                    .attr("x", function(d, i) { return d.properties.centroid.x; })
+                    .attr("y", function(d, i) { return d.properties.centroid.y; })
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", 9)
+                    .on("mouseover", tmouseover)
+                    .on("mouseout", tmouseout)
+                 */
+            }
+
+        }
+
+        function histoGram()
+        {
+            var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
+
+            fset.svgs.d_hg  = [];
+
+            var barColor = 'steelblue';
+            function segColor(c){ return {coo:"#807dba", rou:"#e08214",end:"#41ab5d"}[c]; }
+
+            fset.svgs.barColor = barColor;
+            fset.svgs.segColor = segColor;
+
+            hGDim.w = 850 - hGDim.l - hGDim.r,
+            hGDim.h = 300 - hGDim.t - hGDim.b;
+
+            xdomain = [];
+            fset.json.features.forEach(function(d) { xdomain.push(d.properties.name); });
+
+            var x = d3.scale.ordinal()
+                      .rangeRoundBands([0, hGDim.w], 0.1)
+                      .domain(xdomain);
+
+            fset.svgs.svg.append("g")
+                 .attr("class", "x axis")
+                 .attr("transform", "translate(0," + hGDim.h + ")")
+                 .call(d3.svg.axis().scale(x).orient("bottom"));
+
+            var y = d3.scale.linear()
+                      .range([hGDim.h, 80])
+                      .domain([0, d3.max(fset.json.features, function(d) { return d.properties.total; })]);
+
+            var bars =  fset.svgs.svg.selectAll(".bar")
+                            .data(fset.json.features)
+                            .enter()
+                            .append("g")
+                            .attr("class", "bar");
+
+            printf("bars : " + bars)
+
+            /*
+             */
+            bars.append("rect")
+                .attr("x", function(d) { return x(d.properties.name); })
+                .attr("y", function(d) { return y(d.properties.total); })
+                .attr("width", x.rangeBand())
+                .attr("height", function(d) {
+                    /* collecting d */
+                    fset.svgs.d_hg.push({"d" : d, "state" : d.properties.name});
+                    return hGDim.h - y(d.properties.total)
+                })
+                .attr('fill', barColor)
+                .on("mouseover", mouseover)
+                .on("mouseout", mouseout);
+
+            /* 
+            bars.append("text")
+                .text(function(d){ return d3.format(",")(d.properties.total)})
+                .attr("x", function(d) { return x(d.properties.name)+x.rangeBand()/2 + 15; })
+                .attr("y", function(d) { return y(d.properties.total)-35; })
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d, i){
+                        //return "rotate(10)" + "translate("+
+                        //return "translate(10) + rotate(10)"
+                        return "rotate(5)"
+                })
+             */
+
+            function mouseover(d, i){
+
+                // call update functions of pie-chart and legend.
+                //leg.update(nD);
+
+                /* update piechart */
+                var piedata ;
+
+                if(d.properties){
+                    fset.pie.devices_tmp = d.properties.devices;
+
+                    piedata = ['coo','rou','end'].map(function(pd){
+                        return{
+                                type:pd,
+                                devices: fset.pie.devices_tmp[pd]
+                              };
+                    });
+
+                }else{
+                    fset.pie.devices_tmp = fset.json.features
+                                                    .filter(function(t){ return t.properties.name == d[0];})[0]
+                                                    .properties
+                                                    .devices;
+
+                    piedata = ['coo','rou','end'].map(function(pd){
+                        return{
+                                type:pd,
+                                devices: fset.pie.devices_tmp[pd]
+                              };
+                    });
+
+                }
+
+                fset.pie.update(piedata);
+
+                /* update geo graph */
+                //fset.geo.update(d.properties.name, 'in');
+            }
+
+            function mouseout(d, i){
+
+                /* update piechart */
+                var piedata = ['coo','rou','end'].map(function(pd){
+                    return{
+                            type:pd,
+                            devices:d3.sum(fset.json.features.map(function(t){ return t.properties.devices[pd]; }))
+                          };
+                });
+
+                fset.pie.update(piedata);
+
+                //leg.update(tF);
+
+                /* update geo graph */
+                //fset.geo.update(d.properties.name, 'out');
+            }
+
+            fset.hg.update = function(nD, color){
+
+                y.domain([0, d3.max(nD, function(d) { return d[1]; })]);
+
+                printf("hg - nD = " + JSON.stringify(nD));
+
+                var bars = fset.svgs.svg.selectAll(".bar").data(nD);
+
+                bars.select("rect")
+                    .transition()
+                    .duration(500)
+                    .attr("y", function(d) {return y(d[1]); })
+                    .attr("height", function(d) { return hGDim.h - y(d[1]); })
+                    .attr("fill", color);
+
+                bars.select("text")
+                    .transition()
+                    .duration(500)
+                    .text(function(d){ return d3.format(",")(d[1])})
+                    .attr("y", function(d) {return y(d[1])-5; });
+            }
+        }
+
+        function pieChart()
+        {
+            var pC ={},    pieDim ={ w:150, h: 150 };
+
+            pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
+
+            var arc = d3.svg.arc()
+                        .outerRadius(pieDim.r - 10)
+                        .innerRadius(0);
+
+            var pie = d3.layout.pie()
+                        .sort(null)
+                        .value(function(d) { return d.devices; });
+
+            var piedata = ['coo','rou','end'].map(function(d){
+                return{
+                        type:d,
+                        devices:d3.sum(fset.json.features.map(function(t){ return t.properties.devices[d]; }))
+                      };
+            });
+
+            fset.svgs.svg.selectAll("ppath")
+                  .data(pie(piedata))
+                  .enter()
+                  .append("path")
+                  .attr("d", arc)
+                  .each(function(d) { this._current = d; })
+                  .style("fill", function(d) { return fset.svgs.segColor(d.data.type); })
+                  .attr("transform", "translate("
+                          + 740 // x
+                          + ","
+                          + 550 // y
+                          +")")
+                  .on("mouseover",mouseover)
+                  .on("mouseout",mouseout)
+
+            fset.pie.update = function(nD){
+                printf("nD : " + JSON.stringify(nD))
+
+                printf("ppath : " + JSON.stringify(fset.svgs.svg.selectAll("path").data(pie(nD))))
+
+                /*
+                 */
+                fset.svgs.svg.selectAll("path")
+                      .data(pie(nD))
+                      .select("path")
+                      .transition()
+                      .duration(500)
+                      .attrTween("d", function(a){
+                            printf("arcTween a = " + JSON.stringify(a))
+                            var i = d3.interpolate(this._current, a);
+                            printf("i = " + i)
+                            this._current = i(0);
+                            return function(t) { return arc(i(t)); };
+                      })
+
+                /*
+                    piesvg.selectAll("path")
+                          .data(pie(nD))
+                          .transition()
+                          .duration(500)
+                          .attrTween("d", arcTween);
+                 */
+
+                /*
+                fset.svgs.svg.selectAll("ppath")
+                      .data(pie(nD))
+                      //.enter()
+                      //.append("path")
+                      .attr("d", arc)
+                      .each(function(d) { this._current = d; })
+                      .style("fill", function(d) { return fset.svgs.segColor(d.data.type); })
+                      .attr("transform", "translate("
+                              + 740 // x
+                              + ","
+                              + 550 // y
+                              +")")
+                      .on("mouseover",mouseover)
+                      .on("mouseout",mouseout)
+                 */
+            }
+
+            function mouseover(d){
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .style("fill", function(d) { return fset.svgs.segColor(d.data.type); })
+
+                fset.hg.update(
+                    fset.json.features.map(
+                        function(t){
+                            val = t.properties.devices[d.data.type];
+                            //printf("d = " + JSON.stringify(d) + " - val = " + val);
+                            return [t.properties.name, val]; }
+                        ),
+                    fset.svgs.segColor(d.data.type)
+                );
+            }
+
+            function mouseout(d){
+                d3.select(this)
+                    .transition()
+                    .duration(100)
+                    .style("fill", function(d) { return fset.svgs.segColor(d.data.type); })
+
+                fset.hg.update(
+                    fset.json.features.map(
+                        function(t){ return [t.properties.name,
+                                                t.properties.devices["coo"] +
+                                                t.properties.devices["rou"] +
+                                                t.properties.devices["end"]
+                                            ]; }
+                        ),
+                    fset.svgs.barColor
+                );
+            }
+
+        }
+
+        function legend()
+        {
+        }
+
+        function drawing()
+        {
+            /*
+             * Step 0 calculate all Total devices for each state
+             */
+
+            geojson.features
+                   .forEach(function(d){
+                        d.properties.total  = 
+                        d.properties.devices.coo +
+                        d.properties.devices.rou +
+                        d.properties.devices.end ;
+                   });
+
+            //geojson.features
+            //       .forEach(function(d){
+            //           //printf("total : " + d.properties.total);
+            //           //return d.properties.total;
+            //       });
+
+            /*
+             * Step 1 
+             */
+            printf(" ... create_svg() ...");
+            create_svg();
+
+            /*
+             * Step 2
+             */
+            printf(" ... geoGraph() ...");
+            geoGraph();
+
+            /*
+             * Step 3
+             */
+            printf(" ... histoGram() ...");
+            histoGram();
+
+            /*
+             * Step 4
+             */
+            printf(" ... pieChart() ...");
+            pieChart();
+
+            /*
+             * Step 5
+             */
+        }
+
+        fset.update = function(cb){
+            /*
+             * do callback For update data 
+             */
+            cb();
+
+
+        }
+
+        drawing();
+
+        return fset;
+    }
+
+    </script>
+<!>
+<!>
+<!>
+<!>
+    <script>
+    var js = {
+        "v1":1,
+        "v2":2
+    };
+
+    /* json to string */
+    console.log("js = " + JSON.stringify(js))
+
+    var blok = {
+        "coo" : 1,
+        "rou" : 2,
+        "end" : 3
+    };
+
+    console.log("blok : " + JSON.stringify(blok));
+
+    map_blok = ["coo", "rou", "end"].map(function(d){
+            return { type:d, device:blok[d] };
+        });
+    console.log("map_blok : " + JSON.stringify(map_blok));
+
+    </script>
+    <script>
+
+    var fset = {};
+
+
+    /* load json file */
+    d3.json("../libs/sales.json", function(djson){
+        d3.json("../libs/china.geojson", function(geojson){
+
+
+            /*
+             * load data : geojson = geojson + djson 
+             */
+            for(var i=0; i< geojson.features.length; i++){
+                var state_t = geojson.features[i].properties.name;
+                for(var j=0; j<djson.states.length; j++){
+                    if(state_t == djson.states[j].state){
+
+                        geojson.features[i].properties.devices = djson.states[j].devices;
+
+                        break;
+                    }
+                }
+            }
+
+
+            /* draw geo graph */
+            fset = draw_geo(geojson);
+
+        })
+    });
+
+
+
+    function callback()
+    {
+        // update data here !
+        console.log(" To do here !");
+    }
+
+
+
+    /* Tick For drawing geo graph */
+    setInterval(function(){
+
+        console.log("update ...");
+        fset.update(callback);
+
+    }, 500);
+
+    </script>
+<!>
+<!>
+<!>
+<!>
+    </pre>
+    </body>
+</html>
+
+

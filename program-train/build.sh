@@ -1,6 +1,15 @@
 #! /bin/sh
 # Created Time: 2016-04-23 14:42:34
 #
+
+# check build dir
+if [ -d build ]; then
+    echo "dir build exist"
+else
+    mkdir build
+    echo "mkdir build"
+fi
+
 cd build
 rm -rf *
 

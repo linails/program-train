@@ -1,0 +1,134 @@
+<! reference "数据可视化实战" srcs>
+<!>
+<!>
+<!>
+<html>
+
+    <head>
+        <meta charset = "utf-8">
+        <title>hello world</title>
+        <link rel="stylesheet" type="text/css" href="../libs/css/styles.css">
+        <!script src="http://d3js.org/d3.v3.min.js" charset = "utf-8"><!/script>
+        <script src="../libs/d3/d3.js" charset = "utf-8"></script>
+    </head>
+
+    <body>
+    <pre>
+
+
+        <script>
+            function mprint(msg){
+                document.write(msg + '\n');
+            }
+
+            /* 
+             *> 比例尺的输入值域(input domain)指可能的输入值的范围
+             *> 比例尺的输出范围(output range)指输出值可能的范围
+             *>
+             *> 归一化就是根据可能的最小值和最大值，把某个数值映射到介于 0 和 1 之间的一个新值的过程
+             *>
+             *> d3.max() | d3.min()
+             *> d3.max(dataset)
+             *> d3.max(dataset, function(d){ return d[0]; })
+             */
+
+            function draw_points(){
+
+                var w = 800;
+                var h = 250;
+
+                var svg = d3.select("body")
+                            .append("svg");
+
+                svg.attr("width", w)
+                   .attr("height", h);
+
+                var dataset = [
+                        [10,    20],
+                        [15,    25],
+                        [28,    20],
+                        [30,    40],
+                        [60,    80],
+                        [50,    20]
+                    ];
+
+                var xmin = d3.min(dataset, function(d){ return d[0]; });
+                var xmax = d3.max(dataset, function(d){ return d[0]; });
+                var ymin = d3.min(dataset, function(d){ return d[1]; });
+                var ymax = d3.max(dataset, function(d){ return d[1]; });
+                var padding = 60;
+
+                 var xscale = d3.scale.linear()
+                         .domain([xmin, xmax])
+                         .range([padding, w - padding]);
+
+                 var yscale = d3.scale.linear()
+                         .domain([ymin, ymax])
+                         .range([padding, h - padding]);
+
+                //var circles = svg.selectAll("circle")
+                var circles = d3.select("svg").selectAll("circle")
+                    .data(dataset)
+                    .enter()
+                    .append("circle");
+
+                circles.attr("cx", function(d){
+                            return xscale(d[0]);
+                            })
+                    .attr("cy", function(d){
+                            return yscale(d[1]);
+                            })
+                    .attr("r", function(d){
+                            return d[0];
+                            })
+                    .attr("fill", "red")
+                    .attr("stroke", "orange")
+                    .attr("stroke-width", function(d){
+                            return d/2;
+                            });
+                    /* 
+                     *> fill    : 色彩填充
+                     *> stroke  : 描边
+                     */
+                /* 
+                 *> d3.scale.linear() 有好几个方法
+                 *> nice()
+                 *>     告诉比例尺取得为range()设置的任何值域，把两端的值扩展到最接近的整数
+                 *>     [0.2012344, 0.99897878] --> [0.2, 1]
+                 *>
+                 *> rangeRound()
+                 *>     用此函数代替range()后，则比例尺输出的所有值都会舍入到最接近的整数值
+                 *>     对输出值取整有利于图形对应精确的像素值，避免边缘出现模糊不清的锯齿
+                 *>
+                 *> clamp()
+                 *>     默认情况下，线性比例尺可以返回指定范围之外的值
+                 *>     在比例尺上调用clamp(true)后，就可以强制所有输出值都位于指定的范围内
+                 *>     这意味着超出范围的值，会被取整到范围的最低值或最高值
+                 *>
+                 */
+            }
+
+            draw_points();
+
+            /* 
+             *> 其他比例尺
+             *> 1> sqrt 平方根比例尺
+             *> 2> pow 幂比例尺，适合值以指数级变化的数据集
+             *> 3> log 对数比例尺
+             *> 4> quantize 输出范围为独立的值的线性比例尺，适合想把数据分类的情形
+             *> 5> quantile 与 quantize 类似，但输入值域是独立的值，适合已经对数据分类的情形
+             *> 6> ordinal 使用非定量值（如类名）作为输出的序数比例尺
+             *> 7> d3.scale.category10()
+             *>    d3.scale.category20()
+             *>    d3.scale.category20b()
+             *>    d3.scale.category20c()
+             *>    能输出10到20种类别颜色的预设序数比例尺，非常方便
+             *> 8> d3.time.scale()
+             *>    针对日期和时间值的一个比例尺方法，可以对日期刻度做特殊处理
+             */
+
+        </script>
+    </pre>
+    </body>
+</html>
+

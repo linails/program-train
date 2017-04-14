@@ -1,0 +1,130 @@
+<! reference "数据可视化实战" srcs>
+<!>
+<!>
+<!>
+<html>
+
+    <head>
+        <meta charset = "utf-8">
+        <title>hello world</title>
+        <link rel="stylesheet" type="text/css" href="../libs/css/styles.css">
+        <!script src="http://d3js.org/d3.v3.min.js" charset = "utf-8"><!/script>
+        <script src="../libs/d3/d3.js" charset = "utf-8"></script>
+    </head>
+
+    <body>
+    <pre>
+
+
+        <script>
+            function mprint(msg){
+                document.write(msg + '\n');
+            }
+
+            function draw_circle(){
+
+                var svg = d3.select("body")
+                            .append("svg");
+
+                svg.attr("width", 500)
+                   .attr("height", 150);
+
+                var dataset = [4, 3, 5, 2, 7, 23, 11, 9];
+
+                //var circles = svg.selectAll("circle")
+                var circles = d3.select("svg").selectAll("circle")
+                    .data(dataset)
+                    .enter()
+                    .append("circle");
+
+                circles.attr("cx", function(d, i){
+                            return (i * 50) + 25;
+                            })
+                    .attr("cy", 55)
+                    .attr("r", function(d){
+                            return d;
+                            })
+                    .attr("fill", "yellow")
+                    .attr("stroke", "orange")
+                    .attr("stroke-width", function(d){
+                            return d/2;
+                            });
+                    /* 
+                     *> fill    : 色彩填充
+                     *> stroke  : 描边
+                     */
+            }
+
+            draw_circle();
+
+            console.log('hello')
+
+            function draw_bar(){
+                var svg = d3.select("body")
+                            .append("svg");
+
+                w = 800;
+                h = 200;
+
+                svg.attr("width", w)
+                    .attr("height", h);
+
+                var dataset = [];
+
+                for(var i=0; i<35; i++){
+                    dataset.push(Math.random() * 10);
+                }
+
+                /* SVG只支持左上角坐标系 */
+                svg.selectAll("rect")
+                    .data(dataset)
+                    .enter()
+                    .append("rect")
+                    .attr("x", function(d, i){
+                            return i * w / dataset.length;
+                            })
+                    //.attr("y", 0) // 这样输出的图像是倒着的
+                    .attr("y", function(d){
+                            return h - d * 20;
+                            })
+                    .attr("width", w/dataset.length-4)
+                    .attr("height", function(d){
+                            return d * 20;
+                            })
+                    .attr("fill", "red")
+                    /*
+                     // 暂时不行
+                    .attr("fill", function(d){
+                            //return "rgb(0," + (d * 10) + ", 0)";
+                            return "rgb(10, 20, 30)";
+                            });
+                     */
+
+                /* 添加文本 */
+                svg.selectAll("text")
+                    .data(dataset)
+                    .enter()
+                    .append("text")
+                    .text(function(d){
+                            return Math.round(d);
+                            })
+                    .attr("x", function(d, i){
+                            return i * (w / dataset.length) + 5;
+                            })
+                    .attr("y", function(d){
+                            return h - (d * 18) + 15;
+                            })
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "11px")
+                    .attr("fill", "white")
+                    //.attr("text-anchor", "middle")  //水平居中 , 暂时没有起作用
+
+            }
+
+            draw_bar();
+
+        </script>
+    </pre>
+    </body>
+</html>
+

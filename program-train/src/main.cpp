@@ -1,87 +1,48 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2016-10-29 14:11:23
+ * Last modified: 2017-04-14 17:26:32
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include <iostream>
-#include <cstdio>
-#include "object_c.h"
-#include "sqlite3.h"
+#include <cassert>
+#include "manager.hpp"
+#include <string>
 
-#include "refrence_test.h"
-#include "container_test.h"
-#include "class_test.h"
-#include "container_test.h"
-#include "cast_test.h"
-#include "function_test.h"
-#include "drived_test.h"
-#include "other.h"
-#include "overload.h"
-#include "boost_test.h"
-#include "lambda.h"
-#include "template_test.h"
-#include "ctest.h"
-#include "regex_test.h"
-#include "smart_pointer.h"
-#include "thread_test.h"
-#include "chrono_test.h"
-#include "db_test.h"
-#include "exception_test.h"
-#include "cases_main.h"
-#include "algorithm_main.h"
-#include "linux_main.h"
-
-
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 
 int main(int argc, char **argv)
 {
+    int ret = 0;
 
-    cout << "main : argc - " << argc << endl;
-    for(int i=0; i<argc; i++){
-        printf("argv[%d] : %s\n", i, argv[i]);
+    string path;
+
+    switch(argc){
+        case 1:
+            break;
+        case 2:
+            path = argv[1];
+            break;
+        case 3:
+            cout << "[Warning] argc = 3" << endl;
+            break;
     }
 
-    {
-#if 0
-        refrence_test();
-        cast_test();
-        find_char2("hello",'e');
-        const_test();
-        drived_test();
-        boost_test();
-#endif
-        //ctest();
-        //regex_test();
-        //smart_pointer();
-        //other_test();
-        //class_test();
-        //chrono_test();
-        //thread_test();
-        //container_test();
-        //exception_test();
-        //lambda_test();
-        //template_test();
-        //overload_test();
+    Manager *pmgr = Manager::get_instance(new Manager(path));
+    if(nullptr != pmgr){
+        cout << "new successed" << endl;
+    }else{
+        cout << "[Error] new Manager() failed !" << endl;
     }
-    {
-        //db_test();
-        linux_main(argc, argv);
-    }
-    {
-        //cases_main();
-        //algorithm_main();
-    }
-    {
-#if 0
-    sqlite3 *db = NULL;
-    sqlite3_open("first.db",&db);
-    sqlite3_close(db);
-#endif
-    }
-    return 0;
+
+    ret = pmgr->main(argc, argv); assert(-1 != ret);
+
+    delete pmgr;
+
+    return ret;
 }
 
 

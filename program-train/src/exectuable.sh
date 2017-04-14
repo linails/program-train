@@ -3,8 +3,15 @@
 #
 
 cd ../build
+
 echo "current exe path:"
 pwd
 
-bin/program-train $@
+if [ "$#" != "0" ]; then
+    echo "para count : "$#
+    echo "para list : "$*
+    bin/program-train $*
+else
+    bin/program-train
+fi
 

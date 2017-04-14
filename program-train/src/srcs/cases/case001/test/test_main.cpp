@@ -1,7 +1,7 @@
 /*
  * Progarm Name: test_main.cpp
  * Created Time: 2016-08-01 14:33:20
- * Last modified: 2016-08-12 18:47:54
+ * Last modified: 2016-11-29 13:35:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,27 +13,30 @@
 #include "common.h"
 #include "timer.h"
 #include <thread>
+#include "v3_test.hpp"
 
 using namespace std;
 
 static vector<device_t> vdev;
 static vector<scene_t> vscene;
 
+static void get_scene_vector(vector<scene_t> &r_vscene);
+
 void test_main(void)
 {
     cout << "......TEST-MAIN......" << endl;
 
+#if 0
     for(int i=0; i<1000; i++){
         device_t dev = {
             i,
-            "myhone : 009029876758893798759832",
+            "myhome : 009029876758893798759832",
             "json ctrl cmd"
         };
 
         vdev.push_back(dev);
     }
 
-    void get_scene_vector(vector<scene_t> &r_vscene);
     get_scene_vector(vscene);
 
     SceneSetv2  ss(vdev, vscene);
@@ -66,9 +69,17 @@ void test_main(void)
 
     ss.print_all_set();
 #endif
+
+
+#else
+    /*
+     * For v3-test 
+     * */
+    v3_test();
+#endif
 }
 
-void get_scene_vector(vector<scene_t> &r_vscene)
+static void get_scene_vector(vector<scene_t> &r_vscene)
 {
     /* 
      * int     id;
@@ -79,7 +90,7 @@ void get_scene_vector(vector<scene_t> &r_vscene)
      * vector<device_t>    condition_devs;
      * vector<int>         condition_scenes;
      * vector<device_t>    result_devs;
-     * vector<int>         result_scenes
+     * vector<int>         result_scenes;
      * vector<device_t>    recover_devs;
      * vector<int>         recover_scenes;
      * */
@@ -1030,6 +1041,53 @@ void eg05(SceneSetv2 &ss)
         cout << "----------------------------------------------------------------" << endl;
     }
     {
+        scene_t scene;
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 19;
+        scene.time              = 8 * 3600; // 6:00:00
+        scene.timetype          = 2;
+
+        /* bug record :
+         * 1.action map>  scene_pos
+         * 2.action trig> scene_pos
+         **/
+        cdevs.push_back(vdev[1]);
+
+        rdevs.push_back(vdev[1]);
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        cout << "----------------------------------------------------------------" << endl;
+        cout << "Tang sir request !" << endl;
+        Timer timer;
+        timer.timing();
+        int ret = ss.infinite_loops_check(scene);    // aim 
+        cout << "ret : " << ret << endl;
+     
+        if(0 == ret){
+            cout << "infinite loop ? : YES" << endl;
+        }else if(1 == ret){
+            cout << "timing error !" << endl;
+        }else{
+            cout << "infinite loop ? : NO" << endl;
+        }
+        timer.timing();
+        cout << "----------------------------------------------------------------" << endl;
+    }
+    {
         cout << "------------------ for filter test ------------------ " << endl;
         scene_t scene;
         vector<device_t>    cdevs;
@@ -1414,6 +1472,124 @@ void eg05(SceneSetv2 &ss)
         cout << endl;
         cout << "----------------------------------------------------------------" << endl;
     }
+    {
+        scene_t scene;
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 37;
+        scene.time              = 8 * 3600; // 6:00:00
+        scene.timetype          = 2;
+
+        //cscenes.push_back(37);
+        rscenes.push_back(37);
+
+        /* bug record :
+         * 1.action map>  scene_pos
+         * 2.action trig> scene_pos
+         **/
+
+        rdevs.push_back(vdev[513]);
+        rdevs.push_back(vdev[185]);
+        rdevs.push_back(vdev[269]);
+        rdevs.push_back(vdev[64]);
+        rdevs.push_back(vdev[203]);
+        rdevs.push_back(vdev[57]);
+        rdevs.push_back(vdev[106]);
+        rdevs.push_back(vdev[423]);
+
+        //rscenes.push_back(27);
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        cout << "----------------------------------------------------------------" << endl;
+        Timer timer;
+        timer.timing();
+        int ret = ss.infinite_loops_check(scene);    // aim 
+        cout << "ret : " << ret << endl;
+     
+        if(0 == ret){
+            cout << "infinite loop ? : YES" << endl;
+        }else if(1 == ret){
+            cout << "timing error !" << endl;
+        }else if(2 == ret){
+            cout << "infinite loop self-loop ? : YES" << endl;
+        }else{
+            cout << "infinite loop ? : NO" << endl;
+        }
+        timer.timing();
+        cout << "----------------------------------------------------------------" << endl;
+    }
+#if 0
+    {
+        scene_t scene;
+        vector<device_t>    cdevs;
+        vector<int>         cscenes;
+        vector<device_t>    rdevs;
+        vector<int>         rscenes;
+        vector<device_t>    rcdevs;
+        vector<int>         rcscenes;
+
+
+        scene.id                = 37;
+        scene.time              = 8 * 3600; // 6:00:00
+        scene.timetype          = 2;
+
+        //cscenes.push_back(37);
+        //rscenes.push_back(37);
+
+        /* bug record :
+         * 1.action map>  scene_pos
+         * 2.action trig> scene_pos
+         **/
+
+        rdevs.push_back(vdev[513]);
+        rdevs.push_back(vdev[185]);
+        rdevs.push_back(vdev[269]);
+        rdevs.push_back(vdev[64]);
+        rdevs.push_back(vdev[203]);
+        rdevs.push_back(vdev[67]);
+        rdevs.push_back(vdev[106]);
+        rdevs.push_back(vdev[423]);
+
+        //rscenes.push_back(27);
+
+        //--------------------------------
+        scene.condition_devs    = cdevs;
+        scene.condition_scenes  = cscenes;
+        scene.result_devs       = rdevs;
+        scene.result_scenes     = rscenes;
+        scene.recover_devs      = rcdevs;
+        scene.recover_scenes    = rcscenes;
+
+        cout << "----------------------------------------------------------------" << endl;
+        Timer timer;
+        timer.timing();
+        int ret = ss.infinite_loops_check(scene);    // aim 
+        cout << "ret : " << ret << endl;
+     
+        if(0 == ret){
+            cout << "infinite loop ? : YES" << endl;
+        }else if(1 == ret){
+            cout << "timing error !" << endl;
+        }else{
+            cout << "infinite loop ? : NO" << endl;
+        }
+        timer.timing();
+        cout << "----------------------------------------------------------------" << endl;
+    }
+#endif
 }
 
 
