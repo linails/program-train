@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mlinux.cpp
  * Created Time: 2016-12-21 09:39:00
- * Last modified: 2017-04-14 17:59:45
+ * Last modified: 2017-04-17 16:51:49
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -152,6 +152,12 @@ int  mLinux::mlinux_main(int argc, char **argv)
         }
         #endif
     }
+
+
+    /* 
+     * server - tcp
+     * */
+    this->server_tcp();
 
     return ret;
 }
