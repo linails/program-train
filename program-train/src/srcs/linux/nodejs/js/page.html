@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+<SCRIPT Language = 'JavaScript' TYPE = 'text/javascript' SRC="src/sub.js">
+</SCRIPT>
+<SCRIPT Language = 'JavaScript' TYPE = 'text/javascript' SRC="src/built-in-obj.js">
+</SCRIPT>
+    <TITLE>Click event eg</TITLE>
+</HEAD>
+<BODY>
+<FORM>
+    <INPUT TYPE = "Button", onClick ="showdate();" VALUE = "show time">
+</FORM>
+<FORM NAME=form1>
+    <INPUT TYPE = "Button", NAME=button1 VALUE = "show time">
+</FORM>
+
+<PRE>
+<SCRIPT Language = 'JavaScript' TYPE = 'text/javascript'>
+    /* 
+     * 变量赋值
+     */
+    var today;
+    today = 14;
+    document.write("today = ", today);
+    document.write("<BR>");
+
+    /* 整数、小数赋值 */
+    document.write('0xabdc + 0xef = ', 0xabdc + 0xef);
+    document.write("<BR>");
+    document.write(0.2345);
+    document.write("<BR>");
+
+    /* true / false */
+    document.write("<BR>");
+    document.write("true*100 + false*10 + true*1 = ");
+    document.write(true*100 + false*10 + true*1);
+    document.write("\n\n");
+    document.write("New Line !!!\n");
+
+    /* 在JavaScript中，通常字符串运算优先级较高，然后依次是浮点运算、整数运算和逻辑运算 */
+    var mystr = "test";
+    document.write("\n");
+    document.write(mystr); document.write("\n");
+    document.write(mystr * 5); document.write("\n");
+    document.write(mystr + 5); document.write("\n");
+
+    /* calc */
+    document.write("\n");
+    document.write("\n");
+    function double(y)
+    {
+        var x = 2 * y;
+        document.write(x+"<BR>");
+    }
+
+    document.write("for ...\n");
+    for(i = 0; i<10; i++){
+        double(i);
+    }
+
+    /*  */
+    var a = "this";
+    var b = "is";
+    var c = 100;
+    var d = true;
+    document.write("a='this', b='is', c=100, d=true<P>");
+    document.write("a+b = "); document.write(a+b); document.write("<BR>");
+
+    /* bit operator */
+    var a = 4;
+    var b = 7;
+    var c = 2;
+    document.write("<BR>");
+    document.write("====================================================<BR>");
+    document.write("a = 4(0100), b = 7(0111), c = 2<P>");
+    document.write("a&b = "); document.write(a&b); document.write("<BR>");
+    document.write("a|b = "); document.write(a|b); document.write("<BR>");
+    document.write("a^b = "); document.write(a^b); document.write("<BR>");
+    /* a<<c 输入这个得通过特殊字符输入 , 否则显示出错：a<a>>b | 或者插入空格输入: a << c */
+    document.write("a&lt;&lt;c = "); document.write(a<<c); document.write("<BR>");
+    document.write("a << c = "); document.write(a<<c); document.write("<BR>");
+    document.write("a>>b = "); document.write(a>>b); document.write("<BR>");
+    document.write("a>>>b = "); document.write(a>>>b); document.write("<BR>");
+    document.write("b>>>c = "); document.write(b>>>c); document.write("<BR>");
+
+    document.write("====================================================<BR>");
+</SCRIPT>
+
+<SCRIPT Language = 'JavaScript' TYPE = 'text/javascript'>
+    function print(msg)
+    {
+        document.write(msg + "<BR>");
+    }
+
+    print("====================================================");
+
+    function disp_args()
+    {
+        print("function : disp_args");
+        for(i=0; i<arguments.length; i++){
+            print(i+" - " + arguments[i]);
+        }
+    }
+
+    disp_args(21, "cat", -2000, "tiger", "great");
+
+    function add(a, b)
+    {
+        return a + b;
+    }
+    
+    print("");
+    print(add(10, 20));
+
+    print("====================================================");
+    var escapestr = escape("Tom & Jerry show");
+    print(escapestr);
+
+    print("====================================================");
+    print(eval(add(10, 20)));
+    print(eval(document.write("eval()...")));
+
+    print("====================================================");
+    print("isFinite(12) = " + isFinite(12));
+    print("isFinite(1.2) = " + isFinite(1.2));
+    print("isFinite('a') = " + isFinite('a'));
+    print("isFinite(true) = " + isFinite(true));
+    print("isFinite(null) = " + isFinite(null));
+
+    print("====================================================");
+    print("parseFloat('123.56abc') = " + parseFloat("123.56abc"));
+    print("parseFloat('abc') = " + parseFloat("abc"));
+
+    print("====================================================");
+
+    built_in_obj(print);
+    //built_in_obj();
+
+    print("====================================================");
+    mybook = new Book("HarryPotter", "Kaluoln", "English");
+    mybook.showbook();
+
+    with(document)
+    {
+        document.write("front color : " + fgColor + ".\n");
+        document.write("back color : " + bgColor + ".\n");
+    }
+    
+    built_in_object_test();
+
+    {
+        print("====================================================");
+        myFun = new Function("x", "y", "return x+y");
+        print("myFun(3, 4) : " + myFun(3, 4));
+    }
+
+    print("====================================================");
+    js_event();
+
+    var count = 0;
+
+    /* 指定事件响应函数 */
+    document.form1.button1.onclick=showdate;
+</SCRIPT>
+    <A href="www.baidu.com" onMouseOver = "event_mouse()"> Please move mouse here ! </A>
+    <A href="www.retwell.com" onMouseOver = "count++; alert('count = ' + count)">
+    Please move mouse here to increase count! </A>
+
+</PRE>
+</BODY>
+</HTML>
+

@@ -1,0 +1,9 @@
+#
+# il005 driver configuration
+#
+
+config CONFIG_IL005
+    tristate "IL005 user interface"
+    help 
+    This is a il005 driver , for il005
+

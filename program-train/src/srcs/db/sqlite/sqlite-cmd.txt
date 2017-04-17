@@ -1,0 +1,96 @@
+# readme.txt
+# Created Time: 2016-04-28 17:05:29
+# Last modified: 2017-03-05 10:02:37
+#
+
+----------------------------------------------------
+字段级的约束：not null      unique      primary key
+              foreign key   check       collate
+----------------------------------------------------
+表一级的约束：primary key   unique      check
+----------------------------------------------------
+check 约束允许定义表达式来测试要插入或者更新的字段值
+
+
+sqlite 存储类
+    a) integer
+    b) real
+    c) text
+    d) blob
+    e) NULL
+
+/************************** sqlite cmd **************************/
+[备注]
+    1> {} 表示一个选项列表
+    2> |  表示选其一
+    3> [] 表示可选项
+    4> 每个字段都可以配合排序方向 - asc(默认的升序) 或 desc(降序)
+
+1.alter table mytable add column email text;            //添加mytable中的email字段
+  alter table foo a int b int;
+  alter table mytable { rename to name | add column column_def }
+2.create table pkey(x text,y text,primary key(x,y));    //此处主键横跨两个字段
+  create table contacts(
+          id integer primary key,
+          name text not null collate nocase,
+          phone text not null default 'UNKNOWN',        //insert语句中没有提供指定值，
+          unique(name , phone));                        //若没有默认值，则会赋值为null
+    或者添加一个check约束 --> check(length(phone)>=7)
+  create table tims(
+          id integer,
+          date not null default current_date,
+          time not null default current_time,
+          timestamp not null default current_timestamp);
+  create table foo(
+          x integer,
+          y integer check(y>x),
+          z integer check(z>abs(y)));
+  create table domain(x);
+3.select * from mytable;
+  select count(*) from mytable;
+  select avg(length(name)) from foods;
+  select rowid,x,y from table;
+  select rowid,x,typeof(x) from table;
+  select * from foo where c=3 and d>3 and e>6;
+  select * from foo where c=3 and d=3;
+  select * from foods where name like 'B%' order by type_id desc, name limit 10;
+4.insert into mytable (id,value,email) values(5,'min','linails@foxmail.com');
+  insert into tblname values('x','y');            //所有字段都插入数据时，不需要指定
+  insert into tblname values(1,x'30');            //插入16进制
+5.update foo set y = -3,where x=-3;
+6.create index [unique] index_name on table_name (columns);
+7.drop index index_name;
+8.delete from tblname;                            //删除所有行
+  delete from CorpusWordSpell where id=8;
+  
+/****************************************************************/
+.echo on
+.mode column
+.headers on
+.nullvalue NULL
+
+.output dd.sql
+.dump
+
+.read dd.sql
+
+/****************************************************************/
+关系操作划分成3类
+[基本操作]
+    restriction(限制)
+    projection(投影)
+    cartesian product(笛卡尔积)
+    union(联合)
+    difference(差)
+    rename(重命名)
+[附加操作]
+    intersection(交叉)
+    natural join(自然连接)
+    assign(赋值)
+[扩展操作]
+    generalized projection(广义投影)
+    left outer join(左外连接)
+    right outer join(右外连接) - {sqlite 不支持} 
+    full outer join(全外连接) - {sqlite 不支持}
+
+

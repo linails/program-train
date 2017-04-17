@@ -1,7 +1,7 @@
 /*
  * Progarm Name: non-mutating-algo.cpp
  * Created Time: 2016-08-14 10:33:17
- * Last modified: 2016-08-16 17:19:12
+ * Last modified: 2017-01-18 22:47:00
  */
 
 #include "non-mutating-algo.h"
@@ -10,6 +10,7 @@
 #include <vector>
 #include <cstring>
 #include <list>
+#include <string>
 
 using namespace std;
 
@@ -71,6 +72,89 @@ void non_mutating_algo(void)
             cout << "find_if nothing !" << endl;
         }else{
             cout << "find : " << *iter << endl;
+        }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        cout << " ** find_if struct{} data ** " << endl;
+        typedef struct{
+            int id;
+            string s;
+        }Data_t;
+
+        vector<Data_t> v;
+
+        Data_t data[] = {
+            {1, "s1"},
+            {2, "s2"},
+            {3, "s3"},
+            {4, "s4"},
+            {5, "s5"},
+            {6, "s6"},
+            {7, "s7"}
+        };
+
+        for(size_t i=0; i<sizeof(data)/sizeof(Data_t); i++){
+            v.push_back(data[i]);
+        }
+
+        cout << "List v :" << endl;
+        for(auto &u : v){
+            cout << "u : " << u.id << " - " << u.s << endl;
+        }
+        cout << endl;
+
+        Data_t orig_data = {3, "s3"};
+
+        auto func = [&orig_data](Data_t d){
+            if(orig_data.id == d.id){
+                return 1; // find it
+            }else{
+                return 0;
+            }
+        };
+
+        auto iter = find_if(v.begin(), v.end(), func);
+
+        if(iter == v.end()){
+            cout << "find_if nothing !" << endl;
+        }else{
+            cout << "find : " << iter->id << " - " << iter->s << endl;
+        }
+
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        int index[] = {0, 1, 2, 3, 4, 5, 6, 7};
+        vector<int> v;
+        v.push_back(1);
+        v.push_back(3);
+        v.push_back(5);
+        v.push_back(2);
+        v.push_back(7);
+
+        for(auto id : index){
+            cout << "id : " << id << endl;
+
+            /* 
+             * find_i 定义在内部，对 id 进行引用捕获
+             * */
+            auto find_i = [&id](int i){
+                if(id == i){
+                    return 1; // find it
+                }else{
+                    return 0;
+                }
+            };
+
+            auto iter = find_if(v.begin(), v.end(), find_i);
+
+            if(iter == v.end()){
+                cout << "find nothing !" << endl;
+            }else{
+                cout << "find : " << *iter << endl;
+            }
+
         }
     }
     cout << "-----------------------------------------" << endl;
@@ -164,6 +248,63 @@ void non_mutating_algo(void)
     }
     cout << "-----------------------------------------" << endl;
     {
+        //find_if
+
+        struct TestData{
+            int     a;
+            int     b;
+            int     c;
+            string  d;
+            TestData():a(0),b(0),c(0),d("Test"){};
+        };
+        auto empty = [](TestData &data){
+            if(data.d == "Test") return true;
+            else return false;
+        };
+
+        vector<TestData> vtd;
+
+        TestData td;
+        td.a = 0;
+        vtd.push_back(td);
+
+        td.d = "1";
+        td.a = 1;
+        vtd.push_back(td);
+
+        td.d = "2";
+        td.a = 2;
+        vtd.push_back(td);
+
+        td.d = "3";
+        td.a = 3;
+        vtd.push_back(td);
+
+        td.d = "Test";
+        td.a = 4;
+        vtd.push_back(td);
+
+        cout << "vtd : " << endl;
+        for(auto &unit : vtd){
+            cout << "unit.d : " << unit.d << endl;
+        }
+
+        auto iter = find_if(vtd.begin(), vtd.end(), empty);
+        if(iter != vtd.end()){
+            cout << "Find empty unit" << endl;
+            cout << "iter->d : " << iter->d << " - iter->a = " << iter->a << endl;
+        }
+
+        iter++;
+
+        iter = find_if(iter, vtd.end(), empty);
+        if(iter != vtd.end()){
+            cout << "Find empty unit" << endl;
+            cout << "iter->d : " << iter->d << " - iter->a = " << iter->a << endl;
+        }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
         vector<int> v1, v2;
         v1.push_back(3);
         v1.push_back(6);
@@ -235,6 +376,16 @@ void non_mutating_algo(void)
         num = count(l.begin(), l.end(), val);
 
         cout << "count {val = 9} : " << num << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        string s = "djoianoabbbbabadjijabjoija";
+
+        int num = 0;
+
+        num = count(s.begin(), s.end(), 'a');
+
+        cout << "s : " << s << " - count 'a' : " << num << endl;
     }
     cout << "-----------------------------------------" << endl;
     {

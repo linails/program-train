@@ -2,3 +2,12 @@
 *.out
 *.files
 tags
+log
+log*
+
+!log.c
+!log.h
+!log.cpp
+!log.hpp
+
+

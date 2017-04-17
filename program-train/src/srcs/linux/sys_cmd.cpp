@@ -1,7 +1,7 @@
 /*
  * Progarm Name: sys_cmd.cpp
  * Created Time: 2016-09-20 10:59:19
- * Last modified: 2016-09-20 17:25:26
+ * Last modified: 2016-11-04 10:32:29
  */
 
 #include "sys_cmd.hpp"
@@ -11,6 +11,7 @@
 #include <string>
 #include <cstdio>
 #include <cstring>
+#include <unistd.h>
 
 using namespace std;
 
@@ -30,8 +31,12 @@ void sys_cmd_called(void)
         }
 
         if(NULL == in){
-            while(fgets(line, sizeof(line) - 1, fp) != NULL)
-                cout << "line : " << line ;
+            int lines = 0;
+            cout << endl;
+            while(fgets(line, sizeof(line) - 1, fp) != NULL){
+                printf("line %.4d : %s", lines++, line);
+            }
+            cout << endl;
         }else{
             if(NULL != in){
                 cout << "input ..." << endl;
@@ -41,6 +46,7 @@ void sys_cmd_called(void)
         }
     };
 
+#if 0
     {
         do_shell("ls -l ~/share/temp");
     }
@@ -52,6 +58,7 @@ void sys_cmd_called(void)
     {
         do_shell("ls ~/share/temp; ls -l ~/share/temp");
     }
+#endif
 #if 0
     cout << "---------------------------" << endl;
     {
@@ -62,7 +69,42 @@ void sys_cmd_called(void)
 #endif
     cout << "---------------------------" << endl;
     {
-        do_shell("cd ~/share/temp/test; ./a.out", "minphone1 minphone2 minphone3");
+        //do_shell("cd ~/share/temp/test; ./a.out", "minphone1 minphone2 minphone3");
+    }
+    cout << "---------------------------" << endl;
+    {
+        cout << " ** python script **" << endl;
+        char buf[128];
+        getcwd(buf, sizeof(buf));
+        cout << "pwd : " << buf << endl;
+
+        string pwd(buf);
+        string script = "numpy-exercise.py";
+        //string script = "traitsui-default-view.py";
+
+        /* python script path */
+        pwd += "/../src/srcs/linux/python/";
+
+        pwd += script;
+
+        do_shell(pwd.c_str());
+    }
+    cout << "---------------------------" << endl;
+    {
+        cout << " ** shell script **" << endl;
+        char buf[128];
+        getcwd(buf, sizeof(buf));
+        cout << "pwd : " << buf << endl;
+
+        string pwd(buf);
+        string script = "base-bash.sh";
+
+        /* python script path */
+        pwd += "/../src/srcs/linux/shell/";
+
+        pwd += script;
+
+        do_shell(pwd.c_str());
     }
 
     pclose(fp);

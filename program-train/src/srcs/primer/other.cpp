@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-09-19 12:47:29
+ * Last modified: 2016-10-21 14:33:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -292,6 +292,11 @@ void other_test(void)
     {
         void gcd(void);
         gcd();
+    }
+    cout << "----------------------------" << endl;
+    {
+        void cout_tdv_tde(void);
+        cout_tdv_tde();
     }
 }
 
@@ -848,6 +853,106 @@ void gcd(void)
     odd_judge(-11);
     odd_judge(-101);
     odd_judge(-1011);
+}
+
+//--------------------------------------------------------------------
+
+typedef struct {
+    double posx;
+    double posy;
+    double posz;
+    int    nwk;
+    int    mac[8];
+    int    nodetype;    /* [0:'C', 1:'R', 2:'E'] */
+}TestDataVes_t;
+
+typedef struct {
+    double sposx;
+    double sposy;
+    double sposz;
+    double eposx;
+    double eposy;
+    double eposz;
+}TestDataEdg_t;
+
+static TestDataVes_t tdv[] = {
+    {0, 0, 0,      0x0000, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07}, 0},
+    {0.7, 2.2, 1,  0x0001, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x08}, 1},
+    {0, 1.8, 3,    0x0002, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x09}, 1},
+    {1.6, 2.3, -1, 0x0003, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0a}, 2},
+    {2, 0.8, 3,    0x0004, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0b}, 2},
+    {-0.6, -0.6, 2,0x0005, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0c}, 2},
+    {-1.3, 0.8, 2, 0x0006, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0d}, 1},
+    {-1.5, -1, 0.3,0x0007, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0e}, 2},
+    {0.5, -1.5, 2, 0x0008, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0f}, 1},
+    {1.7, -0.8, 1, 0x0009, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x10}, 2},
+    {1.5, -2.3, 0, 0x000a, {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x11}, 2}
+};
+
+/* 此种定义在 C 中非法 */
+static TestDataEdg_t tde[] = {
+#if 1
+    {tdv[0].posx, tdv[0].posy, tdv[0].posz, tdv[1].posx, tdv[1].posy, tdv[1].posz},
+    {tdv[0].posx, tdv[0].posy, tdv[0].posz, tdv[2].posx, tdv[2].posy, tdv[2].posz},
+    {tdv[0].posx, tdv[0].posy, tdv[0].posz, tdv[3].posx, tdv[3].posy, tdv[3].posz},
+    {tdv[1].posx, tdv[1].posy, tdv[1].posz, tdv[4].posx, tdv[4].posy, tdv[4].posz},
+    {tdv[1].posx, tdv[1].posy, tdv[1].posz, tdv[5].posx, tdv[5].posy, tdv[5].posz},
+    {tdv[2].posx, tdv[2].posy, tdv[2].posz, tdv[6].posx, tdv[6].posy, tdv[6].posz},
+    {tdv[2].posx, tdv[2].posy, tdv[2].posz, tdv[7].posx, tdv[7].posy, tdv[7].posz},
+    {tdv[6].posx, tdv[6].posy, tdv[6].posz, tdv[8].posx, tdv[8].posy, tdv[8].posz},
+    {tdv[8].posx, tdv[8].posy, tdv[8].posz, tdv[9].posx, tdv[9].posy, tdv[9].posz},
+    {tdv[8].posx, tdv[8].posy, tdv[8].posz, tdv[10].posx, tdv[10].posy, tdv[10].posz}
+#endif
+};
+
+void cout_tdv_tde(void)
+{
+    cout << "tdv" << endl;
+    cout << "tde" << endl;
+
+    cout << "tdv List :" << endl;
+    for(int i=0; i<(int)(sizeof(tdv)/sizeof(TestDataVes_t)); i++){
+        printf("(%.2f, %.2f, %.2f) - 0x%.4x - ", tdv[i].posx, tdv[i].posy, tdv[i].posz, tdv[i].nwk);
+        printf("0x%.2x%.2x%.2x%.2x%.2x%.2x%.2x%.2x - ", 
+                tdv[i].mac[0], 
+                tdv[i].mac[1], 
+                tdv[i].mac[2], 
+                tdv[i].mac[3], 
+                tdv[i].mac[4], 
+                tdv[i].mac[5], 
+                tdv[i].mac[6], 
+                tdv[i].mac[7]
+                );
+        if(tdv[i].nodetype == 0) printf("'C'\n");
+        else if(tdv[i].nodetype == 1) printf("'R'\n");
+        else printf("'E'\n");
+    }
+
+    cout << endl;
+
+    cout << "tde List :" << endl;
+    for(int i=0; i<(int)(sizeof(tde)/sizeof(TestDataEdg_t)); i++){
+        printf("((%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f))\n", 
+                tde[i].sposx,
+                tde[i].sposy,
+                tde[i].sposz,
+                tde[i].eposx,
+                tde[i].eposy,
+                tde[i].eposz
+                );
+    }
+    cout << "----------------------------" << endl;
+    {
+        cout << "汉字打印" << endl;
+
+        string s = "汉字";
+        char *chars = "汉字";
+        char arrays[] = "汉字";
+
+        cout << "s = " << s << endl;
+        cout << "chars = " << chars << endl;
+        cout << "arrays = " << arrays << endl;
+    }
 }
 
 
