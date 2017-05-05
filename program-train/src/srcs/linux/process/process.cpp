@@ -1,7 +1,7 @@
 /*
  * Progarm Name: process.cpp
  * Created Time: 2016-12-02 17:31:52
- * Last modified: 2016-12-12 20:48:33
+ * Last modified: 2017-05-05 09:31:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -34,7 +34,7 @@ int Process::process_main(int argc, char **argv)
 {
     int ret = 0;
 
-    //ret = this->fork_child_porc();
+    ret = this->fork_child_porc();
 
     //ret = this->zombie();
 
@@ -58,7 +58,7 @@ int Process::process_main(int argc, char **argv)
 
     //ret = this->communicate_by_pipe(1);
 
-    ret = this->communicate_by_msg();
+    //ret = this->communicate_by_msg();
 
     return ret;
 }
@@ -84,14 +84,24 @@ int Process::fork_child_porc(void)
 
     int local = 0;
 
+
+    int *p = nullptr; {
+        p = new int();
+        *p = 10;
+    }
+
     if(0 == (pid = fork())){
         cout << "child proc ..." << endl;
         this->m_global += 1;
         local += 1;
+
+        printf("*p = %d -- addr = %x\n", *p, p);
     }else{
         cout << "parent proc ..." << " child pid = " << pid << endl;
         this->m_global += 2;
         local += 2;
+
+        printf("*p = %d -- addr = %x\n", *p, p);
     }
 
 
@@ -99,6 +109,15 @@ int Process::fork_child_porc(void)
         printf("child proc m_global : %d - local : %d\n", this->m_global, local);
     }else{
         printf("parent proc m_global : %d - local : %d\n", this->m_global, local);
+    }
+
+
+    /* 
+     * free p
+     * */
+    if(nullptr != p){
+        delete p;
+        p = nullptr;
     }
 
     return 0;
