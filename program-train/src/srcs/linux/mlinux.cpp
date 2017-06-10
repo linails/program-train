@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mlinux.cpp
  * Created Time: 2016-12-21 09:39:00
- * Last modified: 2017-03-15 18:58:35
+ * Last modified: 2017-05-16 15:18:07
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -82,7 +82,7 @@ int  mLinux::mlinux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+#if 1
         Process process;
 
         ret = process.process_main(argc, argv);
@@ -106,7 +106,7 @@ int  mLinux::mlinux_main(int argc, char **argv)
 #endif
     cout << "---------------------------" << endl;
     {
-#if 0
+#if 1
         ret = this->server(argc, argv); assert(-1 != ret);
 #endif
     }

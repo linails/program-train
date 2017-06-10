@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 # Created Time: 2016-10-28 14:00:57
-# Last modified: 2016-12-06 17:18:34
+# Last modified: 2017-04-30 21:54:12
 # 
 
 import sys,os
@@ -95,6 +95,7 @@ class Test:
     def __init__(self):
         print "class Test init"
     def __del__(self):
+        print "------------------------------------"
         print "class Test uninit"
 
 test = Test()
@@ -232,4 +233,37 @@ print "x[np.array([True, False, True, True])] = -1, -2, -3  : ", pprint(x)
 print "------------------------------------"
 
 print "range(1) :", range(1)
+
+print "------------------------------------"
+
+mydata = [1, 2, 3, 4, 5]
+a = 10
+mymatrix = np.mat(mydata)
+
+pprint(mymatrix)
+pprint(a*mymatrix)
+
+print "mymatrix:", mymatrix
+print "a * mymatrix:", a * mymatrix
+
+print "------------------------------------"
+
+myzero = np.zeros([3, 5])
+pprint(myzero)
+
+myones = np.ones([3, 5])
+pprint(myones)
+
+myrand = np.random.rand(3, 4) # 3 * 4 的 0~1 之间的随机数矩阵
+pprint(myrand)
+
+print "------------------------------------"
+
+mydata = [1, 2, 3, 4, 5]
+
+for d in range(10):
+    print "d =", d
+
+for xd in xrange(10):
+    print "xd =", xd
 
