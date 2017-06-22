@@ -1,7 +1,7 @@
 /*
  * Progarm Name: malgorithm.cpp
  * Created Time: 2016-08-14 10:35:26
- * Last modified: 2017-06-21 15:18:15
+ * Last modified: 2017-06-22 23:38:52
  */
 
 #include "malgorithm.hpp"
@@ -40,7 +40,7 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
     }
     cout << "----------- data structure --------------" << endl;
     {
-    #if 0
+    #if 1
         /* 
          * version C
          * */
@@ -72,7 +72,7 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
     }
     cout << "----------- other data structure --------------" << endl;
     {
-    #if 1
+    #if 0
         OtherString os;
 
         ret = os.main(argc, argv); assert(-1 != ret);

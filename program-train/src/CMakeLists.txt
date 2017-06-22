@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-06-22 13:23:26
+# Last modified: 2017-06-22 23:39:12
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -128,16 +128,17 @@ set(SRC_LIST
    srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
-#   srcs/algorithm/ds/data-structure.cpp
-#   srcs/algorithm/ds/data-structure.c
-#   srcs/algorithm/ds/linear-list.cpp
-#   srcs/algorithm/ds/seq-list.cpp
-#   srcs/algorithm/ds/mstack.cpp
-#   srcs/algorithm/ds/mqueue.cpp
-#   srcs/algorithm/ds/tree.cpp
-#   srcs/algorithm/ds/graph.cpp
-#   srcs/algorithm/ds/search.cpp
-#   srcs/algorithm/ds/sort.cpp
+   srcs/algorithm/ds/data-structure.cpp
+   srcs/algorithm/ds/data-structure.c
+   srcs/algorithm/ds/linear-list.cpp
+   srcs/algorithm/ds/seq-list.cpp
+   srcs/algorithm/ds/mstack.cpp
+   srcs/algorithm/ds/mqueue.cpp
+   srcs/algorithm/ds/tree.cpp
+   srcs/algorithm/ds/graph.cpp
+   srcs/algorithm/ds/search.cpp
+   srcs/algorithm/ds/sort.cpp
+   srcs/algorithm/ds/sort.c
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/sep/sep.cpp
 #####################################################################
