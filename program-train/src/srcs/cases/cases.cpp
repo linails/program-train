@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-03-31 13:45:44
+ * Last modified: 2017-06-22 12:54:29
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,7 @@
 #include "key-bind-main.hpp"
 #include "bit.hpp"
 #include "tester-case001.hpp"
+#include "ts-parser-main.hpp"
 
 using std::cout;
 using std::endl;
@@ -86,6 +87,16 @@ int Cases::cases_main(int argc, char **argv)
         Bit bit;
 
         ret = bit.bit_main(argc, argv); assert(-1 != ret);
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_case005
+        /*
+         * case005 : Ts Parser
+         * */
+        TsParserMain ts_parser;
+
+        ret = ts_parser.main(); assert(-1 != ret);
         #endif
     }
 

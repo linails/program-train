@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.hpp
  * Created Time: 2016-12-15 22:15:13
- * Last modified: 2017-03-31 13:45:16
+ * Last modified: 2017-06-21 15:29:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,10 +9,11 @@
 #define _CASES_HPP_
 
 #define COMPILE_FLAG_exlibCases    0
-#define COMPILE_FLAG_case001       1
+#define COMPILE_FLAG_case001       0
 #define COMPILE_FLAG_case002       0
 #define COMPILE_FLAG_case003       0
 #define COMPILE_FLAG_case004       0
+#define COMPILE_FLAG_case005       1    // TS-parser
 
 class Cases{
 public:

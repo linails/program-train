@@ -1,7 +1,7 @@
 /*
  * Progarm Name: malgorithm.cpp
  * Created Time: 2016-08-14 10:35:26
- * Last modified: 2017-06-10 08:42:20
+ * Last modified: 2017-06-21 15:18:15
  */
 
 #include "malgorithm.hpp"
@@ -77,14 +77,16 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
 
         ret = os.main(argc, argv); assert(-1 != ret);
 
-        #if 0
+        #if COMPILE_FLAG_finder
+         #if 0
         Finder finder;
         
         ret = finder.main(argc, argv); assert(-1 != ret);
-        #else
+         #else
         FinderEn finder;
         
         ret = finder.main(argc, argv); assert(-1 != ret);
+         #endif
         #endif
     #endif
     }

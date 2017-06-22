@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-06-10 08:47:37
+# Last modified: 2017-06-22 13:23:26
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -45,6 +45,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004/test
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
@@ -109,7 +110,7 @@ set(SRC_LIST
    srcs/linux/server/user.c
    srcs/linux/server/process-rela.c
    srcs/linux/server/model.c
-   srcs/linux/server/daemon.cpp
+#   srcs/linux/server/daemon.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/stl/container.cpp
 #   srcs/stl/container-test.cpp
@@ -122,8 +123,8 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/algorithm/malgorithm.cpp
    srcs/algorithm/others/other-string.cpp
-   srcs/algorithm/others/finder.cpp
-   srcs/algorithm/others/finder-en.cpp
+#   srcs/algorithm/others/finder.cpp
+#   srcs/algorithm/others/finder-en.cpp
    srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
@@ -147,19 +148,19 @@ set(SRC_LIST
    srcs/cases/cases.cpp
 #   srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case001/src/infinite_loops_v2.cpp
-   srcs/cases/case001/src/infinite_loops_v3.cpp
-   srcs/cases/case001/src/dev-child-sibling-tree.cpp
-   srcs/cases/case001/src/dev-avl-tree.cpp
-   srcs/cases/case001/src/conflict-check.cpp
-   srcs/cases/case001/src/illegal-check.cpp
-   srcs/cases/case001/test/tester-case001.cpp
-   srcs/cases/case001/test/test_main.cpp
-   srcs/cases/case001/test/v3_test.cpp
-   srcs/cases/case001/test/test-avl-tree.cpp
-   srcs/cases/case001/test/test-child-sibling-tree.cpp
-   srcs/cases/case001/test/test-conflict-check.cpp
-   srcs/cases/case001/test/test-illegal-check.cpp
+#   srcs/cases/case001/src/infinite_loops_v2.cpp
+#   srcs/cases/case001/src/infinite_loops_v3.cpp
+#   srcs/cases/case001/src/dev-child-sibling-tree.cpp
+#   srcs/cases/case001/src/dev-avl-tree.cpp
+#   srcs/cases/case001/src/conflict-check.cpp
+#   srcs/cases/case001/src/illegal-check.cpp
+#   srcs/cases/case001/test/tester-case001.cpp
+#   srcs/cases/case001/test/test_main.cpp
+#   srcs/cases/case001/test/v3_test.cpp
+#   srcs/cases/case001/test/test-avl-tree.cpp
+#   srcs/cases/case001/test/test-child-sibling-tree.cpp
+#   srcs/cases/case001/test/test-conflict-check.cpp
+#   srcs/cases/case001/test/test-illegal-check.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/case002/dic-parser.cpp
 #   srcs/cases/case002/formatParsing.cpp
@@ -185,6 +186,10 @@ set(SRC_LIST
 #   srcs/cases/case004/src/binditem-tetris.cpp
 #   srcs/cases/case004/test/queue-tetris.cpp
 #   srcs/cases/case004/test/bt-test.cpp
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   srcs/cases/case005/ts-parser-main.cpp
+   srcs/cases/case005/ts-parser.c
+   srcs/cases/case005/ts-parser.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
