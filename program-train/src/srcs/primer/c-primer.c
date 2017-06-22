@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-02-04 12:03:13
+ * Last modified: 2017-06-23 00:21:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -261,6 +261,58 @@ int  gnu_c(void)
             printf("%.2d ", dat[i]);
         }
         printf("\n");
+    }
+    printf("---------------------------\n");
+    {
+        #pragma pack(1)
+        typedef struct {
+            int  a;
+            char b;
+        }Data_t;
+
+        printf("#pragma pack(1) sizeof(Data_t) = %d\n", sizeof(Data_t));
+        #pragma pack()
+
+        /* 
+         * packed 使用该属性可以使得变量或结构体成员使用最小的对齐方式，即对变量是一字节对齐，对域是位对齐
+         * */
+        typedef struct{
+            int  a;
+            char b;
+        }__attribute__((packed))
+        Data_attr_t;
+
+        printf("__attribute__((packed)) sizeof(Data_attr_t) = %d\n", sizeof(Data_attr_t));
+    }
+    printf("---------------------------\n");
+    {
+        #pragma pack()
+        typedef struct {
+            int  a;
+            char b;
+        }Data_t;
+
+        printf("#pragma pack() sizeof(Data_t) = %d\n", sizeof(Data_t));
+        #pragma pack()
+
+        typedef struct{
+            int  a;
+            char b;
+        }__attribute__((aligned(1)))
+        Data_attr_t;
+
+        printf("__attribute__((aligned(1))) sizeof(Data_attr_t) = %d\n", sizeof(Data_attr_t));
+    }
+    printf("---------------------------\n");
+    {
+        #pragma pack(2)
+        typedef struct {
+            int  a;
+            char b;
+        }Data_t;
+
+        printf("#pragma pack(2) sizeof(Data_t) = %d\n", sizeof(Data_t));
+        #pragma pack()
     }
 
     return ret;
