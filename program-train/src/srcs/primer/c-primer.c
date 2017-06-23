@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-06-23 19:36:46
+ * Last modified: 2017-06-23 23:41:34
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -31,6 +31,8 @@ int  cprimer_main(void *cthis, int argc, char **argv)
         ret = ((cPrimer_t *)cthis)->gnu_c();
 
         ret = ((cPrimer_t *)cthis)->bit_field();
+
+        ret = ((cPrimer_t *)cthis)->endian_check();
 
         {
             cJumper_t *cjumper = NULL;
@@ -82,8 +84,8 @@ int  other_test(void)
     {
         int array[3] = {1, 2, 3};
 
-        printf("%x, %x\n", (unsigned int)(array+1), (unsigned int)(&array+1));
-        printf(" - %x \n", (unsigned int)(&array+1) - (unsigned int)(array+1));
+        printf("%x, %x\n", (unsigned int)(long)(array+1), (unsigned int)(long)(&array+1));
+        printf(" - %x \n", (unsigned int)(long)(&array+1) - (unsigned int)(long)(array+1));
     }
 
     printf("\n");
@@ -272,7 +274,7 @@ int  gnu_c(void)
             char b;
         }Data_t;
 
-        printf("#pragma pack(1) sizeof(Data_t) = %d\n", sizeof(Data_t));
+        printf("#pragma pack(1) sizeof(Data_t) = %d\n", (int)sizeof(Data_t));
         #pragma pack()
 
         /* 
@@ -284,7 +286,7 @@ int  gnu_c(void)
         }__attribute__((packed))
         Data_attr_t;
 
-        printf("__attribute__((packed)) sizeof(Data_attr_t) = %d\n", sizeof(Data_attr_t));
+        printf("__attribute__((packed)) sizeof(Data_attr_t) = %d\n", (int)sizeof(Data_attr_t));
     }
     printf("---------------------------\n");
     {
@@ -294,7 +296,7 @@ int  gnu_c(void)
             char b;
         }Data_t;
 
-        printf("#pragma pack() sizeof(Data_t) = %d\n", sizeof(Data_t));
+        printf("#pragma pack() sizeof(Data_t) = %d\n", (int)sizeof(Data_t));
         #pragma pack()
 
         typedef struct{
@@ -303,7 +305,7 @@ int  gnu_c(void)
         }__attribute__((aligned(1)))
         Data_attr_t;
 
-        printf("__attribute__((aligned(1))) sizeof(Data_attr_t) = %d\n", sizeof(Data_attr_t));
+        printf("__attribute__((aligned(1))) sizeof(Data_attr_t) = %d\n", (int)sizeof(Data_attr_t));
     }
     printf("---------------------------\n");
     {
@@ -313,7 +315,7 @@ int  gnu_c(void)
             char b;
         }Data_t;
 
-        printf("#pragma pack(2) sizeof(Data_t) = %d\n", sizeof(Data_t));
+        printf("#pragma pack(2) sizeof(Data_t) = %d\n", (int)sizeof(Data_t));
         #pragma pack()
     }
 
@@ -353,6 +355,23 @@ int  bit_field(void)
         printf("x = 0x%.2x\n", x);
     }
     printf("---------------------------\n");
+    return ret;
+}
+
+static
+int  endian_check(void)
+{
+    int ret = 0;
+
+    unsigned int data = 1;
+
+    if(0x01 == (*(char *)&data)){
+        printf("c-primer::endian_check : Little endian\n");
+    }else{
+        printf("c-primer::endian_check : Big endian\n");
+    }
+    printf("---------------------------\n");
+
     return ret;
 }
 
@@ -397,6 +416,8 @@ cPrimer_t *cprimer_constructor(void)
 
         cprimer->bit_field = bit_field;
 
+        cprimer->endian_check = endian_check;
+
         cprimer->cprimer_main = cprimer_main;
 
         return cprimer;
@@ -432,6 +453,8 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
             (*pobj)->gnu_c = gnu_c;
 
             (*pobj)->bit_field = bit_field;
+
+            (*pobj)->endian_check = endian_check;
 
             (*pobj)->cprimer_main = cprimer_main;
         }
