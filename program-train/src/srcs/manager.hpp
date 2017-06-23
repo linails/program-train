@@ -1,7 +1,7 @@
 /*
  * Progarm Name: manager.hpp
  * Created Time: 2017-03-15 14:55:40
- * Last modified: 2017-06-22 23:58:21
+ * Last modified: 2017-06-23 23:57:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -23,13 +23,13 @@
 using std::string;
 using std::vector;
 
-#define COMPILE_FLAG_Primer         1
+#define COMPILE_FLAG_Primer         0
 #define COMPILE_FLAG_Advanced       0
-#define COMPILE_FLAG_Container      0
+#define COMPILE_FLAG_Container      1
 #define COMPILE_FLAG_dbCaller       0
 #define COMPILE_FLAG_mLinux         0
 #define COMPILE_FLAG_Cases          1
-#define COMPILE_FLAG_mAlgorithm     0
+#define COMPILE_FLAG_mAlgorithm     1
 #define COMPILE_FLAG_gTest          0
 
 class Manager{

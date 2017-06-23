@@ -1,7 +1,7 @@
 /*
  * Progarm Name: finder.cpp
  * Created Time: 2017-06-05 14:24:09
- * Last modified: 2017-06-05 15:20:15
+ * Last modified: 2017-06-24 00:10:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,8 @@
 #include <cstdlib>
 #include <algorithm>
 #include <list>
+#include <vector>
+#include <typeinfo>
 
 using std::cout;
 using std::endl;
@@ -54,7 +56,7 @@ int  Finder::input(void)
     do{
         int data_in = 0;
 
-        scanf(" %c", &data_in);
+        scanf(" %c", (char *)&data_in);
 
         printf(" data_in : %c \n", data_in);
 
@@ -91,26 +93,29 @@ int  Finder::fsort(void)
 int  Finder::pairs_forword(void)
 {
 
-    for(auto data : this->m_data) this->m_data_list.push_back(data);
+    list<char>  data_list;
+
+    for(auto data : this->m_data) data_list.push_back(data);
 
     char forword = '.';
 
-    for(auto iter = this->m_data_list.rbegin(); 
-             iter!= this->m_data_list.rend();){
+    for(auto iter = data_list.begin(); iter!= data_list.end();){
+
         if('.' != forword){
             forword = *iter;
         }else{
             if(forword == *iter){
-                #if 0
-                this->m_data_list.push_front(forword);
-
-                iter = this->m_data_list.erase(iter);
+                #if 1
+                data_list.push_front(forword);
+                iter = data_list.erase(iter);
                 #endif
             }else{
                 iter++;
             }
         }
     }
+
+    this->m_data_list = data_list;
 
     return 0;
 }

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-03-23 15:12:10
+ * Last modified: 2017-06-24 00:10:05
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -195,6 +195,43 @@ int  Container::list_t(void)
         #endif
 
         fp(li);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        list<char>  data_list;
+        data_list.push_back('1');
+        data_list.push_back('2');
+        data_list.push_back('3');
+        data_list.push_back('.');
+        data_list.push_back('5');
+        data_list.push_back('6');
+        data_list.push_back('7');
+
+        char forword = '.';
+
+        /* 
+         * 反向遍历的时候，不可以调用 erase 方法，因为这个时候的 iter 的类型和正向遍历的类型不一样
+         * */
+        //for(auto iter = data_list.rbegin(); iter!= data_list.rend();)
+        for(auto iter = data_list.begin(); iter!= data_list.end();){
+
+            if(*iter == forword){
+                data_list.push_front(forword);
+
+                iter = data_list.erase(iter);
+                continue;
+            }
+
+            iter++;
+        }
+
+        cout << "data_list : ";
+        for(auto iter = data_list.begin(); 
+                 iter!= data_list.end(); iter++){
+            cout << *iter << " ";
+        }
+        cout << endl;
+
     }
     cout << "-----------------------------------------" << endl;
 
