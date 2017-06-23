@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-06-23 00:21:24
+ * Last modified: 2017-06-23 19:36:46
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,6 +29,8 @@ int  cprimer_main(void *cthis, int argc, char **argv)
         ret = ((cPrimer_t *)cthis)->para_uncertainty(cthis);
 
         ret = ((cPrimer_t *)cthis)->gnu_c();
+
+        ret = ((cPrimer_t *)cthis)->bit_field();
 
         {
             cJumper_t *cjumper = NULL;
@@ -318,6 +320,42 @@ int  gnu_c(void)
     return ret;
 }
 
+static
+int  bit_field(void)
+{
+    int ret = 0;
+
+    {
+        printf("c-primer::bit_field ...\n");
+    }
+    printf("---------------------------\n");
+    {
+        /* 
+         * 这个跟大小端有直接关系
+         * */
+        typedef struct{
+            char a:1,
+                 b:1,
+                 c:1,
+                 d:1,
+                 e:4;
+        }Data_t;
+
+        Data_t data;
+
+        data.a = 0;
+        data.b = 0;
+        data.c = 0;
+        data.d = 0;
+        data.e = 1;
+
+        char x = *(char *)&data;
+        printf("x = 0x%.2x\n", x);
+    }
+    printf("---------------------------\n");
+    return ret;
+}
+
 //----------------------------------------------------------------------------------------------
 
 static
@@ -357,6 +395,8 @@ cPrimer_t *cprimer_constructor(void)
 
         cprimer->gnu_c = gnu_c;
 
+        cprimer->bit_field = bit_field;
+
         cprimer->cprimer_main = cprimer_main;
 
         return cprimer;
@@ -390,6 +430,8 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
             (*pobj)->pu_fun = pu_fun;
 
             (*pobj)->gnu_c = gnu_c;
+
+            (*pobj)->bit_field = bit_field;
 
             (*pobj)->cprimer_main = cprimer_main;
         }
