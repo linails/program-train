@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cthread.cpp
  * Created Time: 2016-12-07 11:26:43
- * Last modified: 2016-12-16 22:07:45
+ * Last modified: 2017-06-24 23:12:59
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -20,6 +20,7 @@ using std::string;
 
 Timer cThread::timer0;
 Timer cThread::timer1;
+pthread_mutex_t  cThread::m_mtx;
 
 /* 
  * #include <pthread.h>
@@ -64,6 +65,10 @@ int cThread::cthread_main(int argc, char **argv)
     int ret = 0;
 
     ret = this->timing_create_thread();
+
+    //ret = this->deadlock_test_for_mutex();
+
+    ret = this->normal_test_for_mutex();
 
     return ret;
 }
@@ -117,4 +122,220 @@ void *cThread::child(void *arg)
     pthread_exit((void *)"end child thread ...");
 }
 
+void *cThread::odd_deadlock(void *arg)
+{
+    printf("cThread::odd_deadlock() ...\n");
+
+    for(int i=1; ; i+= 2){
+        pthread_mutex_lock(&m_mtx);
+        printf("odd : %d\n", i);
+        usleep(500 * 1000);
+        pthread_mutex_unlock(&m_mtx);
+
+        usleep(10);
+    }
+
+    pthread_exit((void *)"end odd_deadlock thread ...");
+}
+
+/* 
+ * 运用两个宏函数就可以解决 deadlock_test_for_mutex() 中出现的一个线程异常退出后引起死锁的问题
+ *  1> pthread_cleanup_push
+ *  2> pthread_cleanup_pop | 这个对函数的作用类似于 atexit 函数
+ *
+ *  这两个宏函数，必须成对使用
+ *
+ *  // 会将参数 routine 所含的函数地址添加到调用线程的清理函数栈顶
+ *  void pthread_cleanup_push(
+ *      void (*routine)(void *),    //
+ *      void *arg                   // 回调函数 routine 的参数
+ *  );
+ *
+ *  void pthread_cleanup_pop(int execute);
+ * */
+void *cThread::odd_nornal(void *arg)
+{
+    printf("cThread::odd_nornal() ...\n");
+
+    char *str = (char *)"msg from odd_nornal()";
+
+    for(int i=1; ; i+= 2){
+
+        pthread_cleanup_push(cThread::routine, (void *)str);
+
+        pthread_mutex_lock(&m_mtx);
+        printf("odd : %d\n", i);
+        usleep(500 * 1000);
+        pthread_mutex_unlock(&m_mtx);
+
+        usleep(10);
+
+        pthread_cleanup_pop(0);
+    }
+
+    pthread_exit((void *)"end odd_nornal thread ...");
+}
+
+void *cThread::even_deadlock(void *arg)
+{
+    printf("cThread::even_deadlock() ...\n");
+
+    for(int i=0; ; i+= 2){
+        pthread_mutex_lock(&m_mtx);
+        printf("even : %d\n", i);
+        usleep(500 * 1000);
+        pthread_mutex_unlock(&m_mtx);
+
+        usleep(10);
+    }
+
+    pthread_exit((void *)"end even_deadlock thread ...");
+}
+
+void *cThread::even_normal(void *arg)
+{
+    printf("cThread::even_normal() ...\n");
+
+    for(int i=0; ; i+= 2){
+
+        pthread_cleanup_push(cThread::routine, NULL);
+
+        pthread_mutex_lock(&m_mtx);
+        printf("even : %d\n", i);
+        usleep(500 * 1000);
+        pthread_mutex_unlock(&m_mtx);
+
+        usleep(10);
+
+        pthread_cleanup_pop(0);
+    }
+
+    pthread_exit((void *)"end even_normal thread ...");
+}
+
+int  cThread::deadlock_test_for_mutex(void)
+{
+    int ret = 0;
+
+    printf("cThread::deadlock_test_for_mutex ...\n");
+    {
+        pthread_t odd_thread;
+        pthread_t even_thread;
+
+        void *tr0 = NULL;
+        void *tr1 = NULL;
+
+        pthread_mutex_init(&m_mtx, 0);
+
+        if(0 != (ret = pthread_create(&odd_thread, NULL, cThread::odd_deadlock, NULL))){
+            perror("odd-thread creation failed!");
+            exit(EXIT_FAILURE);
+        }
+
+        if(0 != (ret = pthread_create(&even_thread, NULL, cThread::even_deadlock, NULL))){
+            perror("even-thread creation failed!");
+            exit(EXIT_FAILURE);
+        }
+
+        {
+            printf("Start sleep ......................\n");
+            sleep(2);
+            printf("End sleep ......................\n");
+        }
+
+
+        /* 
+         * 取消 odd_thread 线程 , 类似于外部强制停止 odd 线程
+         * */
+        pthread_cancel(odd_thread);
+
+
+        /* 
+         * Join ...
+         * */
+        if(0 != (ret = pthread_join(odd_thread, &tr0))){
+            perror("odd_thread join failed!");
+            exit(EXIT_FAILURE);
+        }
+
+        if(0 != (ret = pthread_join(even_thread, &tr1))){
+            perror("even_thread join failed!");
+            exit(EXIT_FAILURE);
+        }
+
+        pthread_mutex_destroy(&m_mtx);
+    }
+
+    printf("-----------------------------------------\n");
+    return ret;
+}
+
+int  cThread::normal_test_for_mutex(void)
+{
+    int ret = 0;
+
+    printf("cThread::normal_test_for_mutex ...\n");
+    {
+        pthread_t odd_thread;
+        pthread_t even_thread;
+
+        void *tr0 = NULL;
+        void *tr1 = NULL;
+
+        pthread_mutex_init(&m_mtx, 0);
+
+        if(0 != (ret = pthread_create(&odd_thread, NULL, cThread::odd_nornal, NULL))){
+            perror("odd-thread creation failed!");
+            exit(EXIT_FAILURE);
+        }
+
+        if(0 != (ret = pthread_create(&even_thread, NULL, cThread::even_normal, NULL))){
+            perror("even-thread creation failed!");
+            exit(EXIT_FAILURE);
+        }
+
+        {
+            printf("Start sleep ......................\n");
+            sleep(2);
+            printf("End sleep ......................\n");
+        }
+
+
+        /* 
+         * 取消 odd_thread 线程 , 类似于外部强制停止 odd 线程
+         * */
+        pthread_cancel(odd_thread);
+
+
+        /* 
+         * Join ...
+         * */
+        if(0 != (ret = pthread_join(odd_thread, &tr0))){
+            perror("odd_thread join failed!");
+            exit(EXIT_FAILURE);
+        }
+
+        if(0 != (ret = pthread_join(even_thread, &tr1))){
+            perror("even_thread join failed!");
+            exit(EXIT_FAILURE);
+        }
+
+        pthread_mutex_destroy(&m_mtx);
+    }
+
+    printf("-----------------------------------------\n");
+    return ret;
+}
+
+void cThread::routine(void *d)
+{
+    printf("cThread::routine() exit and cleanup ...\n");
+    {
+        if(NULL != d){
+            printf("routine() : msg = %s\n", (char *)d);
+        }
+    }
+
+    pthread_mutex_unlock(&m_mtx);
+}
 
