@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-parser-main.cpp
  * Created Time: 2017-06-21 15:22:22
- * Last modified: 2017-06-22 13:33:31
+ * Last modified: 2017-06-25 13:05:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -69,7 +69,7 @@ int  TsParserMain::init(void)
                 }
             }
 
-            cout << "ts_path = " << this->m_ts_path << endl;
+            cout << "TsParserMain | ts_path = " << this->m_ts_path << endl;
 
         }else{
             ret = -1;
