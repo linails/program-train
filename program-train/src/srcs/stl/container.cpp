@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-06-24 00:10:05
+ * Last modified: 2017-06-26 10:26:28
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -232,6 +232,30 @@ int  Container::list_t(void)
         }
         cout << endl;
 
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        typedef struct{
+            int buf[10];
+        }ArrayData_t;
+
+        list<ArrayData_t> arrlist;
+
+        ArrayData_t a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        ArrayData_t b = {10, 20, 30, 40, 50, 60, 70, 80, 90, 10};
+
+        arrlist.push_back(a);
+        arrlist.push_back(b);
+
+        cout << "arrlist.size() : " << arrlist.size() << endl;
+
+        for(auto &u : arrlist){
+            cout << "u : ";
+            for(int i=0; i<10; i++){
+                cout << u.buf[i] << " ";
+            }
+            cout << endl;
+        }
     }
     cout << "-----------------------------------------" << endl;
 

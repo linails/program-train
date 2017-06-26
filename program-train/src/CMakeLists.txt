@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-06-24 14:37:11
+# Last modified: 2017-06-26 12:45:28
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -189,8 +189,10 @@ set(SRC_LIST
 #   srcs/cases/case004/test/bt-test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case005/ts-parser-main.cpp
-   srcs/cases/case005/ts-parser.c
+#   srcs/cases/case005/ts-parser.c
    srcs/cases/case005/ts-parser.cpp
+   srcs/cases/case005/ts-unit.cpp
+   srcs/cases/case005/ts-buffer.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
