@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-06-26 12:45:28
+# Last modified: 2017-06-27 15:32:25
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -46,6 +46,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004/src
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/c-parser
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
@@ -189,10 +191,13 @@ set(SRC_LIST
 #   srcs/cases/case004/test/bt-test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case005/ts-parser-main.cpp
-#   srcs/cases/case005/ts-parser.c
-   srcs/cases/case005/ts-parser.cpp
-   srcs/cases/case005/ts-unit.cpp
-   srcs/cases/case005/ts-buffer.cpp
+   srcs/cases/case005/parser/ts-parser.cpp
+   srcs/cases/case005/parser/ts-buffer.cpp
+   srcs/cases/case005/parser/ts-unit.cpp
+   srcs/cases/case005/parser/ts-pat.cpp
+   srcs/cases/case005/parser/ts-pmt.cpp
+   srcs/cases/case005/parser/ts-pes.cpp
+#   srcs/cases/case005/c-parser/ts-parser.c
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp

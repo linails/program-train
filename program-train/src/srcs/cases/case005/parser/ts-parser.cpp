@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-parser.cpp
  * Created Time: 2017-06-22 13:22:28
- * Last modified: 2017-06-26 17:13:49
+ * Last modified: 2017-06-27 17:14:50
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -18,6 +18,13 @@
 
 using std::cout;
 using std::endl;
+
+TsParser *TsParser::instance = nullptr;
+
+TsParser *TsParser::get_instance(TsParser *ptr)
+{
+    if(nullptr != ptr) instance = ptr; return instance;
+}
 
 TsParser::TsParser(string file)
     :m_file(file)
@@ -116,17 +123,6 @@ void TsParser::load_data_loop(void)
 
     if(this->m_filesize % BUF_MAX_SIZE) i++;
 
-    auto pre_num_bytes = [](const char *tag, char *buf, size_t cnt){
-        printf("%s : \n", tag);
-        for(size_t i=0; i<cnt; i++){
-            printf("%.2X ", (unsigned char)buf[i]);
-            if(!((i + 1) % 20)){
-                cout << endl;
-            }
-        }
-        printf("\n");
-    };
-
     while(i--){
         usleep(100);
 
@@ -136,8 +132,6 @@ void TsParser::load_data_loop(void)
         printf("i = %d | read num = %d - this->m_tsbuf.size() : %d\n",
                 i, (int)num, (int)(this->m_tsbuf->size()));
         cout << "cur offset : " << lseek(this->m_fd, 0, SEEK_CUR) << endl;
-        pre_num_bytes("BUF", this->m_tsbuf->buf, 100);
-        //pre_num_bytes("BUF", this->m_tsbuf->buf, BUF_MAX_SIZE);
 
 
         /* 
@@ -146,13 +140,16 @@ void TsParser::load_data_loop(void)
         {
             if(true != buf.empty()){
                 this->m_tsbuf->top_remain(buf, buf.size());
-                //pre_num_bytes("top_remain", buf.buf, buf.size());
 
                 cout << "buf.size() = " << buf.size() << endl;
                 assert(188 == buf.size());
                 if(188 == buf.size()){
                     TsUnit unit(buf.buf);
-                    this->m_ts_units.push_back(unit);
+
+                    {
+                    std::unique_lock<std::mutex> lock(this->m_lock);
+                    this->m_ts_units.push(unit);
+                    }
 
                     buf.clear();
                 }else{
@@ -168,7 +165,10 @@ void TsParser::load_data_loop(void)
             /* 
              * get all ts-units
              * */
+            {
+            std::unique_lock<std::mutex> lock(this->m_lock);
             this->m_tsbuf->cut_tsunit(this->m_ts_units);
+            }
 
 
             assert(true == buf.empty());
@@ -177,22 +177,101 @@ void TsParser::load_data_loop(void)
                 }else{
                     cout << "have no tail remain data ..." << endl;
                 }
-
-                //pre_num_bytes("tail_remain", buf.buf, buf.size());
             }
 
             cout << "this->m_ts_units.size() : " << this->m_ts_units.size() << endl;
         }
     }
+
+
+    /*
+     * set flag For read all data done!
+     * */
+    this->m_done_flag  = 0;
+    cout << "this->m_done_flag = 0" << endl;
 }
 
 void TsParser::parser(void)
 {
-    while(true != this->m_ts_units.empty()){
-        sleep(1);
+    while(1){
+        usleep(5);
 
+        TsUnit unit;
+        if(true != this->m_ts_units.empty()){
+            if(0 == this->m_done_flag){
+                unit = this->m_ts_units.front();
+                this->m_ts_units.pop();
+            }else{
+                std::unique_lock<std::mutex> lock(this->m_lock);
+                unit = this->m_ts_units.front();
+                this->m_ts_units.pop();
+            }
+        }else{
+            if(0 == this->m_done_flag){
+                break;
+            }else{
+                continue;
+            }
+        }
 
-        cout << "TsParser::parser() ..." << endl;
+        cout << "this->m_ts_units.size() : " << this->m_ts_units.size() << endl;
+        //unit.hex_print();
     }
+}
+
+TsPAT   *TsParser::get_pat(TsPAT *ptr)
+{
+    if(nullptr != ptr){
+        if(nullptr != this->m_pat){
+            cout << "[Error] new TsPAT() again ..." << endl;
+            exit(1);
+        }else{
+            this->m_pat = ptr;
+        }
+    }
+
+    return this->m_pat;
+}
+
+TsPMT   *TsParser::get_pmt(TsPMT *ptr)
+{
+    if(nullptr != ptr){
+        if(nullptr != this->m_pmt){
+            cout << "[Error] new TsPMT() again ..." << endl;
+            exit(1);
+        }else{
+            this->m_pmt = ptr;
+        }
+    }
+
+    return this->m_pmt;
+}
+
+TsPES   *TsParser::get_pes(TsPES *ptr)
+{
+    if(nullptr != ptr){
+        if(nullptr != this->m_pes){
+            cout << "[Error] new TsPES() again ..." << endl;
+            exit(1);
+        }else{
+            this->m_pes = ptr;
+        }
+    }
+
+    return this->m_pes;
+}
+
+int  TsParser::hex_print(const char *tag, const char *buf, size_t cnt)
+{
+    printf("%s : - cnt : %d\n", tag, (int)cnt);
+    for(size_t i=0; i<cnt; i++){
+        printf("%.2X ", (unsigned char)buf[i]);
+
+        if(!((i + 1) % 20)) cout << endl;
+        else if(!((i + 1) % 10)) cout << "- ";
+    }
+    printf("\n");
+
+    return 0;
 }
 

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-parser-main.cpp
  * Created Time: 2017-06-21 15:22:22
- * Last modified: 2017-06-25 13:05:30
+ * Last modified: 2017-06-27 16:20:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -83,7 +83,13 @@ int  TsParserMain::init(void)
 
 int  TsParserMain::parser(void)
 {
-    TsParser parser(this->m_ts_path);
+    TsParser *p_tsparer = TsParser::get_instance(new TsParser(this->m_ts_path));
+    if(nullptr != p_tsparer){
+        cout << "new successed" << endl;
+    }else{
+        cout << "[Error] new TsParser() failed !" << endl;
+        exit(1);
+    }
 
     return 0;
 }

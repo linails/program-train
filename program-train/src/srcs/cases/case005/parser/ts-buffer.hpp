@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-buffer.hpp
  * Created Time: 2017-06-26 12:41:08
- * Last modified: 2017-06-26 16:16:48
+ * Last modified: 2017-06-27 16:32:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -10,9 +10,11 @@
 
 #include <cstdio>
 #include "ts-unit.hpp"
-#include <list>
+#include <queue>
 
-using std::list;
+using std::queue;
+
+class  TsUnit;
 
 struct TsBuffer{
     TsBuffer(size_t maxsize = 512);
@@ -21,7 +23,7 @@ struct TsBuffer{
     size_t size(void);
     bool   empty(void);
     int    clear(void);
-    int    cut_tsunit(list<TsUnit> &ts_units);
+    int    cut_tsunit(queue<TsUnit> &ts_units);
     int    top_remain(TsBuffer &tsbuf, int index = 0);
     int    tail_remain(TsBuffer &tsbuf, int index = 0);
 private:

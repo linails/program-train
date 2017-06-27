@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-parser.h
  * Created Time: 2017-06-22 13:23:10
- * Last modified: 2017-06-23 19:35:46
+ * Last modified: 2017-06-27 10:22:25
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,9 +13,11 @@ extern "C" {
 
 #pragma pack(1)
 
+#if 0
     typedef struct{
         char    sync_byte;
     }TsHeader_t;
+#endif
 
 #ifdef __cplusplus
 }

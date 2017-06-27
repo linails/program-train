@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-buffer.cpp
  * Created Time: 2017-06-26 12:44:36
- * Last modified: 2017-06-26 17:06:26
+ * Last modified: 2017-06-27 12:11:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cstring>
 #include <cstdio>
+#include <unistd.h>
 
 using std::cout;
 using std::endl;
@@ -117,13 +118,18 @@ int    TsBuffer::tail_remain(TsBuffer &tsbuf, int index)
     }
 }
 
-int    TsBuffer::cut_tsunit(list<TsUnit> &ts_units)
+int    TsBuffer::cut_tsunit(queue<TsUnit> &ts_units)
 {
     int cnt = (this->m_size - this->m_top_remain) / 188;
 
     for(int i=0; i<cnt; i++){
         TsUnit unit(&(this->buf[this->m_top_remain + 188 * i]));
-        ts_units.push_back(unit);
+
+        //{
+        //std::unique_lock<std::mutex> lock(mtx);
+        ts_units.push(unit);
+        //}
+        //usleep(10 * 1000);
     }
 
     return 0;
