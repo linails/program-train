@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-unit.cpp
  * Created Time: 2017-06-26 10:29:32
- * Last modified: 2017-06-27 18:17:14
+ * Last modified: 2017-06-28 19:42:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,6 +29,7 @@ TsUnit::TsUnit(const char *unit)
         this->parser();
 
 
+        #if 0
         this->info();
         printf("pid = 0x%.4x\n\n", (unsigned short)this->m_PID);
 
@@ -50,6 +51,16 @@ TsUnit::TsUnit(const char *unit)
 
             exit(0);
         }
+        #else
+        //if(0x0103 == this->m_PID){
+        if(0x0150 == this->m_PID){
+            this->info();
+            printf("pid = 0x%.4x\n\n", (unsigned short)this->m_PID);
+
+            static int i = 1000;
+            if(! i--) exit(0);
+        }
+        #endif
     }
 }
 

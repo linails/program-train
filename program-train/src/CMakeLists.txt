@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-06-27 15:32:25
+# Last modified: 2017-06-28 16:24:22
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -47,6 +47,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser/pmt
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser/pmt/descriptors
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/c-parser
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json

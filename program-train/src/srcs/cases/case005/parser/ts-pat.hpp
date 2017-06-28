@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-pat.hpp
  * Created Time: 2017-06-27 15:20:02
- * Last modified: 2017-06-27 19:20:43
+ * Last modified: 2017-06-28 12:26:48
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -37,6 +37,7 @@ typedef struct{
     unsigned char   section_number;           /* byte[6] */
     unsigned char   last_section_number;      /* byte[7] */
 }TsPatHeader_t;
+#pragma pack()
 
 class TsPAT{
 public:
@@ -45,6 +46,10 @@ public:
     int  load_data(const char *buf, int cnt);
     int  info(void);
     int  parser(const char *buf);
+private:
+    int  crc(void);
+private:
+    char            m_buf[512] = {0, };
 private:
     /* 
      * 表示 PSI 分段的内容
@@ -99,8 +104,11 @@ private:
     unsigned char   m_last_section_number;
 
     /* 
-     * map<program_number, network_PID>
-     * program_map_PID
+     * map<program_number, network_PID/program_map_number>
+     *  1> 当 program_number = 0x0000
+     *     map<>.second 为 network_PID，指定含有网络信息表(NIT)的传送流分组的 PID
+     *  2> 当 program_number = other val
+     *     map<>.second 为 program_map_number，指定了传送流分组的 PID
      * */
     map<int, int>   m_prg_num_pids;
 };

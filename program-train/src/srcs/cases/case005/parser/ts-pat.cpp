@@ -1,16 +1,18 @@
 /*
  * Progarm Name: ts-pat.cpp
  * Created Time: 2017-06-27 15:20:07
- * Last modified: 2017-06-27 18:19:40
+ * Last modified: 2017-06-28 10:29:27
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "ts-pat.hpp"
 #include <iostream>
 #include "ts-parser.hpp"
+#include <cstring>
 
 using std::cout;
 using std::endl;
+using std::make_pair;
 
 TsPAT::TsPAT()
 {
@@ -22,6 +24,8 @@ TsPAT::~TsPAT()
 
 int  TsPAT::load_data(const char *buf, int cnt)
 {
+    memcpy(this->m_buf, buf, cnt);
+
     TsParser::get_instance()->hex_print("load_data", buf, cnt);
 
     this->parser(buf);
@@ -41,6 +45,15 @@ int  TsPAT::info(void)
     printf("%s: 0x%x\n", "current_next_indicator", this->m_current_next_indicator);
     printf("%s: 0x%x\n", "section_number", this->m_section_number);
     printf("%s: 0x%x\n", "last_section_number", this->m_last_section_number);
+
+    for(auto &u : this->m_prg_num_pids){
+        printf("program_number = 0x%.4x - ", (unsigned short)u.first);
+        if(0x0000 == (unsigned short)u.first){
+            printf("network_PID     = 0x%.4x\n", (unsigned short)u.second);
+        }else{
+            printf("program_map_PID = 0x%.4x\n", (unsigned short)u.second);
+        }
+    }
 
     return 0;
 }
@@ -64,6 +77,38 @@ int  TsPAT::parser(const char *buf)
     this->m_current_next_indicator = ((TsPatHeader_t *)buf)->current_next_indicator;
     this->m_section_number = ((TsPatHeader_t *)buf)->section_number;
     this->m_last_section_number = ((TsPatHeader_t *)buf)->last_section_number;
+
+
+    typedef struct{
+        unsigned char program_number_high8;
+        unsigned char program_number_low8;
+
+        /* byte[2] */
+        unsigned char pid_high5 : 5;
+        unsigned char reserved : 3;
+
+        unsigned char pid_low8;
+    }Programs_t;
+
+    cout << "sizeof(Programs_t) : " << sizeof(Programs_t) << endl;
+    /* 
+     * For progarms
+     * */
+    int program_N = (this->m_section_length - 5 - 4)/4;
+    char *ptr = &this->m_buf[sizeof(TsPatHeader_t)];
+    for(int i=0; i<program_N; i++){
+        unsigned short
+        program_number = ((Programs_t *)ptr)->program_number_high8 << 8;
+        program_number |= ((Programs_t *)ptr)->program_number_low8;
+
+        unsigned short
+        pid = ((Programs_t *)ptr)->pid_high5 << 8;
+        pid|= ((Programs_t *)ptr)->pid_low8;
+
+        this->m_prg_num_pids.insert(make_pair(program_number, pid));
+
+        ptr += sizeof(Programs_t);
+    }
 
     return 0;
 }
