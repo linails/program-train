@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-pat.cpp
  * Created Time: 2017-06-27 15:20:07
- * Last modified: 2017-06-28 10:29:27
+ * Last modified: 2017-06-29 15:07:31
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -91,6 +91,7 @@ int  TsPAT::parser(const char *buf)
     }Programs_t;
 
     cout << "sizeof(Programs_t) : " << sizeof(Programs_t) << endl;
+
     /* 
      * For progarms
      * */
@@ -105,12 +106,45 @@ int  TsPAT::parser(const char *buf)
         pid = ((Programs_t *)ptr)->pid_high5 << 8;
         pid|= ((Programs_t *)ptr)->pid_low8;
 
-        this->m_prg_num_pids.insert(make_pair(program_number, pid));
+        /* 
+         * bug in map<int, int> !
+         * */
+        this->m_prg_num_pids.insert(make_pair((int)program_number, (int)pid));
 
         ptr += sizeof(Programs_t);
     }
 
     return 0;
 }
+
+int  TsPAT::get_programs(vector<pair<int, int> > &prgs)
+{
+    int ret = -1;
+
+    for(auto &u : this->m_prg_num_pids){
+        if(0x0000 != u.first){
+            prgs.push_back(u);
+            ret = 0;
+        }
+    }
+
+    return ret;
+}
+
+int  TsPAT::get_nit(pair<int, int> &nit)
+{
+    int ret = -1;
+
+    for(auto &u : this->m_prg_num_pids){
+        if(0x0000 == u.first){
+            nit = u;
+            ret = 0;
+            break;
+        }
+    }
+
+    return ret;
+}
+
 
 

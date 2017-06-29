@@ -1,17 +1,20 @@
 /*
  * Progarm Name: ts-unit.cpp
  * Created Time: 2017-06-26 10:29:32
- * Last modified: 2017-06-28 19:42:44
+ * Last modified: 2017-06-29 16:53:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "ts-unit.hpp"
 #include <iostream>
 #include <cstdlib>
+#include <cstdio>
 #include <cstring>
 #include <cassert>
 #include "ts-parser.hpp"
 #include "ts-pat.hpp"
+#include "ts-pmt.hpp"
+#include "ts-pes.hpp"
 
 using std::cout;
 using std::endl;
@@ -25,42 +28,6 @@ TsUnit::TsUnit(const char *unit)
         if(0x47 != this->m_buf[0]){
             cout << "[Error] TsUnit false!" << endl;
         }
-
-        this->parser();
-
-
-        #if 0
-        this->info();
-        printf("pid = 0x%.4x\n\n", (unsigned short)this->m_PID);
-
-        /*
-         * For Test only
-         * */
-        if(0 == this->m_PID){
-
-            if(nullptr == TsParser::get_instance()->get_pat()){
-
-                if(nullptr != TsParser::get_instance()->get_pat(new TsPAT())){
-                    TsParser::get_instance()
-                        ->get_pat()
-                        ->load_data(&this->m_buf[5], TS_UNIT_LENGTH-5);
-                }
-
-            }else{
-            }
-
-            exit(0);
-        }
-        #else
-        //if(0x0103 == this->m_PID){
-        if(0x0150 == this->m_PID){
-            this->info();
-            printf("pid = 0x%.4x\n\n", (unsigned short)this->m_PID);
-
-            static int i = 1000;
-            if(! i--) exit(0);
-        }
-        #endif
     }
 }
 
@@ -110,6 +77,117 @@ int  TsUnit::parser(void)
 
     this->m_continuity_counter =
         ((TsPacket_t *)(this->m_buf))->header.continuity_counter;
+    }
+
+
+    if(0x1fff != this->m_PID){
+
+        /*
+         * PAT
+         * */
+        if(0x0000 == this->m_PID){
+
+            this->info();
+            printf("pid = 0x%.4x\n\n", (unsigned short)this->m_PID);
+
+            int idx = this->m_payload_unit_start_indicator;
+            if(1 == idx)        idx = 5;
+            else if(0 == idx)   idx = 4;
+
+            /* 
+             * create TsPAT
+             * */
+            if(nullptr == TsParser::get_instance()->get_pat()){
+
+                if(nullptr != TsParser::get_instance()->get_pat(new TsPAT())){
+
+                    TsParser::get_instance()
+                        ->get_pat()
+                        ->load_data(&this->m_buf[idx], TS_UNIT_LENGTH - idx);
+                }
+
+            }else{
+                TsParser::get_instance()
+                    ->get_pat()
+                    ->load_data(&this->m_buf[idx], TS_UNIT_LENGTH - idx);
+            }
+
+
+            /* 
+             * create TsPMT
+             * */
+            vector<pair<int, int> > prgs;
+            if(0 == TsParser::get_instance()
+                        ->get_pat()
+                        ->get_programs(prgs)){
+
+                if(nullptr == TsParser::get_instance()->get_pmt()){
+                    if(nullptr != TsParser::get_instance()->get_pmt(new TsPMT())){
+                        TsParser::get_instance()
+                            ->get_pmt()
+                            ->add_programs(prgs);
+
+                        cout << "create pmt and add programs successed !" << endl;
+                    }
+                }
+            }
+
+
+
+
+
+        /* 
+         * CAT
+         * */
+        }else if(0x0001 == this->m_PID){
+            cout << "cat ..." << endl;
+        
+
+
+
+
+
+        /*
+         * PMT
+         * */
+        }else if((nullptr != TsParser::get_instance()->get_pmt()) &&
+                 (0 == TsParser::get_instance()->get_pmt()->is_pmt_stream(this->m_PID))){
+
+            this->info();
+
+            int idx = this->m_payload_unit_start_indicator;
+            if(1 == idx)        idx = 5;
+            else if(0 == idx)   idx = 4;
+
+            printf("PMT parser ... pid = 0x%.4x\n", this->m_PID);
+            TsParser::get_instance()
+                ->get_pmt()
+                ->load_data(this->m_PID, &this->m_buf[idx], TS_UNIT_LENGTH - idx);
+
+
+            cout << "out PMT parser() ..." << endl;
+
+
+        /*
+         * PES
+         * */
+        }else if((nullptr != TsParser::get_instance()->get_pes()) &&
+                 (0 == TsParser::get_instance()->get_pes()->is_pes_stream(this->m_PID))){
+            #if 0
+            if(0x0150 == this->m_PID){
+                this->info();
+                printf("pid = 0x%.4x\n\n", (unsigned short)this->m_PID);
+
+                static int i = 1000;
+                if(! i--) exit(0);
+                else cout << "i = " << i << endl;
+            }
+            #endif
+        }
+
+    }else{
+        //this->info();
+        //printf("pid = 0x%.4x\n\n", (unsigned short)this->m_PID);
     }
 
     return 0;

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-pes.hpp
  * Created Time: 2017-06-27 15:28:38
- * Last modified: 2017-06-28 17:11:58
+ * Last modified: 2017-06-29 13:38:15
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -22,6 +22,8 @@ class TsPES{
 public:
     TsPES();
     ~TsPES();
+    int  is_pes_stream(int pid);
+    int  info(void);
 private:
     /* 
      * 与其后的 stream_id 一起构成标示一个分组开始的分组开始码字

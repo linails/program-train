@@ -1,16 +1,19 @@
 /*
  * Progarm Name: ts-pat.hpp
  * Created Time: 2017-06-27 15:20:02
- * Last modified: 2017-06-28 12:26:48
+ * Last modified: 2017-06-29 15:31:40
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #ifndef _TS_PAT_HPP_
 #define _TS_PAT_HPP_
 
-#include <map>
+#include <vector>
+#include <unordered_map>
 
-using std::map;
+using std::vector;
+using std::unordered_map;
+using std::pair;
 
 #pragma pack(1)
 typedef struct{
@@ -44,9 +47,11 @@ public:
     TsPAT();
     ~TsPAT();
     int  load_data(const char *buf, int cnt);
+    int  get_programs(vector<pair<int, int> > &prgs);
+    int  get_nit(pair<int, int> &nit);
     int  info(void);
-    int  parser(const char *buf);
 private:
+    int  parser(const char *buf);
     int  crc(void);
 private:
     char            m_buf[512] = {0, };
@@ -104,13 +109,13 @@ private:
     unsigned char   m_last_section_number;
 
     /* 
-     * map<program_number, network_PID/program_map_number>
+     * pair<program_number, network_PID/program_map_number>
      *  1> 当 program_number = 0x0000
-     *     map<>.second 为 network_PID，指定含有网络信息表(NIT)的传送流分组的 PID
+     *     pair<>.second 为 network_PID，指定含有网络信息表(NIT)的传送流分组的 PID
      *  2> 当 program_number = other val
-     *     map<>.second 为 program_map_number，指定了传送流分组的 PID
+     *     pair<>.second 为 program_map_number，指定了传送流分组的 PID
      * */
-    map<int, int>   m_prg_num_pids;
+    unordered_map<int, int >   m_prg_num_pids;
 };
 
 #endif //_TS_PAT_HPP_

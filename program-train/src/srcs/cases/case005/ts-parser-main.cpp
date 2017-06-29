@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-parser-main.cpp
  * Created Time: 2017-06-21 15:22:22
- * Last modified: 2017-06-27 16:20:04
+ * Last modified: 2017-06-29 12:16:05
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -90,6 +90,8 @@ int  TsParserMain::parser(void)
         cout << "[Error] new TsParser() failed !" << endl;
         exit(1);
     }
+
+    if(nullptr != p_tsparer){ delete p_tsparer; }
 
     return 0;
 }

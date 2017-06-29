@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-pmt-header.h
  * Created Time: 2017-06-28 16:29:11
- * Last modified: 2017-06-28 16:29:52
+ * Last modified: 2017-06-29 17:27:13
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,7 +29,7 @@ typedef struct{
     /* byte[5] */
     unsigned char   current_next_indicator : 1;
     unsigned char   version_number : 5;
-    unsigned char   reserved3 : 3;
+    unsigned char   reserved3 : 2;
 
     unsigned char   section_number;         // byte[6]
     unsigned char   last_section_number;    // byte[7]

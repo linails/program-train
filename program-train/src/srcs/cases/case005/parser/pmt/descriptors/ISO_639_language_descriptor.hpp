@@ -1,25 +1,26 @@
 /*
  * Progarm Name: ISO_639_language_descriptor.hpp
  * Created Time: 2017-06-28 15:11:17
- * Last modified: 2017-06-28 15:32:58
+ * Last modified: 2017-06-29 19:06:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #ifndef _ISO_639_LANGUAGE_DESCRIPTOR_HPP_
 #define _ISO_639_LANGUAGE_DESCRIPTOR_HPP_
 
+#include "ts-descriptor.hpp"
 #include <vector>
 
 using std::vector;
 
 struct ISO_639_language_descriptor : public DescriptorBase{
 public:
-    ISO_639_language_descriptor(CA_descriptorHeader_t *header = nullptr)
+    ISO_639_language_descriptor(ISO_639_language_descriptorHeader_t *header = nullptr)
         : DescriptorBase(&header->header){
         if(nullptr != header){
 
             char *ptr = (char *)header;
-            ptr += sizeof(CA_descriptorHeader_t);
+            ptr += sizeof(ISO_639_language_descriptorHeader_t);
             int N = (this->m_descriptor_length - 1)/3;
             for(int i=0; i<N; i++){
                 int 

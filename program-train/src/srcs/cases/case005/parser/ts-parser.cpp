@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-parser.cpp
  * Created Time: 2017-06-22 13:22:28
- * Last modified: 2017-06-27 17:14:50
+ * Last modified: 2017-06-29 18:59:57
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <cassert>
+#include "ts-pat.hpp"
+#include "ts-pmt.hpp"
+#include "ts-pes.hpp"
 
 using std::cout;
 using std::endl;
@@ -85,10 +88,11 @@ TsParser::~TsParser()
         }
     }
 
-    if(nullptr != this->m_tsbuf){
-        delete this->m_tsbuf;
-        this->m_tsbuf = nullptr;
-    }
+    if(nullptr != this->m_tsbuf){ delete this->m_tsbuf; this->m_tsbuf = nullptr; }
+
+    if(nullptr != this->m_pat){ delete this->m_pat; this->m_pat = nullptr; }
+    if(nullptr != this->m_pmt){ delete this->m_pmt; this->m_pmt = nullptr; }
+    if(nullptr != this->m_pes){ delete this->m_pes; this->m_pes = nullptr; }
 }
 
 int  TsParser::get_file_info(void)
@@ -193,17 +197,28 @@ void TsParser::load_data_loop(void)
 
 void TsParser::parser(void)
 {
+    #if 1
+    int i = 1000;
+    while(i-- > 0){
+    #else
     while(1){
+    #endif
+
         usleep(5);
 
-        TsUnit unit;
         if(true != this->m_ts_units.empty()){
             if(0 == this->m_done_flag){
-                unit = this->m_ts_units.front();
+                TsUnit &unit = this->m_ts_units.front();
+
+                unit.parser();
+
                 this->m_ts_units.pop();
             }else{
                 std::unique_lock<std::mutex> lock(this->m_lock);
-                unit = this->m_ts_units.front();
+                TsUnit &unit = this->m_ts_units.front();
+
+                unit.parser();
+
                 this->m_ts_units.pop();
             }
         }else{
@@ -214,7 +229,7 @@ void TsParser::parser(void)
             }
         }
 
-        cout << "this->m_ts_units.size() : " << this->m_ts_units.size() << endl;
+        //cout << " - this->m_ts_units.size() : " << this->m_ts_units.size() << endl;
         //unit.hex_print();
     }
 }

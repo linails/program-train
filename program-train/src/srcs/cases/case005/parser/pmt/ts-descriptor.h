@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-descriptor.h
  * Created Time: 2017-06-28 14:26:13
- * Last modified: 2017-06-28 14:26:24
+ * Last modified: 2017-06-29 19:22:31
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -51,6 +51,9 @@ typedef struct{
     DescripHeader_t header;
 }ISO_639_language_descriptorHeader_t;
 
+typedef struct{
+    DescripHeader_t header;
+}User_PrivateHeader_t;
 
 #ifdef __cplusplus
 }
