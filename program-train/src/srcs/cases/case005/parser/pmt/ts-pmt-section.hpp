@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-pmt-section.hpp
  * Created Time: 2017-06-28 16:56:38
- * Last modified: 2017-06-29 19:34:12
+ * Last modified: 2017-06-29 19:57:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,7 +14,7 @@
 #include <cstdio>
 #include "CA_descriptor.hpp"
 #include "ISO_639_language_descriptor.hpp"
-#include "User_Private.hpp"
+#include "User_Private_descriptor.hpp"
 
 using std::vector;
 
@@ -79,9 +79,10 @@ public:
                                     (ISO_639_language_descriptorHeader_t *)ptr
                                     ));
                         break;
-                    case 64 ... 255: // User Private
+                    case 64 ... 255: // User Private descriptor
                         this->m_descriptors.push_back(
-                                new UserPrivate((User_PrivateHeader_t *)ptr));
+                                new UserPrivate_descriptor(
+                                    (User_Private_descriptorHeader_t *)ptr));
                         break;
                     default:
                         break;
@@ -91,9 +92,23 @@ public:
                 ptr += ((DescripHeader_t *)ptr)->descriptor_length + 2;
             }
 
+
+            /*
+             * parser compents
+             * */
+            ptr = &buf[sizeof(TsPmtHeader_t) + this->m_program_info_length];
+            int N = this->m_section_length
+                    - (sizeof(TsPmtHeader_t) + this->m_program_info_length)
+                    - 3;
+            this->parser_compents(ptr, N);
+
             this->info();
         }
 
+        return 0;
+    }
+
+    int  parser_compents(const char *buf, int cnt){
         return 0;
     }
 
@@ -145,7 +160,7 @@ public:
                     printf("%s: 0x%x\n", " User-descriptor_tag", u->m_descriptor_tag);
                     printf("%s: 0x%x\n", " User-descriptor_length", u->m_descriptor_length);
                     printf("%s: ", " User-descriptor-data");
-                    for(unsigned char du : ((UserPrivate *)u)->m_private_data_bytes){
+                    for(unsigned char du : ((UserPrivate_descriptor *)u)->m_private_data_bytes){
                         printf("0x%.2X ", du);
                     }
                     printf("\n");

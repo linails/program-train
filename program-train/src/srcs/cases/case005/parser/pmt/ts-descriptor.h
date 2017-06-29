@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-descriptor.h
  * Created Time: 2017-06-28 14:26:13
- * Last modified: 2017-06-29 19:22:31
+ * Last modified: 2017-06-29 19:47:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -53,7 +53,7 @@ typedef struct{
 
 typedef struct{
     DescripHeader_t header;
-}User_PrivateHeader_t;
+}User_Private_descriptorHeader_t;
 
 #ifdef __cplusplus
 }
