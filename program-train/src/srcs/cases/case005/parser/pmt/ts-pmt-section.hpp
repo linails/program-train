@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-pmt-section.hpp
  * Created Time: 2017-06-28 16:56:38
- * Last modified: 2017-06-29 19:57:06
+ * Last modified: 2017-06-30 11:14:10
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,8 @@
 #include "CA_descriptor.hpp"
 #include "ISO_639_language_descriptor.hpp"
 #include "User_Private_descriptor.hpp"
+
+#include "ts-parser.hpp"
 
 using std::vector;
 
@@ -58,49 +60,26 @@ public:
             printf("ts-pmt-section parser() ...- info_length = %d\n",
                     this->m_program_info_length);
 
+
             /* 
              * parser descriptors
              * */
             const char *ptr = &buf[sizeof(TsPmtHeader_t)];
-            for(int i=0; i<this->m_program_info_length; ){
+            this->parser_descriptor(ptr, this->m_program_info_length, this->m_descriptors);
 
-                unsigned char tag = ((DescripHeader_t *)ptr)->descriptor_tag;
-                printf("tag = 0x%.2x length = 0x%.2x\n", tag,
-                        ((DescripHeader_t *)ptr)->descriptor_length);
-
-                switch(tag){
-                    case 9: // CA_descriptor
-                        this->m_descriptors.push_back(
-                                new CA_descriptor((CA_descriptorHeader_t *)ptr));
-                        break;
-                    case 10:// ISO_639_language_descriptor
-                        this->m_descriptors.push_back(
-                                new ISO_639_language_descriptor(
-                                    (ISO_639_language_descriptorHeader_t *)ptr
-                                    ));
-                        break;
-                    case 64 ... 255: // User Private descriptor
-                        this->m_descriptors.push_back(
-                                new UserPrivate_descriptor(
-                                    (User_Private_descriptorHeader_t *)ptr));
-                        break;
-                    default:
-                        break;
-                }
-
-                i += ((DescripHeader_t *)ptr)->descriptor_length + 2;
-                ptr += ((DescripHeader_t *)ptr)->descriptor_length + 2;
-            }
 
 
             /*
              * parser compents
              * */
             ptr = &buf[sizeof(TsPmtHeader_t) + this->m_program_info_length];
-            int N = this->m_section_length
-                    - (sizeof(TsPmtHeader_t) + this->m_program_info_length)
-                    - 3;
+            int N = this->m_section_length          // section_length
+                    - (sizeof(TsPmtHeader_t) - 3)   // TsPmtHeader_t - {tableid ~ length}
+                    - this->m_program_info_length   // info_length
+                    - 4;                            // 4bytes CRC
             this->parser_compents(ptr, N);
+
+
 
             this->info();
         }
@@ -108,7 +87,70 @@ public:
         return 0;
     }
 
+    int parser_descriptor(const char *ptr, int length, vector<DescriptorBase *> &container){
+
+        if(nullptr == ptr) return -1;
+        if(0 >= length)    return -1;
+
+        for(int i=0; i<length; ){
+
+            unsigned char tag = ((DescripHeader_t *)ptr)->descriptor_tag;
+            printf("tag = 0x%.2x length = 0x%.2x\n", tag,
+                    ((DescripHeader_t *)ptr)->descriptor_length);
+
+            switch(tag){
+                case 9: // CA_descriptor
+                    container.push_back(
+                            new CA_descriptor((CA_descriptorHeader_t *)ptr));
+                    break;
+                case 10:// ISO_639_language_descriptor
+                    container.push_back(
+                            new ISO_639_language_descriptor(
+                                (ISO_639_language_descriptorHeader_t *)ptr
+                                ));
+                    break;
+                case 64 ... 255: // User Private descriptor
+                    container.push_back(
+                            new UserPrivate_descriptor(
+                                (User_Private_descriptorHeader_t *)ptr));
+                    break;
+                default:
+                    break;
+            }
+
+            i += ((DescripHeader_t *)ptr)->descriptor_length + 2;
+            ptr += ((DescripHeader_t *)ptr)->descriptor_length + 2;
+        }
+
+        return 0;
+    }
+
     int  parser_compents(const char *buf, int cnt){
+        printf("parser_compents ...\n");
+        TsParser::get_instance()->hex_print("compents-data", buf, cnt);
+
+        const char *ptr = buf;
+        for(int i=0; i<cnt; ){
+            PmtCompent_t compent;
+
+            compent.stream_type = ((PmtComponentsHeader_t *)ptr)->stream_type;
+            compent.elementary_PID  = ((PmtComponentsHeader_t *)ptr)->elementary_PID_high5 << 8;
+            compent.elementary_PID |= ((PmtComponentsHeader_t *)ptr)->elementary_PID_low8;
+
+            compent.ES_info_length  = ((PmtComponentsHeader_t *)ptr)->ES_info_length_high4<< 8;
+            compent.ES_info_length |= ((PmtComponentsHeader_t *)ptr)->ES_info_length_low8;
+
+            if(0x0000 != compent.ES_info_length){
+                const char *ptr_des = &ptr[sizeof(PmtComponentsHeader_t)];
+                this->parser_descriptor(ptr_des, compent.ES_info_length, compent.descriptors);
+            }
+
+            i += sizeof(PmtComponentsHeader_t) + compent.ES_info_length;
+            ptr += sizeof(PmtComponentsHeader_t) + compent.ES_info_length;
+
+            this->m_compents.push_back(compent);
+        }
+
         return 0;
     }
 
@@ -124,7 +166,9 @@ public:
         printf("%s: 0x%x\n", "PCR_PID", this->m_PCR_PID);
         printf("%s: 0x%x\n", "program_info_length", this->m_program_info_length);
 
-        for(auto &u : this->m_descriptors){
+        auto disp_descriptors = [](vector<DescriptorBase *> &descriptors){
+
+            for(auto &u : descriptors){
             switch(u->m_descriptor_tag){
                 case 9: // CA_descriptor
                     printf("%s: 0x%x\n", " CA-descriptor_tag", u->m_descriptor_tag);
@@ -169,6 +213,20 @@ public:
                 default:
                     break;
             }
+            }
+        };
+
+        disp_descriptors(this->m_descriptors);
+
+        for(auto &u : this->m_compents){
+            printf("%s: 0x%x\n", " compents - u.stream_type", u.stream_type);
+            printf("%s: 0x%x\n", " compents - u.elementary_PID", u.elementary_PID);
+            printf("%s: 0x%x\n", " compents - u.ES_info_length", u.ES_info_length);
+            printf("%s \n", "descriptors : ");
+            if(0x0000 != u.ES_info_length){
+                disp_descriptors(u.descriptors);
+            }
+            printf(" --------------- \n");
         }
 
         return 0;
