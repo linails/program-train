@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-06-26 10:26:28
+ * Last modified: 2017-07-03 13:53:01
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -36,6 +36,7 @@ using std::tuple;
 using std::make_pair;
 using std::make_tuple;
 using std::stack;
+using std::queue;
 
 Container::Container()
 {
@@ -58,6 +59,8 @@ int  Container::container_main(int argc, char **argv)
     ret = this->map_t(); assert(-1 != ret); 
 
     ret = this->stack_t(); assert(-1 != ret); 
+
+    ret = this->queue_t(); assert(-1 != ret); 
 
     return ret;
 }
@@ -317,6 +320,31 @@ int  Container::stack_t(void)
 
         stack_info(is);
         stack_info(is);
+    }
+    cout << "-----------------------------------------" << endl;
+
+    return ret;
+}
+
+int  Container::queue_t(void)
+{
+    int ret = 0;
+
+    {
+        cout << "queue_t() .. " << endl;
+
+        queue<int> qi;
+
+        for(int i=0; i<10; i++){
+            qi.push(i);
+        }
+
+        while(false == qi.empty()){
+            int a = qi.front();
+            qi.pop();
+            cout << "a = " << a << endl;
+        }
+        cout << "qi.size() : " << qi.size() << endl;
     }
     cout << "-----------------------------------------" << endl;
 
