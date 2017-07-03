@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-06-23 23:41:34
+ * Last modified: 2017-07-03 16:44:56
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -353,6 +353,39 @@ int  bit_field(void)
 
         char x = *(char *)&data;
         printf("x = 0x%.2x\n", x);
+    }
+    printf("---------------------------\n");
+    {
+        printf("bit_field section 2 \n");
+
+        typedef struct{
+            unsigned char a:7;
+            unsigned char b:1;
+        }Data_t;
+
+        unsigned char x = 0x80;
+
+        Data_t d = *(Data_t *)&x;
+
+        printf("x = 0x%.2x\n", x);
+        printf("d.a = 0x%.2x\n", d.a);
+        printf("d.b = 0x%.2x\n\n", d.b);
+
+        Data_t d0;
+        d0.b = 1;
+
+        unsigned char x0 = *(unsigned char *)&d0;
+        printf("d0.b = 0x%.2x\n", d0.b);
+        printf("x0 = 0x%.2x\n\n", x0);
+
+        Data_t d1;
+
+        d1.a = x & ~0x80;
+        d1.b = (x & 0x80) >> 7;     // Note ! b 这个时候属于高位，需要移动对于基位的偏移 7
+        printf("x = 0x%.2x\n", x);
+        printf("x & 0x80 = 0x%.2x\n", x & 0x80);
+        printf("d1.a = 0x%.2x\n", d1.a);
+        printf("d1.b = 0x%.2x\n", d1.b);
     }
     printf("---------------------------\n");
     return ret;

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-07-03 13:53:01
+ * Last modified: 2017-07-03 18:35:05
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -345,6 +345,33 @@ int  Container::queue_t(void)
             cout << "a = " << a << endl;
         }
         cout << "qi.size() : " << qi.size() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        typedef struct{
+            int     flag; 
+            char    buf[128];
+            vector<int> vi;
+        }Data_t;
+
+        queue<Data_t> dq;
+
+        for(int i=0; i<5000000; i++){
+            Data_t data;
+            data.flag = i;
+            data.vi.push_back(i);
+
+            dq.push(data);
+        }
+
+        cout << "dq.size() : " << dq.size() << endl;
+
+        while(false == dq.empty()){
+            Data_t data = dq.front();
+            dq.pop();
+        }
+
+        cout << "dq.size() : " << dq.size() << endl;
     }
     cout << "-----------------------------------------" << endl;
 
