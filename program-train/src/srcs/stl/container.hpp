@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.hpp
  * Created Time: 2016-12-20 17:17:22
- * Last modified: 2017-07-03 13:24:12
+ * Last modified: 2017-07-04 15:44:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -19,6 +19,7 @@ private:
     int  map_t(void);
     int  stack_t(void);
     int  queue_t(void);
+    int  unordered_map_t(void);
 private:
     int  container_test(void);
     void string_test(void);

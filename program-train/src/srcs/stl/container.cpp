@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-07-03 18:35:05
+ * Last modified: 2017-07-05 13:26:30
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -61,6 +61,8 @@ int  Container::container_main(int argc, char **argv)
     ret = this->stack_t(); assert(-1 != ret); 
 
     ret = this->queue_t(); assert(-1 != ret); 
+
+    ret = this->unordered_map_t(); assert(-1 != ret); 
 
     return ret;
 }
@@ -137,6 +139,19 @@ int  Container::vector_t(void)
         auto iter = unique(gids.begin(), gids.end()); print_gids(gids);
 
         gids.resize(std::distance(gids.begin(), iter)); print_gids(gids);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        vector<int> iv;
+        
+        iv.push_back(0);
+        iv.push_back(2);
+        iv.push_back(4);
+
+        cout << "iv.size() : " << iv.size() << endl;
+
+        iv.pop_back();
+        cout << "iv.size() : " << iv.size() << endl;
     }
     cout << "-----------------------------------------" << endl;
 
@@ -356,7 +371,7 @@ int  Container::queue_t(void)
 
         queue<Data_t> dq;
 
-        for(int i=0; i<5000000; i++){
+        for(int i=0; i<50; i++){
             Data_t data;
             data.flag = i;
             data.vi.push_back(i);
@@ -377,4 +392,74 @@ int  Container::queue_t(void)
 
     return ret;
 }
+
+int  Container::unordered_map_t(void)
+{
+    {
+        unordered_map<int , char*> icmap;
+
+        icmap.insert(make_pair(1, new char[10]));
+
+        cout << "icmap.size() : " << icmap.size() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* 
+         * 针对复杂数据的使用
+         * */
+        struct Data{
+            Data(){}
+            int a;
+            char b;
+            char *c;
+            int  *d = nullptr;
+            struct Data *next = nullptr;
+            vector<char *> cv;
+        };
+
+        unordered_map<int, Data *> idmap;
+
+        Data *pd = new Data();
+        idmap.insert(make_pair(1, pd));
+
+        cout << "idmap.size() : " << idmap.size() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        class PesPacket;
+        class DescriptorBase;
+        struct TsES{
+            TsES(){}
+            TsES(const TsES &es){
+                this->pes_packet = es.pes_packet;
+            }
+            ~TsES(){}
+            unsigned short           pid        = 0;
+            unsigned char            stream_id  = 0;
+            unsigned char            stream_type= 0;
+            unsigned short           program_number = 0;
+            vector<DescriptorBase *> descriptors;
+            PesPacket               *pes_packet = nullptr;
+        };
+
+        unordered_map<int, TsES *> itmap;
+
+        TsES *es = new TsES();
+
+        auto add_es = [&itmap](TsES *es){
+            auto iter = itmap.find(es->pid);
+            if(iter == itmap.end()){
+                itmap.insert(make_pair(1, es));
+            }
+        };
+        
+        add_es(es);
+
+        cout << "itmap.size() : " << itmap.size() << endl;
+
+    }
+    cout << "-----------------------------------------" << endl;
+    return 0;
+}
+
 
