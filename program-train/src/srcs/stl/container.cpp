@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-07-05 13:26:30
+ * Last modified: 2017-07-06 10:38:06
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -152,6 +152,43 @@ int  Container::vector_t(void)
 
         iv.pop_back();
         cout << "iv.size() : " << iv.size() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        #if 1
+        struct Data{
+            Data(){}
+            int a;
+            char b;
+            char *c;
+            int  *d = nullptr;
+            struct Data *next = nullptr;
+            vector<char *> cv;
+        };
+
+        vector<Data *> dv;
+        for(int i=0; i<10; i++){
+            Data *pd = new Data();
+            pd->cv.push_back(new char[10]());
+
+            dv.push_back(pd);
+        }
+
+        vector<Data *> dv0;
+
+        dv0 = dv;
+
+        for(auto &u : dv){
+            for(auto &c : u->cv) delete[] c;
+            delete u;
+        }
+
+        vector<Data *> dv1 = dv;
+        //dv1[0]->a = 10;
+
+        cout << "dv.size() : " << dv.size() << endl;
+        cout << "dv1.size() : " << dv1.size() << endl;
+        #endif
     }
     cout << "-----------------------------------------" << endl;
 
@@ -401,6 +438,12 @@ int  Container::unordered_map_t(void)
         icmap.insert(make_pair(1, new char[10]));
 
         cout << "icmap.size() : " << icmap.size() << endl;
+
+        for(auto &u : icmap){
+            if(nullptr != u.second){
+                delete[] u.second;
+            }
+        }
     }
     cout << "-----------------------------------------" << endl;
     {
@@ -423,6 +466,7 @@ int  Container::unordered_map_t(void)
         idmap.insert(make_pair(1, pd));
 
         cout << "idmap.size() : " << idmap.size() << endl;
+        delete pd;
     }
     cout << "-----------------------------------------" << endl;
     {
@@ -456,6 +500,7 @@ int  Container::unordered_map_t(void)
         add_es(es);
 
         cout << "itmap.size() : " << itmap.size() << endl;
+        delete es;
 
     }
     cout << "-----------------------------------------" << endl;

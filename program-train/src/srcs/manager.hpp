@@ -1,7 +1,7 @@
 /*
  * Progarm Name: manager.hpp
  * Created Time: 2017-03-15 14:55:40
- * Last modified: 2017-07-04 15:45:49
+ * Last modified: 2017-07-06 10:24:57
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -23,7 +23,7 @@
 using std::string;
 using std::vector;
 
-#define COMPILE_FLAG_Primer         0
+#define COMPILE_FLAG_Primer         1
 #define COMPILE_FLAG_Advanced       0
 #define COMPILE_FLAG_Container      1
 #define COMPILE_FLAG_dbCaller       0
