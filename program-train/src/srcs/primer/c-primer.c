@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-06-23 23:41:34
+ * Last modified: 2017-07-06 07:08:29
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -86,6 +86,21 @@ int  other_test(void)
 
         printf("%x, %x\n", (unsigned int)(long)(array+1), (unsigned int)(long)(&array+1));
         printf(" - %x \n", (unsigned int)(long)(&array+1) - (unsigned int)(long)(array+1));
+    }
+    printf("-------------------\n");
+    {
+        /* 
+         * 总线错误示例， 在 RISC 架构的CPU上容易出现
+         * */
+        union {
+            char a[10];
+            int  b;
+        }u;
+
+        int *p = (int *)&(u.a[1]);
+
+        *p = 12;
+        printf("*p = %d\n", *p);
     }
 
     printf("\n");

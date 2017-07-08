@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-pmt-section.hpp
  * Created Time: 2017-06-28 16:56:38
- * Last modified: 2017-06-29 19:57:06
+ * Last modified: 2017-07-02 12:16:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -149,7 +149,7 @@ public:
                     for(int code :((ISO_639_language_descriptor *)u)->m_ISO_639_language_codes){
                         unsigned char low8  = code & 0x000000ff;
                         unsigned char mid8  = (code >> 8) & 0x000000ff;
-                        unsigned char high8 = (code >> 8) & 0x000000ff;
+                        unsigned char high8 = (code >> 16) & 0x000000ff;
                         printf("0x%.2X 0x%.2X 0x%.2X ", high8, mid8, low8);
                     }
                     printf("%s: 0x%x\n", " ISO-audio_type",
