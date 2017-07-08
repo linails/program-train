@@ -1,7 +1,7 @@
 /*
  * Progarm Name: ts-parser.cpp
  * Created Time: 2017-06-22 13:22:28
- * Last modified: 2017-06-29 18:59:57
+ * Last modified: 2017-07-03 19:06:35
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -197,14 +197,7 @@ void TsParser::load_data_loop(void)
 
 void TsParser::parser(void)
 {
-    #if 1
-    int i = 1000;
-    while(i-- > 0){
-    #else
     while(1){
-    #endif
-
-        usleep(5);
 
         if(true != this->m_ts_units.empty()){
             if(0 == this->m_done_flag){
