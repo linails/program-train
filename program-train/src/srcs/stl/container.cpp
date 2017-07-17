@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-07-06 10:38:06
+ * Last modified: 2017-07-06 11:17:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -189,6 +189,33 @@ int  Container::vector_t(void)
         cout << "dv.size() : " << dv.size() << endl;
         cout << "dv1.size() : " << dv1.size() << endl;
         #endif
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        struct Data{
+            Data(){}
+            ~Data(){
+                cout << "icv.size() : " << cv.size() << endl;
+            }
+            int a;
+            char b;
+            char *c;
+            int  *d = nullptr;
+            struct Data *next = nullptr;
+            vector<char *> cv;
+        };
+
+        Data *d = new Data();
+
+        vector<char *> ocv;
+        ocv.push_back(new char[10]());
+        ocv.push_back(new char[10]());
+
+        cout << "ocv.size() : " << ocv.size() << endl;
+        d->cv = ocv;
+        cout << "d->cv.size() : " << d->cv.size() << endl;
+
+        delete d;
     }
     cout << "-----------------------------------------" << endl;
 
