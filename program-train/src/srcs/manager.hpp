@@ -1,7 +1,6 @@
 /*
  * Progarm Name: manager.hpp
  * Created Time: 2017-03-15 14:55:40
- * Last modified: 2017-07-08 10:51:42
  * @author: minphone.linails linails@foxmail.com 
  */
 

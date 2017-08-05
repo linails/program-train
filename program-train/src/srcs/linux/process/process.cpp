@@ -35,7 +35,7 @@ int Process::process_main(int argc, char **argv)
 {
     int ret = 0;
 
-    ret = this->fork_child_porc();
+    //ret = this->fork_child_porc();
 
     //ret = this->zombie();
 
@@ -45,7 +45,7 @@ int Process::process_main(int argc, char **argv)
 
     //ret = this->for_signal();
 
-    //ret = this->for_sigaction();
+    ret = this->for_sigaction();
 
     //ret = this->multiprocess_signal();
 
@@ -415,10 +415,14 @@ int  Process::for_sigaction(void)
 
     sigaction(SIGALRM, &act, 0);
 
+    /* 
+     * 注册后就可以触发，再注册则时间计时归位，相当于时间又得重新计时
+     * */
     alarm(2);
 
-    for(int i=0; i<3; i++){
-        sleep(4);
+    for(int i=0; i<5; i++){
+        alarm(1);
+        usleep(900 * 1000);
         cout << "wake up ..." << endl;
     }
 

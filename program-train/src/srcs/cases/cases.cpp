@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-06-22 12:54:29
+ * Last modified: 2017-07-25 15:23:34
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,7 @@
 #include "bit.hpp"
 #include "tester-case001.hpp"
 #include "ts-parser-main.hpp"
+#include "case-other.hpp"
 
 using std::cout;
 using std::endl;
@@ -97,6 +98,12 @@ int Cases::cases_main(int argc, char **argv)
         TsParserMain ts_parser;
 
         ret = ts_parser.main(); assert(-1 != ret);
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_case_other
+        CaseOther co;
+        ret = co.main(argc, argv); assert(-1 != ret);
         #endif
     }
 

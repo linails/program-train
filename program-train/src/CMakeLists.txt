@@ -1,6 +1,5 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-07-15 21:51:40
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -50,6 +49,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser/pmt
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser/pmt/descriptors
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/c-parser
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case-other
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
@@ -149,7 +149,7 @@ set(SRC_LIST
 #####################################################################
    srcs/tools/timer.cpp
    srcs/tools/timing.c
-   srcs/tools/format.c
+   srcs/tools/stopwatch.c
    srcs/tools/cfg-loader.cpp
    srcs/cases/cases.cpp
 #   srcs/cases/exlib-cases/exlibCases.cpp
@@ -193,14 +193,16 @@ set(SRC_LIST
 #   srcs/cases/case004/test/queue-tetris.cpp
 #   srcs/cases/case004/test/bt-test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case005/ts-parser-main.cpp
-   srcs/cases/case005/parser/ts-parser.cpp
-   srcs/cases/case005/parser/ts-buffer.cpp
-   srcs/cases/case005/parser/ts-unit.cpp
-   srcs/cases/case005/parser/ts-pat.cpp
-   srcs/cases/case005/parser/ts-pmt.cpp
-   srcs/cases/case005/parser/ts-pes.cpp
+#   srcs/cases/case005/ts-parser-main.cpp
+#   srcs/cases/case005/parser/ts-parser.cpp
+#   srcs/cases/case005/parser/ts-buffer.cpp
+#   srcs/cases/case005/parser/ts-unit.cpp
+#   srcs/cases/case005/parser/ts-pat.cpp
+#   srcs/cases/case005/parser/ts-pmt.cpp
+#   srcs/cases/case005/parser/ts-pes.cpp
 #   srcs/cases/case005/c-parser/ts-parser.c
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   srcs/cases/case-other/case-other.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
