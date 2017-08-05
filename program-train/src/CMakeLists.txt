@@ -1,6 +1,6 @@
 # readme.txt
 # Created Time: 2016-04-23 14:20:56
-# Last modified: 2017-07-03 13:52:09
+# Last modified: 2017-07-15 21:51:40
 #
 cmake_minimum_required(VERSION 2.8)
 
@@ -108,6 +108,7 @@ set(SRC_LIST
 #   srcs/linux/io/io.cpp
    srcs/linux/process/process.cpp
    srcs/linux/process/ipc_msgq.c
+   srcs/linux/process/ipc-shm.c
    srcs/linux/threads/cthread.cpp
    srcs/linux/server/server.cpp
    srcs/linux/server/log.c

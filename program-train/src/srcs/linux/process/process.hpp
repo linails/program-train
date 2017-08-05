@@ -1,7 +1,7 @@
 /*
  * Progarm Name: process.hpp
  * Created Time: 2016-12-02 17:31:56
- * Last modified: 2016-12-10 20:41:35
+ * Last modified: 2017-07-15 20:02:17
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -34,6 +34,7 @@ private:
     int  communicate_by_pipe(void);
     int  communicate_by_pipe(int);
     int  communicate_by_msg(void);
+    int  communicate_by_shm(void);
     static void timeout_cb(int sig);
     static void keyctrl_cb(int sig);
 private:
