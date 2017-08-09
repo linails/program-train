@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cfg-loader.cpp
  * Created Time: 2017-03-14 18:36:20
- * Last modified: 2017-04-17 11:05:07
+ * Last modified: 2017-08-09 22:12:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -249,7 +249,12 @@ int  CfgLoader::register_RootChild(string root, string child)
     map<string, string> child_val;
     child_val.insert(make_pair(child, ""));
 
-    this->m_xml_root_child.insert(make_pair(root, child_val));
+    auto fi_root = this->m_xml_root_child.find(root);
+    if(fi_root != this->m_xml_root_child.end()){
+        fi_root->second.insert(make_pair(child, ""));
+    }else{
+        this->m_xml_root_child.insert(make_pair(root, child_val));
+    }
 
     this->cfg_reader(); return 0;
 }
