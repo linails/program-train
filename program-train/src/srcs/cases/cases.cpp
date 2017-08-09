@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-07-25 15:23:34
+ * Last modified: 2017-08-09 19:30:27
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -16,6 +16,7 @@
 #include "tester-case001.hpp"
 #include "ts-parser-main.hpp"
 #include "case-other.hpp"
+#include "code-formatter.hpp"
 
 using std::cout;
 using std::endl;
@@ -28,9 +29,14 @@ Cases::~Cases()
 {
 }
 
-int Cases::cases_main(int argc, char **argv)
+int  Cases::cases_main(int argc, char **argv)
 {
     int ret = 0;
+
+    this->m_xml_cfg = Manager::get_instance()->get_xml_cfg();
+    if(nullptr == this->m_xml_cfg){
+        return -1;
+    }
 
     /* 
      * exlib-cases
@@ -101,12 +107,38 @@ int Cases::cases_main(int argc, char **argv)
         #endif
     }
     {
+        #if COMPILE_FLAG_case006
+        ret = case_for_code_formatter(); assert(-1 != ret);
+        #endif
+    }
+    {
         #if COMPILE_FLAG_case_other
         CaseOther co;
         ret = co.main(argc, argv); assert(-1 != ret);
         #endif
     }
 
+    return ret;
+}
+
+int  Cases::case_for_code_formatter(void)
+{
+    cout << "case CodeFormatter" << endl;
+
+    int ret = 0;
+    string xml;
+
+    this->m_xml_cfg->register_RootChild("code-formatter", "cfg");
+    this->m_xml_cfg->getRoot_child(xml, "code-formatter", "cfg");
+
+    if(true == xml.empty()){
+        ret = -1;
+        cout << "code-formatter cfg is null !" << endl;
+    }
+
+    CodeFormatter cf(xml);
+
+    cout << "-----------------------------------------" << endl;
     return ret;
 }
 

@@ -49,6 +49,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser/pmt
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser/pmt/descriptors
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/c-parser
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case006
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case006/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case-other
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
@@ -201,6 +203,8 @@ set(SRC_LIST
 #   srcs/cases/case005/parser/ts-pmt.cpp
 #   srcs/cases/case005/parser/ts-pes.cpp
 #   srcs/cases/case005/c-parser/ts-parser.c
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   srcs/cases/case006/code-formatter.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case-other/case-other.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
