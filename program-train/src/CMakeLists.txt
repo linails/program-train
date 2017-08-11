@@ -174,7 +174,7 @@ set(SRC_LIST
 #   srcs/cases/case002/formatParsing.cpp
 #   srcs/cases/case002/format-parser.cpp
 #   srcs/cases/case002/regex_common.cpp
-#   srcs/cases/case002/rfileoprt.cpp
+   srcs/cases/case002/rfileoprt.cpp
 #   srcs/cases/case002/rwfileoprt.cpp
 #   srcs/cases/case002/stringTools.cpp
 #   srcs/cases/case002/disk-dic.cpp

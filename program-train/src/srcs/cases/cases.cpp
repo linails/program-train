@@ -1,7 +1,7 @@
 /*
  * Progarm Name: cases.cpp
  * Created Time: 2016-12-15 22:15:06
- * Last modified: 2017-08-09 19:30:27
+ * Last modified: 2017-08-09 22:02:52
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -126,17 +126,28 @@ int  Cases::case_for_code_formatter(void)
     cout << "case CodeFormatter" << endl;
 
     int ret = 0;
-    string xml;
+    string cfg;
+    string dir_src;
+    string dir_inc;
 
     this->m_xml_cfg->register_RootChild("code-formatter", "cfg");
-    this->m_xml_cfg->getRoot_child(xml, "code-formatter", "cfg");
+    this->m_xml_cfg->getRoot_child(cfg, "code-formatter", "cfg");
 
-    if(true == xml.empty()){
+    cout << "dir-src ret = " << this->m_xml_cfg->register_RootChild("code-formatter", "dir-src") << endl;
+    cout << "dir-src ret = " << this->m_xml_cfg->getRoot_child(dir_src, "code-formatter", "dir-src") << endl;
+
+    this->m_xml_cfg->register_RootChild("code-formatter", "dir-inc");
+    this->m_xml_cfg->getRoot_child(dir_inc, "code-formatter", "dir-inc");
+
+    if(true == cfg.empty()){
         ret = -1;
         cout << "code-formatter cfg is null !" << endl;
     }
+    cout << "cfg : " << cfg << endl;
+    cout << "dir-src : " << dir_src << endl;
+    cout << "dir-inc : " << dir_inc << endl;
 
-    CodeFormatter cf(xml);
+    CodeFormatter cf(cfg, dir_src);
 
     cout << "-----------------------------------------" << endl;
     return ret;
