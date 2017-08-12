@@ -1,7 +1,7 @@
 /*
  * Progarm Name: timing.c
  * Created Time: 2016-04-29 22:44:41
- * Last modified: 2016-04-29 23:09:24
+ * Last modified: 2017-07-25 16:23:01
  * @author: minphone.linails linails@foxmail.com 
  * @version 0.0.1
  */
@@ -33,16 +33,19 @@ static char *stop_timing(void)
         timingflag = EFALSE;
     }
 
-    unsigned sec,msec,usec;
-    sec  = stop.tv_sec - start.tv_sec;
-    usec = stop.tv_usec - start.tv_usec;
-    usec = stop.tv_usec > start.tv_usec ?
-           stop.tv_usec - start.tv_usec :
-           start.tv_usec - stop.tv_usec;
-    msec = usec/1000;
-    usec -= msec*1000;
+    unsigned sec, msec, usec;
+    unsigned hour, min;
 
-    unsigned hour,min;
+    unsigned usec_start = start.tv_sec * 1000 * 1000 + start.tv_usec;
+    unsigned usec_stop  = stop.tv_sec * 1000 * 1000 + stop.tv_usec;
+
+    usec = usec_stop - usec_start;
+
+    msec = usec/1000;
+    usec -= msec * 1000;
+
+    sec  = msec / 1000;
+    msec -= sec * 1000;
     min = sec/60;
     sec -= min*60;
     hour = min/60;

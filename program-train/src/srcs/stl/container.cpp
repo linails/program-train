@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-03-23 15:12:10
+ * Last modified: 2017-07-06 11:17:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -36,6 +36,7 @@ using std::tuple;
 using std::make_pair;
 using std::make_tuple;
 using std::stack;
+using std::queue;
 
 Container::Container()
 {
@@ -58,6 +59,10 @@ int  Container::container_main(int argc, char **argv)
     ret = this->map_t(); assert(-1 != ret); 
 
     ret = this->stack_t(); assert(-1 != ret); 
+
+    ret = this->queue_t(); assert(-1 != ret); 
+
+    ret = this->unordered_map_t(); assert(-1 != ret); 
 
     return ret;
 }
@@ -136,6 +141,83 @@ int  Container::vector_t(void)
         gids.resize(std::distance(gids.begin(), iter)); print_gids(gids);
     }
     cout << "-----------------------------------------" << endl;
+    {
+        vector<int> iv;
+        
+        iv.push_back(0);
+        iv.push_back(2);
+        iv.push_back(4);
+
+        cout << "iv.size() : " << iv.size() << endl;
+
+        iv.pop_back();
+        cout << "iv.size() : " << iv.size() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        #if 1
+        struct Data{
+            Data(){}
+            int a;
+            char b;
+            char *c;
+            int  *d = nullptr;
+            struct Data *next = nullptr;
+            vector<char *> cv;
+        };
+
+        vector<Data *> dv;
+        for(int i=0; i<10; i++){
+            Data *pd = new Data();
+            pd->cv.push_back(new char[10]());
+
+            dv.push_back(pd);
+        }
+
+        vector<Data *> dv0;
+
+        dv0 = dv;
+
+        for(auto &u : dv){
+            for(auto &c : u->cv) delete[] c;
+            delete u;
+        }
+
+        vector<Data *> dv1 = dv;
+        //dv1[0]->a = 10;
+
+        cout << "dv.size() : " << dv.size() << endl;
+        cout << "dv1.size() : " << dv1.size() << endl;
+        #endif
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        struct Data{
+            Data(){}
+            ~Data(){
+                cout << "icv.size() : " << cv.size() << endl;
+            }
+            int a;
+            char b;
+            char *c;
+            int  *d = nullptr;
+            struct Data *next = nullptr;
+            vector<char *> cv;
+        };
+
+        Data *d = new Data();
+
+        vector<char *> ocv;
+        ocv.push_back(new char[10]());
+        ocv.push_back(new char[10]());
+
+        cout << "ocv.size() : " << ocv.size() << endl;
+        d->cv = ocv;
+        cout << "d->cv.size() : " << d->cv.size() << endl;
+
+        delete d;
+    }
+    cout << "-----------------------------------------" << endl;
 
     return ret;
 }
@@ -195,6 +277,67 @@ int  Container::list_t(void)
         #endif
 
         fp(li);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        list<char>  data_list;
+        data_list.push_back('1');
+        data_list.push_back('2');
+        data_list.push_back('3');
+        data_list.push_back('.');
+        data_list.push_back('5');
+        data_list.push_back('6');
+        data_list.push_back('7');
+
+        char forword = '.';
+
+        /* 
+         * 反向遍历的时候，不可以调用 erase 方法，因为这个时候的 iter 的类型和正向遍历的类型不一样
+         * */
+        //for(auto iter = data_list.rbegin(); iter!= data_list.rend();)
+        for(auto iter = data_list.begin(); iter!= data_list.end();){
+
+            if(*iter == forword){
+                data_list.push_front(forword);
+
+                iter = data_list.erase(iter);
+                continue;
+            }
+
+            iter++;
+        }
+
+        cout << "data_list : ";
+        for(auto iter = data_list.begin(); 
+                 iter!= data_list.end(); iter++){
+            cout << *iter << " ";
+        }
+        cout << endl;
+
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        typedef struct{
+            int buf[10];
+        }ArrayData_t;
+
+        list<ArrayData_t> arrlist;
+
+        ArrayData_t a = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        ArrayData_t b = {10, 20, 30, 40, 50, 60, 70, 80, 90, 10};
+
+        arrlist.push_back(a);
+        arrlist.push_back(b);
+
+        cout << "arrlist.size() : " << arrlist.size() << endl;
+
+        for(auto &u : arrlist){
+            cout << "u : ";
+            for(int i=0; i<10; i++){
+                cout << u.buf[i] << " ";
+            }
+            cout << endl;
+        }
     }
     cout << "-----------------------------------------" << endl;
 
@@ -261,4 +404,134 @@ int  Container::stack_t(void)
 
     return ret;
 }
+
+int  Container::queue_t(void)
+{
+    int ret = 0;
+
+    {
+        cout << "queue_t() .. " << endl;
+
+        queue<int> qi;
+
+        for(int i=0; i<10; i++){
+            qi.push(i);
+        }
+
+        while(false == qi.empty()){
+            int a = qi.front();
+            qi.pop();
+            cout << "a = " << a << endl;
+        }
+        cout << "qi.size() : " << qi.size() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        typedef struct{
+            int     flag; 
+            char    buf[128];
+            vector<int> vi;
+        }Data_t;
+
+        queue<Data_t> dq;
+
+        for(int i=0; i<50; i++){
+            Data_t data;
+            data.flag = i;
+            data.vi.push_back(i);
+
+            dq.push(data);
+        }
+
+        cout << "dq.size() : " << dq.size() << endl;
+
+        while(false == dq.empty()){
+            Data_t data = dq.front();
+            dq.pop();
+        }
+
+        cout << "dq.size() : " << dq.size() << endl;
+    }
+    cout << "-----------------------------------------" << endl;
+
+    return ret;
+}
+
+int  Container::unordered_map_t(void)
+{
+    {
+        unordered_map<int , char*> icmap;
+
+        icmap.insert(make_pair(1, new char[10]));
+
+        cout << "icmap.size() : " << icmap.size() << endl;
+
+        for(auto &u : icmap){
+            if(nullptr != u.second){
+                delete[] u.second;
+            }
+        }
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        /* 
+         * 针对复杂数据的使用
+         * */
+        struct Data{
+            Data(){}
+            int a;
+            char b;
+            char *c;
+            int  *d = nullptr;
+            struct Data *next = nullptr;
+            vector<char *> cv;
+        };
+
+        unordered_map<int, Data *> idmap;
+
+        Data *pd = new Data();
+        idmap.insert(make_pair(1, pd));
+
+        cout << "idmap.size() : " << idmap.size() << endl;
+        delete pd;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        class PesPacket;
+        class DescriptorBase;
+        struct TsES{
+            TsES(){}
+            TsES(const TsES &es){
+                this->pes_packet = es.pes_packet;
+            }
+            ~TsES(){}
+            unsigned short           pid        = 0;
+            unsigned char            stream_id  = 0;
+            unsigned char            stream_type= 0;
+            unsigned short           program_number = 0;
+            vector<DescriptorBase *> descriptors;
+            PesPacket               *pes_packet = nullptr;
+        };
+
+        unordered_map<int, TsES *> itmap;
+
+        TsES *es = new TsES();
+
+        auto add_es = [&itmap](TsES *es){
+            auto iter = itmap.find(es->pid);
+            if(iter == itmap.end()){
+                itmap.insert(make_pair(1, es));
+            }
+        };
+        
+        add_es(es);
+
+        cout << "itmap.size() : " << itmap.size() << endl;
+        delete es;
+
+    }
+    cout << "-----------------------------------------" << endl;
+    return 0;
+}
+
 

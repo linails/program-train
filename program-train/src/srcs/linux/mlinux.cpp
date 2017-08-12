@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mlinux.cpp
  * Created Time: 2016-12-21 09:39:00
- * Last modified: 2017-04-17 20:08:03
+ * Last modified: 2017-08-12 08:17:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -38,21 +38,21 @@ int  mLinux::mlinux_main(int argc, char **argv)
 
     cout << "------------- linux_main --------------" << endl;
     {
-#if 0
+        #if COMPILE_FLAG_mlinux_sys_cmd_casled
         sys_cmd_called();
-#endif
+        #endif
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+        #if COMPILE_FLAG_mlinux_other
         inet_conv_test();
         //fd_test();
         //endian_conv();
-#endif
+        #endif
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+        #if COMPILE_FLAG_mlinux_server_tcp
         //int client_tcp_main(int argc, char **argv);
         
         int ret = 0;
@@ -74,11 +74,11 @@ int  mLinux::mlinux_main(int argc, char **argv)
         }else{
             cout << "server - tcp - main - successed !" << endl;
         }
-#endif
+        #endif
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+        #if COMPILE_FLAG_mlinux_server_udp
         int ret = 0;
 
         const char *sargv[] = {
@@ -98,37 +98,34 @@ int  mLinux::mlinux_main(int argc, char **argv)
         }else{
             cout << "server - udp - main - successed !" << endl;
         }
-#endif
+        #endif
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+        #if COMPILE_FLAG_mlinux_process
         Process process;
 
-        ret = process.process_main(argc, argv);
-#endif
+        ret = process.process_main(argc, argv); assert(-1 != ret);
+        #endif
     }
     cout << "---------------------------" << endl;
     {
-#if 0
+        #if COMPILE_FLAG_mlinux_cthread
         cThread cthread;
 
-        ret = cthread.cthread_main(argc, argv);
-#endif
+        ret = cthread.cthread_main(argc, argv); assert(-1 != ret);
+        #endif
     }
     cout << "---------------------------" << endl;
-#if 0
     {
+        #if COMPILE_FLAG_mlinux_io
         Io io;
 
-        ret = io.io_main(argc, argv);
+        ret = io.io_main(argc, argv); assert(-1 != ret);
+        #endif
     }
-#endif
     cout << "---------------------------" << endl;
     {
-#if 0
-        int ret = 0;
-
         const char *sargv[] = {
             "client_udp_main",
             "127.0.0.1",
