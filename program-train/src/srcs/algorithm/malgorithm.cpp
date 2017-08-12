@@ -1,7 +1,7 @@
 /*
  * Progarm Name: malgorithm.cpp
  * Created Time: 2016-08-14 10:35:26
- * Last modified: 2017-03-14 23:23:24
+ * Last modified: 2017-06-22 23:38:52
  */
 
 #include "malgorithm.hpp"
@@ -13,6 +13,8 @@
 #include "data-structure.hpp"
 #include <cassert>
 #include "other-string.hpp"
+#include "finder.hpp"
+#include "finder-en.hpp"
 
 using namespace std;
 
@@ -38,7 +40,7 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
     }
     cout << "----------- data structure --------------" << endl;
     {
-    #if 0
+    #if 1
         /* 
          * version C
          * */
@@ -70,10 +72,22 @@ int  mAlgorithm::malgo_main(int argc, char **argv)
     }
     cout << "----------- other data structure --------------" << endl;
     {
-    #if 1
+    #if 0
         OtherString os;
 
         ret = os.main(argc, argv); assert(-1 != ret);
+
+        #if COMPILE_FLAG_finder
+         #if 0
+        Finder finder;
+        
+        ret = finder.main(argc, argv); assert(-1 != ret);
+         #else
+        FinderEn finder;
+        
+        ret = finder.main(argc, argv); assert(-1 != ret);
+         #endif
+        #endif
     #endif
     }
 

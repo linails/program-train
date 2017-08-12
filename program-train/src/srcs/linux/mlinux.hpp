@@ -1,7 +1,6 @@
 /*
  * Progarm Name: mlinux.hpp
  * Created Time: 2016-12-21 09:39:08
- * Last modified: 2017-04-14 17:54:39
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -9,6 +8,16 @@
 #define _MLINUX_HPP_
 
 #include "server-tcp.hpp"
+
+#define COMPILE_FLAG_mlinux_sys_cmd_casled 0
+#define COMPILE_FLAG_mlinux_server_tcp     0
+#define COMPILE_FLAG_mlinux_server_udp     0
+#define COMPILE_FLAG_mlinux_process        0
+#define COMPILE_FLAG_mlinux_cthread        1
+#define COMPILE_FLAG_mlinux_io             0
+#define COMPILE_FLAG_mlinux_server         0
+#define COMPILE_FLAG_mlinux_p2p            0
+#define COMPILE_FLAG_mlinux_other          0
 
 class mLinux{
 public:

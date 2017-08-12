@@ -1,7 +1,7 @@
 /*
  * Progarm Name: data-structure.h
  * Created Time: 2016-12-12 20:54:51
- * Last modified: 2016-12-12 21:24:05
+ * Last modified: 2017-05-31 17:35:53
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,7 +15,7 @@ extern "C" {
 
     typedef struct cDataStruct_{
     cPrivate
-        //
+        int  (*bubble_sort)(void *cthis);
     cPublic
         int  (*cdatastruct_main)(void *cthis, int argc, char **argv);
         int  (*destructor)(struct cDataStruct_ **pobj);

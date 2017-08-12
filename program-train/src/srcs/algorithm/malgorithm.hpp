@@ -1,11 +1,13 @@
 /*
  * Progarm Name: malgorithm.hpp
  * Created Time: 2016-08-14 10:35:30
- * Last modified: 2016-12-21 10:26:15
+ * Last modified: 2017-06-21 15:18:11
  */
 
 #ifndef _MALGORITHM_HPP_
 #define _MALGORITHM_HPP_
+
+#define COMPILE_FLAG_finder         0
 
 class mAlgorithm{
 public:

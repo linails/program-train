@@ -35,8 +35,13 @@ for eachline in `cat /etc/issue`; do
         if [ "`which $c_compiler`" ]; then
             echo "$c_compiler is exist"
         else
-            c_compiler="/opt/gcc-4.9.2/bin/x86_64-unknown-linux-gnu-gcc-4.9.2"
-            cxx_compiler="/opt/gcc-4.9.2/bin/x86_64-unknown-linux-gnu-g++"
+            if [ "$system_type" = "x86_64" ]; then
+                c_compiler="/opt/gcc-4.9.2/bin/x86_64-unknown-linux-gnu-gcc-4.9.2"
+                cxx_compiler="/opt/gcc-4.9.2/bin/x86_64-unknown-linux-gnu-g++"
+            else
+                c_compiler="/opt/gcc-4.9.2/bin/i686-pc-linux-gnu-gcc-4.9.2"
+                cxx_compiler="/opt/gcc-4.9.2/bin/i686-pc-linux-gnu-g++"
+            fi
         fi
 
         break

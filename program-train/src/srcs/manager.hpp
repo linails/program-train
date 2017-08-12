@@ -1,7 +1,6 @@
 /*
  * Progarm Name: manager.hpp
  * Created Time: 2017-03-15 14:55:40
- * Last modified: 2017-04-14 17:31:26
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -31,6 +30,8 @@ using std::vector;
 #define COMPILE_FLAG_Cases          0
 #define COMPILE_FLAG_mAlgorithm     0
 #define COMPILE_FLAG_gTest          0
+
+class Cases;
 
 class Manager{
 public:

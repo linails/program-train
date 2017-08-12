@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.h
  * Created Time: 2016-12-09 23:19:02
- * Last modified: 2017-01-03 22:02:13
+ * Last modified: 2017-06-23 23:29:02
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -20,6 +20,8 @@ extern "C" {
         int  (*para_uncertainty)(void *cthis);
         int  (*pu_fun)(int n, ...);
         int  (*gnu_c)(void);
+        int  (*bit_field)(void);
+        int  (*endian_check)(void);
     cPublic
         int  (*cprimer_main)(void *cthis, int argc, char **argv);
         int  (*destructor)(struct cPrimer_ **pobj);

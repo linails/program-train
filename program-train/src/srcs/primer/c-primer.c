@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-02-04 12:03:13
+ * Last modified: 2017-07-08 10:52:05
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -29,6 +29,10 @@ int  cprimer_main(void *cthis, int argc, char **argv)
         ret = ((cPrimer_t *)cthis)->para_uncertainty(cthis);
 
         ret = ((cPrimer_t *)cthis)->gnu_c();
+
+        ret = ((cPrimer_t *)cthis)->bit_field();
+
+        ret = ((cPrimer_t *)cthis)->endian_check();
 
         {
             cJumper_t *cjumper = NULL;
@@ -80,8 +84,23 @@ int  other_test(void)
     {
         int array[3] = {1, 2, 3};
 
-        printf("%x, %x\n", (unsigned int)(array+1), (unsigned int)(&array+1));
-        printf(" - %x \n", (unsigned int)(&array+1) - (unsigned int)(array+1));
+        printf("%x, %x\n", (unsigned int)(long)(array+1), (unsigned int)(long)(&array+1));
+        printf(" - %x \n", (unsigned int)(long)(&array+1) - (unsigned int)(long)(array+1));
+    }
+    printf("-------------------\n");
+    {
+        /* 
+         * 总线错误示例， 在 RISC 架构的CPU上容易出现
+         * */
+        union {
+            char a[10];
+            int  b;
+        }u;
+
+        int *p = (int *)&(u.a[1]);
+
+        *p = 12;
+        printf("*p = %d\n", *p);
     }
 
     printf("\n");
@@ -262,6 +281,144 @@ int  gnu_c(void)
         }
         printf("\n");
     }
+    printf("---------------------------\n");
+    {
+        #pragma pack(1)
+        typedef struct {
+            int  a;
+            char b;
+        }Data_t;
+
+        printf("#pragma pack(1) sizeof(Data_t) = %d\n", (int)sizeof(Data_t));
+        #pragma pack()
+
+        /* 
+         * packed 使用该属性可以使得变量或结构体成员使用最小的对齐方式，即对变量是一字节对齐，对域是位对齐
+         * */
+        typedef struct{
+            int  a;
+            char b;
+        }__attribute__((packed))
+        Data_attr_t;
+
+        printf("__attribute__((packed)) sizeof(Data_attr_t) = %d\n", (int)sizeof(Data_attr_t));
+    }
+    printf("---------------------------\n");
+    {
+        #pragma pack()
+        typedef struct {
+            int  a;
+            char b;
+        }Data_t;
+
+        printf("#pragma pack() sizeof(Data_t) = %d\n", (int)sizeof(Data_t));
+        #pragma pack()
+
+        typedef struct{
+            int  a;
+            char b;
+        }__attribute__((aligned(1)))
+        Data_attr_t;
+
+        printf("__attribute__((aligned(1))) sizeof(Data_attr_t) = %d\n", (int)sizeof(Data_attr_t));
+    }
+    printf("---------------------------\n");
+    {
+        #pragma pack(2)
+        typedef struct {
+            int  a;
+            char b;
+        }Data_t;
+
+        printf("#pragma pack(2) sizeof(Data_t) = %d\n", (int)sizeof(Data_t));
+        #pragma pack()
+    }
+
+    return ret;
+}
+
+static
+int  bit_field(void)
+{
+    int ret = 0;
+
+    {
+        printf("c-primer::bit_field ...\n");
+    }
+    printf("---------------------------\n");
+    {
+        /* 
+         * 这个跟大小端有直接关系
+         * */
+        typedef struct{
+            char a:1,
+                 b:1,
+                 c:1,
+                 d:1,
+                 e:4;
+        }Data_t;
+
+        Data_t data;
+
+        data.a = 0;
+        data.b = 0;
+        data.c = 0;
+        data.d = 0;
+        data.e = 1;
+
+        char x = *(char *)&data;
+        printf("x = 0x%.2x\n", x);
+    }
+    printf("---------------------------\n");
+    {
+        printf("bit_field section 2 \n");
+
+        typedef struct{
+            unsigned char a:7;
+            unsigned char b:1;
+        }Data_t;
+
+        unsigned char x = 0x80;
+
+        Data_t d = *(Data_t *)&x;
+
+        printf("x = 0x%.2x\n", x);
+        printf("d.a = 0x%.2x\n", d.a);
+        printf("d.b = 0x%.2x\n\n", d.b);
+
+        Data_t d0;
+        d0.b = 1;
+
+        unsigned char x0 = *(unsigned char *)&d0;
+        printf("d0.b = 0x%.2x\n", d0.b);
+        printf("x0 = 0x%.2x\n\n", x0);
+
+        Data_t d1;
+
+        d1.a = x & ~0x80;
+        d1.b = (x & 0x80) >> 7;     // Note ! b 这个时候属于高位，需要移动对于基位的偏移 7
+        printf("x = 0x%.2x\n", x);
+        printf("x & 0x80 = 0x%.2x\n", x & 0x80);
+        printf("d1.a = 0x%.2x\n", d1.a);
+        printf("d1.b = 0x%.2x\n", d1.b);
+    }
+    printf("---------------------------\n");
+    return ret;
+}
+
+static
+int  endian_check(void)
+{
+    int ret = 0;
+
+    unsigned int data = 1;
+
+    if(0x01 == (*(char *)&data)){
+        printf("c-primer::endian_check : Little endian\n");
+    }else{
+        printf("c-primer::endian_check : Big endian\n");
+    }
+    printf("---------------------------\n");
 
     return ret;
 }
@@ -305,6 +462,10 @@ cPrimer_t *cprimer_constructor(void)
 
         cprimer->gnu_c = gnu_c;
 
+        cprimer->bit_field = bit_field;
+
+        cprimer->endian_check = endian_check;
+
         cprimer->cprimer_main = cprimer_main;
 
         return cprimer;
@@ -338,6 +499,10 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
             (*pobj)->pu_fun = pu_fun;
 
             (*pobj)->gnu_c = gnu_c;
+
+            (*pobj)->bit_field = bit_field;
+
+            (*pobj)->endian_check = endian_check;
 
             (*pobj)->cprimer_main = cprimer_main;
         }

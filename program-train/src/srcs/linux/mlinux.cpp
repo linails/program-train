@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mlinux.cpp
  * Created Time: 2016-12-21 09:39:00
- * Last modified: 2017-04-17 16:51:49
+ * Last modified: 2017-08-12 08:10:01
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -36,7 +36,7 @@ int  mLinux::mlinux_main(int argc, char **argv)
 
     cout << "------------- linux_main --------------" << endl;
     {
-        #if 0
+        #if COMPILE_FLAG_mlinux_sys_cmd_casled
         sys_cmd_called();
         #endif
     }
@@ -50,7 +50,7 @@ int  mLinux::mlinux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-        #if 0
+        #if COMPILE_FLAG_mlinux_server_tcp
         //int server_tcp_main(int argc, char **argv);
 
         const char *sargv[] = {
@@ -73,7 +73,7 @@ int  mLinux::mlinux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-        #if 0
+        #if COMPILE_FLAG_mlinux_server_udp
         //int server_udp_main(int argc, char **argv);
 
         const char *sargv[] = {
@@ -99,37 +99,37 @@ int  mLinux::mlinux_main(int argc, char **argv)
     }
     cout << "---------------------------" << endl;
     {
-        #if 0
+        #if COMPILE_FLAG_mlinux_process
         Process process;
 
-        ret = process.process_main(argc, argv);
+        ret = process.process_main(argc, argv); assert(-1 != ret);
         #endif
     }
     cout << "---------------------------" << endl;
     {
-        #if 0
+        #if COMPILE_FLAG_mlinux_cthread
         cThread cthread;
 
-        ret = cthread.cthread_main(argc, argv);
+        ret = cthread.cthread_main(argc, argv); assert(-1 != ret);
         #endif
     }
     cout << "---------------------------" << endl;
     {
-        #if 0
+        #if COMPILE_FLAG_mlinux_io
         Io io;
 
-        ret = io.io_main(argc, argv);
+        ret = io.io_main(argc, argv); assert(-1 != ret);
         #endif
     }
     cout << "---------------------------" << endl;
     {
-        #if 0
+        #if COMPILE_FLAG_mlinux_server
         ret = this->server(argc, argv); assert(-1 != ret);
         #endif
     }
     cout << "---------------------------" << endl;
     {
-        #if 0
+        #if COMPILE_FLAG_mlinux_p2p
         //int p2p_server_main(int argc, char **argv);
 
         int ret = 0;
