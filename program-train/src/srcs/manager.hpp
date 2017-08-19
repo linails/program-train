@@ -27,7 +27,7 @@ using std::vector;
 #define COMPILE_FLAG_Container      0
 #define COMPILE_FLAG_dbCaller       0
 #define COMPILE_FLAG_mLinux         0
-#define COMPILE_FLAG_Cases          1
+#define COMPILE_FLAG_Cases          0
 #define COMPILE_FLAG_mAlgorithm     0
 #define COMPILE_FLAG_gTest          0
 

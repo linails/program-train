@@ -107,6 +107,7 @@ set(SRC_LIST
 #   srcs/linux/network/endian-conv.c
 #   srcs/linux/sys_cmd.cpp
    srcs/linux/os/mos.cpp
+   srcs/linux/os/backtrace.cpp
 #   srcs/linux/io/io.cpp
    srcs/linux/process/process.cpp
    srcs/linux/process/ipc_msgq.c
@@ -132,6 +133,8 @@ set(SRC_LIST
    srcs/algorithm/others/other-string.cpp
 #   srcs/algorithm/others/finder.cpp
 #   srcs/algorithm/others/finder-en.cpp
+   srcs/algorithm/others/hsb2hsl.c
+   srcs/algorithm/others/hue_driver.c
    srcs/algorithm/stl/non-mutating-algo.cpp
 #   srcs/algorithm/stl/mutating-algo.cpp
 #   srcs/algorithm/stl/sorting-algo.cpp
@@ -153,6 +156,7 @@ set(SRC_LIST
    srcs/tools/timing.c
    srcs/tools/stopwatch.c
    srcs/tools/cfg-loader.cpp
+   srcs/tools/mbacktrace.c
    srcs/cases/cases.cpp
 #   srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

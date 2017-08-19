@@ -1,13 +1,14 @@
 /*
  * Progarm Name: manager.cpp
  * Created Time: 2017-03-15 14:55:36
- * Last modified: 2017-03-31 13:37:39
+ * Last modified: 2017-08-19 20:12:24
  * @author: minphone.linails linails@foxmail.com 
  */
 
 #include "manager.hpp"
 #include <iostream>
 #include <gtest/gtest.h>
+#include "mbacktrace.h"
 
 using std::cout;
 using std::endl;
@@ -21,6 +22,12 @@ Manager *Manager::get_instance(Manager *ptr)
 
 Manager::Manager(string path)
 {
+    /*
+     * open backtrace default
+     * */
+    mbacktrace_open();
+
+
     if(false == path.empty()){
 
         this->m_cfg_path = path;

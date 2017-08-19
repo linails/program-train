@@ -11,10 +11,10 @@
 #define COMPILE_FLAG_mlinux_server_tcp     0
 #define COMPILE_FLAG_mlinux_server_udp     0
 #define COMPILE_FLAG_mlinux_process        0
-#define COMPILE_FLAG_mlinux_cthread        1
+#define COMPILE_FLAG_mlinux_cthread        0
 #define COMPILE_FLAG_mlinux_io             0
 #define COMPILE_FLAG_mlinux_server         0
-#define COMPILE_FLAG_mlinux_other          0
+#define COMPILE_FLAG_mlinux_other          1
 
 class mLinux{
 public:

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mlinux.cpp
  * Created Time: 2016-12-21 09:39:00
- * Last modified: 2017-07-31 16:55:54
+ * Last modified: 2017-08-19 14:22:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -18,6 +18,7 @@
 #include "server.hpp"
 #include <cassert>
 #include "mos.hpp"
+#include "backtrace.hpp"
 
 using std::cout;
 using std::endl;
@@ -45,6 +46,10 @@ int  mLinux::mlinux_main(int argc, char **argv)
         #if COMPILE_FLAG_mlinux_other
         //fd_test();
         //endian_conv();
+
+
+        Backtrace   bt;
+        bt.segmentfault_test();
         #endif
     }
     cout << "---------------------------" << endl;
