@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.h
  * Created Time: 2015-11-13 07:51:43
- * Last modified: 2016-08-23 13:25:50
+ * Last modified: 2017-09-21 17:03:48
  */
 
 #ifndef _CLASS_TEST_H_
@@ -70,6 +70,9 @@ public:
     virtual ~Base(void);
     virtual void on(void);
     void off(void);
+    virtual void show(void);
+private:
+    int     m_base_a;
 };
 
 class Derived : public Base {
@@ -78,6 +81,11 @@ public:
     virtual ~Derived();
     virtual void on(void);
     void abc(void);
+    virtual void show(void);
+private:
+    int     m_derived_a;
+public:
+    int     m_derived_b;
 };
 
 /*class test func*/

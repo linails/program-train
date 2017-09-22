@@ -1,7 +1,7 @@
 /*
  * Progarm Name: class_test.cpp
  * Created Time: 2015-11-13 07:51:55
- * Last modified: 2016-10-20 13:51:31
+ * Last modified: 2017-09-21 17:06:38
  */
 
 #include "class_test.h"
@@ -51,6 +51,22 @@ void class_test(void)
         printf("addr Base::off : 0x%x\n",&Base::off);
 
     }
+    #if 0
+    cout << "---------------------------" << endl;
+    {
+        /* 
+         * 这种做法是错误的：
+         *  定义基类，然后强转为 Derived 类型，进行赋值 Derived 成员，是错误的，因为就没有 Derived 空间使用
+         * */
+        Base baseArray[10];
+
+        Derived *p = (Derived *)&baseArray[0];
+        p->show();
+
+        p->m_derived_b = 33;
+        p->show();
+    }
+    #endif
     cout << "---------------------------" << endl;
     {
         CA  ca,ca1;
@@ -200,6 +216,7 @@ void Sales_item::change_val(char v) const
 
 Base::Base(void)
 {
+    this->m_base_a = 11;
     cout << "base ..." << endl;
 }
 
@@ -219,8 +236,14 @@ void Base::off(void)
     cout << "base off ..." << endl;
 }
 
+void Base::show(void)
+{
+    cout << "this->m_base_a : " << this->m_base_a << endl;
+}
+
 Derived::Derived()
 {
+    this->m_derived_a = 22;
     cout << "derived ..." << endl;
 }
 
@@ -238,6 +261,12 @@ void Derived::on()
 void Derived::abc(void)
 {
     cout << "abc ..." << endl;
+}
+
+void Derived::show(void)
+{
+    cout << "this->m_derived_a : " << this->m_derived_a << endl;
+    cout << "this->m_derived_b : " << this->m_derived_b << endl;
 }
 
 int CA::m_a;

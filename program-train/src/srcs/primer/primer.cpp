@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2017-03-30 11:06:30
+ * Last modified: 2017-09-22 11:14:55
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -53,7 +53,7 @@ int  Primer::primer_main(int argc, char **argv)
 #endif
         //regex_test();
         //smart_pointer();
-        //other_test();
+        other_test();
         //class_test();
         //chrono_test();
         //thread_test();

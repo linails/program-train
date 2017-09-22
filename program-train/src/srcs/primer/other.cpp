@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2016-10-21 14:33:04
+ * Last modified: 2017-09-22 12:55:12
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -19,6 +19,7 @@
 #include <tuple>
 #include <functional>
 #include <typeinfo>
+#include <cassert>
 
 using namespace std;
 
@@ -298,6 +299,12 @@ void other_test(void)
         void cout_tdv_tde(void);
         cout_tdv_tde();
     }
+    cout << "----------------------------" << endl;
+    {
+        OtherTest   ot;
+        int ret = ot.main(); assert(-1 != ret);
+    }
+    cout << "----------------------------" << endl;
 }
 
 void display(char *ptr)
@@ -955,4 +962,50 @@ void cout_tdv_tde(void)
     }
 }
 
+OtherTest::OtherTest()
+{
+    cout << "----------- OtherTest Class ----------------" << endl;
+}
+
+OtherTest::~OtherTest()
+{
+    cout << "----------- End OtherTest Class ------------" << endl;
+}
+
+int  OtherTest::main(void)
+{
+    int ret = 0;
+
+    ret = this->macro_test(); assert(-1 != ret);
+
+    return 0;
+}
+
+int  OtherTest::macro_test(void)
+{
+    cout << "Function: OtherTest::macro_test()" << endl;
+    {
+        typedef struct{
+            int a;
+            char b;
+            double c;
+            int d;
+            float e;
+        }Data_t;
+
+        cout << "sizeof(Data_t) : " << sizeof(Data_t) << endl;
+
+        #define DATA_T_SIZE ((sizeof(Data_t)+8-1)/8*8)
+
+        cout << "sizeof(Data_t *) : " << sizeof(Data_t *) << endl;
+        cout << "DATA_T_SIZE : " << DATA_T_SIZE << endl;
+
+        /*
+         * Note !
+         *
+         * 运行结果值：DATA_T_SIZE = sizeof(Data_t) 即两个相等
+         * */
+    }
+    return 0;
+}
 

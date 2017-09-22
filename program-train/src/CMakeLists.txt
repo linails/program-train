@@ -78,14 +78,15 @@ set(SRC_LIST
 #   srcs/primer/regex_test.cpp
 #   srcs/primer/regex_cpp11.cpp
 #   srcs/primer/smart_pointer.cpp
-#   srcs/primer/other.cpp
+   srcs/primer/other.cpp
    srcs/primer/c-primer.c
+   srcs/primer/clib-eg.c
 #   srcs/primer/ctest.c
    srcs/primer/jump.c
    srcs/primer/jump.cpp
 #   srcs/primer/thread_test.cpp
 #   srcs/primer/condition_variable.cpp
-#   srcs/primer/class_test.cpp
+   srcs/primer/class_test.cpp
 #   srcs/primer/class-enhenced.cpp
 #   srcs/primer/chrono_test.cpp
 #   srcs/primer/exception_test.cpp
