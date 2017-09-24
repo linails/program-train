@@ -81,6 +81,7 @@ set(SRC_LIST
    srcs/primer/other.cpp
    srcs/primer/c-primer.c
    srcs/primer/clib-eg.c
+   srcs/primer/clib-eg-linux.c
 #   srcs/primer/ctest.c
    srcs/primer/jump.c
    srcs/primer/jump.cpp
