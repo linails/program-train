@@ -37,20 +37,20 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/ds
     ${PROJECT_SOURCE_DIR}/src/srcs/algorithm/others
     ${PROJECT_SOURCE_DIR}/src/srcs/cases
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/src
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case001/test
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case002
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case003
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004/src
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case004/test
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser/pmt
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/parser/pmt/descriptors
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case005/c-parser
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case006
-    ${PROJECT_SOURCE_DIR}/src/srcs/cases/case006/test
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/infinite-loops/src
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/infinite-loops/test
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/dic-parser
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/key-bind
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/binditem-tetris
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/binditem-tetris/src
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/binditem-tetris/test
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/ts-parser
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/ts-parser/parser
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/ts-parser/parser/pmt
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/ts-parser/parser/pmt/descriptors
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/ts-parser/c-parser
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/code-formater
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/code-formater/test
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/case-other
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-json
@@ -162,55 +162,55 @@ set(SRC_LIST
    srcs/cases/cases.cpp
 #   srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case001/src/infinite_loops_v2.cpp
-#   srcs/cases/case001/src/infinite_loops_v3.cpp
-#   srcs/cases/case001/src/dev-child-sibling-tree.cpp
-#   srcs/cases/case001/src/dev-avl-tree.cpp
-#   srcs/cases/case001/src/conflict-check.cpp
-#   srcs/cases/case001/src/illegal-check.cpp
-#   srcs/cases/case001/test/tester-case001.cpp
-#   srcs/cases/case001/test/test_main.cpp
-#   srcs/cases/case001/test/v3_test.cpp
-#   srcs/cases/case001/test/test-avl-tree.cpp
-#   srcs/cases/case001/test/test-child-sibling-tree.cpp
-#   srcs/cases/case001/test/test-conflict-check.cpp
-#   srcs/cases/case001/test/test-illegal-check.cpp
+#   srcs/cases/infinite-loops/src/infinite_loops_v2.cpp
+#   srcs/cases/infinite-loops/src/infinite_loops_v3.cpp
+#   srcs/cases/infinite-loops/src/dev-child-sibling-tree.cpp
+#   srcs/cases/infinite-loops/src/dev-avl-tree.cpp
+#   srcs/cases/infinite-loops/src/conflict-check.cpp
+#   srcs/cases/infinite-loops/src/illegal-check.cpp
+#   srcs/cases/infinite-loops/test/tester-case001.cpp
+#   srcs/cases/infinite-loops/test/test_main.cpp
+#   srcs/cases/infinite-loops/test/v3_test.cpp
+#   srcs/cases/infinite-loops/test/test-avl-tree.cpp
+#   srcs/cases/infinite-loops/test/test-child-sibling-tree.cpp
+#   srcs/cases/infinite-loops/test/test-conflict-check.cpp
+#   srcs/cases/infinite-loops/test/test-illegal-check.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case002/dic-parser.cpp
-#   srcs/cases/case002/formatParsing.cpp
-#   srcs/cases/case002/format-parser.cpp
-#   srcs/cases/case002/regex_common.cpp
-   srcs/cases/case002/rfileoprt.cpp
-#   srcs/cases/case002/rwfileoprt.cpp
-#   srcs/cases/case002/stringTools.cpp
-#   srcs/cases/case002/disk-dic.cpp
-#   srcs/cases/case002/segmentation.cpp
-#   srcs/cases/case002/alpha-bet.cpp
-#   srcs/cases/case002/statistics.cpp
-#   srcs/cases/case002/denoise.cpp
-#   srcs/cases/case002/format-later-stage.cpp
-#   srcs/cases/case002/python-module.cpp
+#   srcs/cases/dic-parser/dic-parser.cpp
+#   srcs/cases/dic-parser/formatParsing.cpp
+#   srcs/cases/dic-parser/format-parser.cpp
+#   srcs/cases/dic-parser/regex_common.cpp
+   srcs/cases/dic-parser/rfileoprt.cpp
+#   srcs/cases/dic-parser/rwfileoprt.cpp
+#   srcs/cases/dic-parser/stringTools.cpp
+#   srcs/cases/dic-parser/disk-dic.cpp
+#   srcs/cases/dic-parser/segmentation.cpp
+#   srcs/cases/dic-parser/alpha-bet.cpp
+#   srcs/cases/dic-parser/statistics.cpp
+#   srcs/cases/dic-parser/denoise.cpp
+#   srcs/cases/dic-parser/format-later-stage.cpp
+#   srcs/cases/dic-parser/python-module.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case003/key-bind-main.cpp
-#   srcs/cases/case003/disk.cpp
-#   srcs/cases/case003/msg.cpp
+#   srcs/cases/key-bind/key-bind-main.cpp
+#   srcs/cases/key-bind/disk.cpp
+#   srcs/cases/key-bind/msg.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case004/bit.cpp
-#   srcs/cases/case004/src/worker-thread.cpp
-#   srcs/cases/case004/src/binditem-tetris.cpp
-#   srcs/cases/case004/test/queue-tetris.cpp
-#   srcs/cases/case004/test/bt-test.cpp
+#   srcs/cases/binditem-tetris/bit.cpp
+#   srcs/cases/binditem-tetris/src/worker-thread.cpp
+#   srcs/cases/binditem-tetris/src/binditem-tetris.cpp
+#   srcs/cases/binditem-tetris/test/queue-tetris.cpp
+#   srcs/cases/binditem-tetris/test/bt-test.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/case005/ts-parser-main.cpp
-#   srcs/cases/case005/parser/ts-parser.cpp
-#   srcs/cases/case005/parser/ts-buffer.cpp
-#   srcs/cases/case005/parser/ts-unit.cpp
-#   srcs/cases/case005/parser/ts-pat.cpp
-#   srcs/cases/case005/parser/ts-pmt.cpp
-#   srcs/cases/case005/parser/ts-pes.cpp
-#   srcs/cases/case005/c-parser/ts-parser.c
+#   srcs/cases/ts-parser/ts-parser-main.cpp
+#   srcs/cases/ts-parser/parser/ts-parser.cpp
+#   srcs/cases/ts-parser/parser/ts-buffer.cpp
+#   srcs/cases/ts-parser/parser/ts-unit.cpp
+#   srcs/cases/ts-parser/parser/ts-pat.cpp
+#   srcs/cases/ts-parser/parser/ts-pmt.cpp
+#   srcs/cases/ts-parser/parser/ts-pes.cpp
+#   srcs/cases/ts-parser/c-parser/ts-parser.c
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/case006/code-formatter.cpp
+   srcs/cases/code-formater/code-formatter.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case-other/case-other.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

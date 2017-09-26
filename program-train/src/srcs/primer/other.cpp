@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2017-09-22 12:55:12
+ * Last modified: 2017-09-26 12:45:48
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -978,6 +978,8 @@ int  OtherTest::main(void)
 
     ret = this->macro_test(); assert(-1 != ret);
 
+    ret = this->cout_test(); assert(-1 != ret);
+
     return 0;
 }
 
@@ -1006,6 +1008,28 @@ int  OtherTest::macro_test(void)
          * 运行结果值：DATA_T_SIZE = sizeof(Data_t) 即两个相等
          * */
     }
+    return 0;
+}
+
+int  OtherTest::cout_test(void)
+{
+    auto func = [](int &i){
+        i = 10;
+        return i;
+    };
+
+    int x = 0;
+
+    /* 
+     * cout 语句是 "从右往左" 执行 | 符合 栈 的执行模型
+     * */
+    cout << "x = " << func(x) << " | x = " << x << endl;
+
+    /*
+     * 执行结果： 11 | 10
+     * */
+    cout << "x = " << x++ << " | " << x++ << endl;
+
     return 0;
 }
 
