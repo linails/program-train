@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.h
  * Created Time: 2016-03-11 15:16:37
- * Last modified: 2017-09-22 11:28:14
+ * Last modified: 2017-09-26 12:36:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -20,6 +20,7 @@ public:
     int  main(void);
 private:
     int  macro_test(void);
+    int  cout_test(void);
 };
 
 #endif //_OTHER_H_
