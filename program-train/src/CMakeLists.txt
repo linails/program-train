@@ -160,7 +160,7 @@ set(SRC_LIST
    srcs/tools/cfg-loader.cpp
    srcs/tools/mbacktrace.c
    srcs/cases/cases.cpp
-#   srcs/cases/exlib-cases/exlibCases.cpp
+   srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/infinite-loops/src/infinite_loops_v2.cpp
 #   srcs/cases/infinite-loops/src/infinite_loops_v3.cpp
@@ -214,7 +214,7 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case-other/case-other.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/cases/exlib-cases/case-json/mjson.cpp
+   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
 #   srcs/cases/exlib-cases/case-gtest/event-mecha.cpp
 #   srcs/cases/exlib-cases/case-xml/xml-main.cpp
