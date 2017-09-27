@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mjson.cpp
  * Created Time: 2016-12-22 09:00:56
- * Last modified: 2017-03-09 15:24:15
+ * Last modified: 2017-09-27 10:31:21
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -909,6 +909,15 @@ int  mJson::rapidjson_write(void)
     return ret;
 }
 
+/* 
+ * 逆序执行的宏
+ * */
+#define reverse_exec(statement02, statement01) \
+    do {                                       \
+        statement01;                           \
+        statement02;                           \
+    }while(0);
+
 int  mJson::rapidjson_advanced(void)
 {
     int ret = 0;
@@ -950,20 +959,68 @@ int  mJson::rapidjson_advanced(void)
         vector<devUnit_t> objs_body;
         {
             for(int i=0; i<5; i++){
-#if 1
                 iso_u iso;
                 devUnit_t dev_unit;
 
+                #if 0
                 iso.data_i  = 10 + i ;              dev_unit.insert(make_pair("id",       make_tuple(INT, iso)));
                 iso.data_cc = "gateway ...";        dev_unit.insert(make_pair("gateway",  make_tuple(STR, iso)));
                 iso.data_i  = 105 + i;              dev_unit.insert(make_pair("type",     make_tuple(INT, iso)));
                 iso.data_i  = 444 + i;              dev_unit.insert(make_pair("zonetype", make_tuple(INT, iso)));
                 iso.data_cc = "clusterid json ..."; dev_unit.insert(make_pair("clusterid",make_tuple(STR, iso)));
+                #else
+                /* 
+                 * 使用逆序执行宏后，先执行 ios 赋值，再执行 dev_unit.insert()
+                 * */
+                reverse_exec(dev_unit.insert(make_pair("id",       make_tuple(INT, iso))), iso.data_i  = 10 + i);
+                reverse_exec(dev_unit.insert(make_pair("gateway",  make_tuple(STR, iso))), iso.data_cc = "gateway ...");
+                reverse_exec(dev_unit.insert(make_pair("type",     make_tuple(INT, iso))), iso.data_i  = 105 + i);
+                reverse_exec(dev_unit.insert(make_pair("zonetype", make_tuple(INT, iso))), iso.data_i  = 444 + i);
+                reverse_exec(dev_unit.insert(make_pair("clusterid",make_tuple(STR, iso))), iso.data_cc = "clusterid json ...");
+                #endif
 
                 objs_body.push_back(dev_unit);
-#endif
             }
         }
+
+        /*
+         * printf objs_body
+         * */
+        for(auto &dev : objs_body){
+            for(auto &u : dev){
+                int    i_data = 0;
+                string s_data;
+
+                printf("%10s", u.first.c_str());
+
+                switch(std::get<0>(u.second)){
+                    case INT: 
+                        i_data = std::get<1>(u.second).data_i;
+                        cout << " | i_data = " << i_data << endl;
+                        break;
+                    case STR: 
+                        s_data = std::get<1>(u.second).data_cc;
+                        cout << " | s_data = " << s_data << endl;
+                        break;
+                }
+            }
+        }
+    }
+    cout << "---------------------------" << endl;
+    {
+        cout << "Test For macro reverse_exec()" << endl;
+        reverse_exec(printf("2"), printf("1"));
+        cout << endl;
+
+        int a = 10;
+        int b = 20;
+
+        /*
+         * 逆序执行后，b = 10; a = b + 10 = 20
+         * */
+        reverse_exec(a = b + 10, b = a);
+
+        cout << "a = " << a << " b = " << b << endl;
     }
     cout << "---------------------------" << endl;
 
