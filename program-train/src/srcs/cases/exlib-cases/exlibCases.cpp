@@ -1,7 +1,7 @@
 /*
  * Progarm Name: exlibCases.cpp
  * Created Time: 2016-12-21 10:05:59
- * Last modified: 2017-03-31 13:48:48
+ * Last modified: 2017-09-28 11:24:07
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,6 +11,7 @@
 #include "case-gtest.hpp"
 #include <cassert>
 #include "xml-main.hpp"
+#include "msigslot.hpp"
 
 using std::cout;
 using std::endl;
@@ -50,6 +51,24 @@ int  exlibCases::exlibcases_main(int argc, char **argv)
         ret = parser.main(argc, argv); assert(-1 != ret);
         #endif
     }
+    cout << "---------------------------" << endl;
+    {
+        ret = this->sigslot(); assert(-1 != ret);
+    }
+    cout << "---------------------------" << endl;
+
+    return ret;
+}
+
+int  exlibCases::sigslot(void)
+{
+    int ret = 0;
+
+    #if COMPILE_FLAG_exlib_sigslot
+    {
+        Msigslot mss; ret = mss.main(0, NULL);
+    }
+    #endif
 
     return ret;
 }
