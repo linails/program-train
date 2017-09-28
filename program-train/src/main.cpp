@@ -1,7 +1,7 @@
 /*
  * Progarm Name: rebuild main.cpp
  * Created Time: 2016-04-28 17:23:45
- * Last modified: 2017-03-16 09:27:53
+ * Last modified: 2017-09-28 21:37:44
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -34,13 +34,14 @@ int main(int argc, char **argv)
     Manager *pmgr = Manager::get_instance(new Manager(path));
     if(nullptr != pmgr){
         cout << "new successed" << endl;
+
+        ret = pmgr->main(argc, argv); assert(-1 != ret);
+
+        delete pmgr;
+
     }else{
         cout << "[Error] new Manager() failed !" << endl;
     }
-
-    ret = pmgr->main(argc, argv); assert(-1 != ret);
-
-    delete pmgr;
 
     return ret;
 }
