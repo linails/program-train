@@ -57,6 +57,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-openssl
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-gtest
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-xml
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-sigslot
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -214,13 +215,14 @@ set(SRC_LIST
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case-other/case-other.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   srcs/cases/exlib-cases/case-json/mjson.cpp
+#   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp
 #   srcs/cases/exlib-cases/case-gtest/event-mecha.cpp
 #   srcs/cases/exlib-cases/case-xml/xml-main.cpp
 #   srcs/cases/exlib-cases/case-xml/xml-parser.cpp
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
+   srcs/cases/exlib-cases/case-sigslot/msigslot.cpp
 )
 
 add_executable(program-train ${SRC_LIST})
