@@ -214,6 +214,7 @@ set(SRC_LIST
    srcs/cases/code-formater/code-formatter.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/cases/case-other/case-other.cpp
+   srcs/cases/case-other/callstack-log.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/cases/exlib-cases/case-json/mjson.cpp
 #   srcs/cases/exlib-cases/case-gtest/case-gtest.cpp

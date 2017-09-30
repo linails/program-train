@@ -66,4 +66,4 @@ fi
 
 cmake ../ $cmake_para
 
-make
+make -j4

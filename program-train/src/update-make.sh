@@ -6,7 +6,7 @@
 if [ -d ../build ]; then
     echo "dir build exist"
     cd ../build/
-    make
+    make -j4
 else
     mkdir ../build
     echo "mkdir ../build"

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2017-09-26 12:45:48
+ * Last modified: 2017-09-30 10:46:25
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -1007,6 +1007,13 @@ int  OtherTest::macro_test(void)
          *
          * 运行结果值：DATA_T_SIZE = sizeof(Data_t) 即两个相等
          * */
+
+        /* 
+         * 取消宏
+         * */
+        #ifdef DATA_T_SIZE
+        #undef DATA_T_SIZE
+        #endif
     }
     return 0;
 }
