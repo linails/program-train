@@ -27,6 +27,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/threads
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/io
     ${PROJECT_SOURCE_DIR}/src/srcs/linux/server
+    ${PROJECT_SOURCE_DIR}/src/srcs/linux/shell
     ${PROJECT_SOURCE_DIR}/src/srcs/sep/
     ${PROJECT_SOURCE_DIR}/src/srcs/db
     ${PROJECT_SOURCE_DIR}/src/srcs/db/sqlite
@@ -108,7 +109,7 @@ set(SRC_LIST
 #   srcs/linux/network/server-tcp.c
 #   srcs/linux/network/fd-test.c
 #   srcs/linux/network/endian-conv.c
-#   srcs/linux/sys_cmd.cpp
+   srcs/linux/sys_cmd.cpp
    srcs/linux/os/mos.cpp
    srcs/linux/os/backtrace.cpp
 #   srcs/linux/io/io.cpp
@@ -122,6 +123,8 @@ set(SRC_LIST
    srcs/linux/server/process-rela.c
    srcs/linux/server/model.c
 #   srcs/linux/server/daemon.cpp
+   srcs/linux/shell/shell-server.cpp
+   srcs/linux/shell/shell-client.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    srcs/stl/container.cpp
 #   srcs/stl/container-test.cpp
