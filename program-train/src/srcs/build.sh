@@ -2,6 +2,8 @@
 # Created Time: 2015-11-12 10:56:45
 #
 
+START=`date +%s%N`
+
 # check build dir
 if [ -d ../../build ]; then
     echo "dir build exist"
@@ -53,5 +55,22 @@ fi
 
 cmake ../ $cmake_para
 
-make
+COMPILE_START=`date +%s%N`
+echo
+echo "compiling start ..."
+echo
+
+make -j4
+
+END=`date +%s%N`
+
+compile_cost=$((END-COMPILE_START))
+compile_cost=`expr $compile_cost / 1000000`
+
+all_cost=$((END-START))
+all_cost=`expr $all_cost / 1000000`
+
+echo "compile cost time = $compile_cost ms"
+echo "All cost time = $all_cost ms"
+
 
