@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-07-08 10:52:05
+ * Last modified: 2017-10-22 12:04:36
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,9 +12,10 @@
 #include "ctest.h"
 #include <stdarg.h>
 #include "jump.h"
+#include "clib-eg-linux.h"
 
 static
-int  cprimer_main(void *cthis, int argc, char **argv)
+int  cprimer_main(cPrimer_t *cthis, int argc, char **argv)
 {
     printf(" cprimer_main ...\n");
 
@@ -22,17 +23,17 @@ int  cprimer_main(void *cthis, int argc, char **argv)
 
     if(NULL != cthis){
 
-        ret = ((cPrimer_t *)cthis)->other_test();
+        ret = cthis->other_test();
 
-        ret = ((cPrimer_t *)cthis)->process_token();
+        ret = cthis->process_token();
 
-        ret = ((cPrimer_t *)cthis)->para_uncertainty(cthis);
+        ret = cthis->para_uncertainty(cthis);
 
-        ret = ((cPrimer_t *)cthis)->gnu_c();
+        ret = cthis->gnu_c();
 
-        ret = ((cPrimer_t *)cthis)->bit_field();
+        ret = cthis->bit_field();
 
-        ret = ((cPrimer_t *)cthis)->endian_check();
+        ret = cthis->endian_check();
 
         {
             cJumper_t *cjumper = NULL;
@@ -52,6 +53,8 @@ int  cprimer_main(void *cthis, int argc, char **argv)
                 }
             }
         }
+
+        ret = cthis->clibegLinux();
 
     }else{
         ret = -1;
@@ -129,7 +132,7 @@ int  process_token(void)
 }
 
 static
-int  para_uncertainty(void *cthis)
+int  para_uncertainty(cPrimer_t *cthis)
 {
     /* 
      * 可变参数类型
@@ -158,9 +161,9 @@ int  para_uncertainty(void *cthis)
 
     printf("para_uncertainty ...\n");
 
-    ret = ((cPrimer_t *)cthis)->pu_fun(1, 10);
+    ret = cthis->pu_fun(1, 10);
 
-    ret = ((cPrimer_t *)cthis)->pu_fun(2, 10, 20);
+    ret = cthis->pu_fun(2, 10, 20);
 
     return ret;
 }
@@ -423,10 +426,26 @@ int  endian_check(void)
     return ret;
 }
 
+static
+int  clibegLinux(void)
+{
+    cLibEgLinux_t *clibeg_linux = NULL;
+
+    if(0 == cLibEg_linux_constructor_safety(&clibeg_linux)){
+        if(NULL != clibeg_linux){
+            clibeg_linux->clibegLinux_main(clibeg_linux, 0, NULL);
+
+            clibeg_linux->destructor(&clibeg_linux);
+        }
+    }
+
+    return 0;
+}
+
 //----------------------------------------------------------------------------------------------
 
 static
-int  destructor(struct cPrimer_ **pobj)
+int  destructor(cPrimer_t **pobj)
 {
     if(NULL != *pobj){
         free(*pobj);
@@ -503,6 +522,8 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
             (*pobj)->bit_field = bit_field;
 
             (*pobj)->endian_check = endian_check;
+
+            (*pobj)->clibegLinux = clibegLinux;
 
             (*pobj)->cprimer_main = cprimer_main;
         }

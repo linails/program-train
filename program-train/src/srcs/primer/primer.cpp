@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2017-09-22 11:14:55
+ * Last modified: 2017-10-22 12:05:25
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -82,7 +82,6 @@ int  Primer::primer_main(int argc, char **argv)
         cout << "---------------------------------------------------------" << endl;
 
         cPrimer_t *cprimer = NULL;
-        //cPrimer_t *cprimer;
 
         if(0 == cprimer_constructor_safety(&cprimer)){
 
@@ -90,7 +89,7 @@ int  Primer::primer_main(int argc, char **argv)
                 cout << "cprimer constructor successed !" << endl;
 
                 /* cPrimer main */
-                cprimer->cprimer_main((void *)cprimer, 0, NULL);
+                cprimer->cprimer_main(cprimer, 0, NULL);
 
                 if(0 == cprimer->destructor(&cprimer)){
                     cout << "cprimer destructor successed !" << endl;
