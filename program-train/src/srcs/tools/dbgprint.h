@@ -1,7 +1,6 @@
 /*
  * Progarm Name: dbgprint.h
  * Created Time: 2016-10-30 00:02:19
- * Last modified: 2017-09-24 08:16:22
  */
 
 #ifndef _DBGPRINT_H_
@@ -10,6 +9,8 @@
 extern "C" {
 #endif
 #include <stdio.h>
+
+#define DEBUG
 
 #ifdef DEBUG
 
@@ -27,10 +28,16 @@ extern "C" {
     }                                 \
 }
 
+#define assert_static(e)                \
+    do{                                 \
+        enum { assert_static__ = 1/(e)};\
+    }while(0)
+
 #else
 
 #define dprint(format, ...)
 #define ASSERT( condition, message) {}
+#define assert_static(e) {}
 
 #endif
 

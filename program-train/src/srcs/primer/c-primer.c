@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-10-22 12:04:36
+ * Last modified: 2017-10-25 21:47:47
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -13,6 +13,7 @@
 #include <stdarg.h>
 #include "jump.h"
 #include "clib-eg-linux.h"
+#include "dbgprint.h"
 
 static
 int  cprimer_main(cPrimer_t *cthis, int argc, char **argv)
@@ -55,6 +56,8 @@ int  cprimer_main(cPrimer_t *cthis, int argc, char **argv)
         }
 
         ret = cthis->clibegLinux();
+
+        ret = cthis->cstatic_assert();
 
     }else{
         ret = -1;
@@ -442,6 +445,20 @@ int  clibegLinux(void)
     return 0;
 }
 
+static
+int  cstatic_assert(void)
+{
+    /*
+     * 静态断言，用于编译期运算检测出代码错误
+     * 不需要在运行时才检测出错误，因为运行的时候，有些 assert() 可能不会运行到
+     * */
+    assert_static(1 != 2); // 这句就可以正常编译
+
+    //assert_static(1 == 2); // 这句会在编译期检测出来错误
+
+    return 0;
+}
+
 //----------------------------------------------------------------------------------------------
 
 static
@@ -469,23 +486,16 @@ cPrimer_t *cprimer_constructor(void)
          * Loading all functions here !
          * */
 
-        cprimer->other_test = other_test;
-
-        cprimer->destructor = destructor;
-
-        cprimer->process_token = process_token;
-
-        cprimer->para_uncertainty = para_uncertainty;
-
-        cprimer->pu_fun = pu_fun;
-
-        cprimer->gnu_c = gnu_c;
-
-        cprimer->bit_field = bit_field;
-
-        cprimer->endian_check = endian_check;
-
-        cprimer->cprimer_main = cprimer_main;
+        cprimer->other_test         = other_test;
+        cprimer->destructor         = destructor;
+        cprimer->process_token      = process_token;
+        cprimer->para_uncertainty   = para_uncertainty;
+        cprimer->pu_fun             = pu_fun;
+        cprimer->gnu_c              = gnu_c;
+        cprimer->bit_field          = bit_field;
+        cprimer->endian_check       = endian_check;
+        cprimer->cstatic_assert     = cstatic_assert;
+        cprimer->cprimer_main       = cprimer_main;
 
         return cprimer;
     }
@@ -507,25 +517,18 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
              * Loading all functions here !
              * */
 
-            (*pobj)->other_test = other_test;
+            (*pobj)->other_test         = other_test;
+            (*pobj)->destructor         = destructor;
+            (*pobj)->process_token      = process_token;
+            (*pobj)->para_uncertainty   = para_uncertainty;
+            (*pobj)->pu_fun             = pu_fun;
+            (*pobj)->gnu_c              = gnu_c;
+            (*pobj)->bit_field          = bit_field;
+            (*pobj)->endian_check       = endian_check;
+            (*pobj)->clibegLinux        = clibegLinux;
+            (*pobj)->cstatic_assert     = cstatic_assert;
+            (*pobj)->cprimer_main       = cprimer_main;
 
-            (*pobj)->destructor = destructor;
-
-            (*pobj)->process_token = process_token;
-
-            (*pobj)->para_uncertainty = para_uncertainty;
-
-            (*pobj)->pu_fun = pu_fun;
-
-            (*pobj)->gnu_c = gnu_c;
-
-            (*pobj)->bit_field = bit_field;
-
-            (*pobj)->endian_check = endian_check;
-
-            (*pobj)->clibegLinux = clibegLinux;
-
-            (*pobj)->cprimer_main = cprimer_main;
         }
     }else{
         printf("[Error] constructor -> *pobj is not NULL !\n");
