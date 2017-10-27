@@ -1,7 +1,7 @@
 /*
  * Progarm Name: mlinux.cpp
  * Created Time: 2016-12-21 09:39:00
- * Last modified: 2017-08-19 14:22:55
+ * Last modified: 2017-10-27 23:16:23
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -19,9 +19,13 @@
 #include <cassert>
 #include "mos.hpp"
 #include "backtrace.hpp"
+#include <string>
+#include "manager.hpp"
+#include "file-manager.hpp"
 
 using std::cout;
 using std::endl;
+using std::string;
 
 mLinux::mLinux()
 {
@@ -48,8 +52,10 @@ int  mLinux::mlinux_main(int argc, char **argv)
         //endian_conv();
 
 
-        Backtrace   bt;
-        bt.segmentfault_test();
+        //Backtrace   bt;
+        //bt.segmentfault_test();
+
+        ret = this->file_manager(); assert(-1 != ret);
         #endif
     }
     cout << "---------------------------" << endl;
@@ -128,5 +134,21 @@ int  mLinux::server(int argc, char **argv)
     ret = server.server_main(argc, argv); assert(-1 != ret);
 
     return ret;
+}
+
+int  mLinux::file_manager(void)
+{
+    cout << "mlinux::file_manager() ..." << endl;
+
+    string fn;
+    
+    Manager::get_instance()->get_xml_cfg()->register_RootChild("filemgr", "filecpp");
+    Manager::get_instance()->get_xml_cfg()->getRoot_child(fn, "filemgr", "filecpp");
+
+    cout << "fn = " << fn << endl;
+
+    FileManager fm(fn.c_str());
+
+    return 0;
 }
 

@@ -112,6 +112,7 @@ set(SRC_LIST
    srcs/linux/sys_cmd.cpp
    srcs/linux/os/mos.cpp
    srcs/linux/os/backtrace.cpp
+   srcs/linux/os/file-manager.cpp
 #   srcs/linux/io/io.cpp
    srcs/linux/process/process.cpp
    srcs/linux/process/ipc_msgq.c
