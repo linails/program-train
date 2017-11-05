@@ -33,3 +33,12 @@ echo $string
 
 echo "\007 your home dir is %HOME, you are connected on `tty`"
 
+#
+# $? 是 shell 命令执行返回的结果
+#
+grep -in xxx ./readme.txt
+result=$? && echo "grep -in xxx ./readme.txt | result = $result"
+
+grep -in time ./readme.txt
+result=$? && echo "grep -in time ./readme.txt | result = $result"
+

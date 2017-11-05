@@ -164,6 +164,7 @@ set(SRC_LIST
    srcs/tools/stopwatch.c
    srcs/tools/cfg-loader.cpp
    srcs/tools/mbacktrace.c
+   srcs/tools/stamp.c
    srcs/cases/cases.cpp
    srcs/cases/exlib-cases/exlibCases.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

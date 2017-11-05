@@ -1,7 +1,7 @@
 /*
  * Progarm Name: lambda.cpp
  * Created Time: 2016-03-28 20:57:04
- * Last modified: 2016-12-18 12:33:16
+ * Last modified: 2017-11-02 10:26:05
  */
 
 #include "lambda.h"
@@ -26,6 +26,8 @@ int  mLambda::mlambda_main(int argc, char **argv)
     int ret = 0;
 
     ret = this->mlambda_test();
+
+    ret = this->mlambda_test_();
 
     ret = this->mlambda_cb();
 
@@ -216,6 +218,24 @@ int  mLambda::callback(char *s)
     int ret = 0;
 
     cout << "cb : " << s << endl;
+
+    return ret;
+}
+
+int  mLambda::mlambda_test_(void)
+{
+    int ret = 0;
+
+    cout << "-----------------------------------------" << endl;
+    {
+        vector<function<void (int)>> fv;
+
+        fv.push_back([](int var)->void { cout << "lambda 01 var = " var << endl; });
+        fv.push_back([](int var)->void { cout << "lambda 02 var = " var << endl; });
+        fv.push_back([](int var)->void { cout << "lambda 03 var = " var << endl; });
+
+        for(auto f : fv){ f(1); }
+    }
 
     return ret;
 }

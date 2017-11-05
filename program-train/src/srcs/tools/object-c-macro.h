@@ -1,7 +1,6 @@
 /*
  * Progarm Name: object-c-macro.h
  * Created Time: 2016-12-12 20:44:10
- * Last modified: 2016-12-12 20:46:27
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -11,8 +10,13 @@
 extern "C" {
 #endif
 
+#ifndef cPrivate
 #define cPrivate
+#endif
+
+#ifndef cPublic
 #define cPublic
+#endif
 
 #ifdef __cplusplus
 }
