@@ -1,7 +1,7 @@
 /*
  * Progarm Name: clib-eg-linux.h
  * Created Time: 2017-09-24 07:46:34
- * Last modified: 2017-10-22 12:12:32
+ * Last modified: 2017-11-07 16:56:47
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -26,9 +26,9 @@ extern "C" {
         int  (*clibegLinux_main)(cLibEgLinux_t *cthis, int argc, char **argv);
     cPrivate
         int  (*test_for_getopt)(cLibEgLinux_t *cthis);
+        int  (*test_for_getopt_long)(cLibEgLinux_t *cthis);
     }cLibEgLinux_t;
 
-    //extern int  cLibEg_linux_constructor_safety(cLibEgLinux_t **pobj);
     extern int  cLibEg_linux_constructor_safety(cLibEgLinux_t **pobj);
 
 #ifdef __cplusplus
