@@ -15,6 +15,8 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern
+    ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/factory
+    ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/abstract-factory
     ${PROJECT_SOURCE_DIR}/src/srcs/complex
     ${PROJECT_SOURCE_DIR}/src/srcs/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/boost
@@ -99,8 +101,12 @@ set(SRC_LIST
 #   srcs/primer/operator-overload.cpp
 #   srcs/primer/type-traits.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#   srcs/advanced/advanced.cpp
-#   srcs/advanced/design-pattern/design-pattern.cpp
+   srcs/advanced/advanced.cpp
+   srcs/advanced/design-pattern/design-pattern.cpp
+   srcs/advanced/design-pattern/factory/factory.cpp
+   srcs/advanced/design-pattern/factory/factory-product.cpp
+   srcs/advanced/design-pattern/abstract-factory/abstract-factory.cpp
+   srcs/advanced/design-pattern/abstract-factory/abstract-product.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/complex/
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
