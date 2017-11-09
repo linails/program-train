@@ -41,4 +41,9 @@ result=$? && echo "grep -in xxx ./readme.txt | result = $result"
 
 grep -in time ./readme.txt
 result=$? && echo "grep -in time ./readme.txt | result = $result"
+if [ $result = 0 ]; then
+    echo "grep success !"
+else
+    echo "grep fail !"
+fi
 

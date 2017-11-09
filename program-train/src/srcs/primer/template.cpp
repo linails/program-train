@@ -1,7 +1,7 @@
 /*
  * Progarm Name: template.cpp
  * Created Time: 2016-02-02 16:38:52
- * Last modified: 2016-12-30 12:49:37
+ * Last modified: 2017-11-09 10:11:10
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,13 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
+
+
+/* 
+ * typeid 的例子，在 other.cpp 中写了一部分
+ *
+ * typeid() 在 Windows 中返回的名字会比较容易看的懂
+ * */
 
 Template::Template()
 {

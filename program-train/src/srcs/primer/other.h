@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.h
  * Created Time: 2016-03-11 15:16:37
- * Last modified: 2017-09-26 12:36:45
+ * Last modified: 2017-11-09 14:03:37
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -21,7 +21,14 @@ public:
 private:
     int  macro_test(void);
     int  cout_test(void);
+    int  bits_test(void);
 };
+
+#define MACRO_SET_A(val)\
+    do {                \
+        data.a = val;   \
+    }while(0)
+
 
 #endif //_OTHER_H_
 

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2017-09-30 10:46:25
+ * Last modified: 2017-11-09 14:12:36
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -980,6 +980,8 @@ int  OtherTest::main(void)
 
     ret = this->cout_test(); assert(-1 != ret);
 
+    ret = this->bits_test(); assert(-1 != ret);
+
     return 0;
 }
 
@@ -1015,6 +1017,101 @@ int  OtherTest::macro_test(void)
         #undef DATA_T_SIZE
         #endif
     }
+    cout << "----------------------------" << endl;
+    {
+        #define DMA_DELAY_THRESHOLD_SET(dma_ctrl) ((dma_ctrl) | (0x3 << 2))
+        #define DMA_DELAY_THRESHOLD_CLEAR(dma_ctrl) ((dma_ctrl) & ~(0x3 << 2))
+
+        unsigned dma_ctrl = 0x1230;
+        printf("dma_ctrl = 0x%x \n", dma_ctrl);
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_SET(dma_ctrl));
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_CLEAR(dma_ctrl)); cout << endl;
+
+        dma_ctrl = 0x1230;
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_SET(dma_ctrl = 0));
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_CLEAR(dma_ctrl = 0)); cout << endl;
+
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_SET(dma_ctrl = (0x880) | 0x1));
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_CLEAR(dma_ctrl = (0x880) | 0x1)); cout << endl;
+
+        dma_ctrl = 0;
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_SET(dma_ctrl += 0x20));
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_CLEAR(dma_ctrl += 0x20)); cout << endl;
+
+        dma_ctrl = 0;
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_SET(dma_ctrl |= 0x20));
+        printf("dma_ctrl = 0x%x \n", DMA_DELAY_THRESHOLD_CLEAR(dma_ctrl |= 0x20)); cout << endl;
+
+        #ifdef DMA_DELAY_THRESHOLD_SET
+        #undef DMA_DELAY_THRESHOLD_SET
+        #endif
+        #ifdef DMA_DELAY_THRESHOLD_CLEAR
+        #undef DMA_DELAY_THRESHOLD_CLEAR
+        #endif
+    }
+    cout << "----------------------------" << endl;
+    {
+        typedef struct {
+            char a;
+            char b;
+            int  c;
+        }Data_t;
+
+        Data_t data;
+
+        MACRO_SET_A(10);
+
+        printf("data.a = %d \n", data.a);
+    }
+    cout << "----------------------------" << endl;
+    {
+        unsigned DMA_CTRL = 0;
+        unsigned HW_DEMOD_DMA_CTRL = 0;
+        /*
+         * 这里 delay 设置成 6 bit
+         * */
+        #define DMA_DELAY_THRESHOLD(delay)                      \
+        do{                                                     \
+            DMA_CTRL &= ~(0x3 << 2);                            \
+            HW_DEMOD_DMA_CTRL &= ~(0xf << 4);                   \
+                                                                \
+            DMA_CTRL |= (((delay) & 0x3F) & 0x30) >> 2;         \
+            HW_DEMOD_DMA_CTRL |= (((delay) & 0x3F) & 0x0F) << 4;\
+        }while(0)
+
+        DMA_DELAY_THRESHOLD(0x30);
+
+        printf("DMA_CTRL = 0x%x\n", DMA_CTRL);
+        printf("HW_DEMOD_DMA_CTRL = 0x%x\n", HW_DEMOD_DMA_CTRL); cout << endl;
+
+        
+        DMA_CTRL = 0;
+        HW_DEMOD_DMA_CTRL = 0;
+        DMA_DELAY_THRESHOLD(0x33);
+        printf("DMA_CTRL = 0x%x\n", DMA_CTRL);
+        printf("HW_DEMOD_DMA_CTRL = 0x%x\n", HW_DEMOD_DMA_CTRL); cout << endl;
+
+        #ifdef DMA_DELAY_THRESHOLD
+        #undef DMA_DELAY_THRESHOLD
+        #endif
+    }
+    cout << "----------------------------" << endl;
+    {
+        #define DMA_DELAY_THRESHOLD 0x33
+
+        unsigned DMA_CTRL = 0;
+        unsigned HW_DEMOD_DMA_CTRL = 0;
+
+        printf("DMA_CTRL = 0x%x\n", DMA_CTRL | ((((DMA_DELAY_THRESHOLD) & 0x3F) & 0x30) >> 2));
+        printf("HW_DEMOD_DMA_CTRL = 0x%x\n", HW_DEMOD_DMA_CTRL | ((((DMA_DELAY_THRESHOLD) & 0x3F) & 0x0F) << 4)); cout << endl;
+
+
+        #ifdef DMA_DELAY_THRESHOLD
+        #undef DMA_DELAY_THRESHOLD
+        #endif
+    }
+    cout << "----------------------------" << endl;
+
     return 0;
 }
 
@@ -1037,6 +1134,44 @@ int  OtherTest::cout_test(void)
      * */
     cout << "x = " << x++ << " | " << x++ << endl;
 
+    return 0;
+}
+
+int  OtherTest::bits_test(void)
+{
+    cout << "----------------------------" << endl;
+    cout << "OtherTest::bits_test() ..." << endl;
+    {
+        /* 
+         * 如果是清除 某几位，正确写法：
+         *
+         *  -> bit_origine^(bit_origine & 0xab) | 0xab 表示具体值
+         * */
+
+        unsigned bit_origine = 0x12f4;
+        printf("bit_origine = 0x%x\n", bit_origine);
+
+        printf("bit_origine^0x%x = 0x%x\n", 0x10, bit_origine^0x10);
+        printf("bit_origine^0x%x = 0x%x\n", 0x20, bit_origine^0x20);
+        printf("bit_origine^0x%x = 0x%x\n", 0x40, bit_origine^0x40);
+        printf("bit_origine^0x%x = 0x%x\n", 0x80, bit_origine^0x80);
+
+        printf("bit_origine^(bit_origine & 0x%x) = 0x%x\n", 0x10, bit_origine^(bit_origine & 0x10));
+        printf("bit_origine^(bit_origine & 0x%x) = 0x%x\n", 0x20, bit_origine^(bit_origine & 0x20));
+        printf("bit_origine^(bit_origine & 0x%x) = 0x%x\n", 0x40, bit_origine^(bit_origine & 0x40));
+        printf("bit_origine^(bit_origine & 0x%x) = 0x%x\n", 0x80, bit_origine^(bit_origine & 0x80));
+
+        printf("bit_origine^0x%x = 0x%x\n", 0x11, bit_origine^0x11);
+        printf("bit_origine^0x%x = 0x%x\n", 0x22, bit_origine^0x22);
+        printf("bit_origine^0x%x = 0x%x\n", 0x44, bit_origine^0x44);
+        printf("bit_origine^0x%x = 0x%x\n", 0x88, bit_origine^0x88);
+
+        printf("bit_origine^(bit_origine & 0x%x) = 0x%x\n", 0x11, bit_origine^(bit_origine & 0x11));
+        printf("bit_origine^(bit_origine & 0x%x) = 0x%x\n", 0x22, bit_origine^(bit_origine & 0x22));
+        printf("bit_origine^(bit_origine & 0x%x) = 0x%x\n", 0x44, bit_origine^(bit_origine & 0x44));
+        printf("bit_origine^(bit_origine & 0x%x) = 0x%x\n", 0x88, bit_origine^(bit_origine & 0x88));
+    }
+    cout << "----------------------------" << endl;
     return 0;
 }
 
