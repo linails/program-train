@@ -1,7 +1,7 @@
 /*
  * Progarm Name: design-pattern.cpp
  * Created Time: 2017-02-14 10:04:05
- * Last modified: 2017-11-09 17:23:46
+ * Last modified: 2017-11-10 15:09:33
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,9 @@
 #include <cassert>
 #include "abstract-factory.hpp"
 #include "abstract-product.hpp"
+#include "builder-product.hpp"
+#include "builder.hpp"
+#include "direct.hpp"
 
 using std::cout;
 using std::endl;
@@ -37,6 +40,10 @@ int  DesignPattern::do_action(void)
     cout << "---------------------------------------------------------" << endl;
     {
         ret = this->abstract_factory(); assert(-1 != ret);
+    }
+    cout << "---------------------------------------------------------" << endl;
+    {
+        ret = this->builder(); assert(-1 != ret);
     }
     cout << "---------------------------------------------------------" << endl;
 
@@ -83,6 +90,39 @@ int  DesignPattern::abstract_factory(void)
     cout << "after new ConcreteFactoryII()" << endl;
     abs_factory(new ConcreteFactoryII());
     cout << endl;
+
+    return 0;
+}
+
+int  DesignPattern::builder(void)
+{
+    Direct *direct = new Direct();
+
+    {
+        BuilderProduct *product = nullptr;
+        ConcreateBuilderA builder;
+
+        direct->construct(&builder);
+
+        product = builder.get_product();
+        product->show();
+
+        if(nullptr != product){ delete product; }
+    }
+    cout << endl;
+    {
+        BuilderProduct *product = nullptr;
+        ConcreateBuilderB builder;
+
+        direct->construct(&builder);
+
+        product = builder.get_product();
+        product->show();
+
+        if(nullptr != product){ delete product; }
+    }
+
+    if(nullptr != direct){ delete direct; }
 
     return 0;
 }

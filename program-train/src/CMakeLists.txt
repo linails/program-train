@@ -17,6 +17,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/factory
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/abstract-factory
+    ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/builder
     ${PROJECT_SOURCE_DIR}/src/srcs/complex
     ${PROJECT_SOURCE_DIR}/src/srcs/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/boost
@@ -107,6 +108,9 @@ set(SRC_LIST
    srcs/advanced/design-pattern/factory/factory-product.cpp
    srcs/advanced/design-pattern/abstract-factory/abstract-factory.cpp
    srcs/advanced/design-pattern/abstract-factory/abstract-product.cpp
+   srcs/advanced/design-pattern/builder/builder-product.cpp
+   srcs/advanced/design-pattern/builder/builder.cpp
+   srcs/advanced/design-pattern/builder/direct.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/complex/
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
