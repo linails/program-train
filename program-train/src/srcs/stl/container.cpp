@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-07-06 11:17:33
+ * Last modified: 2017-11-10 16:46:45
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -24,6 +24,8 @@
 #include <algorithm>
 #include <cassert>
 #include <stack>
+#include <cstring>
+#include <memory>
 
 using std::cout;
 using std::endl;
@@ -37,6 +39,7 @@ using std::make_pair;
 using std::make_tuple;
 using std::stack;
 using std::queue;
+using std::allocator;
 
 Container::Container()
 {
@@ -63,6 +66,8 @@ int  Container::container_main(int argc, char **argv)
     ret = this->queue_t(); assert(-1 != ret); 
 
     ret = this->unordered_map_t(); assert(-1 != ret); 
+
+    ret = this->allocator_t(); assert(-1 != ret); 
 
     return ret;
 }
@@ -215,6 +220,7 @@ int  Container::vector_t(void)
         d->cv = ocv;
         cout << "d->cv.size() : " << d->cv.size() << endl;
 
+        for(auto ptr : d->cv) if(nullptr != ptr) delete ptr;
         delete d;
     }
     cout << "-----------------------------------------" << endl;
@@ -531,6 +537,58 @@ int  Container::unordered_map_t(void)
 
     }
     cout << "-----------------------------------------" << endl;
+    return 0;
+}
+
+/* 
+ * allocator 的引入是 C++ 内存管理的一个突破，因为 STL 所有组件的内存均从 allocator 分配
+ * */
+int  Container::allocator_t(void)
+{
+    cout << "---[Start] Container::allocator_t() ------" << endl;
+    {
+        allocator<char> alloc;
+
+        char *ptr = alloc.allocate(40);
+
+        memcpy(ptr, "0123456789012345678\0", 20);
+
+        cout << "ptr = " << ptr << endl;
+        alloc.deallocate(ptr, 40);
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        allocator<char> alloc;
+
+        char *ptr = alloc.allocate(40);
+        char *ptrn = new char[40];
+
+        string s("0123456789012345678\0");
+        std::uninitialized_copy(s.begin(), s.end(), ptr);
+        cout << "ptr = " << ptr << endl;
+
+        /* 
+         * Note !
+         *  
+         *  这里实验一个 将 buffer 都填充满 40 字节，没有字符串结束标志 '\0'
+         *
+         *  实验显示 ：uninitialized_fill() 更安全
+         *
+         *  memset() 操作的内存就存在读的时候越界访问了
+         * */
+
+        // [Test NO. 1]
+        std::uninitialized_fill(ptr, &ptr[39], '1');
+        cout << "ptr = " << ptr << endl;
+
+        // [Test NO. 2]
+        memset(ptrn, '2', 40);
+        cout << "ptrn = " << ptrn << endl;
+
+        alloc.deallocate(ptr, 40);
+        delete [] ptrn;
+    }
+    cout << "---[End] Container::allocator_t() --------" << endl;
     return 0;
 }
 
