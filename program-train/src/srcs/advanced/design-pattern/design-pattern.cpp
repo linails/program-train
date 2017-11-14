@@ -1,7 +1,7 @@
 /*
  * Progarm Name: design-pattern.cpp
  * Created Time: 2017-02-14 10:04:05
- * Last modified: 2017-11-10 15:09:33
+ * Last modified: 2017-11-14 23:11:32
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -15,6 +15,7 @@
 #include "builder-product.hpp"
 #include "builder.hpp"
 #include "direct.hpp"
+#include "prototype.hpp"
 
 using std::cout;
 using std::endl;
@@ -44,6 +45,10 @@ int  DesignPattern::do_action(void)
     cout << "---------------------------------------------------------" << endl;
     {
         ret = this->builder(); assert(-1 != ret);
+    }
+    cout << "---------------------------------------------------------" << endl;
+    {
+        ret = this->prototype(); assert(-1 != ret);
     }
     cout << "---------------------------------------------------------" << endl;
 
@@ -127,4 +132,18 @@ int  DesignPattern::builder(void)
     return 0;
 }
 
+int  DesignPattern::prototype(void)
+{
+    ProtoType *ppt = new ConcreteProtoType();
+
+    /*
+     * clone() 一个新的对象，即在 clone() 的时候创建一个和原来一样的对象
+     * */
+    ProtoType *pcp = ppt->Clone();
+
+    if(nullptr != ppt){ delete ppt; }
+    if(nullptr != pcp){ delete pcp; }
+
+    return 0;
+}
 

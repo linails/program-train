@@ -11,6 +11,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/libs/jsoncpp/src
     ${PROJECT_SOURCE_DIR}/src/libs/cppjieba/limonp
     ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include
+    ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include/tomcrypt
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced
@@ -18,6 +19,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/factory
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/abstract-factory
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/builder
+    ${PROJECT_SOURCE_DIR}/src/srcs/advanced/design-pattern/prototype
     ${PROJECT_SOURCE_DIR}/src/srcs/complex
     ${PROJECT_SOURCE_DIR}/src/srcs/stl
     ${PROJECT_SOURCE_DIR}/src/srcs/boost
@@ -62,6 +64,7 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-gtest
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-xml
     ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-sigslot
+    ${PROJECT_SOURCE_DIR}/src/srcs/cases/exlib-cases/case-tomcrypt
 )
 
 #aux_source_directory(. SRC_LIST)
@@ -111,6 +114,7 @@ set(SRC_LIST
    srcs/advanced/design-pattern/builder/builder-product.cpp
    srcs/advanced/design-pattern/builder/builder.cpp
    srcs/advanced/design-pattern/builder/direct.cpp
+   srcs/advanced/design-pattern/prototype/prototype.cpp
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #   srcs/complex/
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -239,6 +243,7 @@ set(SRC_LIST
 #   srcs/cases/exlib-cases/case-openssl/sha-test.cpp
 #   srcs/cases/exlib-cases/case-openssl/openssl-test.cpp
    srcs/cases/exlib-cases/case-sigslot/msigslot.cpp
+   srcs/cases/exlib-cases/case-tomcrypt/tomcrypt.cpp
 )
 
 add_executable(program-train ${SRC_LIST})
@@ -261,6 +266,7 @@ set(link_lib
     ${libs_path}/lib/libgtest_main.a
     ${libs_path}/lib/libtinyxml.a
     ${libs_path}/lib/libhiredis.a
+    ${libs_path}/lib/libtomcrypt.a
     pthread
     dl
     pq

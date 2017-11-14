@@ -1,7 +1,7 @@
 /*
  * Progarm Name: exlibCases.cpp
  * Created Time: 2016-12-21 10:05:59
- * Last modified: 2017-09-28 11:24:07
+ * Last modified: 2017-11-14 17:06:26
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -12,6 +12,7 @@
 #include <cassert>
 #include "xml-main.hpp"
 #include "msigslot.hpp"
+#include "tomcrypt.hpp"
 
 using std::cout;
 using std::endl;
@@ -56,6 +57,10 @@ int  exlibCases::exlibcases_main(int argc, char **argv)
         ret = this->sigslot(); assert(-1 != ret);
     }
     cout << "---------------------------" << endl;
+    {
+        ret = this->tomcrypt(); assert(-1 != ret);
+    }
+    cout << "---------------------------" << endl;
 
     return ret;
 }
@@ -67,6 +72,19 @@ int  exlibCases::sigslot(void)
     #if COMPILE_FLAG_exlib_sigslot
     {
         Msigslot mss; ret = mss.main(0, NULL);
+    }
+    #endif
+
+    return ret;
+}
+
+int  exlibCases::tomcrypt(void)
+{
+    int ret = 0;
+
+    #if COMPILE_FLAG_exlib_tomcrypt
+    {
+        Tomcrypt tomcrypt; ret = tomcrypt.do_test();
     }
     #endif
 

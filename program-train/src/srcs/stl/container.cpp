@@ -1,7 +1,7 @@
 /*
  * Progarm Name: container.cpp
  * Created Time: 2016-12-20 17:17:15
- * Last modified: 2017-11-10 16:46:45
+ * Last modified: 2017-11-13 12:43:22
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -222,6 +222,16 @@ int  Container::vector_t(void)
 
         for(auto ptr : d->cv) if(nullptr != ptr) delete ptr;
         delete d;
+    }
+    cout << "-----------------------------------------" << endl;
+    {
+        cout << "For get length by using std::distance()" << endl;
+        vector<int> iv;
+
+        for(int i=0; i<10; i++) iv.push_back(i);
+
+        cout << "iv.size() : " << iv.size() << endl;
+        cout << "std::distance(iv.begin(), iv.end()) : " << std::distance(iv.begin(), iv.end()) << endl;
     }
     cout << "-----------------------------------------" << endl;
 
