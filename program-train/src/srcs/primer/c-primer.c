@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.c
  * Created Time: 2016-12-09 23:18:58
- * Last modified: 2017-10-25 21:47:47
+ * Last modified: 2017-11-16 16:53:17
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -14,6 +14,7 @@
 #include "jump.h"
 #include "clib-eg-linux.h"
 #include "dbgprint.h"
+#include "malloc.h"
 
 static
 int  cprimer_main(cPrimer_t *cthis, int argc, char **argv)
@@ -58,6 +59,8 @@ int  cprimer_main(cPrimer_t *cthis, int argc, char **argv)
         ret = cthis->clibegLinux();
 
         ret = cthis->cstatic_assert();
+
+        ret = cthis->malloc_test();
 
     }else{
         ret = -1;
@@ -459,6 +462,41 @@ int  cstatic_assert(void)
     return 0;
 }
 
+static
+int  malloc_test(void)
+{
+    printf("---------------------------\n");
+
+    /* 
+     * malloc_usable_size(); 返回实际可以使用的内存
+     * */
+    printf("Fn: %s\n", __func__);
+    {
+        char *pbufa = malloc(60);
+        if(NULL != pbufa){
+            /*
+             * 输出的大小是 72 字节 | 时间的内存管理相关的东西，malloc 会实际分配大于申请的大小
+             * */
+            printf("pbufa size = %ld\n", malloc_usable_size(pbufa));
+
+            free(pbufa);
+        }
+
+        char *pbufb = malloc(32);
+        if(NULL != pbufb){
+            /*
+             * 输出的大小是 40 字节
+             * */
+            printf("pbufb size = %ld\n", malloc_usable_size(pbufb));
+
+            free(pbufb);
+        }
+
+    }
+    printf("---------------------------\n");
+    return 0;
+}
+
 //----------------------------------------------------------------------------------------------
 
 static
@@ -496,6 +534,7 @@ cPrimer_t *cprimer_constructor(void)
         cprimer->endian_check       = endian_check;
         cprimer->cstatic_assert     = cstatic_assert;
         cprimer->cprimer_main       = cprimer_main;
+        cprimer->malloc_test        = malloc_test;
 
         return cprimer;
     }
@@ -528,6 +567,7 @@ int  cprimer_constructor_safety(cPrimer_t **pobj)
             (*pobj)->clibegLinux        = clibegLinux;
             (*pobj)->cstatic_assert     = cstatic_assert;
             (*pobj)->cprimer_main       = cprimer_main;
+            (*pobj)->malloc_test        = malloc_test;
 
         }
     }else{

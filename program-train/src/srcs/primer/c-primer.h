@@ -1,7 +1,7 @@
 /*
  * Progarm Name: c-primer.h
  * Created Time: 2016-12-09 23:19:02
- * Last modified: 2017-10-25 21:39:57
+ * Last modified: 2017-11-16 15:34:15
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -25,6 +25,7 @@ extern "C" {
         int  (*endian_check)(void);
         int  (*clibegLinux)(void);
         int  (*cstatic_assert)(void);
+        int  (*malloc_test)(void);
     cPublic
         int  (*cprimer_main)(cPrimer_t *cthis, int argc, char **argv);
         int  (*destructor)(cPrimer_t **pobj);

@@ -1,7 +1,7 @@
 /*
  * Progarm Name: other.cpp
  * Created Time: 2016-03-11 15:16:33
- * Last modified: 2017-11-09 14:12:36
+ * Last modified: 2017-11-17 11:22:04
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -1108,6 +1108,20 @@ int  OtherTest::macro_test(void)
 
         #ifdef DMA_DELAY_THRESHOLD
         #undef DMA_DELAY_THRESHOLD
+        #endif
+    }
+    cout << "----------------------------" << endl;
+    {
+        /*
+         * printf 函数的 fmt 字符串可以分成多段，因此做 debug 接口比较方便
+         * */
+        #define TEEC_Error(fmt, args...) printf("[Error] %s: " fmt, __func__, ##args)
+
+        TEEC_Error("xxx = %d\n", 10);
+        printf("[Error] %s: ""xxx = %d"" | printf directiry\n", __func__, 10);
+
+        #ifdef TEEC_Error
+        #undef TEEC_Error
         #endif
     }
     cout << "----------------------------" << endl;

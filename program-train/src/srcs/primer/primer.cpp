@@ -1,7 +1,7 @@
 /*
  * Progarm Name: primer.cpp
  * Created Time: 2016-10-28 16:16:59
- * Last modified: 2017-10-22 12:05:25
+ * Last modified: 2017-11-17 10:24:50
  * @author: minphone.linails linails@foxmail.com 
  */
 
@@ -27,40 +27,75 @@
 #include <cassert>
 #include "class-enhenced.hpp"
 #include "jump.hpp"
+#include "exception-ex.hpp"
 
 using std::cout;
 using std::endl;
 
 Primer::Primer()
 {
+    cout << endl;
+    cout << "Beginning primer ..." << endl;
+    cout << endl;
 }
 
 int  Primer::primer_main(int argc, char **argv)
 {
     int ret = 0;
-
-    cout << endl;
-    cout << "Beginning primer ..." << endl;
-    cout << endl;
     {
-#if 0
-        refrence_test();
-        cast_test();
-        find_char2("hello",'e');
-        const_test();
-        drived_test();
-        boost_test();
-#endif
-        //regex_test();
-        //smart_pointer();
-        other_test();
-        //class_test();
-        //chrono_test();
-        //thread_test();
-        //container_test();
-        //exception_test();
-        //overload_test();
+        #if COMPILE_FLAG_exception
+        cout << "---------------------------------------------------------" << endl;
+        exception_test();
+        #endif
+        #if COMPILE_FLAG_exception_ex
+        cout << "---------------------------------------------------------" << endl;
+        ExceptionEx ee; ret = ee.main(); assert(-1 != ret);
+        #endif
     }
+    {
+        #if COMPILE_FLAG_regex
+        cout << "---------------------------------------------------------" << endl;
+        regex_test();
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_smartpointer
+        cout << "---------------------------------------------------------" << endl;
+        smart_pointer();
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_other
+        cout << "---------------------------------------------------------" << endl;
+        other_test();
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_class
+        cout << "---------------------------------------------------------" << endl;
+        class_test();
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_chrono
+        cout << "---------------------------------------------------------" << endl;
+        chrono_test();
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_thread_cpp11
+        cout << "---------------------------------------------------------" << endl;
+        thread_test();
+        #endif
+    }
+    {
+        #if COMPILE_FLAG_overload
+        cout << "---------------------------------------------------------" << endl;
+        overload_test();
+        #endif
+    }
+
+    #if COMPILE_FLAG_cprimer
     #if 0
     {
         cout << "---------------------------------------------------------" << endl;
@@ -98,8 +133,9 @@ int  Primer::primer_main(int argc, char **argv)
         }
     }
     #endif
+    #endif
     {
-    #if 0
+    #if COMPILE_FLAG_regex_cpp11
         cout << "---------------------------------------------------------" << endl;
 
         regex_cpp11 re;
@@ -114,25 +150,27 @@ int  Primer::primer_main(int argc, char **argv)
     #endif
     }
     {
-    #if 0
+    #if COMPILE_FLAG_lambda
         cout << "---------------------------------------------------------" << endl;
         mLambda mlambda;
         ret = mlambda.mlambda_main(argc, argv); assert(-1 != ret);
     #endif
     }
     {
-    #if 0
+    #if COMPILE_FLAG_class_enhenced
         cout << "---------------------------------------------------------" << endl;
         ClassEnhenced ce;
         ret = ce.class_enhenced_main(argc, argv); assert(-1 != ret);
     #endif
     }
     {
-    #if 1
+    #if COMPILE_FLAG_jumper 
         Jumper jumper;
         ret = jumper.main(argc, argv); assert(-1 != ret);
     #endif
     }
+
+    cout << "---------------------------------------------------------" << endl;
 
     return ret;
 }

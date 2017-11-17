@@ -6,12 +6,13 @@ cmake_minimum_required(VERSION 2.8)
 include_directories(
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/libs
-    ${PROJECT_SOURCE_DIR}/src/libs/rapidjson
-    ${PROJECT_SOURCE_DIR}/src/libs/cppjieba
     ${PROJECT_SOURCE_DIR}/src/libs/jsoncpp/src
-    ${PROJECT_SOURCE_DIR}/src/libs/cppjieba/limonp
     ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include
+    ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include/sqlite
     ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include/tomcrypt
+    ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include/rapidjson
+    ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include/cppjieba
+    ${PROJECT_SOURCE_DIR}/src/libs/x86_64/include/cppjieba/limonp
     ${PROJECT_SOURCE_DIR}/src/srcs
     ${PROJECT_SOURCE_DIR}/src/srcs/primer
     ${PROJECT_SOURCE_DIR}/src/srcs/advanced
@@ -98,7 +99,8 @@ set(SRC_LIST
    srcs/primer/class_test.cpp
 #   srcs/primer/class-enhenced.cpp
 #   srcs/primer/chrono_test.cpp
-#   srcs/primer/exception_test.cpp
+   srcs/primer/exception_test.cpp
+   srcs/primer/exception-ex.cpp
 #   srcs/primer/lambda.cpp
 #   srcs/primer/template.cpp
 #   srcs/primer/overload.cpp
